@@ -1,0 +1,27 @@
+<ion-content class="ion-padding" scroll="false">
+  <div class="container">
+    <div class="content">
+      <img class="logo" src="assets/images/login/logo-login.svg" alt="Logo" />
+
+      <form (submit)="login()">
+        <div class="input-email">
+          <ion-input type="email" placeholder="E-mail" [(ngModel)]="email" name="email" required></ion-input>
+        </div>
+        <div class="input-password">
+          <ion-input type="password" placeholder="Senha" [(ngModel)]="password" name="password" required></ion-input>
+        </div>
+        <div class="input-submit">
+          <ion-button expand="full" type="submit">Entrar</ion-button>
+        </div>
+        <div class="href-create-account">
+          <a routerLink="/create-account">Cadastrar</a>
+        </div>
+        <div class="generate-password">
+          <a routerLink="/generate-password">
+              Esqueci minha senha
+          </a>
+        </div>      
+      </form>
+    </div>
+  </div>
+</ion-content>

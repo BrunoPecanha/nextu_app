@@ -1,0 +1,85 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <div class="go-back">
+        <a routerLink="/select-company">
+          <img src="assets/images/create-account/icon-go-back.svg" alt="Voltar para tela de seleção usuario" />
+        </a>
+      </div>
+    </ion-buttons>
+    <ion-title>PROFISSIONAIS</ion-title>
+    
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="container">
+    <div class="description-card">
+      <h1 style="text-align: center;">KING'S SONS</h1>
+      <h2>BarberShop</h2>
+      </div>
+    <!-- Carousel Companies -->
+    <!-- <ion-slides class="carousel-companies" [options]="slideOpts">
+      <swiper-container>
+        <swiper-slide *ngFor="let company of companies">
+          <div class="company">
+            <img [src]="company.img" alt="{{company.name}}" />
+            <h1>{{company.name}}</h1>
+          </div>
+        </swiper-slide>
+      </swiper-container>
+    </ion-slides> -->
+
+    <div class="scrollable-content">
+      <div class="cards-companies">
+        <ion-card class="box" *ngFor="let card of companyCards">
+          <ion-card-header class="card-bg-blue">
+            <ion-card-title>{{card.name}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="description-card">
+            <h2>{{card.type}}</h2>
+            <h3>{{card.queue}}</h3>
+          </ion-card-content>
+        </ion-card>
+         <ion-card class="box" *ngFor="let card of companyCards">
+          <ion-card-header class="card-bg-blue">
+            <ion-card-title>{{card.name}}</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="description-card">
+            <h2>{{card.type}}</h2>
+            <h3>{{card.queue}}</h3>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Menu -->
+  <ion-footer>
+    <ion-toolbar class="menu-fixed-bottom">
+      <div class="content-menu-border">
+        <div class="go-init">
+          <ion-icon name="home-outline"></ion-icon>
+          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+        </div>
+        <div class="go-fila">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label><a href="#">Fila</a></ion-label>
+        </div>
+        <div class="go-config">
+          <ion-icon name="settings-outline"></ion-icon>
+          <ion-label><a href="#">Config</a></ion-label>
+        </div>
+        <div class="go-config">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label><a href="#">Sair</a></ion-label>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

@@ -1,0 +1,121 @@
+.container {
+    background-color: var(--bg-white);
+    min-height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden; 
+}
+
+.container .content {
+    min-width: 100%;
+}
+
+ion-content {
+    --overflow: hidden;
+    height: 100%; 
+}
+
+.logo {
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+    margin-bottom: 15%;
+}
+
+/* form */
+.container .content form {
+    width: 90%;
+    margin: 0 auto;
+}
+
+.container .content form .input-email input,
+.container .content form .input-password input {
+    border: 1px solid #B0B0B0; 
+    border-radius: 2px;
+}
+
+.container .content form .input-email input {
+    margin-bottom: 10px;
+    margin-top: 50px;
+}
+
+.container .content form .input-email input:focus,
+.container .content form .input-password input:focus {
+    outline: none;
+    border: 1px solid  var(--bg);
+}
+
+.container .content form .input-password input {
+    margin-bottom: 20px;
+}
+
+.container .content form .input-email input,
+.container .content form .input-password input {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 1rem;
+    letter-spacing: 0.6px;
+    color: #8A8A8A;
+    padding: 1rem 0 1rem 10px;
+    width: 100%;
+}
+
+.container .content form .input-submit {
+    padding: 1rem 0 1rem 0px;
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+    background-color: var(--bg);
+}
+
+.container .content form .input-submit:hover {
+    background-color: var(--bg-hover);
+}
+
+.container .content form .input-submit a {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 0.6px;
+    color: #E9E9E9;
+    background-color: transparent;
+    border: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.container .content form .href-create-account {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #004acd;
+}
+
+.container .content form .href-create-account a{
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    letter-spacing: 0.6px;
+    color: var(--bg);
+}
+
+.container .content form .generate-password {
+    text-align: center;
+}
+
+.container .content form .generate-password a {
+    font-family: 'Poppins', sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 16px;
+    letter-spacing: 0.6px;
+    color: #484745;
+}

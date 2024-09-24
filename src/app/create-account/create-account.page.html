@@ -1,0 +1,51 @@
+<ion-content class="ion-padding">
+  <div class="container">
+    <div class="content">
+      <div class="go-back">
+        <a routerLink="/login">
+          <img src="assets/images/create-account/icon-go-back.svg" alt="Icon go back" />
+        </a>
+      </div>
+
+      <div class="bg-logo">
+        <img src="assets/images/splash/Logo.svg" alt="teste" />
+      </div>
+
+      <form (submit)="onSubmit($event)">
+        <div class="input-user">
+          <ion-input type="text" placeholder="Nome completo*" required [(ngModel)]="name" name="name"></ion-input>
+        </div>
+      
+        <div class="input-email-user">
+          <ion-input type="email" placeholder="E-mail*" required [(ngModel)]="email" name="email"></ion-input>
+        </div>
+      
+        <div class="input-phone-user">
+          <ion-input type="number" placeholder="Telefone*" required [(ngModel)]="phone" name="phone"></ion-input>
+        </div>
+      
+        <div class="input-adress-user">
+          <ion-input type="text" placeholder="Endereço Completo*" required [(ngModel)]="address" name="address"></ion-input>
+        </div>
+      
+        <div class="input-password-user">
+          <ion-input type="password" placeholder="Senha*" required [(ngModel)]="password" name="password"></ion-input>
+        </div>
+      
+        <div class="input-confirm-password-user">
+          <ion-input type="password" placeholder="Confirmar senha*" required [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
+        </div>
+      
+        <div class="input-submit-user">
+          <ion-button expand="full" type="submit">Cadastrar</ion-button>
+        </div>
+      
+        <div class="input-check-validation">
+          <ion-checkbox slot="start" required [(ngModel)]="termsAccepted" name="termsAccepted"></ion-checkbox>
+          <label>Política de Privacidade e Termos de Uso</label>
+        </div>
+      </form>
+      
+    </div>
+  </div>
+</ion-content>
