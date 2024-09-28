@@ -7,29 +7,29 @@ const routes: Routes = [
   },
   { 
     path: 'splash', 
-    loadChildren: () => import('./splash/splash.module').then(m => m.SplashPageModule) 
+    loadChildren: () => import('../pages/splash/splash.module').then(m => m.SplashPageModule) 
   },
   {
-    path: 'login', loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule) 
+    path: 'login', loadChildren: () => import('../pages/login/login.module').then(m => m.LoginPageModule) 
   },
   {
     path: 'create-account',
-    loadChildren: () => import('./create-account/create-account.module').then( m => m.CreateAccountPageModule)
+    loadChildren: () => import('../pages/create-account/create-account.module').then( m => m.CreateAccountPageModule)
   },
   {
     path: 'generate-password',
-    loadChildren: () => import('./generate-password/generate-password.module').then( m => m.GeneratePasswordPageModule)
+    loadChildren: () => import('../pages/generate-password/generate-password.module').then( m => m.GeneratePasswordPageModule)
   },   {
     path: 'role-registration',
-    loadChildren: () => import('./role-registration/role-registration.module').then( m => m.RoleRegistrationPageModule)
+    loadChildren: () => import('../pages/role-registration/role-registration.module').then( m => m.RoleRegistrationPageModule)
   },
   {
     path: 'select-company',
-    loadChildren: () => import('./select-company/select-company.module').then( m => m.SelectCompanyPageModule)
+    loadChildren: () => import('../pages/select-company/select-company.module').then( m => m.SelectCompanyPageModule)
   },
   {
     path: 'select-professional',
-    loadChildren: () => import('./select-professional/select-professional.module').then( m => m.SelectProfessionalPageModule)
+    loadChildren: () => import('../pages/select-professional/select-professional.module').then( m => m.SelectProfessionalPageModule)
   }
  
 ];
