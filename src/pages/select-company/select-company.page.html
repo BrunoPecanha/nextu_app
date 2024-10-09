@@ -76,29 +76,28 @@
   </div>
 
   <!-- Área "Últimos Visitados" fixa -->
-   <div class="fixed-recent-visits">
-    <ion-card class="visited-card">
-      
-      <ion-card-content class="recent-cards-container">
-        <div
-          class="recent-card"
-          *ngFor="let recent of companyCards.slice(0, 3)"
-        >
-          <div class="recent-card-item">
-            <div class="recent-logo-container">
-              <div class="recent-company-logo"></div>
-            </div>
-            <div class="recent-company-info">
-              <h2>{{recent.name}}</h2>
-              <p>{{recent.type}}</p>
-            </div>
+  <div class="fixed-recent-visits">
+  <ion-card class="visited-card">
+    <ion-card-content class="recent-cards-container" *ngIf="showRecentCards">
+      <div class="recent-card" *ngFor="let recent of companyCards.slice(0, 3)">
+        <div class="recent-card-item">
+          <div class="recent-logo-container">
+            <div class="recent-company-logo"></div>
+          </div>
+          <div class="recent-company-info">
+            <h2>{{recent.name}}</h2>
+            <p>{{recent.type}}</p>
           </div>
         </div>
-      </ion-card-content>
-      <h4 class="visited-title">Últimos 3 visitados</h4>
-    </ion-card>
-  </div> 
-
+      </div>
+    </ion-card-content>
+    <h4 class="visited-title" *ngIf="showRecentCards">Últimos 3 visitados</h4>
+    <button class="toggle-button" (click)="toggleRecentCards()">
+      <div class="arrow" [class.expanded]="showRecentCards"></div>
+    </button>
+  </ion-card>
+</div>
+  
   <ion-footer>
     <ion-toolbar class="menu-fixed-bottom">
       <div class="content-menu-border">

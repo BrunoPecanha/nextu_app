@@ -9,7 +9,8 @@ import Swiper from 'swiper'; // Importa o Swiper
 })
 export class SelectCompanyPage implements OnInit {
   constructor(private alertController: AlertController) { }
-
+  
+  showRecentCards = false;
   selectedServiceType: any;
   slideOpts = {
     initialSlide: 0,
@@ -78,7 +79,10 @@ export class SelectCompanyPage implements OnInit {
 
     await alert.present();
   }
-
+ 
+  toggleRecentCards() {
+    this.showRecentCards = !this.showRecentCards;
+  }
   // Lógica para o envio da busca
   onSearchSubmit(searchQuery: string) {
     if (searchQuery && searchQuery.trim() !== '') {
