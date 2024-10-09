@@ -11,17 +11,17 @@ export class CreateAccountPage {
   name: string = '';
   email: string = '';
   phone: string = '';
-  address: string = '';
   password: string = '';
   confirmPassword: string = '';
   termsAccepted: boolean = false;
+  cpf: string = '';
 
   constructor(private router: Router, private alertController: AlertController) {}
 
   async onSubmit(event: Event) {
     event.preventDefault();
 
-    if (!this.name || !this.email || !this.phone || !this.address || !this.password || !this.confirmPassword) {
+    if (!this.name || !this.email || !this.phone || !this.cpf || !this.password || !this.confirmPassword) {
       const alert = await this.alertController.create({
         header: 'Informação',
         message: 'Por favor, preencha todos os campos obrigatórios.',

@@ -1,34 +1,58 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>SELECIONE UMA OPÇÂO</ion-title>
+    <ion-title>Seleciona o tipo de perfil</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <div class="container">
+    <!-- Cartões de Opções -->
     <div class="cards-function">
       <!-- Cliente Card -->
       <ion-card class="box" routerLink="/select-company">
         <ion-card-header class="card-bg-blue">
-          <ion-card-title class="card-title">USUÁRIO</ion-card-title>
+          <ion-card-title class="card-title">Usuário</ion-card-title>
         </ion-card-header>
         <ion-card-content class="description-card">
           <h2>BUSCANDO O SERVIÇO</h2>
           <h3>Eu sou um cliente</h3>
         </ion-card-content>
       </ion-card>
-      
 
-      <!-- Profissional Card -->
-      <!-- <ion-card class="box" routerLink="/professional-registration">
+      <!-- Profissional Card (Descomentado) -->
+      <ion-card class="box" routerLink="/professional-registration">
         <ion-card-header class="card-bg-blue">
-          <ion-card-title class="card-title">EMPRESA</ion-card-title>
+          <ion-card-title class="card-title">Proprietário</ion-card-title>
         </ion-card-header>
         <ion-card-content class="description-card">
           <h2>Estabelecimento</h2>
-          <h3>EU SOU UM PROFISSIONAL</h3>
+          <h3>Eu sou um profissional</h3>
         </ion-card-content>
-      </ion-card> -->
+      </ion-card>
     </div>
   </div>
+
+  <!-- Footer Fixo com Menu Inferior -->
+  <ion-footer>
+    <ion-toolbar class="menu-fixed-bottom">
+      <div class="content-menu-border">
+        <div class="go-init">
+          <ion-icon name="home-outline"></ion-icon>
+          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+        </div>
+        <div class="go-fila">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label><a href="#">Fila</a></ion-label>
+        </div>
+        <div class="go-config">
+          <ion-icon name="settings-outline"></ion-icon>
+          <ion-label><a href="#">Config</a></ion-label>
+        </div>
+        <div class="go-exit">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label><a href="#">Sair</a></ion-label>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
 </ion-content>

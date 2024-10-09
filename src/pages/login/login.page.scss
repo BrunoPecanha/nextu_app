@@ -1,121 +1,103 @@
-.container {
-    background-color: var(--bg-white);
-    min-height: 100vh;
-    max-height: 100vh;
+
+.login-page {
     display: flex;
     justify-content: center;
-    flex-direction: column;
     align-items: center;
-    overflow: hidden; 
+    background-color: #F8F8F8;
+    height: 100vh;
+    width: 100vw;
+    padding: 0;
+    margin: 0;
 }
 
-.container .content {
-    min-width: 100%;
+.login-container {
+    background: #FFFFFF;
+    border-radius: 0px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    margin: 0 auto;
 }
 
-ion-content {
-    --overflow: hidden;
-    height: 100%; 
+.login-logo {
+    text-align: center;
+    margin-bottom: 7rem; 
 }
 
 .logo {
+    width: 100px;
+}
+
+
+.login-form ion-item {
+    margin-bottom: 1.5rem;
+    border: 1px solid #E0E0E0;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+}
+
+.login-form ion-input {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #333;
+}
+
+
+.forgot-password {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #004acd;
+    text-align: right;
+    display: block;
+    margin-top: -1rem; 
+    margin-bottom: 1.5rem; 
+    text-decoration: none;
+}
+
+
+.login-actions .login-btn {
+    background-color: #FF5678;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.login-actions .login-btn:hover {
+    background-color: #E95468;
+}
+
+
+.social-login {
+    text-align: center;
+    margin: 1.5rem 0;
+}
+
+.social-login p {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    color: #888;
+}
+
+.social-login ion-icon {
+    font-size: 2rem;
+    color: #004acd; 
+}
+
+.social-login ion-col {
     display: flex;
     justify-content: center;
-    margin: 0 auto;
-    margin-bottom: 15%;
 }
 
-/* form */
-.container .content form {
-    width: 90%;
-    margin: 0 auto;
-}
 
-.container .content form .input-email input,
-.container .content form .input-password input {
-    border: 1px solid #B0B0B0; 
-    border-radius: 2px;
-}
-
-.container .content form .input-email input {
-    margin-bottom: 10px;
-    margin-top: 50px;
-}
-
-.container .content form .input-email input:focus,
-.container .content form .input-password input:focus {
-    outline: none;
-    border: 1px solid  var(--bg);
-}
-
-.container .content form .input-password input {
-    margin-bottom: 20px;
-}
-
-.container .content form .input-email input,
-.container .content form .input-password input {
+.signup p {
     font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
     font-size: 1rem;
-    letter-spacing: 0.6px;
-    color: #8A8A8A;
-    padding: 1rem 0 1rem 10px;
-    width: 100%;
-}
-
-.container .content form .input-submit {
-    padding: 1rem 0 1rem 0px;
-    width: 100%;
-    margin-bottom: 20px;
-    text-align: center;
-    background-color: var(--bg);
-}
-
-.container .content form .input-submit:hover {
-    background-color: var(--bg-hover);
-}
-
-.container .content form .input-submit a {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    letter-spacing: 0.6px;
-    color: #E9E9E9;
-    background-color: transparent;
-    border: 0;
-    width: 100%;
+    color: #888;
     text-align: center;
 }
 
-.container .content form .href-create-account {
-    text-align: center;
-    margin-bottom: 20px;
-    color: #004acd;
-}
-
-.container .content form .href-create-account a{
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 700;
-    font-size: 18px;
-    text-align: center;
-    letter-spacing: 0.6px;
-    color: var(--bg);
-}
-
-.container .content form .generate-password {
-    text-align: center;
-}
-
-.container .content form .generate-password a {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 500;
-    font-size: 18px;
-    line-height: 16px;
-    letter-spacing: 0.6px;
-    color: #484745;
+.signup a {
+    color: #FF5678;
+    text-decoration: none;
 }

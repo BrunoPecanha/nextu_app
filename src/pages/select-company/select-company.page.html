@@ -10,7 +10,7 @@
         </a>
       </div>
     </ion-buttons>
-    <ion-title>ESTABELECIMENTOS</ion-title>
+    <ion-title>Estabelecimentos</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentSearchPopup()">
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
@@ -21,14 +21,11 @@
 
 <ion-content>
   <div class="container">
-    <ion-slides
-      class="carousel-companies"
-      [options]="slideOpts"     
-    >
+    <ion-slides class="carousel-companies" [options]="slideOpts">
       <swiper-container
         [slidesPerView]="1"
         [pagination]="true"
-        [navigation]="true"  
+        [navigation]="true"
         (swiperslidechange)="onSlideChange($event)"
       >
         <swiper-slide *ngFor="let serviceType of serviceTypes">
@@ -45,35 +42,62 @@
       >
         <h2>{{selectedServiceType?.name}}</h2>
       </ion-card-content>
-      <ion-card-content
-        class="description-card"
-        routerLink="/select-professional"
-      >
-        <h2>{{selectedServiceType?.name}}</h2>
-      </ion-card-content>
     </ion-slides>
 
     <!-- Scrollable Content -->
     <div class="scrollable-content">
       <div class="cards-companies">
-        <ion-card class="box" *ngFor="let card of companyCards">
-          <ion-card-header
-            class="card-bg-blue"
-            routerLink="/select-professional"
-          >
-            <ion-card-title>{{card.name}}</ion-card-title>
-          </ion-card-header>
-          <ion-card-content
-            class="description-card"
-            routerLink="/select-professional"
-          >
-            <h2>{{card.type}}</h2>
-            <h3>{{card.queue}}</h3>
+        <ion-card
+          class="box"
+          *ngFor="let card of companyCards"
+          routerLink="/select-professional"
+        >
+          <div class="card-background"></div>
+          <ion-card-content>
+            <div class="inner-card">
+              <div class="logo-container">
+                <div class="company-logo"></div>
+              </div>
+
+              <div class="company-info">
+                <h2>{{card.name}}</h2>
+                <p>{{card.type}}</p>
+                <p>{{card.queue}}</p>
+                <ion-chip color="success">
+                  <ion-icon name="star"></ion-icon>
+                  4.8 (963 avaliações)
+                </ion-chip>
+              </div>
+            </div>
           </ion-card-content>
         </ion-card>
       </div>
     </div>
   </div>
+
+  <!-- Área "Últimos Visitados" fixa -->
+   <div class="fixed-recent-visits">
+    <ion-card class="visited-card">
+      
+      <ion-card-content class="recent-cards-container">
+        <div
+          class="recent-card"
+          *ngFor="let recent of companyCards.slice(0, 3)"
+        >
+          <div class="recent-card-item">
+            <div class="recent-logo-container">
+              <div class="recent-company-logo"></div>
+            </div>
+            <div class="recent-company-info">
+              <h2>{{recent.name}}</h2>
+              <p>{{recent.type}}</p>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+      <h4 class="visited-title">Últimos 3 visitados</h4>
+    </ion-card>
+  </div> 
 
   <ion-footer>
     <ion-toolbar class="menu-fixed-bottom">

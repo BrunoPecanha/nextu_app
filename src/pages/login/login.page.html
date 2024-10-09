@@ -1,26 +1,37 @@
-<ion-content class="ion-padding" scroll="false">
-  <div class="container">
-    <div class="content">
+<ion-content class="ion-padding login-page" scroll="false">
+  <div class="login-container">
+    <div class="login-logo">
       <img class="logo" src="assets/images/login/logo-login.svg" alt="Logo" />
+    </div>
 
+    <div class="login-form">
       <form (submit)="login()">
-        <div class="input-email">
-          <ion-input type="email" placeholder="E-mail" [(ngModel)]="email" name="email" required></ion-input>
+        <ion-item lines="none">
+          <ion-input type="email" placeholder="e-mail/celular" [(ngModel)]="email" name="email" required></ion-input>
+        </ion-item>
+
+        <ion-item lines="none" class="password-container">
+          <ion-input type="password" placeholder="senha" [(ngModel)]="password" name="password" required></ion-input>
+        </ion-item>
+
+        <a routerLink="/generate-password" class="forgot-password">Esqueceu a senha?</a>
+
+        <div class="login-actions">
+          <ion-button expand="full" type="submit" class="login-btn">Login</ion-button>
         </div>
-        <div class="input-password">
-          <ion-input type="password" placeholder="Senha" [(ngModel)]="password" name="password" required></ion-input>
+
+        <div class="social-login">
+          <p>Ou faça login com</p>
+          <ion-row>
+            <ion-col><ion-icon name="logo-facebook"></ion-icon></ion-col>
+            <ion-col><ion-icon name="logo-google"></ion-icon></ion-col>
+            <ion-col><ion-icon name="logo-linkedin"></ion-icon></ion-col>
+          </ion-row>
         </div>
-        <div class="input-submit">
-          <ion-button expand="full" type="submit">Entrar</ion-button>
+
+        <div class="signup">
+          <p>Não tem conta? <a routerLink="/create-account"> Cadastre-se</a></p>
         </div>
-        <div class="href-create-account">
-          <a routerLink="/create-account">Cadastrar</a>
-        </div>
-        <div class="generate-password">
-          <a routerLink="/generate-password">
-              Esqueci minha senha
-          </a>
-        </div>      
       </form>
     </div>
   </div>

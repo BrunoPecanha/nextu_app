@@ -35,8 +35,12 @@ export class SelectCompanyPage implements OnInit {
   ];
 
   companyCards = [
-    { name: 'KING\'S SONS', type: 'BARBEARIA', queue: 'FILA MENOR: 3 PESSOAS' },
-    { name: 'SALÃO AUTO ESTIMA', type: 'SALÃO BELEZA', queue: 'FILA MENOR: 5 PESSOAS' },
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' }
   ];
 
   ngOnInit() { }
@@ -48,7 +52,7 @@ export class SelectCompanyPage implements OnInit {
   // Popup para busca de estabelecimento
   async presentSearchPopup() {
     const alert = await this.alertController.create({
-      header: 'PROCURAR ESTABELECIMENTO',
+      header: 'Digite o nome do estabelecimento para pesquisa',
       inputs: [
         {
           name: 'searchQuery',
@@ -57,7 +61,7 @@ export class SelectCompanyPage implements OnInit {
       ],
       buttons: [
         {
-          text: 'OK',
+          text: 'Buscar',
           handler: (data) => {
             this.onSearchSubmit(data.searchQuery);
           }
