@@ -26,8 +26,14 @@ export class SelectProfessionalPage implements OnInit {
   ];
 
   companyCards = [
-    { name: 'BRUNO PEÇANHA', type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
-    { name: 'LEO SILVA', type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' },
+    { name: 'Bruno Peçanha', type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
+    { name: 'Léo Silva', type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' },
+    { name: 'Bruno Peçanha', type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
+    { name: 'Léo Silva', type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' },
+    { name: 'Bruno Peçanha', type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
+    { name: 'Léo Silva', type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' },
+    { name: 'Bruno Peçanha', type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
+    { name: 'Léo Silva', type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' }
   ];
 
   ngOnInit() {
