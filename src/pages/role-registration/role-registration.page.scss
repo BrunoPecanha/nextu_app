@@ -4,7 +4,7 @@
   max-height: 100vh;
 }
 
-/* Seção superior com Photo Selector e Carregar da biblioteca */
+
 .header-section {
   display: flex;
   justify-content: space-between;
@@ -29,10 +29,10 @@
   color: #8A8A8A;
 }
 
-/* Barra azul */
+
 .blue-bar {
   height: 2px;
-  background-color: #007bff; /* Cor da barra azul */
+  background-color: #007bff; 
   margin: 0 20px;
 }
 
@@ -90,7 +90,7 @@
   text-transform: uppercase;
 }
 
-/* Footer fixo */
+
 .menu-fixed-bottom {
   background-color: white;
   border-top: 1px solid #E8E8E8;

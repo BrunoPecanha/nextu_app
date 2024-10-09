@@ -1,4 +1,4 @@
-/* Page layout */
+
 .login-page {
     display: flex;
     justify-content: center;
@@ -21,14 +21,14 @@
 
 .login-logo {
     text-align: center;
-    margin-bottom: 7rem; /* Aumentar o espaço entre a logo e os inputs */
+    margin-bottom: 7rem; 
 }
 
 .logo {
     width: 100px;
 }
 
-/* Form styling */
+
 .login-form ion-item {
     margin-bottom: 1.5rem;
     border: 1px solid #E0E0E0;
@@ -42,19 +42,19 @@
     color: #333;
 }
 
-/* Ajustar a posição do "Forgot Password?" */
+
 .forgot-password {
     font-family: 'Poppins', sans-serif;
     font-size: 0.9rem;
     color: #004acd;
     text-align: right;
     display: block;
-    margin-top: -1rem; /* Levanta o texto para ajustar a posição */
-    margin-bottom: 1.5rem; /* Espaçamento adequado abaixo do input */
+    margin-top: -1rem; 
+    margin-bottom: 1.5rem; 
     text-decoration: none;
 }
 
-/* Login button */
+
 .login-actions .login-btn {
     background-color: #FF5678;
     border-radius: 50px;
@@ -67,7 +67,7 @@
     background-color: #E95468;
 }
 
-/* Social Login */
+
 .social-login {
     text-align: center;
     margin: 1.5rem 0;
@@ -81,7 +81,7 @@
 
 .social-login ion-icon {
     font-size: 2rem;
-    color: #004acd; /* Cor azul para os ícones de rede social */
+    color: #004acd; 
 }
 
 .social-login ion-col {
@@ -89,7 +89,7 @@
     justify-content: center;
 }
 
-/* Sign Up */
+
 .signup p {
     font-family: 'Poppins', sans-serif;
     font-size: 1rem;

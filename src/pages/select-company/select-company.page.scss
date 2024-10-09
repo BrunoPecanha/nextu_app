@@ -6,9 +6,9 @@
 }
 
 .carousel-companies {
-  background-color: #FFFFFF; 
+  background-color: #FFFFFF;
   padding: 0.8rem 20px;
-  position: sticky; 
+  position: sticky;
   top: 0;
   z-index: 1;
 }
@@ -16,7 +16,7 @@
 .carousel-companies .company {
   text-align: center;
   margin: 0 0.5rem;
-  color: white; /* Ajuste a cor do texto se necessário */
+  color: white;
 }
 
 .company {
@@ -39,9 +39,9 @@
 }
 
 .scrollable-content {
-  flex: 1; /* Permite que o conteúdo ocupe o espaço restante entre o header e o footer */
-  overflow-y: auto; /* Ativa a rolagem vertical para o conteúdo */
-  padding-bottom: 8rem; /* Espaço para garantir que o rodapé não cubra o conteúdo */
+  flex: 1;
+  overflow-y: auto;
+  padding-bottom: 8rem;
 }
 
 .cards-companies {
@@ -53,7 +53,7 @@
   background: #FBFBFB;
   border: 1px solid #E8E8E8;
   border-radius: 10px;
-  margin: 2.5rem 0; 
+  margin: 2.5rem 0;
 }
 
 .box:hover {
@@ -98,7 +98,7 @@ swiper-container {
   color: #FF0000;
 }
 
-/* Menu fixed bottom */
+
 .menu-fixed-bottom {
   width: 100%;
   background: #FFFFFF;
@@ -115,7 +115,7 @@ swiper-container {
 .go-fila ion-icon,
 .go-config ion-icon {
   font-size: 25px;
-  color: #007bff; /* Cor azul para os ícones */
+  color: #007bff;
 }
 
 .go-init ion-label,
@@ -169,7 +169,7 @@ ion-label {
 
 ion-label a {
   text-decoration: none;
-  color: #007bff; /* Cor azul para os links */
+  color: #007bff;
   font-size: 12px;
 }
 
@@ -178,7 +178,7 @@ ion-card-title {
 }
 
 .card-bg-blue ion-card-title {
-  color: white; 
+  color: white;
 }
 
 .swiper-container-wrapper {
@@ -192,9 +192,9 @@ ion-card-title {
   top: 50%;
   transform: translateY(-50%);
   font-size: 30px;
-  color: rgba(0, 84, 233); /* Cor azul semitransparente */
+  color: rgba(0, 84, 233);
   z-index: 10;
-  pointer-events: none; /* Não interfere na interação com o swiper */
+  pointer-events: none;
 }
 
 .swiper-arrow-left {
@@ -222,8 +222,8 @@ ion-card-title {
 
 .card-background {
   width: 100%;
-  height: 150px;
-  background-color: #f0f0f0; /* Cor para substituir a imagem de fundo */
+  height: 100px;
+  background-color: #f0f0f0;
 }
 
 .inner-card {
@@ -233,17 +233,17 @@ ion-card-title {
   margin-top: -50px;
   box-shadow: 0px -10px 30px rgba(0,0,0,0.2);
   position: relative;
-  text-align: center; /* Centraliza o conteúdo do card */
+  text-align: center;
 }
 
 .logo-container {
   position: absolute;
-  top: -30px; /* Ajusta para que o círculo fique acima do card */
-  left: 50%; /* Posiciona no centro horizontal */
-  transform: translateX(-50%); /* Garante que o círculo fique centralizado */
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
   width: 60px;
   height: 60px;
-  background-color: #ffffff; /* Fundo branco para o logo */
+  background-color: #ffffff;
   border-radius: 50%;
   display: flex;
   justify-content: center;
@@ -255,11 +255,11 @@ ion-card-title {
   width: 100%;
   height: 100%;
   border-radius: 50%;
-  background-color: #d3d3d3; /* Cor para simular uma logo */
+  background-color: #d3d3d3;
 }
 
 .company-info {
-  margin-top: 40px; /* Ajusta a distância entre a logo e as informações */
+  margin-top: 40px;
 }
 
 .company-info h2 {
@@ -279,11 +279,86 @@ ion-card-title {
 }
 
 .company-info ion-chip ion-icon {
-  margin-right: 10px; /* Adiciona um espaço entre a estrela e o texto */
+  margin-right: 10px;
 }
 
-ion-label a {
-  text-decoration: none;
-  color: #007bff; /* Cor azul para links dentro das labels */
-  font-size: 12px;
+
+.fixed-recent-visits {
+  position: fixed;
+  bottom: 45px; 
+  padding-left: 15px;
+  z-index: 10;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center; 
+}
+
+.recent-cards-container {
+  display: flex;
+  max-width: 600px; 
+}
+
+.recent-card {
+  flex: 1;
+  //margin: 0 15px; 
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+  max-width: 150px; 
+}
+
+.recent-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px; 
+}
+
+.recent-logo-container {
+  width: 50px; 
+  height: 50px;
+  background-color: #d3d3d3;
+  border-radius: 50%;
+  margin-bottom: 10px; 
+}
+
+.recent-company-logo {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  border-radius: 50%;
+}
+
+.recent-company-info h2 {
+  font-size: 12px; 
+  font-weight: bold;
+  color: #333;
+  text-align: center;
+}
+
+.recent-company-info p {
+  font-size: 10px; 
+  color: #666;
+  text-align: center;
+  margin-top: 5px;
+}
+
+.visited-title {
+  padding-top: 0px;
+  margin-top: 0px;
+  font-size: 13px; 
+  font-weight: bold;
+  text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .recent-cards-container {
+    flex-direction: row;
+  }
+
+  .recent-card {
+    margin: 0 8px; 
+  }
 }

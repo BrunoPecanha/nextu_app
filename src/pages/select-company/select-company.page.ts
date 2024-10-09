@@ -37,6 +37,10 @@ export class SelectCompanyPage implements OnInit {
   companyCards = [
     { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
     { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' }
   ];
 
   ngOnInit() { }
