@@ -290,28 +290,53 @@ ion-card-title {
   z-index: 10;
   border-radius: 8px;
   display: flex;
-  justify-content: center; 
+  flex-direction: column;
+  align-items: center;
 }
 
 .recent-cards-container {
   display: flex;
   max-width: 600px; 
+  transition: max-height 0.3s ease; /* Adicionando transição */
+  overflow: hidden; /* Escondendo conteúdo excedente */
 }
 
 .recent-card {
   flex: 1;
-  //margin: 0 15px; 
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
   max-width: 150px; 
 }
 
-.recent-card-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0px; 
+.toggle-button {
+  background: none;
+  border: none;
+  padding: 0; /* Remove padding */
+  cursor: pointer;
+  display: flex; /* Alinhamento flexível */
+  justify-content: center; /* Centraliza o conteúdo */
+  align-items: center; /* Alinha verticalmente */
+  width: 40px; /* Defina uma largura fixa para o botão */
+  height: 40px; /* Defina uma altura fixa para o botão */
+  margin: 0 auto; /* Centraliza o botão na área disponível */
+}
+
+
+.arrow {
+  width: 15px; /* Ajuste a largura da seta */
+  height: 15px; /* Ajuste a altura da seta */
+  border: solid #007bff; /* Cor da seta */
+  border-width: 0 2px 2px 0; /* Ajuste a largura das bordas */
+  display: inline-block;
+  padding: 2px; /* Ajuste o padding para o novo tamanho */
+  transition: transform 0.3s; /* Transição suave ao expandir/recolher */
+  transform: rotate(45deg); /* Inicialmente, seta para cima */
+}
+
+/* Quando a seção está expandida, a seta muda de direção */
+.arrow.expanded {
+  transform: rotate(-135deg); /* Setinha apontando para baixo quando expandida */
 }
 
 .recent-logo-container {
@@ -363,3 +388,4 @@ ion-card-title {
     margin: 0 8px; 
   }
 }
+
