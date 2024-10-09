@@ -6,7 +6,6 @@
 }
 
 .header-company-info {
-  background-color: #FFFFFF; /* Ajuste a cor de fundo da área fixa */
   padding: 1rem;
   text-align: center;
   position: sticky; /* Mantém a área fixa enquanto rola */
@@ -15,12 +14,12 @@
 }
 
 .logo-circle {
-  width: 80px; /* Ajuste conforme necessário */
-  height: 80px; /* Ajuste conforme necessário */
-  border-radius: 50%; /* Torna a imagem circular */
-  overflow: hidden; /* Esconde o excesso da imagem */
-  margin: 0 auto 1rem auto; /* Centraliza e adiciona espaço inferior */
-  border: 2px solid #007bff; /* Cor da borda da logo */
+  width: 80px; 
+  height: 80px; 
+  border-radius: 50%;
+  overflow: hidden; 
+  margin: 0 auto 1rem auto; 
+  border: 2px solid #007bff; 
 }
 
 .logo-img {
@@ -29,10 +28,10 @@
 }
 
 .scrollable-content {
-  flex: 1; /* Permite que o conteúdo ocupe o espaço restante entre o header e o footer */
-  overflow-y: auto; /* Ativa a rolagem vertical para o conteúdo */
-  padding-top: 2rem; /* Espaço superior para garantir que o conteúdo não fique atrás da área fixa */
-  padding-bottom: 8rem; /* Espaço para garantir que o rodapé não cubra o conteúdo */
+  flex: 1; 
+  overflow-y: auto; 
+  padding-top: 0rem;
+  padding-bottom: 8rem; 
 }
 
 .cards-companies {
@@ -48,7 +47,7 @@
 }
 
 .box:hover {
-  background-color: #a0979736;
+  background-color: #FFFFFF;;
 }
 
 .card-bg-blue {
@@ -69,12 +68,17 @@
   padding: 0rem;
 }
 
+.description-card h1 { 
+  font-size: 2rem;
+  color: #FFFFFF;
+}
+
 .description-card h2 {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 0.75rem;
   text-align: center;
-  color: #8A8A8A;
+  color: #FFFFFF;
 }
 
 .description-card h3 {

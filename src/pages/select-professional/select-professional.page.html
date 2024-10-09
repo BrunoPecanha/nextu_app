@@ -13,18 +13,23 @@
     <ion-title>Filas Disponíveis</ion-title>
 
     <ion-buttons slot="end">
-      <ion-button>
+      <!-- <ion-button>
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-      </ion-button>
+      </ion-button> -->
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <!-- Área fixa para logo e informações da empresa -->
-  <div class="header-company-info">
+  <div class="header-company-info" style="background-image: url('assets/images/company-logo/fundo-google.png'); background-size: cover; background-position: center;">
     <div class="logo-circle">
-      <img src="assets/images/logo-placeholder.png" alt="Logo da Empresa" class="logo-img" /> <!-- Imagem da logo -->
+      <img
+        src="assets/images/company-logo/google-logo.png"
+        alt="Logo da Empresa"
+        class="logo-img"
+      />
+      <!-- Imagem da logo -->
     </div>
     <div class="description-card">
       <h1 style="text-align: center">KING'S SONS</h1>
@@ -39,7 +44,7 @@
           <ion-card-title>{{card.name}}</ion-card-title>
         </ion-card-header>
         <ion-card-content class="description-card">
-          <h2>{{card.type}}</h2>
+          <h3>{{card.type}}</h3>
           <h3>{{card.queue}}</h3>
         </ion-card-content>
       </ion-card>
