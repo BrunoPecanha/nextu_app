@@ -9,14 +9,13 @@ import Swiper from 'swiper'; // Importa o Swiper
 })
 export class SelectCompanyPage implements OnInit {
   constructor(private alertController: AlertController) { }
-  
+
   showRecentCards = false;
   selectedServiceType: any;
   slideOpts = {
-    initialSlide: 0,
-    speed: 400,
-    spaceBetween: 1,
-    slidesPerView: 1
+    slidesPerView: 1,
+    pagination: true,
+    navigation: false
   };
 
   serviceTypes = [
@@ -36,18 +35,15 @@ export class SelectCompanyPage implements OnInit {
   ];
 
   companyCards = [
-    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
-    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
-    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
-    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' },
-    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS' },
-    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS' }
+    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS', img: 'assets/images/company-logo/kingssons.jpeg'},
+    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS', img: 'assets/images/company-logo/autoestima.png' },
+    { name: 'UOMAN - BEATY SALON', type: 'salão de beleza', queue: 'FILA MENOR: 10 PESSOAS', img: 'assets/images/company-logo/uoman.png' }   
   ];
 
   ngOnInit() { }
 
   onSlideChange(e: any) {
-    console.log('SwiperRef:', e.detail[0].activeIndex);    
+    console.log('SwiperRef:', e.detail[0].activeIndex);
   }
 
   // Popup para busca de estabelecimento
@@ -79,7 +75,7 @@ export class SelectCompanyPage implements OnInit {
 
     await alert.present();
   }
- 
+
   toggleRecentCards() {
     this.showRecentCards = !this.showRecentCards;
   }
@@ -91,5 +87,5 @@ export class SelectCompanyPage implements OnInit {
     } else {
       console.log('Nenhum valor informado para busca');
     }
-  } 
+  }
 }

@@ -23,26 +23,26 @@
   <div class="container">
     <ion-slides class="carousel-companies" [options]="slideOpts">
       <swiper-container
-        [slidesPerView]="1"
-        [pagination]="true"
-        [navigation]="true"
-        (swiperslidechange)="onSlideChange($event)"
+          [slidesPerView]="1"
+          [pagination]="true"
+          [navigation]="true"
+          (swiperslidechange)="onSlideChange($event)"
       >
-        <swiper-slide *ngFor="let serviceType of serviceTypes">
-          <div class="company">
-            <img [src]="serviceType.img" alt="{{serviceType.name}}" />
-            <h1>{{serviceType.name}}</h1>
-          </div>
-        </swiper-slide>
+          <swiper-slide *ngFor="let serviceType of serviceTypes">
+              <div class="company">
+                  <img [src]="serviceType.img" alt="{{serviceType.name}}" />
+                  <h1>{{serviceType.name}}</h1>
+              </div>
+          </swiper-slide>
       </swiper-container>
-
+  
       <ion-card-content
-        class="description-card"
-        routerLink="/select-professional"
+          class="description-card"
+          routerLink="/select-professional"
       >
-        <h2>{{selectedServiceType?.name}}</h2>
+          <h2>{{selectedServiceType?.name}}</h2>
       </ion-card-content>
-    </ion-slides>
+  </ion-slides>
 
     <!-- Scrollable Content -->
     <div class="scrollable-content">
@@ -56,14 +56,14 @@
           <ion-card-content>
             <div class="inner-card">
               <div class="logo-container">
-                <div class="company-logo"></div>
+                <img [src]="card.img" alt="{{card.name}} logo" class="company-logo" />
               </div>
 
               <div class="company-info">
                 <h2>{{card.name}}</h2>
                 <p>{{card.type}}</p>
                 <p>{{card.queue}}</p>
-                <ion-chip color="success">
+                <ion-chip color="success" class="ratting-area">
                   <ion-icon name="star"></ion-icon>
                   4.8 (963 avaliações)
                 </ion-chip>

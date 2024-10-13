@@ -260,6 +260,7 @@ ion-card-title {
 
 .company-info {
   margin-top: 40px;
+  align-items: center;
 }
 
 .company-info h2 {
@@ -322,6 +323,10 @@ ion-card-title {
   margin: 0 auto; /* Centraliza o botão na área disponível */
 }
 
+.ratting-area {
+  align-items: center;
+  padding-left: 15%;
+}
 
 .arrow {
   width: 15px; /* Ajuste a largura da seta */
@@ -331,12 +336,12 @@ ion-card-title {
   display: inline-block;
   padding: 2px; /* Ajuste o padding para o novo tamanho */
   transition: transform 0.3s; /* Transição suave ao expandir/recolher */
-  transform: rotate(45deg); /* Inicialmente, seta para cima */
+  transform: rotate(-135deg); /* Inicialmente, seta para baixo */
 }
 
 /* Quando a seção está expandida, a seta muda de direção */
 .arrow.expanded {
-  transform: rotate(-135deg); /* Setinha apontando para baixo quando expandida */
+  transform: rotate(45deg); /* Setinha apontando para cima quando expandida */
 }
 
 .recent-logo-container {
@@ -388,4 +393,3 @@ ion-card-title {
     margin: 0 8px; 
   }
 }
-
