@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./select-professional.page.scss'],
 })
 export class SelectProfessionalPage implements OnInit {
-  constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   slideOpts = {
     initialSlide: 0,
@@ -27,10 +27,44 @@ export class SelectProfessionalPage implements OnInit {
     { img: 'assets/images/select-companie/corte-a-tesoura.png', name: 'Corte à Tesoura' },
   ];
 
+
   companyCards = [
-    { name: 'Daniele Machado', liked: false, type: 'Lavagem, Corte e Pintura', queue: 'Tempo médio de espera: 40 min' },
-    { name: 'Léo Silva', liked: false, type: 'Barbearia, Máquina, Tesoura e etc', queue: 'Tempo médio de espera: 2h' },
-    { name: 'Bruno Peçanha', liked: false, type: 'Corte Máquina e Tesoura', queue: 'Tempo médio de espera: 40 min' },
+    {
+      name: 'Léo Silva (Neymar)',
+      type: 'Máquina, teroura, química e etc',
+      queue: 60,
+      profileUrl: null,
+      rating: 4.8,
+      liked: false,
+      reviews: 963
+    },
+    {
+      name: 'Alisson (Pretão)',
+      type: 'Máquina, teroura, química e etc',
+      queue: 20,
+      profileUrl: null,
+      rating: 4.8,
+      liked: true,
+      reviews: 963
+    },
+    {
+      name: 'Alessandro Molon',
+      type: 'Máquina e tesoura',
+      queue: 15,
+      profileUrl: null,
+      rating: 4.8,
+      liked: true,
+      reviews: 963
+    },
+    {
+      name: 'Rosangela Silva',
+      type: 'Química',
+      queue: 40,
+      profileUrl: null,
+      rating: 4.8,
+      liked: false,
+      reviews: 963
+    }
   ];
 
   toggleLike(index: number, event: Event) {

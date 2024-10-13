@@ -11,82 +11,77 @@
       </div>
     </ion-buttons>
     <ion-title>Filas Disponíveis</ion-title>
-
-    <ion-buttons slot="end">
-      <!-- <ion-button>
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-      </ion-button> -->
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <!-- Área fixa para logo e informações da empresa -->
-  <!-- <div class="header-company-info" style="background-image: url('assets/images/company-logo/fundo-google.png'); background-size: cover; background-position: center;"> -->
-  <div class="header-company-info">
-    <div class="logo-circle">
-      <img
-        src="assets/images/company-logo/google-logo.png"
-        alt="Logo da Empresa"
-        class="logo-img"
-      />
-      <!-- Imagem da logo -->
-    </div>
-    <div class="description-card">
-      <h1 style="text-align: center">UOMAN</h1>
-      <h2>Crespos e cacheados</h2>
-    </div>
-  </div>
+  <ion-card class="company-card box">
+    <div class="card-background"></div>
+    <ion-card-content>
+      <div class="inner-card-company">
+        <div class="logo-container-company">
+          <div class="company-logo">
+            <img
+              src="assets/images/company-logo/kingssons.jpeg"
+              alt="Logotes"
+              class="logo-img"
+            />
+          </div>
+        </div>
+        <div class="company-info">
+          <h2>KING'S SONS</h2>
+          <p>Barbershop e alguma coisa mais</p>
+          <ion-chip color="success">
+            <ion-icon name="star"></ion-icon>
+            4.8 (963 avaliações)
+          </ion-chip>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 
-  <!-- Scrollable Content -->
   <div class="scrollable-content">
     <div class="cards-companies">
       <ion-card
         class="box"
         *ngFor="let card of companyCards; let i = index"
-        [routerLink]="card.liked ? '/select-professional' : null"
+        [routerLink]="['/select-professional']"
+        (click)="goToProfessional(i, $event)"
       >
-        <div class="card-background"></div>
-        <ion-card-content (click)="cardClicked(i)">
+        <ion-card-content>
           <div class="inner-card">
             <div class="logo-container">
-              <div class="company-logo"></div>
+              <div class="company-logo">
+                <img
+                  *ngIf="card.profileUrl; else defaultIcon"
+                  [src]="card.profileUrl"
+                  alt="Logo da empresa"
+                  class="logo-img"
+                />
+                <ng-template #defaultIcon>
+                  <ion-icon
+                    name="person-circle"
+                    class="default-icon"
+                  ></ion-icon>
+                </ng-template>
+              </div>
             </div>
-
             <div class="company-info">
               <h2>{{ card.name }}</h2>
               <p>{{ card.type }}</p>
-              <p>{{ card.queue }}</p>
-              <ion-chip color="success">
-                <ion-icon name="star"></ion-icon>
-                4.8 (963 avaliações)
-              </ion-chip>
+              <p>Tempo Médio de Atendimento: {{ card.queue }} min</p>
             </div>
-
-            <!-- Coração no canto superior direito -->
             <ion-icon
-              *ngIf="!card.liked"
-              name="heart-outline"
+              [name]="card.liked ? 'heart' : 'heart-outline'"
               (click)="toggleLike(i, $event)"
               class="heart-icon"
             ></ion-icon>
-            <ion-icon
-              *ngIf="card.liked"
-              name="heart"
-              (click)="toggleLike(i, $event)"
-              class="heart-icon"
-            ></ion-icon>
-            <div
-              class="card-button"
-              (click)="goToProfessional(i, $event)"
-            ></div>
           </div>
         </ion-card-content>
       </ion-card>
     </div>
   </div>
 
-  <!-- Menu fixo na parte inferior -->
   <ion-footer>
     <ion-toolbar class="menu-fixed-bottom">
       <div class="content-menu-border">

@@ -260,6 +260,7 @@ ion-card-title {
 
 .company-info {
   margin-top: 40px;
+  align-items: center;
 }
 
 .company-info h2 {
@@ -322,6 +323,10 @@ ion-card-title {
   margin: 0 auto; /* Centraliza o botão na área disponível */
 }
 
+.ratting-area {
+  align-items: center;
+  padding-left: 15%;
+}
 
 .arrow {
   width: 15px; /* Ajuste a largura da seta */
@@ -388,4 +393,3 @@ ion-card-title {
     margin: 0 8px; 
   }
 }
-

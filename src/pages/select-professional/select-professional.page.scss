@@ -29,9 +29,7 @@
 }
 
 .scrollable-content {
-  flex: 1; 
-  overflow-y: auto; 
-  padding-top: 0rem;
+  margin-top: 60%;
   padding-bottom: 8rem; 
 }
 
@@ -41,14 +39,22 @@
 }
 
 .box {
-  background: #FBFBFB;
+  background: white;
   border: 1px solid #E8E8E8;
   border-radius: 10px;
-  margin: 1rem 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin: 1rem 0; 
 }
 
 .box:hover {
-  background-color: #FFFFFF;;
+  background-color: #FFFFFF; 
+}
+
+.scrollable-content .box {
+  background: white; 
+  border: 1px solid #E8E8E8; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .card-bg-blue {
@@ -89,7 +95,6 @@
   text-align: center;
   color: #FF0000;
 }
-
 
 .menu-fixed-bottom {
   width: 100%;
@@ -198,10 +203,175 @@ ion-card-title {
 }
 
 .heart-icon {
-  position: absolute; /* Posiciona o coração */
-  top: 10px; /* Distância do topo */
-  right: 10px; /* Distância da direita */
-  font-size: 24px; /* Tamanho do ícone */
-  color: red; /* Cor do coração preenchido */
-  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+  position: absolute;
+  top: 10px; 
+  right: 10px; 
+  font-size: 24px; 
+  color: red; 
+  cursor: pointer; 
+}
+
+.header-company-info {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
+
+.logo-circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 15px;
+}
+
+.logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.description-card h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.description-card h2 {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.company-info {
+  margin-top: 10px;
+}
+
+.company-info p {
+  font-size: 14px;
+  color: #666;
+}
+
+
+.company-card {
+  position: fixed; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  height: 30%; 
+  z-index: 9; 
+  background-color: #ffffff; 
+  border: none; 
+  box-shadow: none; 
+}
+
+.card-background {
+  margin-bottom: -9%;
+  width: 100%;
+  height: 117px; 
+  background-color: #696969;
+}
+
+.inner-card {
+  background-color: transparent; 
+  border-radius: 10px; 
+  padding: 16px;
+  text-align: left;
+}
+
+.inner-card-company {
+  background-color: transparent; 
+  border-radius: 10px; 
+  padding: 16px;
+  text-align: center;
+}
+
+.logo-container-company {
+  position: absolute;
+  top: -25px; /* Mantém a logo próxima ao topo */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30%; /* Aumente conforme necessário */
+  height: 55%; /* Aumente conforme necessário */
+  border-radius: 50%; 
+  overflow: hidden; 
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff; 
+}
+
+
+.logo-container {
+  position: absolute;
+  top: 15px;
+  left: 20%;
+  transform: translateX(-50%);
+  width: px;
+  height: 60px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+}
+
+.company-logo {
+  width: 100%; 
+  height: 100%; 
+  border-radius: 50%; 
+  overflow: hidden; 
+}
+
+.logo-img {
+  width: 100%;  
+  height: 100%; 
+  object-fit: cover; 
+}
+
+.company-info {
+  margin-top: 60px;
+}
+
+.company-info h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.company-info p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.company-info ion-chip {
+  display: flex;
+  align-items: center;
+}
+
+.company-info ion-chip ion-icon {
+  margin-right: 10px;
+}
+
+.header-company-info {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
+
+ion-chip {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  margin: 0 auto; 
+}
+
+.default-icon {
+  font-size: 60px; 
+  color: #cccccc;  
 }
