@@ -172,3 +172,36 @@ ion-card-title {
 .card-bg-blue ion-card-title {
   color: white;
 }
+
+.company-info {
+  margin-top: 5px;
+}
+
+.company-info h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.company-info p {
+  margin: 4px 0;
+  color: #666;
+}
+
+.company-info ion-chip {
+  display: flex;
+  align-items: center;
+}
+
+.company-info ion-chip ion-icon {
+  margin-right: 10px;
+}
+
+.heart-icon {
+  position: absolute; /* Posiciona o coração */
+  top: 10px; /* Distância do topo */
+  right: 10px; /* Distância da direita */
+  font-size: 24px; /* Tamanho do ícone */
+  color: red; /* Cor do coração preenchido */
+  cursor: pointer; /* Muda o cursor para indicar que é clicável */
+}

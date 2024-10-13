@@ -30,8 +30,11 @@ const routes: Routes = [
   {
     path: 'select-professional',
     loadChildren: () => import('../pages/select-professional/select-professional.module').then( m => m.SelectProfessionalPageModule)
-  }
- 
+  },  
+  {
+    path: 'select-services',
+    loadChildren: () => import('../pages/select-services/select-services.module').then( m => m.SelectServicesPageModule)
+  } 
 ];
 
 @NgModule({
