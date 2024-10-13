@@ -68,19 +68,14 @@ export class SelectProfessionalPage implements OnInit {
   ];
 
   toggleLike(index: number, event: Event) {
+    event.preventDefault(); // Evita o comportamento padrão do clique
     event.stopPropagation(); // Impede que o clique no coração dispare o evento do card
     this.companyCards[index].liked = !this.companyCards[index].liked;
-    // Não chamamos cardClicked aqui
-  }
+    console.log(`Card ${index} liked status: ${this.companyCards[index].liked}`);
+  }  
 
-  cardClicked(index: number) {
-    // Aqui você pode adicionar a lógica para o que deve acontecer ao clicar no card
-    console.log(`Card ${index} clicado`);
-    // Você pode querer adicionar navegação aqui, se necessário
-  }
-
-  goToProfessional(index: number, event: Event) {
-    event.stopPropagation(); // Impede a propagação do evento
-    this.router.navigate(['/select-professional']); // Navega para a rota desejada
+  cardClicked(index: number, event: Event) {
+    console.log(`Card ${index} clicado`); // Verifique se isso é impresso no console
+    this.router.navigate(['/select-company']);
   }
 }

@@ -46,7 +46,7 @@
         class="box"
         *ngFor="let card of companyCards; let i = index"
         [routerLink]="['/select-professional']"
-        (click)="goToProfessional(i, $event)"
+        (click)="cardClicked(i, $event)"
       >
         <ion-card-content>
           <div class="inner-card">
