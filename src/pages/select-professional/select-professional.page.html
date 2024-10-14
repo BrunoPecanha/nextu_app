@@ -10,7 +10,7 @@
         </a>
       </div>
     </ion-buttons>
-    <ion-title>Filas Disponíveis</ion-title>
+    <ion-title>FILAS DISPONÍVEIS</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -70,6 +70,7 @@
               <h2>{{ card.name }}</h2>
               <p>{{ card.type }}</p>
               <p>Tempo Médio de Atendimento: {{ card.queue }} min</p>
+              <p>{{ card.peoplewaiting }} pessoas aguardando</p>
             </div>
             <ion-icon
               [name]="card.liked ? 'heart' : 'heart-outline'"

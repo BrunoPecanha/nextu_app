@@ -36,7 +36,8 @@ export class SelectProfessionalPage implements OnInit {
       profileUrl: null,
       rating: 4.8,
       liked: false,
-      reviews: 963
+      reviews: 963,      
+      peoplewaiting: 4
     },
     {
       name: 'Alisson (Pretão)',
@@ -45,7 +46,8 @@ export class SelectProfessionalPage implements OnInit {
       profileUrl: null,
       rating: 4.8,
       liked: true,
-      reviews: 963
+      reviews: 963,
+      peoplewaiting: 2
     },
     {
       name: 'Alessandro Molon',
@@ -54,7 +56,8 @@ export class SelectProfessionalPage implements OnInit {
       profileUrl: null,
       rating: 4.8,
       liked: true,
-      reviews: 963
+      reviews: 963,      
+      peoplewaiting: 2
     },
     {
       name: 'Rosangela Silva',
@@ -63,7 +66,8 @@ export class SelectProfessionalPage implements OnInit {
       profileUrl: null,
       rating: 4.8,
       liked: false,
-      reviews: 963
+      reviews: 963,
+      peoplewaiting: 10
     }
   ];
 

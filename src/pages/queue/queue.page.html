@@ -1,0 +1,61 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>VOCÊ JÁ ESTA NA FILA</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="showQueueAlert()">
+        <ion-icon name="information-circle-outline"></ion-icon>
+      </ion-button> 
+      <ion-button (click)="exitQueue()">
+        <ion-icon name="arrow-undo-circle-outline"></ion-icon>
+      </ion-button>      
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="container">
+  <div class="content">
+    <div class="box-status">
+      <h1>+6 pessoas na sua frente</h1>
+      <div class="box-fila">
+        <div class="fila"></div>
+        <div class="fila"></div>
+        <div class="fila"></div>
+        <div class="fila"></div>
+        <div class="fila"></div>
+        <div class="fila"></div>
+      </div>
+      <h2>
+        Tempo previsto para sua vez: <span style="color: red">10 minutos</span>
+      </h2>
+    </div>
+    <!-- Mover as bolinhas de loading para o final -->
+    <div class="loading-indicator">
+      <div class="loading-bubble"></div>
+      <div class="loading-bubble"></div>
+      <div class="loading-bubble"></div>
+    </div>
+  </div>
+
+  <ion-footer>
+    <ion-toolbar class="menu-fixed-bottom">
+      <div class="content-menu-border">
+        <div class="go-init">
+          <ion-icon name="home-outline"></ion-icon>
+          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+        </div>
+        <div class="go-fila">
+          <ion-icon name="people-outline"></ion-icon>
+          <ion-label><a href="#">Fila</a></ion-label>
+        </div>
+        <div class="go-config">
+          <ion-icon name="settings-outline"></ion-icon>
+          <ion-label><a href="#">Config</a></ion-label>
+        </div>
+        <div class="go-config">
+          <ion-icon name="exit-outline"></ion-icon>
+          <ion-label><a href="#">Sair</a></ion-label>
+        </div>
+      </div>
+    </ion-toolbar>
+  </ion-footer>
+</ion-content>

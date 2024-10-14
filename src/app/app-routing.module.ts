@@ -34,7 +34,11 @@ const routes: Routes = [
   {
     path: 'select-services',
     loadChildren: () => import('../pages/select-services/select-services.module').then( m => m.SelectServicesPageModule)
-  } 
+  },   {
+    path: 'queue',
+    loadChildren: () => import('../pages/queue/queue.module').then( m => m.QueuePageModule)
+  }
+
 ];
 
 @NgModule({

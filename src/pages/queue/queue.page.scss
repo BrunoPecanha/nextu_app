@@ -1,0 +1,170 @@
+.container {
+  background-color: var(--bg-white);
+  min-height: 100vh;
+}
+
+.box-status {
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Centraliza os itens */
+  height: 50vh;
+}
+
+.box-status h1 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 20px;
+  text-align: center;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #1A1A1A;
+}
+
+.box-status .box-fila {
+  display: flex;
+  background: #BACAE7;
+  margin: 1rem 0;
+}
+
+.box-status .box-fila .fila {
+  padding: 1.60rem 1.80rem;
+  border: 1px solid #000000;
+}
+
+.box-status .box-fila .fila:nth-child(2) {
+  background: var(--bg);
+  border: 1px solid #000000;
+}
+
+.box-status h2 {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  color: #000000;
+}
+
+/* Centraliza as bolinhas de loading */
+.loading-indicator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.loading-bubble {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #007bff;
+  margin: 0 5px;
+  animation: bounce 0.6s infinite alternate;
+}
+
+.loading-bubble:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-bubble:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0% {
+      transform: translateY(0);
+  }
+  100% {
+      transform: translateY(-10px);
+  }
+}
+
+/* Estilos do menu fixo */
+.content-menu-border {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #e8e8e8;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8a8a8a;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.menu-fixed-bottom {
+  background-color: white;
+  border-top: 1px solid #e8e8e8;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init,
+.go-fila,
+.go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
+ion-card-title {
+  text-align: center;
+}
+
+ion-toolbar {
+  display: flex;
+  justify-content: center; /* Centraliza o conteúdo horizontalmente */
+}
+
+ion-title {
+  text-align: center; /* Alinha o texto ao centro */
+  width: 100%; /* Garante que o título ocupe toda a largura da toolbar */
+}

@@ -10,7 +10,7 @@
         </a>
       </div>
     </ion-buttons>
-    <ion-title>Seleção dos Serviços</ion-title>
+    <ion-title>SELEÇÃO DE SERVIÇOS</ion-title>
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon slot="icon-only" name="search-outline"></ion-icon>
@@ -24,9 +24,8 @@
     <div class="scrollable-content">
       <div *ngFor="let service of services; let i = index">
         <ion-item>
-          <ion-label position="floating">Selecione o próximo serviço:</ion-label>
           <ion-select
-            [placeholder]="'Selecione um serviço'"
+            placeholder="Selecione o próximo serviço:"
             (ionChange)="onServiceChange(i, $event)"
             [disabled]="service.value !== null"
           >
@@ -43,7 +42,7 @@
             color="danger"
             fill="clear"
             (click)="removeService(i)"
-            [disabled]="service.value === null" 
+            [disabled]="service.value === null"
           >
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
@@ -51,30 +50,27 @@
       </div>
 
       <ion-item>
-        <ion-label position="floating">Observação</ion-label>
-        <ion-textarea placeholder="Observação"></ion-textarea>
+        <ion-label position="floating">Observação:</ion-label>
+        <ion-textarea></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Valor total:</ion-label>
-        <ion-textarea [value]="totalPriceString" readonly></ion-textarea>
+        <ion-input label="VALOR TOTAL:">{{totalPriceString}}</ion-input>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating" class="payment">Forma de Pagamento</ion-label>
-        <ion-select placeholder="Selecione a forma de pagamento">
-          <ion-select-option value="cash">Dinheiro</ion-select-option>
-          <ion-select-option value="pix">PIX</ion-select-option>
-          <ion-select-option value="card">Cartão</ion-select-option>
+        <ion-select label="FORMA PAGAMENTO" placeholder="TIPO">
+          <ion-select-option value="1">Dinhero</ion-select-option>
+          <ion-select-option value="2">Pix</ion-select-option>
+          <ion-select-option value="3">Cartão</ion-select-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
-        <ion-label position="floating">Tempo Total (estimado):</ion-label>
-        <ion-textarea [value]="totalTimeString" readonly></ion-textarea>
+        <ion-input label="TEMPO TOTAL (EST):">{{totalTimeString}}</ion-input>
       </ion-item>
     </div>
-    <ion-button expand="full" routerLink="enter-fila">Entrar na Fila</ion-button>
+    <ion-button expand="full" routerLink="/queue">Entrar na Fila</ion-button>
   </form>
 
   <ion-footer>
