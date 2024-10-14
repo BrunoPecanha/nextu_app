@@ -1,0 +1,116 @@
+ion-content {
+  --background: var(--bg-white);
+}
+
+form {
+  width: 90%;
+  margin: 0 auto;
+  padding-bottom: 0;
+}
+
+ion-item {
+  margin: 20px 0;
+}
+
+ion-button {
+  margin-top: 20px;
+  background-color: var(--bg);
+  color: white;
+}
+
+ion-button:hover {
+  background-color: var(--bg-hover);
+}
+
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+  border-top: 1px solid #e8e8e8;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8a8a8a;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.menu-fixed-bottom {
+  background-color: white;
+  border-top: 1px solid #e8e8e8;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init,
+.go-fila,
+.go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
+ion-card-title {
+  text-align: center;
+}
+
+.scrollable-content {
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+ion-item {
+  border: 1px solid transparent; /* Adiciona uma borda transparente */
+  box-shadow: none; /* Remove qualquer sombra */
+}
+
+ion-item:focus {
+  border-color: transparent; /* Mantém a borda invisível ao focar */
+}
