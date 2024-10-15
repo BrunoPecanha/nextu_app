@@ -11,12 +11,14 @@
   justify-content: center;
   align-items: center; /* Centraliza os itens */
   height: 50vh;
+  background: none; /* Remove o fundo */
+  padding-top: 50%;
 }
 
 .box-status h1 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 20px;
+  font-size: 22px; /* Aumentar o tamanho da fonte */
   text-align: center;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -24,26 +26,43 @@
 }
 
 .box-status .box-fila {
-  display: flex;
-  background: #BACAE7;
+  display: flex;  
   margin: 1rem 0;
 }
 
 .box-status .box-fila .fila {
-  padding: 1.60rem 1.80rem;
-  border: 1px solid #000000;
+  padding: 0.6rem 1.8rem; 
 }
 
 .box-status .box-fila .fila:nth-child(2) {
-  background: var(--bg);
-  border: 1px solid #000000;
+  background: var(--bg); 
 }
 
 .box-status h2 {
   font-family: 'Poppins', sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 16px; /* Aumentar o tamanho da fonte */
   color: #000000;
+}
+
+/* Novo estilo para o indicador de espera */
+.waiting-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.waiting-indicator ion-icon {
+  font-size: 20px;
+  color: #007bff; /* Cor do ícone */
+  margin-right: 5px; /* Espaço entre ícone e texto */
+}
+
+.waiting-indicator span {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #1A1A1A;
 }
 
 /* Centraliza as bolinhas de loading */
@@ -51,7 +70,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 1rem 0;
+  margin: 8rem 0; /* Ajuste a margem se necessário */
 }
 
 .loading-bubble {
@@ -84,9 +103,11 @@
 .content-menu-border {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around; /* Espaçamento igual entre os itens */
   width: 100%;
+  padding: 10px 0; /* Adicionado padding para o menu */
 }
+
 .menu-fixed-bottom {
   width: 100%;
   background: #ffffff;
@@ -120,13 +141,6 @@ ion-footer {
 .menu-fixed-bottom {
   background-color: white;
   border-top: 1px solid #e8e8e8;
-}
-
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
 }
 
 .go-init,
@@ -167,4 +181,34 @@ ion-toolbar {
 ion-title {
   text-align: center; /* Alinha o texto ao centro */
   width: 100%; /* Garante que o título ocupe toda a largura da toolbar */
+}
+
+.box-fila {
+  display: flex;
+  flex-wrap: wrap; /* Permite a quebra de linha */
+  justify-content: center;
+  align-items: center;
+  margin: 1rem 0;
+  background: none; /* Remove o fundo */
+}
+
+.fila {
+  position: relative;
+  margin: 0; /* Ajusta o espaçamento entre os bonecos */
+  font-size: 20px; /* Tamanho do ícone do boneco */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Alinha o ícone e o texto verticalmente */
+}
+
+.current-user {
+  color: red; /* Destaca o ícone do usuário logado */
+}
+
+.current-user-label {
+  font-size: 12px; /* Tamanho do texto "Você" */
+  color: red; /* Cor do texto */
+  margin-top: 0; /* Espaço entre o ícone e o texto */
+  text-align: center;
 }
