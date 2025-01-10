@@ -25,7 +25,8 @@
       <div *ngFor="let service of services; let i = index">
         <ion-item>
           <ion-select
-            placeholder="Selecione o próximo serviço:"
+            label="Serviços"
+            placeholder="selecione o próximo"
             (ionChange)="onServiceChange(i, $event)"
             [disabled]="service.value !== null"
           >
