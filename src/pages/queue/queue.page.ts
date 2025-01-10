@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+// import { EmpresaService } from '../services/empresa.service';
 
 @Component({
   selector: 'app-queue',
@@ -8,8 +9,18 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./queue.page.scss'],
 })
 export class QueuePage implements OnInit {
+// Configuração numeral de fila
+
+  empresa: any = {};
+  posicaoNaFila: number = 2;
+  progressoFila: number = 0.5; // 50% 
+
+  // Configuração ilustração da fila
+
   queue: any[] = []; // Array para representar a fila
   userPosition: number = 0; // Posição atual do usuário na fila
+
+  
 
   constructor(private alertController: AlertController, private router: Router) {}
 

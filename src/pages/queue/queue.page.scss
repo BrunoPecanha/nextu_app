@@ -1,137 +1,89 @@
-.container {
-  background-color: var(--bg-white);
-  min-height: 100vh;
+/* Estilo para o cabeçalho da imagem */
+.header-background {
+  position: relative;
+  height: 180px;
+  background: #ccc;
 }
 
-.box-status {
-  width: 90%;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center; /* Centraliza os itens */
-  height: 50vh;
-  background: none; /* Remove o fundo */
-  padding-top: 50%;
-}
-
-.box-status h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 22px; /* Aumentar o tamanho da fonte */
-  text-align: center;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  color: #1A1A1A;
-}
-
-.box-status .box-fila {
-  display: flex;  
-  margin: 1rem 0;
-}
-
-.box-status .box-fila .fila {
-  padding: 0.6rem 1.8rem; 
-}
-
-.box-status .box-fila .fila:nth-child(2) {
-  background: var(--bg); 
-}
-
-.box-status h2 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 16px; /* Aumentar o tamanho da fonte */
-  color: #000000;
-}
-
-/* Novo estilo para o indicador de espera */
-.waiting-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 1rem;
-}
-
-.waiting-indicator ion-icon {
-  font-size: 20px;
-  color: #007bff; /* Cor do ícone */
-  margin-right: 5px; /* Espaço entre ícone e texto */
-}
-
-.waiting-indicator span {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 600;
-  color: #1A1A1A;
-}
-
-/* Centraliza as bolinhas de loading */
-.loading-indicator {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 8rem 0; /* Ajuste a margem se necessário */
-}
-
-.loading-bubble {
-  width: 15px;
-  height: 15px;
+.header-background ion-img {
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
-  background-color: #007bff;
-  margin: 0 5px;
-  animation: bounce 0.6s infinite alternate;
+  position: absolute;
+  bottom: -60px;
+  left: calc(50% - 60px);
+  background: #fff;
+  border: 4px solid #fff;
+  overflow: hidden; /* Garante que a imagem seja cortada no formato circular */
 }
 
-.loading-bubble:nth-child(2) {
-  animation-delay: 0.2s;
-}
-
-.loading-bubble:nth-child(3) {
-  animation-delay: 0.4s;
-}
-
-@keyframes bounce {
-  0% {
-      transform: translateY(0);
-  }
-  100% {
-      transform: translateY(-10px);
-  }
-}
-
-/* Estilos do menu fixo */
-.content-menu-border {
-  display: flex;
-  align-items: center;
-  justify-content: space-around; /* Espaçamento igual entre os itens */
+.header-background ion-img img {
   width: 100%;
-  padding: 10px 0; /* Adicionado padding para o menu */
+  height: 100%;
+  object-fit: cover; /* Ajusta a imagem para cobrir o círculo */
+  border-radius: 50%; /* Garante que a imagem seja circular */
 }
 
-.menu-fixed-bottom {
-  width: 100%;
-  background: #ffffff;
-  border-top: 1px solid #e8e8e8;
+/* Estilo do card */
+ion-card {
+  margin-top: 80px; /* Para acomodar a imagem suspensa */
+  padding-top: 20px;
 }
 
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff;
-}
-
-.go-init ion-label,
-.go-fila ion-label,
-.go-config ion-label {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 12px;
+/* Estilo para as informações da fila */
+.fila-info {
   text-align: center;
-  color: #8a8a8a;
+  margin-bottom: 16px;
 }
 
+.fila-info h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 0;
+}
+
+.fila-info p {
+  font-size: 14px;
+  color: #666;
+}
+
+.posicao-fila {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.posicao-fila p {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+}
+
+.posicao-fila h1 {
+  margin: 10px 0;
+  font-size: 48px;
+  color: #e85c41;
+}
+
+ion-progress-bar {
+  margin: 16px 0;
+}
+
+/* Estilo para o botão "Sair da fila" */
+ion-button {
+  margin-top: 16px;
+}
+
+/* Estilo para a nota de alerta */
+ion-note {
+  display: block;
+  text-align: center;
+  font-size: 12px;
+  color: #ff9800;
+}
+
+/* Estilo para o rodapé */
 ion-footer {
+  border-top: 1px solid #ddd;
   position: fixed;
   bottom: 0;
   width: 100%;
@@ -140,7 +92,28 @@ ion-footer {
 
 .menu-fixed-bottom {
   background-color: white;
-  border-top: 1px solid #e8e8e8;
+  border-top: 1px solid #E8E8E8;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff; /* Cor azul dos ícones */
+}
+
+.botao-sair-fila {
+  --background: #007bff !important; /* Cor de fundo do botão */
+  --background-hover: #0056b3; /* Cor de fundo ao passar o mouse */
+  --background-activated: #004494; /* Cor de fundo ao clicar */
+  color: #fff; /* Cor do texto */
 }
 
 .go-init,
@@ -160,55 +133,11 @@ ion-label {
   margin-top: 5px;
   font-size: 12px;
   text-transform: uppercase;
-  color: #8a8a8a;
+  color: #8A8A8A;
 }
 
 ion-label a {
   text-decoration: none;
   color: #007bff;
   font-size: 12px;
-}
-
-ion-card-title {
-  text-align: center;
-}
-
-ion-toolbar {
-  display: flex;
-  justify-content: center; /* Centraliza o conteúdo horizontalmente */
-}
-
-ion-title {
-  text-align: center; /* Alinha o texto ao centro */
-  width: 100%; /* Garante que o título ocupe toda a largura da toolbar */
-}
-
-.box-fila {
-  display: flex;
-  flex-wrap: wrap; /* Permite a quebra de linha */
-  justify-content: center;
-  align-items: center;
-  margin: 1rem 0;
-  background: none; /* Remove o fundo */
-}
-
-.fila {
-  position: relative;
-  margin: 0; /* Ajusta o espaçamento entre os bonecos */
-  font-size: 20px; /* Tamanho do ícone do boneco */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column; /* Alinha o ícone e o texto verticalmente */
-}
-
-.current-user {
-  color: red; /* Destaca o ícone do usuário logado */
-}
-
-.current-user-label {
-  font-size: 12px; /* Tamanho do texto "Você" */
-  color: red; /* Cor do texto */
-  margin-top: 0; /* Espaço entre o ícone e o texto */
-  text-align: center;
 }

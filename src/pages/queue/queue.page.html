@@ -1,63 +1,67 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>VOCÊ JÁ ESTÁ NA FILA</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="showQueueAlert()">
-        <ion-icon name="information-circle-outline"></ion-icon>
-      </ion-button> 
-      <ion-button (click)="exitQueue()">
-        <ion-icon name="arrow-undo-circle-outline"></ion-icon>
-      </ion-button>      
+    <ion-buttons slot="start">
+      <div class="go-back">
+        <a routerLink="/role-registration">
+          <img
+            src="assets/images/create-account/icon-go-back.svg"
+            alt="Voltar para tela de seleção usuario"
+          />
+        </a>
+      </div>
     </ion-buttons>
+    <ion-title>FILA DE ESPERA</ion-title>    
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="container">
-  <div class="content">
-    <div class="box-status">
-      <h1>+{{ userPosition }} pessoa(s) na sua frente</h1>
-      <div class="box-fila">        
-        <div *ngFor="let person of queue; let i = index" class="fila">
-          <span *ngIf="i === userPosition" class="current-user-label">
-           Você  
-          </span>
-          <ion-icon name="person-circle" [ngClass]="{'current-user': i === userPosition}"></ion-icon>                
-        </div>
-      </div>
-      
-      <div class="waiting-indicator">
-        <ion-icon name="time-outline"></ion-icon>
-        <span>Tempo restante estimado: </span> <span style="color: red; margin-left: 4px;">1h e 30 min</span>
-      </div>
-    </div>
-    <!-- Mover as bolinhas de loading para o final -->
-    <div class="loading-indicator">
-      <div class="loading-bubble"></div>
-      <div class="loading-bubble"></div>
-      <div class="loading-bubble"></div>
-    </div>
+<ion-content>
+  <div class="header-background">
+    <ion-img src="assets/images/company-logo/kingssons.jpeg"></ion-img>
   </div>
 
-  <ion-footer>
-    <ion-toolbar class="menu-fixed-bottom">
-      <div class="content-menu-border">
-        <div class="go-init">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label><a routerLink="/role-registration">Início</a></ion-label>
-        </div>
-        <div class="go-fila">
-          <ion-icon name="people-outline"></ion-icon>
-          <ion-label><a href="/queue">Fila</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="settings-outline"></ion-icon>
-          <ion-label><a href="#">Config</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="exit-outline"></ion-icon>
-          <ion-label><a href="#">Sair</a></ion-label>
-        </div>
+  <ion-card>
+    <ion-card-content>
+      <div class="fila-info">
+        <h3>Olá, Paulo!</h3>
+        <p>Você está na fila, aguarde sua vez.</p>
       </div>
-    </ion-toolbar>
-  </ion-footer>
+
+      <div class="posicao-fila">
+        <p>Sua posição na fila</p>
+        <h1>{{ posicaoNaFila }}º</h1>
+        <ion-progress-bar [value]="progressoFila"></ion-progress-bar>
+      </div>
+
+      <ion-button expand="block" class="botao-sair-fila">Sair da fila</ion-button>
+
+      <ion-note color="warning">
+        <p>
+          Fique atento! Para sua comodidade, evite atrasos. Tolerância de 5 minutos após ser chamado.
+        </p>
+      </ion-note>
+    </ion-card-content>
+  </ion-card>
 </ion-content>
+
+<ion-footer>
+  <ion-toolbar class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label><a href="/queue">Fila</a></ion-label>
+      </div>
+      <div class="go-config">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label><a href="#">Config</a></ion-label>
+      </div>
+      <div class="go-config">
+        <ion-icon name="exit-outline"></ion-icon>
+        <ion-label><a href="#">Sair</a></ion-label>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-footer>
