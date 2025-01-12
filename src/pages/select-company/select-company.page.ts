@@ -40,7 +40,11 @@ export class SelectCompanyPage implements OnInit {
     { name: 'UOMAN - BEATY SALON', type: 'salão de beleza', queue: 'FILA MENOR: 10 PESSOAS', img: 'assets/images/company-logo/uoman.png' }   
   ];
 
-  ngOnInit() { }
+  ngOnInit() { 
+    //TODO - Rota para listar todos os estabelecimentos (paginado)
+    //TODO -  Rota para buscar menor fila de cada estabelecimento listado
+    //Montar company cards com base na resposta da API
+  }
 
   onSlideChange(e: any) {
     console.log('SwiperRef:', e.detail[0].activeIndex);
@@ -83,7 +87,9 @@ export class SelectCompanyPage implements OnInit {
   onSearchSubmit(searchQuery: string) {
     if (searchQuery && searchQuery.trim() !== '') {
       console.log('Busca por:', searchQuery);
-      // FAZER O REQUEST PARA O BACKEND COM O VALOR DIGITADO PARA FILTRAR
+      //TODO -  Implementar rota para buscar estabelecimentos por nome
+      //TODO -  Rota para buscar menor fila de cada estabelecimento listado
+      //Montar company cards com base na resposta da API
     } else {
       console.log('Nenhum valor informado para busca');
     }

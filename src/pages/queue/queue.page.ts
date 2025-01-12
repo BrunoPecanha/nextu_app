@@ -32,6 +32,10 @@ export class QueuePage implements OnInit {
     // Simulação de dados obtidos do backend
     this.queue = Array(20).fill({}); // Exemplo com 20 pessoas na fila
     this.userPosition = 5; // Exemplo de posição do usuário (5ª na fila, pode ser ajustado)    
+
+    //TODO - Rota para pegar todas as pessoas na fila onde status é waiting. RelQueueCustomer
+    // a rota tbm tratrá as pessoas ordenadas por ordem de chegada. Ou seja, a primeira pessoa
+    // da lista é a primeira pessoa a chegar na fila.
   }
 
   async showQueueAlert() {
@@ -72,5 +76,6 @@ export class QueuePage implements OnInit {
   private removeUserFromQueue() {
     console.log('Usuário removido da fila.');
     // Implementar lógica para remover o usuário da fila
+    // TODO - Rota para remover o usuário da fila pq ele selecionou.
   }
 }
