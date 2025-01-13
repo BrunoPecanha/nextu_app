@@ -30,8 +30,8 @@
       >
           <swiper-slide *ngFor="let serviceType of serviceTypes">
               <div class="company">
-                  <img [src]="serviceType.img" alt="{{serviceType.name}}" />
-                  <h1>{{serviceType.name}}</h1>
+                  <img [src]="serviceType?.img" alt="{{serviceType?.name}}" />
+                  <h1>{{serviceType?.name}}</h1>
               </div>
           </swiper-slide>
       </swiper-container>

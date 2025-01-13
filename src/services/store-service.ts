@@ -14,4 +14,16 @@ import { environment } from "src/environments/environment";
     getStoresByOwner(ownerId: string): Observable<any> {
       return this.http.get(`${this.apiUrl}/store/owner/${ownerId}`);
     }
+
+    getAllStores(): Observable<any> {
+      return this.http.get(`${this.apiUrl}/store/getAll`);
+    }
+
+    getAllStoresWithSmallestQueue(): Observable<any> {
+      return this.http.get(`${this.apiUrl}/store/getAllWithSmallestQueue`);
+    }
+
+    getAllStoresWithSmallestQueueByName(name: string): Observable<any> {
+      return this.http.get(`${this.apiUrl}/store/getAllWithSmallestQueueByName/${name}`);
+    }
 }

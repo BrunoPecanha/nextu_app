@@ -24,15 +24,16 @@ export class LoginPage {
     private storeService: StoreService
   ) { }
 
+  ngOnInit() { 
+    //TODO - remover estas linhas quando implementar o logout 
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
+  }
+
+
   async login() {
     if (this.email !== '' && this.password !== '') {
 
-      //TODO - Rota de login/autentication ok
-      //TODO - Rota para verificar se usuario é proprietario ok
-      //TODO - Rota para verificar se usuãrio é funcionario ok 
-
-      //Se usuario for cliente, vai direto pra tela de busca de estabelecimentos
-      //Se usuario for funcionario vai para selecao de perfil
       let client: boolean = false;
       let employee: boolean = false;
       let admin: boolean = false;
@@ -72,11 +73,11 @@ export class LoginPage {
             }
 
 
-            localStorage.setItem('token', data.token);
-            localStorage.setItem('user', JSON.stringify(data.user));
+            sessionStorage.setItem('token', data.token);
+            sessionStorage.setItem('user', JSON.stringify(data.user));
 
             if (client) {
-              this.router.navigate(['/select-professional']);
+              this.router.navigate(['/select-company']);
             } else {
               this.router.navigate(['/role-registration']);
             }
