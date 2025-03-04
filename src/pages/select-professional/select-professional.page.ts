@@ -9,7 +9,17 @@ import { Router } from '@angular/router';
 export class SelectProfessionalPage implements OnInit {
   constructor(private router: Router) { }
 
-  ngOnInit() { }
+  ngOnInit() { 
+    //TODO - Rota para listar todas as filas disponiveis do estabelecimento
+    //TODO - Rota para pegar todos os funcionarios com base no id do funcionarioId de cada fila
+    //TODO - Rota para pegar qtd de pessoas na fila
+    //TODO - Rota para pegar o nome dos servicos com base no campo services de cada queue e pegar 
+    // o tempo de cada servico para o calculo do tempo estimado de atendimento
+
+    // TODO - Calculo do tempo estimado para o atendimento
+    // Somar o tempo estimado de atendimento de cada pessoa na fila com base nos servicos
+
+  }
 
   slideOpts = {
     initialSlide: 0,

@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import Swiper from 'swiper'; // Importa o Swiper
+import { CompanyCard } from 'src/interfaces/company-card-interface';
+import { StoreService } from 'src/services/store-service';
 
 @Component({
   selector: 'app-select-company',
@@ -8,7 +9,11 @@ import Swiper from 'swiper'; // Importa o Swiper
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private alertController: AlertController) { }
+  
+  constructor(
+    private alertController: AlertController,
+    private storeService: StoreService,
+  ) { }
 
   showRecentCards = false;
   selectedServiceType: any;
@@ -18,29 +23,30 @@ export class SelectCompanyPage implements OnInit {
     navigation: false
   };
 
+  companyCards: CompanyCard[] = [];
+
   serviceTypes = [
-    { img: 'assets/images/select-companie/car-wash.png', name: 'LAVA JATOS' },
-    { img: 'assets/images/select-companie/barbershop.png', name: 'BARBEARIAS' },
-    { img: 'assets/images/select-companie/beauty-salon.png', name: 'SALÕES DE BELEZA' },
-    { img: 'assets/images/select-companie/manicure.png', name: 'MANICURES' },
-    { img: 'assets/images/select-companie/car-service.png', name: 'OFICINAS MECÂNICAS' },
-    { img: 'assets/images/select-companie/restaurant.png', name: 'RESTAURANTES' },
-    { img: 'assets/images/select-companie/lab.png', name: 'LABORATÓRIOS' },
-    { img: 'assets/images/select-companie/postoffice.png', name: 'CORREIOS' },
-    { img: 'assets/images/select-companie/pet.png', name: 'PETSHOP' },
-    { img: 'assets/images/select-companie/laundry.png', name: 'LAVANDERIA' },
-    { img: 'assets/images/select-companie/veterinarian.png', name: 'VETERINÁRIOS' },
-    { img: 'assets/images/select-companie/clinic.png', name: 'CLÍNICAS MÉDICAS' },
-    { img: 'assets/images/select-companie/stores.png', name: 'OUTROS' }
+    { img: 'assets/images/select-companie/barbershop.png', name: 'BARBEARIAS' }
   ];
 
-  companyCards = [
-    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS', img: 'assets/images/company-logo/kingssons.jpeg'},
-    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS', img: 'assets/images/company-logo/autoestima.png' },
-    { name: 'UOMAN - BEATY SALON', type: 'salão de beleza', queue: 'FILA MENOR: 10 PESSOAS', img: 'assets/images/company-logo/uoman.png' }   
-  ];
+  ngOnInit() { 
 
-  ngOnInit() { }
+    //Medoto para listar todos os estabelecimentos e buscar menor fila de cada estabelecimento listado
+    this.loadStores();
+  }
+
+  loadStores() {
+    this.storeService.getAllStoresWithSmallestQueue().subscribe((stores: any[]) => {
+      this.companyCards = stores.map((store: any) => ({
+        name: store.name,
+        type: store.services ? store.services.map((service:any) => service?.name).join(', ') : 'N/A',
+        queue: store.smallest_queue !== null 
+        ? `FILA MENOR: ${store?.smallest_queue?.customer_count} PESSOAS` 
+        : '',
+        img: 'assets/images/company-logo/kingssons.jpeg'
+      }));
+    } );
+  }
 
   onSlideChange(e: any) {
     console.log('SwiperRef:', e.detail[0].activeIndex);
@@ -83,7 +89,16 @@ export class SelectCompanyPage implements OnInit {
   onSearchSubmit(searchQuery: string) {
     if (searchQuery && searchQuery.trim() !== '') {
       console.log('Busca por:', searchQuery);
-      // FAZER O REQUEST PARA O BACKEND COM O VALOR DIGITADO PARA FILTRAR
+      this.storeService.getAllStoresWithSmallestQueueByName(searchQuery).subscribe((stores: any[]) => {
+        this.companyCards = stores.map((store: any) => ({
+          name: store.name,
+          type: store.services ? store.services.map((service:any) => service?.name).join(', ') : 'N/A',
+          queue: store.smallest_queue !== null 
+          ? `FILA MENOR: ${store?.smallest_queue?.customer_count} PESSOAS` 
+          : '',
+          img: 'assets/images/company-logo/kingssons.jpeg'
+        }));
+      });
     } else {
       console.log('Nenhum valor informado para busca');
     }

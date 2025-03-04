@@ -18,6 +18,11 @@ export class SelectServicesPage {
   totalPriceString = '';
   totalTimeString = '';
 
+  ngOnInit() {
+    //TODO - Rota para pegar todos os serviços disponíveis da fila e guarda em serviceOptions
+    // Ao clicar em entrar na fila, salvar form na tabela Attendance 
+  }
+
   addService() {
     const newId = this.services.length + 1;
     this.services.push({ id: newId, value: null });
