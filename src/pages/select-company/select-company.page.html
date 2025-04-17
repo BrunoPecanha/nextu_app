@@ -1,123 +1,56 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <div class="go-back">
-        <a routerLink="/role-registration">
-          <img
-            src="assets/images/create-account/icon-go-back.svg"
-            alt="Voltar para tela de seleção usuario"
-          />
-        </a>
-      </div>
+      <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>ESTABELECIMENTOS</ion-title>
+    <ion-title>LOJAS</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentSearchPopup()">
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        <ion-icon slot="icon-only" name="search"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="container">
-    <ion-slides class="carousel-companies" [options]="slideOpts">
-      <swiper-container
-          [slidesPerView]="1"
-          [pagination]="true"
-          [navigation]="true"
-          (swiperslidechange)="onSlideChange($event)"
-      >
-          <swiper-slide *ngFor="let serviceType of serviceTypes">
-              <div class="company">
-                  <img [src]="serviceType?.img" alt="{{serviceType?.name}}" />
-                  <h1>{{serviceType?.name}}</h1>
-              </div>
-          </swiper-slide>
-      </swiper-container>
-  
-      <ion-card-content
-          class="description-card"
-          routerLink="/select-professional"
-      >
-          <h2>{{selectedServiceType?.name}}</h2>
-      </ion-card-content>
-  </ion-slides>
-
-    <!-- Scrollable Content -->
-    <div class="scrollable-content">
-      <div class="cards-companies">
-        <ion-card
-          class="box"
-          *ngFor="let card of companyCards"
-          routerLink="/select-professional"
-        >
-          <div class="card-background"></div>
-          <ion-card-content>
-            <div class="inner-card">
-              <div class="logo-container">
-                <img [src]="card.img" alt="{{card.name}} logo" class="company-logo" />
-              </div>
-
-              <div class="company-info">
-                <h2>{{card.name}}</h2>
-                <p>{{card.type}}</p>
-                <p>{{card.queue}}</p>
-                <ion-chip color="success" class="ratting-area">
-                  <ion-icon name="star"></ion-icon>
-                  4.8 (963 avaliações)
-                </ion-chip>
-              </div>
-            </div>
-          </ion-card-content>
-        </ion-card>
-      </div>
-    </div>
+<!-- Aqui fora do ion-content! -->
+<div class="horizontal-scroll" *ngIf="serviceTypes?.length">
+  <div
+    class="service-type-card"
+    *ngFor="let serviceType of serviceTypes"
+    (click)="selectService(serviceType)"
+  >
+    <img [src]="serviceType.img" alt="{{ serviceType.name }}" />
+    <h2>{{ serviceType.name }}</h2>
   </div>
-
-  <!-- Área "Últimos Visitados" fixa -->
-  <div class="fixed-recent-visits">
-  <ion-card class="visited-card">
-    <ion-card-content class="recent-cards-container" *ngIf="showRecentCards">
-      <div class="recent-card" *ngFor="let recent of companyCards.slice(0, 3)">
-        <div class="recent-card-item">
-          <div class="recent-logo-container">
-            <div class="recent-company-logo"></div>
-          </div>
-          <div class="recent-company-info">
-            <h2>{{recent.name}}</h2>
-            <p>{{recent.type}}</p>
-          </div>
-        </div>
-      </div>
-    </ion-card-content>
-    <h4 class="visited-title" *ngIf="showRecentCards">Últimos 3 visitados</h4>
-    <button class="toggle-button" (click)="toggleRecentCards()">
-      <div class="arrow" [class.expanded]="showRecentCards"></div>
-    </button>
-  </ion-card>
 </div>
-  
-  <ion-footer>
-    <ion-toolbar class="menu-fixed-bottom">
-      <div class="content-menu-border">
-        <div class="go-init">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+
+<ion-content fullscreen="true">
+  <div class="cards-companies container">
+    <ion-card
+      class="box"
+      *ngFor="let card of companyCards"
+      routerLink="/select-professional"
+    >
+      <ion-card-content>
+        <div class="inner-card">
+          <div class="logo-container">
+            <img
+              [src]="card.img"
+              alt="{{ card.name }} logo"
+              class="company-logo"
+            />
+          </div>
+          <div class="company-info">
+            <h2>{{ card.name }}</h2>
+            <p>{{ card.type }}</p>
+            <p>{{ card.queue }}</p>
+            <ion-chip color="success" class="ratting-area">
+              <ion-icon name="star"></ion-icon>
+              4.8 (963 avaliações)
+            </ion-chip>
+          </div>
         </div>
-        <div class="go-fila">
-          <ion-icon name="people-outline"></ion-icon>
-          <ion-label><a href="/queue">Fila</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="settings-outline"></ion-icon>
-          <ion-label><a href="#">Config</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="exit-outline"></ion-icon>
-          <ion-label><a href="#">Sair</a></ion-label>
-        </div>
-      </div>
-    </ion-toolbar>
-  </ion-footer>
+      </ion-card-content>
+    </ion-card>
+  </div>
 </ion-content>

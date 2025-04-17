@@ -103,4 +103,24 @@ export class SelectCompanyPage implements OnInit {
       console.log('Nenhum valor informado para busca');
     }
   }
+
+  selectService(serviceType: any): void {
+    // No futuro pode navegar ou filtrar empresas por tipo
+    console.log('Serviço selecionado:', serviceType);
+  }
+
+  scrollLeft() {
+    const container = document.querySelector('.horizontal-scroll');
+    if (container) {
+      container.scrollBy({ left: -100, behavior: 'smooth' });
+    }
+  }
+  
+  scrollRight() {
+    const container = document.querySelector('.horizontal-scroll');
+    if (container) {
+      container.scrollBy({ left: 100, behavior: 'smooth' });
+    }
+  }
+  
 }
