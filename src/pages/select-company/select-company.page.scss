@@ -1,396 +1,205 @@
+/* Container principal da página */
 .container {
-  background-color: var(--ion-background-color);
-  min-height: 100vh;
+  padding-top: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* Header fixado */
+ion-header {
+  position: fixed;  
+  top: 0; 
+  left: 0;
+  right: 0;
+  z-index: 1000;  
+  background-color: #fff; 
+}
+
+ion-toolbar {
+  padding: 16px;  
+}
+
+:root {
+  --header-height: 56px;
+}
+
+ion-content {
+  margin-top: var(--header-height);
+  padding-top: 0 !important;
+  --padding-top: 0;
+}
+
+/* Scroll horizontal fixado */
+.horizontal-scroll {
+  position: relative;
+  top: 75px; /* Ajuste esse valor se necessário */
+  z-index: 999;
+  background-color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  overflow-x: auto;
+  gap: 12px;
+  border-bottom: 1px solid #ddd;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.service-type-card-container {
+  display: flex;
+  gap: 12px;
+}
+
+/* Cards horizontais */
+.service-type-card {
+  flex: 0 0 auto;
+  width: 140px;
+  height: 100px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  text-align: center;
+  padding: 10px;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
-.carousel-companies {
-  background-color: #FFFFFF;
-  padding: 0.8rem 20px;
-  position: sticky;
-  top: 0;
-  z-index: 1;
+.service-type-card img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  margin-bottom: 8px;
 }
 
-.carousel-companies .company {
-  text-align: center;
-  margin: 0 0.5rem;
-  color: white;
+.service-type-card h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
 }
 
-.company {
-  text-align: center;
-  margin: 0 0.5rem;
-  padding-bottom: 5%;
-}
-
-.carousel-companies img {
-  max-height: 2.5rem;
-  max-width: 2rem;
-}
-
-.company h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 1rem;
-  color: #8A8A8A;
-  margin-top: 0.2rem;
-}
-
-.scrollable-content {
-  flex: 1;
-  overflow-y: auto;
-  padding-bottom: 8rem;
-}
 
 .cards-companies {
-  width: 90%;
-  margin: 2rem auto;
+  margin-top: 200px; /* ajuste conforme o tamanho real da barra horizontal */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
 }
 
-.box {
-  background: #FBFBFB;
-  border: 1px solid #E8E8E8;
-  border-radius: 10px;
-  margin: 2.5rem 0;
-}
-
-.box:hover {
-  background-color: #a0979736;
-}
-
-.card-bg-blue {
-  background-color: var(--ion-color-primary);
-  padding: 2rem 0;
-  border-radius: 10px 10px 0 0;
-}
-
-.card-bg-blue h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 2rem;
-  text-align: center;
-  color: #FFFFFF;
-}
-
-.description-card {
-  padding: 0rem;
-}
-
-swiper-container {
-  padding-bottom: 0%;
-}
-
-.description-card h2 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 0.75rem;
-  text-align: center;
-  color: #8A8A8A;
-}
-
-.description-card h3 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-  text-align: center;
-  color: #FF0000;
-}
-
-
-.menu-fixed-bottom {
-  width: 100%;
-  background: #FFFFFF;
-  border-top: 1px solid #E8E8E8;
-}
-
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  padding: 1rem 0;
-}
-
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff;
-}
-
-.go-init ion-label,
-.go-fila ion-label,
-.go-config ion-label {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  text-align: center;
-  color: #8A8A8A;
-}
-
-ion-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.menu-fixed-bottom {
-  background-color: white;
-  border-top: 1px solid #E8E8E8;
-}
-
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.go-init,
-.go-fila,
-.go-config {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-ion-icon {
-  font-size: 24px;
-}
-
-ion-label {
-  margin-top: 5px;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #8A8A8A;
-}
-
-ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
-}
-
-ion-card-title {
-  text-align: center;
-}
-
-.card-bg-blue ion-card-title {
-  color: white;
-}
-
-.swiper-container-wrapper {
-  position: relative;
-  width: 100%;
-  height: 100%;
-}
-
-.swiper-arrow-left, .swiper-arrow-right {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 30px;
-  color: rgba(0, 84, 233);
-  z-index: 10;
-  pointer-events: none;
-}
-
-.swiper-arrow-left {
-  left: 10px;
-}
-
-.swiper-arrow-right {
-  right: 10px;
-}
-
-.company img {
-  display: block;
-  margin: 0 auto;
-}
-
-.swiper-slide {
-  text-align: center;
-}
-
-.company-card {
-  position: relative;
-  border-radius: 12px;
+ion-card.box {
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
 }
 
-.card-background {
-  width: 100%;
-  height: 100px;
-  background-color: #f0f0f0;
+ion-card.box ion-card-content {
+  padding: 12px;
 }
 
-.inner-card {
-  background-color: white;
-  border-radius: 20px;
-  padding: 16px;
-  margin-top: -50px;
-  box-shadow: 0px -10px 30px rgba(0,0,0,0.2);
-  position: relative;
-  text-align: center;
-}
-
-.logo-container {
-  position: absolute;
-  top: -30px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 60px;
-  height: 60px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-}
-
-.company-logo {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: #d3d3d3;
-}
-
-.company-info {
-  margin-top: 40px;
-  align-items: center;
-}
-
-.company-info h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.company-info p {
-  margin: 4px 0;
-  color: #666;
-}
-
-.company-info ion-chip {
-  display: flex;
-  align-items: center;
-}
-
-.company-info ion-chip ion-icon {
-  margin-right: 10px;
-}
-
-
-.fixed-recent-visits {
-  position: fixed;
-  bottom: 45px; 
-  padding-left: 15px;
-  z-index: 10;
-  border-radius: 8px;
+ion-card.box .inner-card {
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
+  gap: 10px;
+}
+
+.logo-container {
+  display: flex;
+  justify-content: center;
+}
+
+.company-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.company-info h2 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.company-info p {
+  font-size: 13px;
+  margin: 2px 0;
+  color: #555;
+}
+
+.ratting-area {
+  font-size: 12px;
+}
+
+/* Últimos visitados */
+.fixed-recent-visits {
+  padding-bottom: 20px;
+}
+
+.visited-card {
+  border-radius: 16px;
 }
 
 .recent-cards-container {
   display: flex;
-  max-width: 600px; 
-  transition: max-height 0.3s ease; /* Adicionando transição */
-  overflow: hidden; /* Escondendo conteúdo excedente */
+  gap: 12px;
+  padding: 12px;
 }
 
 .recent-card {
   flex: 1;
-  background-color: #f9f9f9;
-  border-radius: 8px;
-  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
-  max-width: 150px; 
+}
+
+.recent-card-item {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.recent-logo-container .recent-company-logo {
+  width: 40px;
+  height: 40px;
+  background-color: #ddd;
+  border-radius: 50%;
+}
+
+.recent-company-info h2 {
+  font-size: 14px;
+  margin: 0;
+}
+
+.recent-company-info p {
+  font-size: 12px;
+  margin: 0;
+  color: #666;
+}
+
+.visited-title {
+  font-size: 14px;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 4px;
 }
 
 .toggle-button {
   background: none;
   border: none;
-  padding: 0; /* Remove padding */
-  cursor: pointer;
-  display: flex; /* Alinhamento flexível */
-  justify-content: center; /* Centraliza o conteúdo */
-  align-items: center; /* Alinha verticalmente */
-  width: 40px; /* Defina uma largura fixa para o botão */
-  height: 40px; /* Defina uma altura fixa para o botão */
-  margin: 0 auto; /* Centraliza o botão na área disponível */
-}
-
-.ratting-area {
-  align-items: center;
-  padding-left: 15%;
-}
-
-.arrow {
-  width: 15px; /* Ajuste a largura da seta */
-  height: 15px; /* Ajuste a altura da seta */
-  border: solid #007bff; /* Cor da seta */
-  border-width: 0 2px 2px 0; /* Ajuste a largura das bordas */
-  display: inline-block;
-  padding: 2px; /* Ajuste o padding para o novo tamanho */
-  transition: transform 0.3s; /* Transição suave ao expandir/recolher */
-  transform: rotate(-135deg); /* Inicialmente, seta para baixo */
-}
-
-/* Quando a seção está expandida, a seta muda de direção */
-.arrow.expanded {
-  transform: rotate(45deg); /* Setinha apontando para cima quando expandida */
-}
-
-.recent-logo-container {
-  width: 50px; 
-  height: 50px;
-  margin-left: 25%;
-  background-color: #d3d3d3;
-  border-radius: 50%;
-  margin-bottom: 10px; 
-}
-
-.recent-company-logo {
   width: 100%;
-  height: 100%;
+  text-align: center;
+  padding: 8px 0;
+}
+
+.toggle-button .arrow {
+  width: 16px;
+  height: 16px;
+  background-image: url('/assets/icons/arrow.svg');
   background-size: cover;
-  background-position: center;
-  border-radius: 50%;
+  transform: rotate(0deg);
+  transition: transform 0.3s;
 }
 
-.recent-company-info h2 {
-  font-size: 12px; 
-  font-weight: bold;
-  color: #333;
-  text-align: center;
-}
-
-.recent-company-info p {
-  font-size: 10px; 
-  color: #666;
-  text-align: center;
-  margin-top: 5px;
-}
-
-.visited-title {
-  padding-top: 0px;
-  margin-top: 0px;
-  font-size: 13px; 
-  font-weight: bold;
-  text-align: center;
-  color: #ff0000;
-}
-
-
-@media (max-width: 768px) {
-  .recent-cards-container {
-    flex-direction: row;
-  }
-
-  .recent-card {
-    margin: 0 8px; 
-  }
+.toggle-button .arrow.expanded {
+  transform: rotate(180deg);
 }
