@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-menu-button></ion-menu-button>      
     </ion-buttons>
-    <ion-title>LOJAS</ion-title>
+    <ion-title>ESTABELECIMENTOS</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="presentSearchPopup()">
         <ion-icon slot="icon-only" name="search"></ion-icon>
@@ -53,3 +53,27 @@
     </ion-card>
   </div>
 </ion-content>
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <!-- Adicionando o menu no rodapé -->
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>Config</ion-label>
+      </div>
+      <!-- Aqui está o menu button no rodapé -->
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>

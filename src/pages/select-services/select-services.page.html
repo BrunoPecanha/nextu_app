@@ -1,99 +1,109 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <div class="go-back">
-        <a routerLink="/select-professional">
-          <img
-            src="assets/images/create-account/icon-go-back.svg"
-            alt="Voltar para tela de seleção usuario"
-          />
-        </a>
-      </div>
+      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
     <ion-title>SELEÇÃO DE SERVIÇOS</ion-title>
     <ion-buttons slot="end">
       <ion-button>
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        <ion-icon></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="no-scroll">
   <form>
     <div class="scrollable-content">
-      <div *ngFor="let service of services; let i = index">
-        <ion-item>
-          <ion-select
-            label="Serviços"
-            placeholder="selecione o próximo"
-            (ionChange)="onServiceChange(i, $event)"
-            [disabled]="service.value !== null"
-          >
-            <ion-select-option
-              *ngFor="let option of serviceOptions"
-              [value]="option.id"
+      <!-- Seleção de serviços -->
+      <div class="service-selector-wrapper">
+        <ion-button expand="full" (click)="toggleServiceList()">
+          Selecionar Serviços
+        </ion-button>
+
+        <div class="service-list-container" *ngIf="isServiceListVisible">
+          <ion-list>
+            <ion-item
+              *ngFor="let service of serviceOptions"
+              (click)="addService(service)"
+              lines="none"
+              detail
             >
-              {{ option.desc }}
-            </ion-select-option>
-          </ion-select>
-          <ion-button
-            *ngIf="services.length > 0"
-            slot="end"
-            color="danger"
-            fill="clear"
-            (click)="removeService(i)"
-            [disabled]="service.value === null"
-          >
-            <ion-icon name="trash-outline"></ion-icon>
-          </ion-button>
-        </ion-item>
+              <ion-icon slot="start" name="cut-outline"></ion-icon>
+              <ion-label>{{ service.desc }}</ion-label>
+            </ion-item>
+          </ion-list>
+        </div>
       </div>
 
+      <!-- Chips selecionados -->
+      <div class="selected-services-container">
+        <div class="service-chips">
+          <ion-chip
+            *ngFor="let selected of selectedServices; let i = index"
+            color="primary"
+            outline
+          >
+            <ion-label>{{ selected.desc }}</ion-label>
+            <ion-icon
+              name="close-circle"
+              (click)="removeService(i)"
+              color="danger"
+            ></ion-icon>
+          </ion-chip>
+        </div>
+      </div>
+
+      <!-- Outros campos -->
       <ion-item>
         <ion-label position="floating">Observação:</ion-label>
-        <ion-textarea></ion-textarea>
+        <ion-textarea [(ngModel)]="observacao" name="observacao"></ion-textarea>
       </ion-item>
 
       <ion-item>
-        <ion-input label="VALOR TOTAL:">{{totalPriceString}}</ion-input>
+        <ion-label>VALOR TOTAL:</ion-label>
+        <ion-note slot="end">{{ totalPriceString }}</ion-note>
       </ion-item>
 
-      <ion-item>
-        <ion-select label="FORMA PAGAMENTO" placeholder="TIPO">
-          <ion-select-option value="1">Dinhero</ion-select-option>
-          <ion-select-option value="2">Pix</ion-select-option>
-          <ion-select-option value="3">Cartão</ion-select-option>
-        </ion-select>
-      </ion-item>
-
-      <ion-item>
-        <ion-input label="TEMPO TOTAL (EST):">{{totalTimeString}}</ion-input>
-      </ion-item>
-    </div>
-    <ion-button expand="full" routerLink="/queue">Entrar na Fila</ion-button>
-  </form>
-
-  <ion-footer>
-    <ion-toolbar class="menu-fixed-bottom">
-      <div class="content-menu-border">
-        <div class="go-init">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
-        </div>
-        <div class="go-fila">
-          <ion-icon name="people-outline"></ion-icon>
-          <ion-label><a href="#">Fila</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="settings-outline"></ion-icon>
-          <ion-label><a href="#">Config</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="exit-outline"></ion-icon>
-          <ion-label><a href="#">Sair</a></ion-label>
+      <div class="payment-options">
+        <label class="payment-title">FORMA DE PAGAMENTO</label>
+        <div class="payment-buttons">
+          <ion-button
+            [fill]="formaPagamento === '1' ? 'solid' : 'outline'"
+            (click)="formaPagamento = '1'"
+            color="primary"
+          >
+            <ion-icon slot="start" name="cash-outline"></ion-icon>
+            Dinheiro
+          </ion-button>
+          <ion-button
+            [fill]="formaPagamento === '2' ? 'solid' : 'outline'"
+            (click)="formaPagamento = '2'"
+            color="success"
+          >
+            <ion-icon slot="start" name="qr-code-outline"></ion-icon>
+            Pix
+          </ion-button>
+          <ion-button
+            [fill]="formaPagamento === '3' ? 'solid' : 'outline'"
+            (click)="formaPagamento = '3'"
+            color="tertiary"
+          >
+            <ion-icon slot="start" name="card-outline"></ion-icon>
+            Cartão
+          </ion-button>
         </div>
       </div>
-    </ion-toolbar>
-  </ion-footer>
+      
+
+      <ion-item>
+        <ion-label>TEMPO TOTAL (EST):</ion-label>
+        <ion-note slot="end">{{ totalTimeString }}</ion-note>
+      </ion-item>
+    </div>
+  </form>
+
+  <ion-button class="enter-queue" expand="full" routerLink="/queue"
+    >Entrar na Fila</ion-button
+  >
 </ion-content>
