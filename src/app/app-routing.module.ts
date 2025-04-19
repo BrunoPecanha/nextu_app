@@ -37,7 +37,12 @@ const routes: Routes = [
   },   {
     path: 'queue',
     loadChildren: () => import('../pages/queue/queue.module').then( m => m.QueuePageModule)
+  },
+  {
+    path: 'costumer-list-in-queue',
+    loadChildren: () => import('../pages/costumer-list-in-queue/costumer-list-in-queue.module').then( m => m.CostumerListInQueuePageModule)
   }
+
 
 ];
 
