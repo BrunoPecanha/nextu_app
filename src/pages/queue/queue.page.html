@@ -5,8 +5,8 @@
     </ion-buttons>
     <ion-title>FILAS DE ESPERA</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
+      <ion-button (click)="presentInfoPopup()">
+        <ion-icon name="help-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,7 +18,7 @@
       <div class="logo-info">
         <ion-img src="assets/images/company-logo/kingssons.jpeg" class="logo"></ion-img>
         <div class="nome-empresa">
-          <h2>Você é o {{posicaoNaFila}}º na fila</h2>
+          <h6>Você é o {{posicaoNaFila}}º na fila</h6>
         </div>
       </div>
 
@@ -30,15 +30,15 @@
 
     <div class="card-conteudo" *ngIf="mostrarDetalhes">
       <div class="fila-info">
-        <h3>E aí, Bruno, tudo bem?</h3>
+        <h6>E aí, Bruno, tudo bem?</h6>
         <p>Você está na fila do(a) Léo.</p>
       </div>
 
       <div class="fila-visual">
-        <div class="fila-scroll-container">
-          <div *ngFor="let i of pessoasNaFila; let idx = index" class="avatar-container">
+        <div class="fila-scroll-container" [ngClass]="{'scroll': pessoasNaFila.length > 5}">
+          <div *ngFor="let pessoa of pessoasNaFila; let idx = index" class="avatar-container">
             <div class="avatar" [class.user]="idx === posicaoNaFila - 1">
-              <ion-icon name="person-circle"></ion-icon>
+              <ion-icon [name]="pessoa.avatar"></ion-icon>
               <div *ngIf="idx === posicaoNaFila - 1" class="voce">Você</div>
             </div>
             <div *ngIf="idx === posicaoNaFila - 1" class="posicao-numero">
@@ -46,7 +46,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div>      
 
       <div class="estimado" [ngClass]="corTempo">
         Tempo estimado: {{ tempoEstimado }}

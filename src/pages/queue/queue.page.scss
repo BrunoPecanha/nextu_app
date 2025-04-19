@@ -177,21 +177,39 @@ ion-label a {
 .fila-visual {
   display: flex;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* Permite a rolagem horizontal */
   white-space: nowrap;
-  /* alinhamento padrão */
-  justify-content: flex-start;
+  justify-content: center; /* Alinha os avatares ao centro quando poucos */
   align-items: center;
   padding: 16px 0;
 }
 
+.fila-scroll-container.scroll {
+  justify-content: flex-start; /* Aplica flex-start quando houver rolagem */
+}
+
+
 .fila-scroll-container {
   display: flex;
   gap: 12px;
+  justify-content: center; /* Alinha os avatares ao centro quando poucos */
+  min-width: 100%; /* Garante que a largura mínima seja suficiente para os itens */
 }
 
+.posicao-numero {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: #007bff;
+  z-index: 1;
+}
+
+
 .fila-scroll-container.center {
-  justify-content: center;
+  justify-content: center; /* Certifica-se de que a centralização é aplicada */
 }
 
 .avatar-container {
@@ -407,7 +425,7 @@ ion-title {
   height: 16px;
   border-radius: 50%;
   margin-left: auto;
-  margin-right: 60px;
+  margin-right: 30px;
   animation: piscar 2s infinite ease-in-out;
 }
 
@@ -430,4 +448,52 @@ ion-title {
   50% {
     opacity: 0.3;
   }
+}
+
+/* CSS personalizado para o modal */
+.custom-alert .alert-wrapper {
+  border-radius: 10px;  /* Arredondar as bordas do modal */
+}
+
+.custom-alert .alert-header {
+  padding-right: 30px;  /* Espaço para o "X" no canto */
+}
+
+.custom-alert .info-container {
+  display: flex;
+  flex-direction: column;  /* Organiza as bolinhas em uma coluna */
+  align-items: flex-start;  /* Alinha à esquerda */
+  margin-top: 20px;
+}
+
+.custom-alert .info-item {
+  display: flex;
+  align-items: center;  /* Alinha as bolinhas com as legendas */
+  margin-bottom: 10px;
+}
+
+.custom-alert .dot {
+  width: 20px;  /* Tamanho da bolinha */
+  height: 20px;
+  border-radius: 50%;  /* Faz a bolinha ficar redonda */
+  margin-right: 10px;  /* Espaçamento entre a bolinha e a legenda */
+}
+
+.custom-alert .legend {
+  font-size: 16px;  /* Tamanho da legenda */
+  color: #000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;  /* Posição no topo */
+  right: 10px;  /* Posição à direita */
+  font-size: 20px;  /* Tamanho do "X" */
+  color: #000;  /* Cor do "X" */
+  background: none;  /* Remover fundo do botão */
+  border: none;  /* Remover borda do botão */
+}
+
+.close-button ion-icon {
+  font-size: 24px;  /* Tamanho do ícone */
 }
