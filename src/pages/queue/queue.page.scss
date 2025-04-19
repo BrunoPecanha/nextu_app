@@ -177,21 +177,39 @@ ion-label a {
 .fila-visual {
   display: flex;
   width: 100%;
-  overflow-x: auto;
+  overflow-x: auto; /* Permite a rolagem horizontal */
   white-space: nowrap;
-  /* alinhamento padrão */
-  justify-content: flex-start;
+  justify-content: center; /* Alinha os avatares ao centro quando poucos */
   align-items: center;
   padding: 16px 0;
 }
 
+.fila-scroll-container.scroll {
+  justify-content: flex-start; /* Aplica flex-start quando houver rolagem */
+}
+
+
 .fila-scroll-container {
   display: flex;
   gap: 12px;
+  justify-content: center; /* Alinha os avatares ao centro quando poucos */
+  min-width: 100%; /* Garante que a largura mínima seja suficiente para os itens */
 }
 
+.posicao-numero {
+  position: absolute;
+  top: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 14px;
+  font-weight: bold;
+  color: #007bff;
+  z-index: 1;
+}
+
+
 .fila-scroll-container.center {
-  justify-content: center;
+  justify-content: center; /* Certifica-se de que a centralização é aplicada */
 }
 
 .avatar-container {
@@ -271,6 +289,13 @@ ion-label a {
   color: #4caf50;
 }
 
+.estimado {
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  margin: 16px 0;
+}
+
 .tempo-estimado.amarelo {
   color: #ff9800;
 }
@@ -342,4 +367,133 @@ ion-title {
   text-align: center;
   font-size: 18px;
   font-weight: bold;
+}
+
+.card-retratil {
+  margin: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.logo-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  border: 2px solid #e0e0e0; /* opcional, só pra dar um contorno leve */
+}
+
+.nome-empresa h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.botao-toggle {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.card-conteudo {
+  padding: 16px;
+  animation: expandir 0.3s ease-in-out;
+}
+
+@keyframes expandir {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.tempo-indicador {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: 30px;
+  animation: piscar 2s infinite ease-in-out;
+}
+
+.tempo-indicador.verde {
+  background-color: #4caf50;
+}
+
+.tempo-indicador.amarelo {
+  background-color: #ff9800;
+}
+
+.tempo-indicador.vermelho {
+  background-color: #f44336;
+}
+
+@keyframes piscar {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* CSS personalizado para o modal */
+.custom-alert .alert-wrapper {
+  border-radius: 10px;  /* Arredondar as bordas do modal */
+}
+
+.custom-alert .alert-header {
+  padding-right: 30px;  /* Espaço para o "X" no canto */
+}
+
+.custom-alert .info-container {
+  display: flex;
+  flex-direction: column;  /* Organiza as bolinhas em uma coluna */
+  align-items: flex-start;  /* Alinha à esquerda */
+  margin-top: 20px;
+}
+
+.custom-alert .info-item {
+  display: flex;
+  align-items: center;  /* Alinha as bolinhas com as legendas */
+  margin-bottom: 10px;
+}
+
+.custom-alert .dot {
+  width: 20px;  /* Tamanho da bolinha */
+  height: 20px;
+  border-radius: 50%;  /* Faz a bolinha ficar redonda */
+  margin-right: 10px;  /* Espaçamento entre a bolinha e a legenda */
+}
+
+.custom-alert .legend {
+  font-size: 16px;  /* Tamanho da legenda */
+  color: #000;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;  /* Posição no topo */
+  right: 10px;  /* Posição à direita */
+  font-size: 20px;  /* Tamanho do "X" */
+  color: #000;  /* Cor do "X" */
+  background: none;  /* Remover fundo do botão */
+  border: none;  /* Remover borda do botão */
+}
+
+.close-button ion-icon {
+  font-size: 24px;  /* Tamanho do ícone */
 }

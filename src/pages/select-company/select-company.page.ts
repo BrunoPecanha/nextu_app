@@ -49,7 +49,7 @@ export class SelectCompanyPage implements OnInit {
   // Popup para busca de estabelecimento
   async presentSearchPopup() {
     const alert = await this.alertController.create({
-      header: 'Digite o nome do estabelecimento para pesquisa',
+      header: 'PESQUISAR LOJA',
       inputs: [
         {
           name: 'searchQuery',

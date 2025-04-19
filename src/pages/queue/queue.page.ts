@@ -9,38 +9,86 @@ import { AlertController } from '@ionic/angular';
 })
 export class QueuePage implements OnInit {
   empresa: any = {};
-  posicaoNaFila: number = 2;
+  posicaoNaFila: number = 1;
   progressoFila: number = 0.5;
+  mostrarDetalhes = false;
 
   pessoasNaFila = new Array(3);
   queue: any[] = [];
   userPosition: number = 0;
 
-  tempoRestanteMinutos: number = 15;
+  ehMinhaVez: boolean = false;
+  codigoAtendimento = '';
+
+  tempoRestanteMinutos: number = 10;
   tempoEstimado: string = '';
   corTempo: string = '';
 
   constructor(private alertController: AlertController, private router: Router) {
-    this.simularFila(3); 
+    this.simularFila(5);
   }
 
   ngOnInit() {
     this.loadQueueData();
     this.atualizarTempoEstimado();
+    this.verificaMinhaVez();
+  }
+
+  verificaMinhaVez() {
+    this.ehMinhaVez = this.posicaoNaFila === 1;
+  }
+
+  alternarDetalhes() {
+    this.mostrarDetalhes = !this.mostrarDetalhes;
   }
 
   simularFila(qtd: number) {
-    this.pessoasNaFila = Array(qtd).fill(null);
+    this.pessoasNaFila = Array.from({ length: qtd }, (_, idx) => ({
+      id: idx + 1,
+      nome: `Pessoa ${idx + 1}`,
+      avatar: 'person-circle',  
+    }));
+
     this.progressoFila = 1 - (this.posicaoNaFila - 1) / qtd;
   }
 
-  private loadQueueData() {
-    this.queue = Array(6).fill({}); 
-    this.userPosition = 3;   
+  async presentInfoPopup() {
+    const alert = await this.alertController.create({
+      header: 'Legenda',
+      message: '', 
+      buttons: [
+        {
+          text: 'x', 
+          role: 'cancel',  
+          handler: () => {
+            console.log('Modal fechado');
+          }
+        }
+      ]
+    });
 
-    //TODO - Rota para pegar todas as pessoas na fila onde status é waiting. RelQueueCustomer
-    // a rota tbm tratrá as pessoas ordenadas por ordem de chegada. Ou seja, a primeira pessoa
-    // da lista é a primeira pessoa a chegar na fila.
+    await alert.present();
+
+    const modalElement = document.querySelector('.alert-message') as HTMLElement;
+
+    modalElement.innerHTML = `
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: red; margin-right: 8px;"></div>
+      <span><small>Ainda precisa esperar | > 60 min</small></span>
+    </div>
+    <div style="display: flex; align-items: center; margin-bottom: 5px;">
+      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: yellow; margin-right: 8px;"></div>
+      <span><small>Sua vez está chegando | < 30 min</small></span>
+    </div>
+    <div style="display: flex; align-items: center;">
+      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: green; margin-right: 8px;"></div>
+      <span><small>Você é o próximo | < 15 min</small></span>
+    </div>
+  `;
+  }
+
+  private loadQueueData() {
+    this.queue = Array(10).fill({});
   }
 
   atualizarTempoEstimado() {
@@ -48,24 +96,16 @@ export class QueuePage implements OnInit {
 
     if (min > 45) {
       this.tempoEstimado = `${Math.floor(min / 60)} hora(s)`;
-      this.corTempo = 'verde';
+      this.corTempo = 'vermelho';
     } else if (min > 15) {
       this.tempoEstimado = `${min} minutos`;
       this.corTempo = 'amarelo';
     } else {
       this.tempoEstimado = `${min} minutos`;
-      this.corTempo = 'vermelho';
+      this.corTempo = 'verde';
     }
   }
 
-  async showQueueAlert() {
-    const alert = await this.alertController.create({
-      header: 'INFORMAÇÕES DA FILA',
-      message: "Estabelecimento: KINGS SONS \nFila: Léo Silva (Neymar)",
-      buttons: ['OK'],
-    });
-    await alert.present();
-  }
 
   async exitQueue() {
     const alert = await this.alertController.create({
@@ -94,7 +134,5 @@ export class QueuePage implements OnInit {
 
   private removeUserFromQueue() {
     console.log('Usuário removido da fila.');
-    // Implementar lógica para remover o usuário da fila
-    // TODO - Rota para remover o usuário da fila pq ele selecionou.
   }
 }

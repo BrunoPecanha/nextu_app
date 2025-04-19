@@ -1,49 +1,80 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/select-professional" text="" icon="arrow-back-outline"></ion-back-button>
+      <ion-back-button
+        defaultHref="/select-professional"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>FILAS DE ESPERA</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
+      <ion-button (click)="presentInfoPopup()">
+        <ion-icon name="help-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="fila-content">
-  <div class="header-background-modern">
-    <div class="header-overlay"></div>
-    <div class="logo-wrapper">
-      <ion-img src="assets/images/company-logo/kingssons.jpeg"></ion-img>
-    </div>
-  </div>
-
-  <!-- Quando for dinâmico  
-  <div class="header-background-modern" [ngStyle]="{'background-image': 'url(' + backgroundUrl + ')'}">
-    <div class="header-overlay"></div>
-    <div class="logo-wrapper">
-      <ion-img [src]="logoUrl"></ion-img>
-    </div>
-  </div> -->
-
-  <ion-card class="fila-card">
-    <ion-card-content>
-      <div class="fila-info">
-        <h3>E aí, Bruno, beleza?</h3>
-        <p>Você está na fila. Daqui a pouco é sua vez</p>
+  <ion-card class="card-retratil" [class.expandido]="mostrarDetalhes">
+    <div class="card-topo" (click)="alternarDetalhes()">
+      <div class="logo-info">
+        <ion-img
+          src="assets/images/company-logo/kingssons.jpeg"
+          class="logo"
+        ></ion-img>
+        <div class="nome-empresa">
+          <h6 *ngIf="!ehMinhaVez">Você é o {{posicaoNaFila}}º na fila</h6>
+          <h6 *ngIf="ehMinhaVez">É a sua vez !</h6>
+        </div>
       </div>
 
-      <!-- Representação Visual da Fila -->
+      <div
+        *ngIf="!mostrarDetalhes"
+        class="tempo-indicador"
+        [ngClass]="corTempo"
+      ></div>
+      <div class="botao-toggle">
+        <ion-icon
+          [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'"
+        ></ion-icon>
+      </div>
+    </div>
+
+    <div class="card-conteudo" *ngIf="mostrarDetalhes">
+      <div
+        *ngIf="ehMinhaVez"
+        class="qr-section"
+        style="text-align: center; margin: 16px 0"
+      >
+        <img
+          src="assets/images/qr-code/qr_code_teste.png"
+          alt="QR Code"
+        />
+        <ion-note color="warning">
+          Mostre esse QR Code para o atendente iniciar seu atendimento.
+        </ion-note>
+      </div>
+
+      <div *ngIf="!ehMinhaVez" class="fila-info">
+        <h6>E aí, Bruno, tudo bem?</h6>
+        <p>Você está na fila do(a) Léo.</p>
+      </div>
+
       <div class="fila-visual">
-        <div class="fila-scroll-container">
-          <div *ngFor="let i of pessoasNaFila; let idx = index" class="avatar-container">
+        <div
+          class="fila-scroll-container"
+          [ngClass]="{'scroll': pessoasNaFila.length > 5}"
+        >
+          <div
+            *ngFor="let pessoa of pessoasNaFila; let idx = index"
+            class="avatar-container"
+          >
             <div class="avatar" [class.user]="idx === posicaoNaFila - 1">
-              <ion-icon name="person-circle"></ion-icon>
+              <ion-icon [name]="pessoa.avatar"></ion-icon>
               <div *ngIf="idx === posicaoNaFila - 1" class="voce">Você</div>
             </div>
-            <!-- Número da posição do usuário -->
             <div *ngIf="idx === posicaoNaFila - 1" class="posicao-numero">
               {{ idx + 1 }}
             </div>
@@ -51,16 +82,19 @@
         </div>
       </div>
 
-      <div class="tempo-estimado" [ngClass]="corTempo">
+      <div *ngIf="!ehMinhaVez" class="estimado" [ngClass]="corTempo">
         Tempo estimado: {{ tempoEstimado }}
       </div>
 
-      <ion-button expand="block" class="botao-sair-fila">Sair da fila</ion-button>
+      <ion-button expand="block" color="danger" class="botao-sair-fila">
+        <ion-icon name="exit-outline" slot="start"></ion-icon>
+        Sair da fila
+      </ion-button>
 
       <ion-note color="warning">
         Fique atento! Tolerância de 5 minutos após ser chamado.
       </ion-note>
-    </ion-card-content>
+    </div>
   </ion-card>
 </ion-content>
 
