@@ -41,11 +41,6 @@ export class QueuePage implements OnInit {
 
   private loadQueueData() {
     this.queue = Array(6).fill({}); 
-    this.userPosition = 3;   
-
-    //TODO - Rota para pegar todas as pessoas na fila onde status é waiting. RelQueueCustomer
-    // a rota tbm tratrá as pessoas ordenadas por ordem de chegada. Ou seja, a primeira pessoa
-    // da lista é a primeira pessoa a chegar na fila.
   }
 
   atualizarTempoEstimado() {

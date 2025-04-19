@@ -271,6 +271,13 @@ ion-label a {
   color: #4caf50;
 }
 
+.estimado {
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  margin: 16px 0;
+}
+
 .tempo-estimado.amarelo {
   color: #ff9800;
 }
@@ -395,17 +402,32 @@ ion-title {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.card-retratil.verde {
-  border-left: 6px solid #4caf50;
-  background-color: #e8f5e9;
+.tempo-indicador {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  margin-left: auto;
+  margin-right: 60px;
+  animation: piscar 2s infinite ease-in-out;
 }
 
-.card-retratil.amarelo {
-  border-left: 6px solid #ff9800;
-  background-color: #fff8e1;
+.tempo-indicador.verde {
+  background-color: #4caf50;
 }
 
-.card-retratil.vermelho {
-  border-left: 6px solid #f44336;
-  background-color: #ffebee;
+.tempo-indicador.amarelo {
+  background-color: #ff9800;
+}
+
+.tempo-indicador.vermelho {
+  background-color: #f44336;
+}
+
+@keyframes piscar {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.3;
+  }
 }

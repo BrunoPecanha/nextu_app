@@ -22,6 +22,7 @@
         </div>
       </div>
 
+      <div *ngIf="!mostrarDetalhes" class="tempo-indicador" [ngClass]="corTempo"></div>
       <div class="botao-toggle">
         <ion-icon [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
       </div>
@@ -29,8 +30,8 @@
 
     <div class="card-conteudo" *ngIf="mostrarDetalhes">
       <div class="fila-info">
-        <h3>Olá, Bruno!</h3>
-        <p>Você está na fila. Daqui a pouco é sua vez.</p>
+        <h3>E aí, Bruno, tudo bem?</h3>
+        <p>Você está na fila do(a) Léo.</p>
       </div>
 
       <div class="fila-visual">
@@ -47,7 +48,7 @@
         </div>
       </div>
 
-      <div class="tempo-estimado" [ngClass]="corTempo">
+      <div class="estimado" [ngClass]="corTempo">
         Tempo estimado: {{ tempoEstimado }}
       </div>
 
