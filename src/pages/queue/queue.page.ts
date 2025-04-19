@@ -11,6 +11,7 @@ export class QueuePage implements OnInit {
   empresa: any = {};
   posicaoNaFila: number = 2;
   progressoFila: number = 0.5;
+  mostrarDetalhes = false;
 
   pessoasNaFila = new Array(3);
   queue: any[] = [];
@@ -27,6 +28,10 @@ export class QueuePage implements OnInit {
   ngOnInit() {
     this.loadQueueData();
     this.atualizarTempoEstimado();
+  }
+
+  alternarDetalhes() {
+    this.mostrarDetalhes = !this.mostrarDetalhes;
   }
 
   simularFila(qtd: number) {

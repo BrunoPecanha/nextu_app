@@ -343,3 +343,69 @@ ion-title {
   font-size: 18px;
   font-weight: bold;
 }
+
+.card-retratil {
+  margin: 20px;
+  border-radius: 20px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  cursor: pointer;
+}
+
+.logo-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  overflow: hidden;
+  border: 2px solid #e0e0e0; /* opcional, só pra dar um contorno leve */
+}
+
+.nome-empresa h2 {
+  font-size: 18px;
+  margin: 0;
+}
+
+.botao-toggle {
+  font-size: 24px;
+  color: #007bff;
+}
+
+.card-conteudo {
+  padding: 16px;
+  animation: expandir 0.3s ease-in-out;
+}
+
+@keyframes expandir {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card-retratil.verde {
+  border-left: 6px solid #4caf50;
+  background-color: #e8f5e9;
+}
+
+.card-retratil.amarelo {
+  border-left: 6px solid #ff9800;
+  background-color: #fff8e1;
+}
+
+.card-retratil.vermelho {
+  border-left: 6px solid #f44336;
+  background-color: #ffebee;
+}

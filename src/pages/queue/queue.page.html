@@ -13,29 +13,26 @@
 </ion-header>
 
 <ion-content class="fila-content">
-  <div class="header-background-modern">
-    <div class="header-overlay"></div>
-    <div class="logo-wrapper">
-      <ion-img src="assets/images/company-logo/kingssons.jpeg"></ion-img>
-    </div>
-  </div>
-
-  <!-- Quando for dinâmico  
-  <div class="header-background-modern" [ngStyle]="{'background-image': 'url(' + backgroundUrl + ')'}">
-    <div class="header-overlay"></div>
-    <div class="logo-wrapper">
-      <ion-img [src]="logoUrl"></ion-img>
-    </div>
-  </div> -->
-
-  <ion-card class="fila-card">
-    <ion-card-content>
-      <div class="fila-info">
-        <h3>E aí, Bruno, beleza?</h3>
-        <p>Você está na fila. Daqui a pouco é sua vez</p>
+  <ion-card class="card-retratil" [class.expandido]="mostrarDetalhes">
+    <div class="card-topo" (click)="alternarDetalhes()">
+      <div class="logo-info">
+        <ion-img src="assets/images/company-logo/kingssons.jpeg" class="logo"></ion-img>
+        <div class="nome-empresa">
+          <h2>Você é o {{posicaoNaFila}}º na fila</h2>
+        </div>
       </div>
 
-      <!-- Representação Visual da Fila -->
+      <div class="botao-toggle">
+        <ion-icon [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'"></ion-icon>
+      </div>
+    </div>
+
+    <div class="card-conteudo" *ngIf="mostrarDetalhes">
+      <div class="fila-info">
+        <h3>Olá, Bruno!</h3>
+        <p>Você está na fila. Daqui a pouco é sua vez.</p>
+      </div>
+
       <div class="fila-visual">
         <div class="fila-scroll-container">
           <div *ngFor="let i of pessoasNaFila; let idx = index" class="avatar-container">
@@ -43,7 +40,6 @@
               <ion-icon name="person-circle"></ion-icon>
               <div *ngIf="idx === posicaoNaFila - 1" class="voce">Você</div>
             </div>
-            <!-- Número da posição do usuário -->
             <div *ngIf="idx === posicaoNaFila - 1" class="posicao-numero">
               {{ idx + 1 }}
             </div>
@@ -63,9 +59,10 @@
       <ion-note color="warning">
         Fique atento! Tolerância de 5 minutos após ser chamado.
       </ion-note>
-    </ion-card-content>
+    </div>
   </ion-card>
 </ion-content>
+
 
 <ion-footer>
   <div class="menu-fixed-bottom">
