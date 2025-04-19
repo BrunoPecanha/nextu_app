@@ -1,67 +1,91 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <div class="go-back">
-        <a routerLink="/role-registration">
-          <img
-            src="assets/images/create-account/icon-go-back.svg"
-            alt="Voltar para tela de seleção usuario"
-          />
-        </a>
-      </div>
+      <ion-back-button defaultHref="/select-professional" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-    <ion-title>FILA DE ESPERA</ion-title>    
+    <ion-title>FILAS DE ESPERA</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="header-background">
-    <ion-img src="assets/images/company-logo/kingssons.jpeg"></ion-img>
+<ion-content class="fila-content">
+  <div class="header-background-modern">
+    <div class="header-overlay"></div>
+    <div class="logo-wrapper">
+      <ion-img src="assets/images/company-logo/kingssons.jpeg"></ion-img>
+    </div>
   </div>
 
-  <ion-card>
+  <!-- Quando for dinâmico  
+  <div class="header-background-modern" [ngStyle]="{'background-image': 'url(' + backgroundUrl + ')'}">
+    <div class="header-overlay"></div>
+    <div class="logo-wrapper">
+      <ion-img [src]="logoUrl"></ion-img>
+    </div>
+  </div> -->
+
+  <ion-card class="fila-card">
     <ion-card-content>
       <div class="fila-info">
-        <h3>Olá, Paulo!</h3>
-        <p>Você está na fila, aguarde sua vez.</p>
+        <h3>E aí, Bruno, beleza?</h3>
+        <p>Você está na fila. Daqui a pouco é sua vez</p>
       </div>
 
-      <div class="posicao-fila">
-        <p>Sua posição na fila</p>
-        <h1>{{ posicaoNaFila }}º</h1>
-        <ion-progress-bar [value]="progressoFila"></ion-progress-bar>
+      <!-- Representação Visual da Fila -->
+      <div class="fila-visual">
+        <div class="fila-scroll-container">
+          <div *ngFor="let i of pessoasNaFila; let idx = index" class="avatar-container">
+            <div class="avatar" [class.user]="idx === posicaoNaFila - 1">
+              <ion-icon name="person-circle"></ion-icon>
+              <div *ngIf="idx === posicaoNaFila - 1" class="voce">Você</div>
+            </div>
+            <!-- Número da posição do usuário -->
+            <div *ngIf="idx === posicaoNaFila - 1" class="posicao-numero">
+              {{ idx + 1 }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tempo-estimado" [ngClass]="corTempo">
+        Tempo estimado: {{ tempoEstimado }}
       </div>
 
       <ion-button expand="block" class="botao-sair-fila">Sair da fila</ion-button>
 
       <ion-note color="warning">
-        <p>
-          Fique atento! Para sua comodidade, evite atrasos. Tolerância de 5 minutos após ser chamado.
-        </p>
+        Fique atento! Tolerância de 5 minutos após ser chamado.
       </ion-note>
     </ion-card-content>
   </ion-card>
 </ion-content>
 
 <ion-footer>
-  <ion-toolbar class="menu-fixed-bottom">
+  <div class="menu-fixed-bottom">
     <div class="content-menu-border">
+      <!-- Adicionando o menu no rodapé -->
       <div class="go-init">
         <ion-icon name="home-outline"></ion-icon>
-        <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
+        <ion-label>Início</ion-label>
       </div>
       <div class="go-fila">
-        <ion-icon name="people-outline"></ion-icon>
-        <ion-label><a href="/queue">Fila</a></ion-label>
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
       </div>
-      <div class="go-config">
-        <ion-icon name="settings-outline"></ion-icon>
-        <ion-label><a href="#">Config</a></ion-label>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
       </div>
-      <div class="go-config">
-        <ion-icon name="exit-outline"></ion-icon>
-        <ion-label><a href="#">Sair</a></ion-label>
+      <!-- Aqui está o menu button no rodapé -->
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
       </div>
     </div>
-  </ion-toolbar>
+  </div>
 </ion-footer>

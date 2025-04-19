@@ -1,26 +1,32 @@
 ion-content {
-  overflow-x: hidden; /* Apenas barra lateral */
+  overflow-x: hidden; 
 }
 
 .container {
   background-color: var(--ion-background-color);
   max-height: 100vh;
   height: 100%;
-  width: 100%; /* Garante que a largura do container seja 100% */
-  box-sizing: border-box; /* Faz o padding não ultrapassar os limites da tela */
-  padding: 0;  /* Remove qualquer padding extra */
+  width: 100%; 
+  box-sizing: border-box; 
+  padding: 0; 
+  overflow-x: hidden;
 }
 
 .cards-function {
-  width: 100%; /* Garante que os cartões ocupem toda a largura disponível */
-  margin: 0 auto;
+  width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
+  padding: 1rem;
+  overflow-x: hidden;
 }
 
-
 .box {
+  flex: 1 1 calc(100% - 2rem); /* tela pequena: ocupa quase 100% */
+  max-width: 320px;
+  min-width: 260px;
+  box-sizing: border-box;
   border-radius: 15px;
   overflow: hidden;
   position: relative;
@@ -28,11 +34,25 @@ ion-content {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Tablets */
+@media (min-width: 600px) {
+  .box {
+    flex: 1 1 calc(50% - 2rem);
+  }
+}
+
+/* Telas grandes */
+@media (min-width: 900px) {
+  .box {
+    flex: 1 1 calc(33.333% - 2rem);
+  }
+}
+
 .card-inner {
   background-color: rgba(255, 255, 255, 0.85);
   border-radius: 15px;
-  margin: 1.5rem; /* Ajuste o espaçamento externo */
-  padding: 3rem 1rem 1rem; /* Adiciona mais espaçamento superior */
+  margin: 1.5rem; 
+  padding: 3rem 1rem 1rem; 
   position: relative;
 }
 
@@ -50,10 +70,6 @@ ion-content {
   transform: translateX(-50%);
 }
 
-
-.container, .cards-function {
-  overflow-x: hidden;
-}
 .circle-icon ion-icon {
   font-size: 48px;
   color: #FFFFFF;
@@ -65,12 +81,12 @@ ion-content {
   font-size: 1.5rem;
   text-align: center;
   color: #292829;
-  margin-top: 1.5rem; /* Espaçamento extra acima do título */
+  margin-top: 1.5rem; 
 }
 
 .description-card {
   text-align: center;
-  margin-top: 1rem; /* Ajuste para descer os textos */
+  margin-top: 1rem; 
 }
 
 .description-card h2 {
@@ -120,4 +136,20 @@ ion-label a {
   text-decoration: none;
   color: #007bff;
   font-size: 12px;
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }

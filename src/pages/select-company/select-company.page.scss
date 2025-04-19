@@ -1,4 +1,3 @@
-/* Container principal da página */
 .container {
   padding-top: 16px;
   padding-left: 16px;
@@ -7,16 +6,12 @@
 
 /* Header fixado */
 ion-header {
-  position: fixed;  
-  top: 0; 
+  position: fixed;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 1000;  
-  background-color: #fff; 
-}
-
-ion-toolbar {
-  padding: 16px;  
+  z-index: 1000;
+  background-color: #fff;
 }
 
 :root {
@@ -29,10 +24,9 @@ ion-content {
   --padding-top: 0;
 }
 
-/* Scroll horizontal fixado */
 .horizontal-scroll {
   position: relative;
-  top: 75px; /* Ajuste esse valor se necessário */
+  top: 7%;
   z-index: 999;
   background-color: #fff;
   padding: 10px 16px;
@@ -78,12 +72,12 @@ ion-content {
   margin: 0;
 }
 
-
 .cards-companies {
-  margin-top: 200px; /* ajuste conforme o tamanho real da barra horizontal */
+  margin-top: 200px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
+  padding-bottom: 100px; /* espaço suficiente para o rodapé */
 }
 
 ion-card.box {
@@ -194,7 +188,7 @@ ion-card.box .inner-card {
 .toggle-button .arrow {
   width: 16px;
   height: 16px;
-  background-image: url('/assets/icons/arrow.svg');
+  background-image: url("/assets/icons/arrow.svg");
   background-size: cover;
   transform: rotate(0deg);
   transition: transform 0.3s;
@@ -202,4 +196,128 @@ ion-card.box .inner-card {
 
 .toggle-button .arrow.expanded {
   transform: rotate(180deg);
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-top: 1px solid #E8E8E8;
+}
+
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init, .go-fila, .go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8A8A8A;
+}
+
+.menu-fixed-bottom ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }

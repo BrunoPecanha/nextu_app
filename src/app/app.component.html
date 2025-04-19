@@ -1,11 +1,20 @@
 <ion-app>
-  <ion-menu contentId="main-content" side="start" menuId="first" type="push">
-    <ion-header>
-      <ion-toolbar color="info">
-        <ion-title>Menu</ion-title>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content>
+  <ion-menu contentId="main-content" side="start" menuId="first">
+    <ion-content class="menu-content">
+      
+      <div class="menu-header">
+        <img src="assets/images/splash/Logo.svg"  alt="Logo do sistema" class="logo"  />
+        <div class="app-title">Sua Vez App</div>
+      </div>
+
+      <div class="user-info">
+        <img src="assets/images/company-logo/kingssons.jpeg" alt="Avatar" class="user-avatar" />
+        <div>
+          <div class="user-name">Bruno Peçanha</div>
+          <div class="user-email">Aguaradndo na fila..</div>
+        </div>
+      </div>
+
       <ion-list>
         <ion-menu-toggle auto-hide="true">
           <ion-item routerLink="/role-registration">
@@ -26,6 +35,10 @@
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
+
+      <div class="menu-footer">
+        <small>Versão 1.0.0 - Versão Beta</small>
+      </div>
     </ion-content>
   </ion-menu>
 

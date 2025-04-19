@@ -1,45 +1,31 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <div class="go-back">
-        <a routerLink="/select-company">
-          <img
-            src="assets/images/create-account/icon-go-back.svg"
-            alt="Voltar para tela de seleção usuario"
-          />
-        </a>
-      </div>
+      <ion-back-button defaultHref="/select-company" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
     <ion-title>FILAS DISPONÍVEIS</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-card class="company-card box">
-    <div class="card-background"></div>
+<ion-content fullscreen>
+  <ion-card class="company-card">
+    <div class="logo-container-company">
+      <img src="assets/images/company-logo/kingssons.jpeg" alt="Logo" class="logo-img" />
+    </div>
     <ion-card-content>
-      <div class="inner-card-company">
-        <div class="logo-container-company">
-          <div class="company-logo">
-            <img
-              src="assets/images/company-logo/kingssons.jpeg"
-              alt="Logotes"
-              class="logo-img"
-            />
-          </div>
-        </div>
-        <div class="company-info">
-          <h2>KING'S SONS</h2>
-          <p>Barbershop e alguma coisa mais</p>
-          <ion-chip color="success">
-            <ion-icon name="star"></ion-icon>
-            4.8 (963 avaliações)
-          </ion-chip>
-        </div>
+      <div class="company-info">
+        <h2>KING'S SONS</h2>
+        <h3>Barbershop da Prata - B Roxo</h3>
       </div>
     </ion-card-content>
   </ion-card>
 
+  <!-- Lista de Cards -->
   <div class="scrollable-content">
     <div class="cards-companies">
       <ion-card
@@ -59,18 +45,15 @@
                   class="logo-img"
                 />
                 <ng-template #defaultIcon>
-                  <ion-icon
-                    name="person-circle"
-                    class="default-icon"
-                  ></ion-icon>
+                  <ion-icon name="person-circle" class="default-icon"></ion-icon>
                 </ng-template>
               </div>
             </div>
             <div class="company-info">
               <h2>{{ card.name }}</h2>
               <p>{{ card.type }}</p>
-              <p>Tempo Médio de Atendimento: {{ card.queue }} min</p>
-              <p>{{ card.peoplewaiting }} pessoas aguardando</p>
+              <p><ion-icon name="time-outline"></ion-icon> {{ card.queue }} min</p>
+              <p><ion-icon name="people-outline"></ion-icon> {{ card.peoplewaiting }} aguardando</p>
             </div>
             <ion-icon
               [name]="card.liked ? 'heart' : 'heart-outline'"
@@ -82,27 +65,28 @@
       </ion-card>
     </div>
   </div>
-
-  <ion-footer>
-    <ion-toolbar class="menu-fixed-bottom">
-      <div class="content-menu-border">
-        <div class="go-init">
-          <ion-icon name="home-outline"></ion-icon>
-          <ion-label><a routerLink="/role-registration">Inicio</a></ion-label>
-        </div>
-        <div class="go-fila">
-          <ion-icon name="people-outline"></ion-icon>
-          <ion-label><a href="#">Fila</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="settings-outline"></ion-icon>
-          <ion-label><a href="#">Config</a></ion-label>
-        </div>
-        <div class="go-config">
-          <ion-icon name="exit-outline"></ion-icon>
-          <ion-label><a href="#">Sair</a></ion-label>
-        </div>
-      </div>
-    </ion-toolbar>
-  </ion-footer>
 </ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>

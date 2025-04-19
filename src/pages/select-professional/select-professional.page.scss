@@ -1,140 +1,176 @@
-.container {
-  background-color: var(--ion-background-color);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
-
-.header-company-info {
-  background-color: #000000;
-  padding: 1rem;
+.company-card {
+  background: linear-gradient(135deg, #1f1c2c, #928dab);
+  border-radius: 0 0 16px 16px;
+  position: relative;
+  margin-top: 0;
+  padding-top: 100px; /* espaço para a logo “encaixada” */
   text-align: center;
-  position: sticky; 
-  top: 0; 
-  z-index: 10; 
+  color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
-.logo-circle {
-  width: 80px; 
-  height: 80px; 
+.description-chip {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  color: #2c2c2c; /* texto escuro */
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-top: 4px;
+}
+
+.logo-container-company img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-name {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-top: 8px;
+}
+
+.company-desc {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px 12px;
+  border-radius: 20px;
+  display: inline-block;
+  margin-top: 6px;
+}
+
+.logo-container-company {
+  position: absolute;
+  top: 10%; /* deixa a logo "pendurada" no topo */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  overflow: hidden; 
-  margin: 0 auto 1rem auto; 
-  border: 2px solid #007bff; 
+  overflow: hidden;
+  background-color: white;
+  border: 3px solid white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 10;
+}
+
+.logo-container-company img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .logo-img {
-  width: 100%; 
-  height: auto; 
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.company-info h2 {
+  font-size: 1.3rem;
+  font-weight: bold;
+  margin-top: 8px;
+  color: white;
+}
+
+.company-info ion-chip {
+  margin-top: 6px;
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 300;
+  border-radius: 16px;
 }
 
 .scrollable-content {
-  margin-top: 60%;
-  padding-bottom: 8rem; 
+  margin-top: 0;
+  padding-bottom: 0.5rem; /* Ajusta de acordo com a altura real do rodapé */
 }
 
 .cards-companies {
-  width: 90%;
-  margin: 4rem auto;
+  width: 92%;
+  margin: 2rem auto;
 }
 
 .box {
-  background: white;
-  border: 1px solid #E8E8E8;
-  border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  margin: 1rem 0; 
-}
-
-.box:hover {
-  background-color: #FFFFFF; 
-}
-
-.scrollable-content .box {
-  background: white; 
-  border: 1px solid #E8E8E8; 
-  border-radius: 10px; 
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
-}
-
-.card-bg-blue {
-  background-color: var(--ion-color-primary);
-  padding: 2rem 0;
-  border-radius: 10px 10px 0 0;
-}
-
-.card-bg-blue h1 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 2rem;
-  text-align: center;
-  color: #FFFFFF;
-}
-
-.description-card {
-  padding: 0rem;
-}
-
-.description-card h1 { 
-  font-size: 2rem;
-  color: #FFFFFF;
-}
-
-.description-card h2 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 400;
-  font-size: 0.75rem;
-  text-align: center;
-  color: #FFFFFF;
-}
-
-.description-card h3 {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 500;
-  font-size: 1rem;
-  text-align: center;
-  color: #FF0000;
-}
-
-.menu-fixed-bottom {
-  width: 100%;
-  background: #FFFFFF;
-  border-top: 1px solid #E8E8E8;
-}
-
-.content-menu-border {
   display: flex;
-  justify-content: space-around;
-  padding: 1rem 0;
+  align-items: center;
+  padding: 12px;
+  border-radius: 16px;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* MELHORADO */
+  transition: transform 0.2s;
+  max-width: 90%;
+  margin: 16px auto; /* espaçamento entre cards */
 }
 
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff; 
-}
-
-.go-init ion-label,
-.go-fila ion-label,
-.go-config ion-label {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  text-align: center;
-  color: #8A8A8A;
-}
-
-ion-footer {
-  position: fixed;
-  bottom: 0;
+.inner-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   width: 100%;
-  z-index: 1000;
+}
+
+.logo-container {
+  flex-shrink: 0;
+  width: 60px;
+  height: 60px;
+}
+
+.company-logo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #f3f3f3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.default-icon {
+  font-size: 48px;
+  color: #ccc;
+}
+
+.company-info {
+  flex-grow: 1;
+  padding-left: 10px;
+}
+
+.company-info h2 {
+  font-size: 16px;
+  margin: 0 0 4px 0;
+}
+
+.company-info p {
+  font-size: 13px;
+  margin: 2px 0;
+  color: #666;
+}
+
+.heart-icon {
+  font-size: 20px;
+  color: #e74c3c;
+  margin-left: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.heart-icon:hover {
+  transform: scale(1.2);
 }
 
 .menu-fixed-bottom {
   background-color: white;
-  border-top: 1px solid #E8E8E8;
+  border-top: 1px solid #e8e8e8;
 }
 
 .content-menu-border {
@@ -150,7 +186,6 @@ ion-footer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
 }
 
 ion-icon {
@@ -158,220 +193,53 @@ ion-icon {
 }
 
 ion-label {
-  margin-top: 5px;
   font-size: 12px;
   text-transform: uppercase;
-  color: #8A8A8A;
+  color: #8a8a8a;
 }
 
-ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
-ion-card-title {
+ion-title {
+  flex: 1;
   text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.card-bg-blue ion-card-title {
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
   color: white;
-}
-
-.company-info {
-  margin-top: 5px;
-}
-
-.company-info h2 {
-  margin: 0;
-  font-size: 18px;
+  font-size: 10px;
   font-weight: bold;
-}
-
-.company-info p {
-  margin: 4px 0;
-  color: #666;
-}
-
-.company-info ion-chip {
-  display: flex;
-  align-items: center;
-}
-
-.company-info ion-chip ion-icon {
-  margin-right: 10px;
-}
-
-.heart-icon {
-  position: absolute;
-  top: 10px; 
-  right: 10px; 
-  font-size: 24px; 
-  color: red; 
-  cursor: pointer; 
-}
-
-.header-company-info {
-  display: flex;
-  align-items: center;
-  padding: 10px;
-}
-
-.logo-circle {
-  width: 50px;
-  height: 50px;
+  padding: 2px 5px;
   border-radius: 50%;
-  overflow: hidden;
-  margin-right: 15px;
-}
-
-.logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.description-card h1 {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 0;
-}
-
-.description-card h2 {
-  font-size: 14px;
-  color: #666;
-  margin: 0;
-}
-
-.company-info {
-  margin-top: 10px;
-}
-
-.company-info p {
-  font-size: 14px;
-  color: #666;
-}
-
-
-.company-card {
-  position: fixed; 
-  top: 0; 
-  left: 0; 
-  right: 0; 
-  height: 30%; 
-  z-index: 9; 
-  background-color: #ffffff; 
-  border: none; 
-  box-shadow: none; 
-}
-
-.card-background {
-  margin-bottom: -9%;
-  width: 100%;
-  height: 100px; 
-  background-color: #696969;
-}
-
-.inner-card {
-  background-color: transparent; 
-  border-radius: 10px; 
-  padding: 16px;
-  text-align: left;
-}
-
-.inner-card-company {
-  background-color: transparent; 
-  border-radius: 10px; 
-  padding: 16px;
-  text-align: center;
-}
-
-.logo-container-company {
-  position: absolute;
-  top: -25px; /* Mantém a logo próxima ao topo */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30%; /* Aumente conforme necessário */
-  height: 55%; /* Aumente conforme necessário */
-  border-radius: 50%; 
-  overflow: hidden; 
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+  min-width: 16px;
+  height: 16px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  align-items: center;
-  background-color: #ffffff; 
-}
-
-
-.logo-container {
-  position: absolute;
-  top: 15px;
-  left: 20%;
-  transform: translateX(-50%);
-  width: px;
-  height: 60px;
-  background-color: #ffffff;
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-}
-
-.company-logo {
-  width: 100%; 
-  height: 100%; 
-  border-radius: 50%; 
-  overflow: hidden; 
-}
-
-.logo-img {
-  width: 100%;  
-  height: 100%; 
-  object-fit: cover; 
-}
-
-.company-info {
-  margin-top: 60px;
-}
-
-.company-info h2 {
-  margin: 0;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.company-info p {
-  margin: 4px 0;
-  color: #666;
-}
-
-.company-info ion-chip {
-  display: flex;
-  align-items: center;
-}
-
-.company-info ion-chip ion-icon {
-  margin-right: 10px;
-}
-
-.header-company-info {
-  position: sticky;
-  top: 0;
   z-index: 10;
-  background-color: white;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 16px;
-}
-
-ion-chip {
-  display: flex;
-  justify-content: center;
-  align-items: center; 
-  margin: 0 auto; 
-}
-
-.default-icon {
-  font-size: 60px; 
-  color: #cccccc;  
 }

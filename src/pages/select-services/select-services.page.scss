@@ -1,117 +1,122 @@
-ion-content {
+ion-content.no-scroll {
   --background: var(--bg-white);
+  display: flex;
+  flex-direction: column;
+  overflow-y: hidden;
+  height: 100%;
+  position: relative;
 }
 
 form {
-  width: 90%;
-  margin: 0 auto;
-  padding-bottom: 0;
-}
-
-ion-item {
-  margin: 20px 0;
-}
-
-ion-button {
-  margin-top: 20px;
-  background-color: var(--bg);
-  color: white;
-}
-
-ion-button:hover {
-  background-color: var(--bg-hover);
-}
-
-.menu-fixed-bottom {
-  width: 100%;
-  background: #ffffff;
-  border-top: 1px solid #e8e8e8;
-}
-
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff;
-}
-
-.go-init ion-label,
-.go-fila ion-label,
-.go-config ion-label {
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  text-align: center;
-  color: #8a8a8a;
-}
-
-ion-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.menu-fixed-bottom {
-  background-color: white;
-  border-top: 1px solid #e8e8e8;
-}
-
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.go-init,
-.go-fila,
-.go-config {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-ion-icon {
-  font-size: 24px;
-}
-
-ion-label {
-  margin-top: 5px;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #8a8a8a;
-}
-
-ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
-}
-
-ion-card-title {
-  text-align: center;
+  justify-content: space-between;
+  padding: 10px 5%;
+  box-sizing: border-box;
+  overflow: hidden;
 }
 
 .scrollable-content {
-  max-height: calc(100vh - 200px);
-  overflow-y: auto;
-  padding-bottom: 20px;
-}
-
-form {
+  flex: 1;
+  overflow: hidden; 
   display: flex;
   flex-direction: column;
-  height: 100%;
+  gap: 12px;
 }
 
-ion-item {
-  border: 1px solid transparent; /* Adiciona uma borda transparente */
-  box-shadow: none; /* Remove qualquer sombra */
+.service-selector-wrapper {
+  position: relative;
 }
 
-ion-item:focus {
-  border-color: transparent; /* Mantém a borda invisível ao focar */
+.service-list-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: white;
+  border-radius: 8px;
+  z-index: 200;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
+.selected-services-container {
+  height: 150px;
+  overflow-y: auto;
+  margin-top: 15px;
+  padding: 10px; 
+  background-color: #f9f9f9;
+  border-radius: 8px;
+}
+
+.service-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+}
+
+.payment-options {
+  margin-top: 20px;
+}
+
+.payment-title {
+  font-weight: bold;
+  font-size: 14px;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.payment-buttons {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.payment-buttons ion-button {
+  --border-radius: 12px;
+  flex: 1;
+  min-width: 0;
+  text-transform: none;
+  font-weight: 500;
+  justify-content: center;
+}
+
+/* Botão fixo */
+.enter-queue {
+  position: fixed;
+  bottom: 20px;
+  left: 5%;
+  right: 5%;
+  z-index: 999;
+  background-color: var(--bg);
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.botao-selecionar-servicos {
+  --background: #007bff !important; /* Cor de fundo do botão */
+  --background-hover: #0056b3; /* Cor de fundo ao passar o mouse */
+  --background-activated: #004494; /* Cor de fundo ao clicar */
+  color: #fff; /* Cor do texto */
+}
