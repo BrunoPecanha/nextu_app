@@ -9,7 +9,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class QueuePage implements OnInit {
   empresa: any = {};
-  posicaoNaFila: number = 2;
+  posicaoNaFila: number = 1;
   progressoFila: number = 0.5;
   mostrarDetalhes = false;
 
@@ -17,7 +17,10 @@ export class QueuePage implements OnInit {
   queue: any[] = [];
   userPosition: number = 0;
 
-  tempoRestanteMinutos: number = 70;
+  ehMinhaVez: boolean = false;
+  codigoAtendimento = '';
+
+  tempoRestanteMinutos: number = 10;
   tempoEstimado: string = '';
   corTempo: string = '';
 
@@ -28,6 +31,11 @@ export class QueuePage implements OnInit {
   ngOnInit() {
     this.loadQueueData();
     this.atualizarTempoEstimado();
+    this.verificaMinhaVez();
+  }
+
+  verificaMinhaVez() {
+    this.ehMinhaVez = this.posicaoNaFila === 1;
   }
 
   alternarDetalhes() {
