@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
-// import { EmpresaService } from '../services/empresa.service';
 
 @Component({
   selector: 'app-queue',
@@ -9,33 +8,54 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./queue.page.scss'],
 })
 export class QueuePage implements OnInit {
-// Configuração numeral de fila
-
   empresa: any = {};
   posicaoNaFila: number = 2;
-  progressoFila: number = 0.5; // 50% 
+  progressoFila: number = 0.5;
 
-  // Configuração ilustração da fila
+  pessoasNaFila = new Array(3);
+  queue: any[] = [];
+  userPosition: number = 0;
 
-  queue: any[] = []; // Array para representar a fila
-  userPosition: number = 0; // Posição atual do usuário na fila
+  tempoRestanteMinutos: number = 15;
+  tempoEstimado: string = '';
+  corTempo: string = '';
 
-  
-
-  constructor(private alertController: AlertController, private router: Router) {}
+  constructor(private alertController: AlertController, private router: Router) {
+    this.simularFila(3); 
+  }
 
   ngOnInit() {
     this.loadQueueData();
+    this.atualizarTempoEstimado();
+  }
+
+  simularFila(qtd: number) {
+    this.pessoasNaFila = Array(qtd).fill(null);
+    this.progressoFila = 1 - (this.posicaoNaFila - 1) / qtd;
   }
 
   private loadQueueData() {
-    // Simulação de dados obtidos do backend
-    this.queue = Array(20).fill({}); // Exemplo com 20 pessoas na fila
-    this.userPosition = 5; // Exemplo de posição do usuário (5ª na fila, pode ser ajustado)    
+    this.queue = Array(6).fill({}); 
+    this.userPosition = 3;   
 
     //TODO - Rota para pegar todas as pessoas na fila onde status é waiting. RelQueueCustomer
     // a rota tbm tratrá as pessoas ordenadas por ordem de chegada. Ou seja, a primeira pessoa
     // da lista é a primeira pessoa a chegar na fila.
+  }
+
+  atualizarTempoEstimado() {
+    const min = this.tempoRestanteMinutos;
+
+    if (min > 45) {
+      this.tempoEstimado = `${Math.floor(min / 60)} hora(s)`;
+      this.corTempo = 'verde';
+    } else if (min > 15) {
+      this.tempoEstimado = `${min} minutos`;
+      this.corTempo = 'amarelo';
+    } else {
+      this.tempoEstimado = `${min} minutos`;
+      this.corTempo = 'vermelho';
+    }
   }
 
   async showQueueAlert() {
@@ -47,7 +67,6 @@ export class QueuePage implements OnInit {
     await alert.present();
   }
 
-  // Método para sair da fila
   async exitQueue() {
     const alert = await this.alertController.create({
       header: 'Confirmar Saída',

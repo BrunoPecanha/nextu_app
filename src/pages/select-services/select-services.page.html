@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/home" text="" icon="arrow-back-outline"></ion-back-button>
+      <ion-back-button
+        defaultHref="/home"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>SELEÇÃO DE SERVIÇOS</ion-title>
     <ion-buttons slot="end">
@@ -17,10 +21,14 @@
     <div class="scrollable-content">
       <!-- Seleção de serviços -->
       <div class="service-selector-wrapper">
-        <ion-button expand="full" (click)="toggleServiceList()">
-          Selecionar Serviços
+        <ion-button
+          expand="full"
+          class="botao-selecionar-servicos"
+          (click)="toggleServiceList()"
+        >
+          <ion-icon name="list-outline" slot="start"></ion-icon>
+          Clique Para Escolher os Serviços
         </ion-button>
-
         <div class="service-list-container" *ngIf="isServiceListVisible">
           <ion-list>
             <ion-item
@@ -94,16 +102,19 @@
           </ion-button>
         </div>
       </div>
-      
 
       <ion-item>
-        <ion-label>TEMPO TOTAL (EST):</ion-label>
+        <ion-label
+          >TEMPO TOTAL:<br />
+          <small><i>(Estimado)</i></small> </ion-label
+        ><br />
         <ion-note slot="end">{{ totalTimeString }}</ion-note>
       </ion-item>
     </div>
   </form>
 
-  <ion-button class="enter-queue" expand="full" routerLink="/queue"
-    >Entrar na Fila</ion-button
-  >
+  <ion-button class="enter-queue" expand="full" routerLink="/queue">
+    <ion-icon name="log-in-outline" slot="start"></ion-icon>
+    Entrar na Fila
+  </ion-button>
 </ion-content>

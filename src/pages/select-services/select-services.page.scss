@@ -113,3 +113,10 @@ ion-title {
   font-size: 18px;
   font-weight: bold;
 }
+
+.botao-selecionar-servicos {
+  --background: #007bff !important; /* Cor de fundo do botão */
+  --background-hover: #0056b3; /* Cor de fundo ao passar o mouse */
+  --background-activated: #004494; /* Cor de fundo ao clicar */
+  color: #fff; /* Cor do texto */
+}

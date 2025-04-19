@@ -9,23 +9,43 @@ ion-content {
   width: 100%; 
   box-sizing: border-box; 
   padding: 0; 
+  overflow-x: hidden;
 }
 
 .cards-function {
   width: 100%;
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 1.5rem;
   padding: 1rem;
+  overflow-x: hidden;
 }
 
 .box {
+  flex: 1 1 calc(100% - 2rem); /* tela pequena: ocupa quase 100% */
+  max-width: 320px;
+  min-width: 260px;
+  box-sizing: border-box;
   border-radius: 15px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Tablets */
+@media (min-width: 600px) {
+  .box {
+    flex: 1 1 calc(50% - 2rem);
+  }
+}
+
+/* Telas grandes */
+@media (min-width: 900px) {
+  .box {
+    flex: 1 1 calc(33.333% - 2rem);
+  }
 }
 
 .card-inner {
@@ -36,28 +56,6 @@ ion-content {
   position: relative;
 }
 
-@media (min-width: 600px) {
-  .cards-function {
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .box {
-    width: 100%;
-    max-width: 240px;
-  }
-}
-
-.box {
-  border-radius: 15px;
-  overflow: hidden;
-  position: relative;
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  max-width: 280px;
-}
 .circle-icon {
   width: 80px;
   height: 80px;
@@ -72,10 +70,6 @@ ion-content {
   transform: translateX(-50%);
 }
 
-
-.container, .cards-function {
-  overflow-x: hidden;
-}
 .circle-icon ion-icon {
   font-size: 48px;
   color: #FFFFFF;

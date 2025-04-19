@@ -24,10 +24,9 @@ ion-content {
   --padding-top: 0;
 }
 
-/* Scroll horizontal fixado */
 .horizontal-scroll {
   position: relative;
-  top: 10%;
+  top: 7%;
   z-index: 999;
   background-color: #fff;
   padding: 10px 16px;
@@ -78,6 +77,7 @@ ion-content {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 16px;
+  padding-bottom: 100px; /* espaço suficiente para o rodapé */
 }
 
 ion-card.box {
@@ -290,4 +290,34 @@ ion-label {
   text-decoration: none;
   color: #007bff;
   font-size: 12px;
+}
+
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
 }
