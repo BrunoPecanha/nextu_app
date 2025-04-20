@@ -1,0 +1,76 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/home"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>CLIENTES AGUARDANDO</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngFor="let cliente of clientes" class="card-cliente">
+    <div class="card-content">
+      <h3>{{ cliente.nome }}</h3>
+      <p class="servico">{{ cliente.servicos }}</p>
+
+      <div class="info-extra">
+        <div class="tempo-espera">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Entrou na fila: {{ cliente.hora }}</span>
+        </div>
+        
+        <div class="pagamento">
+          <ion-icon name="cash-outline"></ion-icon>
+          <span>{{ cliente.pagamento }}</span>
+        </div>
+        
+        <div class="espera">
+          <ion-icon name="person-circle"></ion-icon>
+          <span>{{ calcularTempoEspera(cliente.hora) }}</span>
+        </div>
+      </div>
+
+      <div class="botoes">
+        <ion-button color="medium" size="small" fill="outline"
+          >Cancelar</ion-button
+        >
+        <ion-button color="primary" size="small">Realizar</ion-button>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <!-- Adicionando o menu no rodapé -->
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <!-- Aqui está o menu button no rodapé -->
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>
