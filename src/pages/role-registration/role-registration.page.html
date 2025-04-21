@@ -30,7 +30,23 @@
         </div>
       </ion-card>
 
-      <ion-card class="box" routerLink="/professional-registration">
+
+      <ion-card class="box" *ngIf="!usuario?.company" (click)="criarEmpresa()">
+        <div class="card-inner">
+          <div class="circle-icon add-icon">
+            <ion-icon name="add-circle-outline"></ion-icon>
+          </div>
+          <ion-card-header>
+            <ion-card-title class="card-title">Criar uma Empresa</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="description-card">
+            <h2>Criar uma empresa no app ?</h2>
+            <h3>Toque aqui para cadastrar</h3>
+          </ion-card-content>
+        </div>
+      </ion-card>
+
+      <ion-card class="box" *ngIf="usuario?.company" routerLink="/costumer-list-in-queue">
         <div class="card-inner">
           <div class="circle-icon">
             <ion-icon name="briefcase"></ion-icon>

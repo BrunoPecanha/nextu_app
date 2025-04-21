@@ -12,8 +12,10 @@ export class CostumerListInQueuePage implements OnInit {
   constructor() { 
     this.clientes = [
       { nome: 'JOSÉ', servicos: 'CORTE À MÁQUINA, BARBA', hora: '14:00', pagamento: 'DINHEIRO' },
-      { nome: 'ANDRÉ', servicos: 'CORTE À TESOURA, BARBA', hora: '14:10', pagamento: 'C. CRÉDITO' },
-      { nome: 'CAMILA', servicos: 'CORTE À TESOURA, PINTAR CABELO', hora: '14:15', pagamento: 'DINHEIRO' }
+      { nome: 'ANDRÉ', servicos: 'CORTE À TESOURA, BARBA', hora: '14:10', pagamento: 'CRÉDITO' },
+      { nome: 'CAMILA', servicos: 'CORTE À TESOURA, PINTAR CABELO', hora: '14:15', pagamento: 'DINHEIRO' },
+      { nome: 'CAMILA', servicos: 'CORTE À TESOURA, PINTAR CABELO', hora: '14:30', pagamento: 'PIX'}
+    
     ];
 
   }
@@ -21,14 +23,23 @@ export class CostumerListInQueuePage implements OnInit {
   ngOnInit() {
   }
 
-  obterIconePagamento(tipo: string): string {
-    switch (tipo.toLowerCase()) {
-      case 'dinheiro': return 'cash-outline';
-      case 'c. credito': return 'card-outline';
-      case 'pix': return 'qr-code-outline';
-      default: return 'help-outline';
+  getIconPagamento(pagamento: string): string {
+    switch (pagamento.toUpperCase()) {
+      case 'DINHEIRO':
+        return 'cash-outline';
+      case 'C. CRÉDITO':
+      case 'CRÉDITO':
+        return 'card-outline';
+      case 'DÉBITO':
+      case 'C. DÉBITO':
+        return 'card-outline';
+      case 'PIX':
+        return 'qr-code-outline';
+      default:
+        return 'help-circle-outline';
     }
   }
+  
   
   calcularTempoEspera(horaEntrada: string): string {
     const agora = new Date();

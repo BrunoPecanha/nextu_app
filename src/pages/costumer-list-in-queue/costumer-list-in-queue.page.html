@@ -7,7 +7,7 @@
         icon="arrow-back-outline"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>CLIENTES AGUARDANDO</ion-title>
+    <ion-title>FILA ATUAL</ion-title>
     <ion-buttons slot="end">
       <ion-button>
         <ion-icon></ion-icon>
@@ -29,9 +29,10 @@
         </div>
         
         <div class="pagamento">
-          <ion-icon name="cash-outline"></ion-icon>
+          <ion-icon [name]="getIconPagamento(cliente.pagamento)"></ion-icon>
           <span>{{ cliente.pagamento }}</span>
         </div>
+        
         
         <div class="espera">
           <ion-icon name="person-circle"></ion-icon>
@@ -41,9 +42,9 @@
 
       <div class="botoes">
         <ion-button color="medium" size="small" fill="outline"
-          >Cancelar</ion-button
+          >Remover</ion-button
         >
-        <ion-button color="primary" size="small">Realizar</ion-button>
+        <ion-button color="primary" size="small">Atender</ion-button>
       </div>
     </div>
   </div>
@@ -64,7 +65,7 @@
       <div class="go-config notification-footer">
         <ion-icon name="notifications-outline"></ion-icon>
         <span class="notification-badge">3</span>
-        <ion-label>NOTIFICAÇÕES</ion-label>
+        <ion-label>Notificações</ion-label>
       </div>
       <!-- Aqui está o menu button no rodapé -->
       <div class="go-menu">
