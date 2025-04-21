@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { AlertController } from '@ionic/angular';
-import Swiper from 'swiper'; // Importa o Swiper
 
 @Component({
   selector: 'app-select-company',
@@ -10,6 +9,8 @@ import Swiper from 'swiper'; // Importa o Swiper
 export class SelectCompanyPage implements OnInit {
   constructor(private alertController: AlertController) { }
 
+  searching = false;
+  searchQuery = '';
   showRecentCards = false;
   selectedServiceType: any;
   slideOpts = {
@@ -46,34 +47,18 @@ export class SelectCompanyPage implements OnInit {
     console.log('SwiperRef:', e.detail[0].activeIndex);
   }
 
-  // Popup para busca de estabelecimento
-  async presentSearchPopup() {
-    const alert = await this.alertController.create({
-      header: 'PESQUISAR LOJA',
-      inputs: [
-        {
-          name: 'searchQuery',
-          type: 'text'
-        }
-      ],
-      buttons: [
-        {
-          text: 'Buscar',
-          handler: (data) => {
-            this.onSearchSubmit(data.searchQuery);
-          }
-        },
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancelado');
-          }
-        }
-      ]
-    });
+  get filteredCards() {
+    const query = this.searchQuery.toLowerCase();
+    return this.companyCards.filter(card => card.name.toLowerCase().includes(query));
+  }
 
-    await alert.present();
+  toggleSearch() {
+    this.searching = !this.searching;
+    this.searchQuery = '';
+  }
+
+  onSearch(event: any) {
+    this.searchQuery = event.detail.value;
   }
 
   toggleRecentCards() {
