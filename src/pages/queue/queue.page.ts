@@ -12,7 +12,8 @@ export class QueuePage implements OnInit {
   posicaoNaFila: number = 1;
   progressoFila: number = 0.5;
   mostrarDetalhes = false;
-
+  horaChamada = '10:00';
+  
   pessoasNaFila = new Array(3);
   queue: any[] = [];
   userPosition: number = 0;
@@ -20,7 +21,7 @@ export class QueuePage implements OnInit {
   ehMinhaVez: boolean = false;
   codigoAtendimento = '';
 
-  tempoRestanteMinutos: number = 10;
+  tempoRestanteMinutos: number = 34;
   tempoEstimado: string = '';
   corTempo: string = '';
 

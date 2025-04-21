@@ -1,44 +1,58 @@
 <ion-app>
   <ion-menu contentId="main-content" side="start" menuId="first">
     <ion-content class="menu-content">
-      
       <div class="menu-header">
-        <img src="assets/images/splash/Logo.svg"  alt="Logo do sistema" class="logo"  />      
+        <img
+          src="assets/images/splash/Logo.svg"
+          alt="Logo do sistema"
+          class="logo"
+        />
       </div>
 
       <div class="user-info">
-        <img src="assets/images/login/sr_inadimplente.png" alt="Avatar" class="user-avatar" />
+        <img
+          src="assets/images/login/sr_inadimplente.png"
+          alt="Avatar"
+          class="user-avatar"
+        />
         <div>
-          <div class="user-name">Bruno Peçanha</div>
-          <div class="user-email">Aguardando em 1(s) fila(s)</div>
+          <div class="user-name">BRUNO PEÇANHA</div>
+          <div class="user-email">AGUARDANDO EM 1(s) FILA(s)</div>
         </div>
       </div>
 
       <ion-list>
         <ion-menu-toggle auto-hide="true">
           <ion-item routerLink="/role-registration">
-            <ion-icon name="home" slot="start"></ion-icon>
-            <ion-label>Início</ion-label>
+            <ion-icon name="home-outline" slot="start"></ion-icon>
+            <ion-label>INÍCIO</ion-label>
           </ion-item>
           <ion-item routerLink="/queue">
-            <ion-icon name="people" slot="start"></ion-icon>
-            <ion-label>Fila</ion-label>
+            <ion-icon name="people-outline" slot="start"></ion-icon>
+            <ion-label>FILA</ion-label>
           </ion-item>
           <ion-item>
-            <ion-icon name="settings" slot="start"></ion-icon>
-            <ion-label>Configurações</ion-label>
+            <ion-icon name="settings-outline" slot="start"></ion-icon>
+            <ion-label>CONFIGURAÇÕES</ion-label>
           </ion-item>
           <ion-item>
-            <ion-icon name="log-out" slot="start"></ion-icon>
-            <ion-label>Sair</ion-label>
+            <ion-icon name="person-outline" slot="start"></ion-icon>
+            <ion-label>COLABORADORES</ion-label>
+          </ion-item>
+          <ion-item>
+            <ion-icon name="log-out-outline" slot="start"></ion-icon>
+            <ion-label>SAIR</ion-label>
           </ion-item>
         </ion-menu-toggle>
       </ion-list>
 
       <div class="menu-footer">
-        <small>Versão: Beta 1.0.0</small>
+        <small>VERSÃO: BETA 1.0.0</small>
         <div class="footer-logo">
-          <img src="assets/images/utils/logo-uff.png" alt="Emblema da faculdade" />
+          <img
+            src="assets/images/utils/logo-uff.png"
+            alt="Emblema da faculdade"
+          />
         </div>
       </div>
     </ion-content>

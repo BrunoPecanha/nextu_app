@@ -153,3 +153,21 @@ ion-title {
   font-size: 18px;
   font-weight: bold;
 }
+
+.card-inner {
+  text-align: center;
+}
+
+.add-icon {
+  background-color: #d6f5e3;
+  color: #2dd36f;
+}
+
+.box {
+  cursor: pointer;
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+}

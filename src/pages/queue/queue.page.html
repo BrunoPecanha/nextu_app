@@ -48,12 +48,13 @@
         class="qr-section"
         style="text-align: center; margin: 16px 0"
       >
-        <img
-          src="assets/images/qr-code/qr_code_teste.png"
-          alt="QR Code"
-        />
+        <ion-note color="warning"> Chamado às {{ horaChamada }}. </ion-note>
+        <img src="assets/images/qr-code/qr_code_teste.png" alt="QR Code" />
         <ion-note color="warning">
-          Mostre esse QR Code para o atendente iniciar seu atendimento.
+          Mostre esse QR Code para o atendente.
+        </ion-note>
+        <ion-note color="warning">
+          Fique atento! Tolerância de 5 minutos após ser chamado.
         </ion-note>
       </div>
 
@@ -62,7 +63,7 @@
         <p>Você está na fila do(a) Léo.</p>
       </div>
 
-      <div class="fila-visual">
+      <div *ngIf="!ehMinhaVez" class="fila-visual">
         <div
           class="fila-scroll-container"
           [ngClass]="{'scroll': pessoasNaFila.length > 5}"
@@ -90,10 +91,6 @@
         <ion-icon name="exit-outline" slot="start"></ion-icon>
         Sair da fila
       </ion-button>
-
-      <ion-note color="warning">
-        Fique atento! Tolerância de 5 minutos após ser chamado.
-      </ion-note>
     </div>
   </ion-card>
 </ion-content>

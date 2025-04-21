@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-role-registration',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RoleRegistrationPage implements OnInit {
 
-  constructor() { }
+
+  usuario: any;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+    // this.usuario = {
+    //   company: 'Lucas'
+    // };
   }
 
+  criarEmpresa() {
+    this.router.navigate(['/company-configurations']);
+  }
 }
