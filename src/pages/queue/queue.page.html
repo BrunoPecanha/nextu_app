@@ -25,49 +25,46 @@
           class="logo"
         ></ion-img>
         <div class="nome-empresa">
-          <h6 *ngIf="!ehMinhaVez">Você é o {{posicaoNaFila}}º na fila</h6>
+          <h6 *ngIf="!ehMinhaVez">Você é o {{ posicaoNaFila }}º na fila</h6>
           <h6 *ngIf="ehMinhaVez">É a sua vez !</h6>
         </div>
       </div>
 
-      <div
-        *ngIf="!mostrarDetalhes"
-        class="tempo-indicador"
-        [ngClass]="corTempo"
-      ></div>
+      <div *ngIf="!mostrarDetalhes" class="tempo-indicador" [ngClass]="corTempo"></div>
       <div class="botao-toggle">
         <ion-icon
-          [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'"
-        ></ion-icon>
+          [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'">
+        </ion-icon>
       </div>
     </div>
 
     <div class="card-conteudo" *ngIf="mostrarDetalhes">
+      <!-- QR Code quando for a vez do usuário -->
       <div
         *ngIf="ehMinhaVez"
         class="qr-section"
         style="text-align: center; margin: 16px 0"
       >
-        <ion-note color="warning"> Chamado às {{ horaChamada }}. </ion-note>
-        <img src="assets/images/qr-code/qr_code_teste.png" alt="QR Code" />
-        <ion-note color="warning">
-          Mostre esse QR Code para o atendente.
-        </ion-note>
-        <ion-note color="warning">
-          Fique atento! Tolerância de 5 minutos após ser chamado.
-        </ion-note>
+        <ion-note color="warning">Chamado às {{ horaChamada }}.</ion-note>
+        <ion-spinner *ngIf="!qrCodeBase64" name="dots"></ion-spinner>
+        <img
+          *ngIf="qrCodeBase64"
+          [src]="qrCodeBase64"
+          alt="QR Code"
+          style="width: 200px; height: 200px; margin: 12px auto"
+        />
+        <ion-note color="warning">Mostre esse QR Code para o atendente.</ion-note>
+        <ion-note color="warning">Fique atento! Tolerância de 5 minutos após ser chamado.</ion-note>
       </div>
 
+      <!-- Infos padrão caso ainda não seja a vez -->
       <div *ngIf="!ehMinhaVez" class="fila-info">
         <h6>E aí, Bruno, tudo bem?</h6>
         <p>Você está na fila do(a) Léo.</p>
       </div>
 
       <div *ngIf="!ehMinhaVez" class="fila-visual">
-        <div
-          class="fila-scroll-container"
-          [ngClass]="{'scroll': pessoasNaFila.length > 5}"
-        >
+        <div class="fila-scroll-container" [ngClass]="{ scroll: pessoasNaFila.length > 5 }">
           <div
             *ngFor="let pessoa of pessoasNaFila; let idx = index"
             class="avatar-container"
@@ -98,7 +95,6 @@
 <ion-footer>
   <div class="menu-fixed-bottom">
     <div class="content-menu-border">
-      <!-- Adicionando o menu no rodapé -->
       <div class="go-init">
         <ion-icon name="home-outline"></ion-icon>
         <ion-label>Início</ion-label>
@@ -112,7 +108,6 @@
         <span class="notification-badge">3</span>
         <ion-label>NOTIFICAÇÕES</ion-label>
       </div>
-      <!-- Aqui está o menu button no rodapé -->
       <div class="go-menu">
         <ion-menu-button></ion-menu-button>
         <ion-label>Menu</ion-label>

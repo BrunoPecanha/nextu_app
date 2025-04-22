@@ -27,13 +27,12 @@
           <ion-icon name="time-outline"></ion-icon>
           <span>Entrou na fila: {{ cliente.hora }}</span>
         </div>
-        
+
         <div class="pagamento">
           <ion-icon [name]="getIconPagamento(cliente.pagamento)"></ion-icon>
           <span>{{ cliente.pagamento }}</span>
         </div>
-        
-        
+
         <div class="espera">
           <ion-icon name="person-circle"></ion-icon>
           <span>{{ calcularTempoEspera(cliente.hora) }}</span>
@@ -41,10 +40,26 @@
       </div>
 
       <div class="botoes">
-        <ion-button color="medium" size="small" fill="outline"
-          >Remover</ion-button
+        <ion-button
+          color="medium"
+          size="small"
+          fill="outline"
+          (click)="openRemoveConfirmation()"
         >
-        <ion-button color="primary" size="small">Atender</ion-button>
+          Remover
+        </ion-button>
+        <ion-button
+          size="small"
+          (click)="startQRCodeScan(cliente)"
+          [color]="cliente.emAtendimento ? 'warning' : 'primary'"
+        >
+          <ion-icon
+            [name]="cliente.emAtendimento ? 'time-outline' : 'walk-outline'"
+            slot="start"
+            style="color: white;"
+          ></ion-icon>
+          {{ cliente.emAtendimento ? 'Em Atendimento' : 'Atender' }}
+        </ion-button>
       </div>
     </div>
   </div>
@@ -53,7 +68,6 @@
 <ion-footer>
   <div class="menu-fixed-bottom">
     <div class="content-menu-border">
-      <!-- Adicionando o menu no rodapé -->
       <div class="go-init">
         <ion-icon name="home-outline"></ion-icon>
         <ion-label>Início</ion-label>
@@ -67,7 +81,6 @@
         <span class="notification-badge">3</span>
         <ion-label>Notificações</ion-label>
       </div>
-      <!-- Aqui está o menu button no rodapé -->
       <div class="go-menu">
         <ion-menu-button></ion-menu-button>
         <ion-label>Menu</ion-label>
