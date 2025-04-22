@@ -1,0 +1,47 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/costumer-list-in-queue"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>ATENDENDO</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="ion-padding">
+  <div class="atendimento-container">
+    <div class="atendimento-card">
+      <div class="avatar-wrapper">
+        <ion-icon name="person-circle-outline" class="cliente-icon"></ion-icon>
+      </div>
+      <h1>{{ cliente.nome }}</h1>
+
+      <div class="info-bloco">
+        <ion-icon name="cut-outline" class="info-icon"></ion-icon>
+        <p>{{ cliente.servicos }}</p>
+      </div>
+
+      <div class="info-bloco">
+        <ion-icon name="card-outline" class="info-icon"></ion-icon>
+        <p>{{ cliente.pagamento }}</p>
+      </div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-button expand="block" color="primary" size="large" shape="round" (click)="confirmarFinalizacao()">
+      <ion-icon name="checkmark-circle-outline" slot="start"></ion-icon>
+      Finalizar Serviço
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

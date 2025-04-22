@@ -1,70 +1,65 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/select-company" text="" icon="arrow-back-outline"></ion-back-button>
+      <ion-back-button
+        defaultHref="/select-company"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
     </ion-buttons>
-    <ion-title>FILAS DISPONÍVEIS</ion-title>
+    <ion-title>SELECIONE A FILA</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
+      <ion-button (click)="abrirLojaDetalhada()">
+        <ion-icon slot="icon-only" name="storefront-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content fullscreen>
-  <ion-card class="company-card">
-    <div class="logo-container-company">
-      <img src="assets/images/company-logo/kingssons.jpeg" alt="Logo" class="logo-img" />
-    </div>
-    <ion-card-content>
-      <div>
-        <h2>KING'S SONS</h2>
-        <h3>Barbershop da Prata - B Roxo</h3>
-      </div>
-    </ion-card-content>
-  </ion-card>
+<div class="header-loja-fixo">
+  <img [src]="store?.imageUrl || 'assets/imgs/logo-placeholder.png'" class="logo-loja" />
+  <h2 class="nome-loja">{{ store?.name }}</h2>
+  <p class="descricao-loja">{{ store?.description || 'Bem-vindo à nossa loja!' }}</p>
+</div>
 
-  <!-- Lista de Cards -->
-  <div class="scrollable-content">
-    <div class="cards-companies">
-      <ion-card
-        class="box"
-        *ngFor="let card of companyCards; let i = index"
-        [routerLink]="['/select-professional']"
-        (click)="cardClicked(i, $event)"
-      >
-        <ion-card-content>
-          <div class="inner-card">
-            <div class="logo-container">
-              <div class="company-logo">
-                <img
-                  *ngIf="card.profileUrl; else defaultIcon"
-                  [src]="card.profileUrl"
-                  alt="Logo da empresa"
-                  class="logo-img"
-                />
-                <ng-template #defaultIcon>
-                  <ion-icon name="person-circle" class="default-icon"></ion-icon>
-                </ng-template>
-              </div>
-            </div>
-            <div class="company-info">
-              <h2>{{ card.name }}</h2>
-              <p>{{ card.type }}</p>
-              <p><ion-icon name="time-outline"></ion-icon> {{ card.queue }} min</p>
-              <p><ion-icon name="people-outline"></ion-icon> {{ card.peoplewaiting }} aguardando</p>
-            </div>
-            <ion-icon
-              [name]="card.liked ? 'heart' : 'heart-outline'"
-              (click)="toggleLike(i, $event)"
-              class="heart-icon"
-            ></ion-icon>
-          </div>
-        </ion-card-content>
-      </ion-card>
-    </div>
+<ion-content class="scroll-area">
+  <div class="filas-wrapper" *ngIf="store?.queues?.length; else semFilas">
+    <ion-card class="fila-card" *ngFor="let fila of store?.queues" (click)="entrarNaFila(fila)">
+      <ion-card-header>
+        <ion-item lines="none">
+          <ion-label>
+            <h2>{{ fila.name }}</h2>
+            <p>{{ fila.description || 'Serviço disponível' }}</p>
+          </ion-label>
+          <ion-buttons slot="end">
+            <ion-button fill="clear" (click)="toggleLike(fila, $event)">
+              <ion-icon [name]="fila.liked ? 'heart' : 'heart-outline'" color="danger"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </ion-item>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="fila-info">
+          <ion-icon name="time-outline"></ion-icon>
+          <span>Média de espera: {{ fila.avgWait || '--' }} min</span>
+        </div>
+        <div class="fila-info">
+          <ion-icon name="people-outline"></ion-icon>
+          <span>Pessoas na fila: {{ fila.peopleWaiting || 0 }}</span>
+        </div>
+        <div class="fila-info" *ngIf="fila.services?.length">
+          <ion-icon name="construct-outline"></ion-icon>
+          <span>Serviços: {{ fila.services?.join(', ') }}</span>
+        </div>       
+      </ion-card-content>
+    </ion-card>
   </div>
+
+  <ng-template #semFilas>
+    <div class="mensagem-vazia">
+      <p>Nenhuma fila cadastrada no momento.</p>
+    </div>
+  </ng-template>
 </ion-content>
 
 <ion-footer>

@@ -45,7 +45,12 @@ const routes: Routes = [
   {
     path: 'company-configurations',
     loadChildren: () => import('../pages/company-configurations/company-configurations.module').then( m => m.CompanyConfigurationsPageModule)
+  },
+  {
+    path: 'customer-service',
+    loadChildren: () => import('../pages/customer-service/customer-service.module').then( m => m.CustomerServicePageModule)
   }
+
 
 
 

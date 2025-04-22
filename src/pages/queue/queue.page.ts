@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { QueueService } from 'src/services/queue-service';
+
 
 @Component({
   selector: 'app-queue',
@@ -13,7 +15,8 @@ export class QueuePage implements OnInit {
   progressoFila: number = 0.5;
   mostrarDetalhes = false;
   horaChamada = '10:00';
-  
+  qrCodeBase64: string | null = null;
+
   pessoasNaFila = new Array(3);
   queue: any[] = [];
   userPosition: number = 0;
@@ -25,7 +28,7 @@ export class QueuePage implements OnInit {
   tempoEstimado: string = '';
   corTempo: string = '';
 
-  constructor(private alertController: AlertController, private router: Router) {
+  constructor(private alertController: AlertController, private router: Router, private queueService: QueueService ) {
     this.simularFila(5);
   }
 
@@ -33,6 +36,12 @@ export class QueuePage implements OnInit {
     this.loadQueueData();
     this.atualizarTempoEstimado();
     this.verificaMinhaVez();
+
+    setTimeout(() => {
+      this.ehMinhaVez = true;
+      this.horaChamada = new Date().toLocaleTimeString();
+      this.gerarQrCodeMockado();
+    }, 3000); // simula chamada após 3s
   }
 
   verificaMinhaVez() {
@@ -43,11 +52,35 @@ export class QueuePage implements OnInit {
     this.mostrarDetalhes = !this.mostrarDetalhes;
   }
 
+  gerarQrCodeMockado() {
+    this.queueService.gerarQrCode().subscribe((res) => {
+      this.qrCodeBase64 = res.qrCode; // já no formato data:image/png;base64,...
+    });
+  }
+
+  verificaPosicaoFila() {
+    // lógica para verificar a fila e atualizar as variáveis
+    this.queueService.getPosicao().subscribe((res) => {
+      this.posicaoNaFila = res.posicao;
+      this.ehMinhaVez = res.ehMinhaVez;
+
+      if (this.ehMinhaVez) {
+        this.carregarQrCode();
+      }
+    });
+  }
+
+  carregarQrCode() {
+    this.queueService.gerarQrCode().subscribe((res) => {
+      this.qrCodeBase64 = res.qrCode; // já no formato data:image/png;base64,...
+    });
+  }
+
   simularFila(qtd: number) {
     this.pessoasNaFila = Array.from({ length: qtd }, (_, idx) => ({
       id: idx + 1,
       nome: `Pessoa ${idx + 1}`,
-      avatar: 'person-circle',  
+      avatar: 'person-circle',
     }));
 
     this.progressoFila = 1 - (this.posicaoNaFila - 1) / qtd;
@@ -56,11 +89,11 @@ export class QueuePage implements OnInit {
   async presentInfoPopup() {
     const alert = await this.alertController.create({
       header: 'Legenda',
-      message: '', 
+      message: '',
       buttons: [
         {
-          text: 'x', 
-          role: 'cancel',  
+          text: 'x',
+          role: 'cancel',
           handler: () => {
             console.log('Modal fechado');
           }
