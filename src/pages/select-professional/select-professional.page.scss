@@ -1,176 +1,93 @@
-.company-card {
-  background: linear-gradient(135deg, #1f1c2c, #928dab);
-  border-radius: 0 0 16px 16px;
-  position: relative;
-  margin-top: 0;
-  padding-top: 100px; /* espaço para a logo “encaixada” */
+/* Estilo da área da loja */
+.header-loja {
   text-align: center;
-  color: white;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  padding: 24px 16px 16px;
+  background: linear-gradient(135deg, #fefefe, #e8ecf1);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 16px;
 }
 
-.description-chip {
-  background-color: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(6px);
-  color: #fff;
-  color: #2c2c2c; /* texto escuro */
-  font-size: 0.85rem;
-  font-weight: 500;
-  padding: 4px 12px;
-  border-radius: 20px;
+/* Header fixo da loja */
+.header-loja-fixo {
+  position: sticky;
+  top: 56px; /* Altura do ion-header */
+  z-index: 10;
+  background: linear-gradient(135deg, #fefefe, #e8ecf1);
+  padding: 24px 16px 16px;
+  border-radius: 0 0 24px 24px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.logo-loja {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.nome-loja {
+  font-size: 22px;
+  font-weight: 600;
+  margin: 0;
+}
+
+.descricao-loja {
+  font-size: 14px;
+  color: #6c757d;
   margin-top: 4px;
 }
 
-.logo-container-company img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+
+ion-content.scroll-area {
+  padding-bottom: 100px; /* Espaço seguro para o rodapé */
+  padding-top: 12px;
+  overflow-y: auto;
 }
 
-.company-name {
-  font-weight: bold;
-  font-size: 1.2rem;
-  margin-top: 8px;
-}
-
-.company-desc {
-  font-size: 0.9rem;
-  opacity: 0.8;
-  background: rgba(255, 255, 255, 0.15);
-  padding: 6px 12px;
+/* Cards de fila */
+.fila-card {
   border-radius: 20px;
-  display: inline-block;
-  margin-top: 6px;
-}
-
-.logo-container-company {
-  position: absolute;
-  top: 10%; /* deixa a logo "pendurada" no topo */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  background-color: white;
-  border: 3px solid white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  z-index: 10;
-}
-
-.logo-container-company img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.logo-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.company-info h2 {
-  font-size: 1.3rem;
-  font-weight: bold;
-  margin-top: 8px;
-  color: red;
-}
-
-.company-info ion-chip {
-  margin-top: 6px;
-  background-color: rgba(255, 255, 255, 0.25);
-  color: #ffffff;
-  font-size: 0.85rem;
-  font-weight: 300;
-  border-radius: 16px;
-}
-
-.scrollable-content {
-  margin-top: 0;
-  padding-bottom: 0.5rem; /* Ajusta de acordo com a altura real do rodapé */
-}
-
-.cards-companies {
-  width: 92%;
-  margin: 2rem auto;
-}
-
-.box {
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border-radius: 16px;
-  background-color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08); /* MELHORADO */
-  transition: transform 0.2s;
-  max-width: 90%;
-  margin: 16px auto; /* espaçamento entre cards */
-}
-
-.inner-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
-
-.logo-container {
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
-}
-
-.company-logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #f3f3f3;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.default-icon {
-  font-size: 48px;
-  color: #ccc;
-}
-
-.company-info {
-  flex-grow: 1;
-  padding-left: 10px;
-}
-
-.company-info h2 {
-  font-size: 16px;
-  margin: 0 0 4px 0;
-}
-
-.company-info p {
-  font-size: 13px;
-  margin: 2px 0;
-  color: #666;
-}
-
-.heart-icon {
-  font-size: 20px;
-  color: #e74c3c;
-  margin-left: 8px;
-  cursor: pointer;
+  margin-bottom: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease;
 }
 
-.heart-icon:hover {
-  transform: scale(1.2);
+.fila-card:hover {
+  transform: translateY(-4px);
+}
+
+.fila-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  font-size: 14px;
+  color: #333;
+}
+
+.mensagem-vazia {
+  text-align: center;
+  color: #888;
+  padding: 32px 16px;
+  font-style: italic;
+}
+
+/* Rodapé */
+ion-footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-top: 1px solid #E8E8E8;
 }
 
 .menu-fixed-bottom {
-  background-color: white;
-  border-top: 1px solid #e8e8e8;
+  width: 100%;
+  background: #ffffff;
 }
 
 .content-menu-border {
@@ -186,16 +103,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-}
-
-ion-icon {
-  font-size: 24px;
-}
-
-ion-label {
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #8a8a8a;
+  justify-content: center;
 }
 
 ion-toolbar {
@@ -214,16 +122,19 @@ ion-title {
   font-weight: bold;
 }
 
-.notification-footer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+ion-icon {
+  font-size: 24px;
 }
 
-.notification-footer ion-icon {
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.notification-footer {
   position: relative;
-  font-size: 24px;
 }
 
 .notification-badge {
@@ -241,5 +152,15 @@ ion-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
+}
+
+/* Ajuste para telas menores */
+@media (max-width: 600px) {
+  ion-content.scroll-area {
+    padding-bottom: 80px;
+  }
+
+  .fila-card {
+    margin-bottom: 12px; /* Reduz o espaço entre os cards */
+  }
 }

@@ -1,0 +1,82 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button
+        defaultHref="/select-professional"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
+    </ion-buttons>
+    <ion-title>LOJA</ion-title>
+    <ion-buttons slot="end">
+      <ion-button>
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen class="loja-container">
+  <!-- Papel de parede da loja -->
+  <div class="loja-banner">
+    <img [src]="loja.papelParede" class="img-banner" />
+
+    <!-- Logo flutuante -->
+    <div class="logo-wrapper">
+      <img [src]="loja.logo" class="logo-loja" />
+    </div>
+  </div>
+
+  <!-- Informações principais -->
+  <div class="loja-info">
+    <h2 class="nome-loja">{{ loja.nome }}</h2>
+    <p class="descricao-loja">{{ loja.descricao }}</p>
+
+    <ion-chip *ngFor="let chip of loja.chips" color="medium" outline>
+      <ion-icon [name]="chip.icon"></ion-icon>
+      <ion-label>{{ chip.label }}</ion-label>
+    </ion-chip>
+  </div>
+
+  <!-- Lista de serviços -->
+  <ion-list class="servicos-lista">
+    <ion-item *ngFor="let servico of servicos">
+      <ion-avatar slot="start">
+        <img [src]="servico.imagem" />
+      </ion-avatar>
+
+      <ion-label>
+        <h3>{{ servico.nome }}</h3>
+        <p>{{ servico.descricao }}</p>
+      </ion-label>
+
+      <ion-note slot="end" color="primary">
+        R$ {{ servico.preco | number:'1.2-2' }}
+      </ion-note>
+    </ion-item>
+  </ion-list>  
+</ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>

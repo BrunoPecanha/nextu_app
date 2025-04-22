@@ -1,0 +1,184 @@
+.loja-banner {
+  position: relative;
+  height: 200px;
+  background-color: #f4f4f4;
+  overflow: visible;
+}
+
+.img-banner {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.loja-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* Garantir que ocupe a altura total da tela */
+  overflow: hidden; /* Impede a rolagem do conteúdo inteiro */
+}
+
+.logo-wrapper {
+  position: absolute;
+  bottom: -40px; /* ajustando para descer a logo */
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border-radius: 50%;
+  padding: 8px; /* aumentei um pouco o padding para balancear melhor */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+.logo-loja {
+  width: 100px; /* aumentei para 100px se quiser manter em 80px pode voltar */
+  height: 100px;
+  border-radius: 50%; /* deixei o border-radius igual para manter o círculo perfeito */
+  object-fit: cover;
+  object-position: center center;
+}
+
+.loja-info {
+  margin-top: 60px;
+  padding: 0 16px 16px;
+  text-align: center;
+  flex-shrink: 0; /* Impede que a área de informações encolha */
+}
+
+.nome-loja {
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.descricao-loja {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.servicos-lista {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding: 16px;
+  max-height: calc(100vh - 120px);
+}
+
+.galeria img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-top: 1px solid #E8E8E8;
+}
+
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+}
+
+ion-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init, .go-fila, .go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8A8A8A;
+}
+
+.menu-fixed-bottom ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}

@@ -10,13 +10,12 @@ import QRCode from 'qrcode';
 export class QueueService {
   private apiUrl = environment.apiUrl;
 
-  qrCodeImage: string = ''; // URL do QR code gerado
-  empresaId: number = 123;  // Exemplo de ID da empresa
-  filaId: number = 456;     // Exemplo de ID da fila
-  clienteId: number = 789;  // Exemplo de ID do cliente
-  horaChamada: string = '14:00';  // Exemplo de hora chamada
-  ehMinhaVez: boolean = true; // Indica se é a vez do cliente ou não
-
+  qrCodeImage: string = '';
+  empresaId: number = 123;
+  filaId: number = 456;
+  clienteId: number = 789;
+  horaChamada: string = '14:00';
+  ehMinhaVez: boolean = true;
 
   constructor(private http: HttpClient) { }
 
@@ -29,7 +28,7 @@ export class QueueService {
     posicao: number;
     ehMinhaVez: boolean;
   }> {
-    // Simulação de dados do backend
+    // Mock de ida a backend para obter a posição do cliente na fila
     const pessoasNaFila = [
       { avatar: 'person-circle' },
       { avatar: 'person-circle' },
@@ -47,13 +46,13 @@ export class QueueService {
       pessoasNaFila,
       posicao: posicaoUsuario,
       ehMinhaVez
-    }).pipe(delay(1000)); 
-  } 
- 
+    }).pipe(delay(1000));
+  }
+
 
   gerarQrCode(): Observable<{ qrCode: string }> {
     const qrData = `empresaId=${this.empresaId}&filaId=${this.filaId}&clienteId=${this.clienteId}`;
-  
+
     return from(
       QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H' })
         .then((url: string) => {
