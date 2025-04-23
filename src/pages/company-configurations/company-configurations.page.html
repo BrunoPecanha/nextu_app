@@ -38,6 +38,11 @@
     <ion-input formControlName="nomeEmpresa"></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">ENDEREÇO</ion-label>
+    <ion-input formControlName="endereco"></ion-input>
+  </ion-item>
+
   <div class="logo-wrapper">
     <div class="logo-container" (click)="selecionarImagem()">
       <img
@@ -110,7 +115,7 @@
     (click)="enviar()"
   >
     <ion-spinner *ngIf="enviando" name="crescent"></ion-spinner>
-    <span *ngIf="!enviando && !enviado">Cadastro</span>
+    <span *ngIf="!enviando && !enviado">CADASTRAR</span>
     <ion-icon
       *ngIf="enviado"
       name="checkmark-circle"

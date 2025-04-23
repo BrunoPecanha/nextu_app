@@ -28,6 +28,7 @@ export class CompanyConfigurationsPage implements OnInit {
       cpf: [''],
       cnpj: [''],
       nomeEmpresa: [''],
+      endereco: [''],
       abrirAutomaticamente: [false],
       horarios: this.fb.array(
         this.diasSemana.map(() =>

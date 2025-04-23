@@ -4,7 +4,6 @@
   padding-right: 16px;
 }
 
-/* Header fixado */
 ion-header {
   position: fixed;
   top: 0;
@@ -24,7 +23,6 @@ ion-content {
   --padding-top: 0;
 }
 
-
 .horizontal-scroll {
   position: relative;
   top: 0%;
@@ -43,42 +41,40 @@ ion-content {
   gap: 12px;
 }
 
-/* Cards horizontais */
 .service-type-card {
-  flex: 0 0 auto;
-  width: 140px;
-  height: 100px;
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-  text-align: center;
-  padding: 10px;
+  height: 60px;
+  min-width: 100px;
+  max-width: 120px;
+  border-radius: 20px;
+  padding: 6px 12px;
+  background-color: #f5f5f5;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
 }
 
 .service-type-card img {
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-bottom: 8px;
+  width: 24px;
+  height: 24px;
+  margin-bottom: 0;
 }
 
 .service-type-card h2 {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-size: 12px;
   margin: 0;
+  color: #333;
+  line-height: 1.2;
 }
 
 .cards-companies {
-  margin-top: 200px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-  padding-bottom: 100px; /* espaço suficiente para o rodapé */
+  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 100px;
 }
 
 ion-card.box {
@@ -92,19 +88,21 @@ ion-card.box ion-card-content {
 }
 
 ion-card.box .inner-card {
-  display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  text-align: center;
-  gap: 10px;
+  gap: 16px;
+  text-align: left;
+  display: flex;
 }
 
 .logo-container {
   display: flex;
   justify-content: center;
+  flex-shrink: 0;
 }
 
-.company-logo {
+.company-logo,
+.logo-container img {
   width: 60px;
   height: 60px;
   border-radius: 50%;
@@ -113,24 +111,31 @@ ion-card.box .inner-card {
 }
 
 .company-info h2 {
-  font-size: 16px;
-  font-weight: bold;
-  margin: 0;
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #222;
 }
 
 .company-info p {
-  font-size: 13px;
-  margin: 2px 0;
+  font-size: 14px;
+  margin: 0;
   color: #555;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 .ratting-area {
-  font-size: 12px;
-}
-
-/* Últimos visitados */
-.fixed-recent-visits {
-  padding-bottom: 20px;
+  background-color: #e6f4ea;
+  color: #28a745;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 13px;
+  margin-top: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .visited-card {
@@ -215,22 +220,6 @@ ion-title {
   font-weight: bold;
 }
 
-ion-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  --min-height: 56px;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
-
-ion-title {
-  flex: 1;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
-
 ion-footer {
   position: fixed;
   bottom: 0;
@@ -252,7 +241,9 @@ ion-footer {
   padding: 10px 0;
 }
 
-.go-init, .go-fila, .go-config {
+.go-init,
+.go-fila,
+.go-config {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -322,3 +313,32 @@ ion-label {
   justify-content: center;
   z-index: 10;
 }
+
+ion-content::part(scroll) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.page-title {
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  color: #333;
+}
+
+.content-menu-border > div.active ion-icon,
+.content-menu-border > div.active ion-label {
+  color: #007bff;
+  font-weight: 600;
+}
+
+.content-menu-border > div.active::after {
+  content: '';
+  margin-top: 4px;
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #007bff;
+  border-radius: 2px;
+}
+

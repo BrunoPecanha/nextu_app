@@ -177,23 +177,23 @@ ion-label a {
 .fila-visual {
   display: flex;
   width: 100%;
-  overflow-x: auto; /* Permite a rolagem horizontal */
+  overflow-x: auto; 
   white-space: nowrap;
-  justify-content: center; /* Alinha os avatares ao centro quando poucos */
+  justify-content: center; 
   align-items: center;
   padding: 16px 0;
 }
 
 .fila-scroll-container.scroll {
-  justify-content: flex-start; /* Aplica flex-start quando houver rolagem */
+  justify-content: flex-start; 
 }
 
 
 .fila-scroll-container {
   display: flex;
   gap: 12px;
-  justify-content: center; /* Alinha os avatares ao centro quando poucos */
-  min-width: 100%; /* Garante que a largura mínima seja suficiente para os itens */
+  justify-content: center; 
+  min-width: 100%;
 }
 
 .posicao-numero {
@@ -209,7 +209,7 @@ ion-label a {
 
 
 .fila-scroll-container.center {
-  justify-content: center; /* Certifica-se de que a centralização é aplicada */
+  justify-content: center; 
 }
 
 .avatar-container {
@@ -397,7 +397,7 @@ ion-title {
   border-radius: 50%;
   object-fit: cover;
   overflow: hidden;
-  border: 2px solid #e0e0e0; /* opcional, só pra dar um contorno leve */
+  border: 2px solid #e0e0e0; 
 }
 
 .nome-empresa h2 {
@@ -450,50 +450,55 @@ ion-title {
   }
 }
 
-/* CSS personalizado para o modal */
 .custom-alert .alert-wrapper {
-  border-radius: 10px;  /* Arredondar as bordas do modal */
+  border-radius: 10px;  
 }
 
 .custom-alert .alert-header {
-  padding-right: 30px;  /* Espaço para o "X" no canto */
+  padding-right: 30px; 
 }
 
 .custom-alert .info-container {
   display: flex;
-  flex-direction: column;  /* Organiza as bolinhas em uma coluna */
-  align-items: flex-start;  /* Alinha à esquerda */
+  flex-direction: column; 
+  align-items: flex-start;  
   margin-top: 20px;
 }
 
 .custom-alert .info-item {
   display: flex;
-  align-items: center;  /* Alinha as bolinhas com as legendas */
+  align-items: center; 
   margin-bottom: 10px;
 }
 
 .custom-alert .dot {
-  width: 20px;  /* Tamanho da bolinha */
+  width: 20px;  
   height: 20px;
-  border-radius: 50%;  /* Faz a bolinha ficar redonda */
-  margin-right: 10px;  /* Espaçamento entre a bolinha e a legenda */
+  border-radius: 50%;  
+  margin-right: 10px;  
 }
 
 .custom-alert .legend {
-  font-size: 16px;  /* Tamanho da legenda */
+  font-size: 16px;
   color: #000;
 }
 
 .close-button {
   position: absolute;
-  top: 10px;  /* Posição no topo */
-  right: 10px;  /* Posição à direita */
-  font-size: 20px;  /* Tamanho do "X" */
-  color: #000;  /* Cor do "X" */
-  background: none;  /* Remover fundo do botão */
-  border: none;  /* Remover borda do botão */
+  top: 10px; 
+  right: 10px;
+  font-size: 20px; 
+  color: #000; 
+  background: none; 
+  border: none;  
 }
 
 .close-button ion-icon {
-  font-size: 24px;  /* Tamanho do ícone */
+  font-size: 24px;
+}
+
+// Remove barra de rle scroll do ion-content
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }

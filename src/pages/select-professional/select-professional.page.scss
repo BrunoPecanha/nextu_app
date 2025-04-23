@@ -164,3 +164,9 @@ ion-label {
     margin-bottom: 12px; /* Reduz o espaço entre os cards */
   }
 }
+
+// Remove barra de rle scroll do ion-content
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}

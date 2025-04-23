@@ -39,8 +39,8 @@ const routes: Routes = [
     loadChildren: () => import('../pages/queue/queue.module').then( m => m.QueuePageModule)
   },
   {
-    path: 'costumer-list-in-queue',
-    loadChildren: () => import('../pages/costumer-list-in-queue/costumer-list-in-queue.module').then( m => m.CostumerListInQueuePageModule)
+    path: 'customer-list-in-queue',
+    loadChildren: () => import('../pages/customer-list-in-queue/customer-list-in-queue.module').then( m => m.CustomerListInQueuePageModule)
   },
   {
     path: 'company-configurations',
@@ -49,7 +49,12 @@ const routes: Routes = [
   {
     path: 'customer-service',
     loadChildren: () => import('../pages/customer-service/customer-service.module').then( m => m.CustomerServicePageModule)
+  },
+  {
+    path: 'store-details',
+    loadChildren: () => import('../pages/store-details/store-details.module').then( m => m.StoreDetailsPageModule)
   }
+
 
 
 

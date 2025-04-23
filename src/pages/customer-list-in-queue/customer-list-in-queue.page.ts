@@ -3,11 +3,11 @@ import { AlertController, NavController } from '@ionic/angular';
 
 
 @Component({
-  selector: 'app-costumer-list-in-queue',
-  templateUrl: './costumer-list-in-queue.page.html',
-  styleUrls: ['./costumer-list-in-queue.page.scss'],
+  selector: 'app-customer-list-in-queue',
+  templateUrl: './customer-list-in-queue.page.html',
+  styleUrls: ['./customer-list-in-queue.page.scss'],
 })
-export class CostumerListInQueuePage implements OnInit {
+export class CustomerListInQueuePage implements OnInit {
 
   clientes: any;
 

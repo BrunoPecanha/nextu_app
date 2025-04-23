@@ -6,8 +6,8 @@
   <ng-container *ngIf="!searching; else searchBar">
     <ion-title *ngIf="!searching">ESTABELECIMENTOS</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="toggleSearch()">
-        <ion-icon name="search"></ion-icon>
+      <ion-button fill="clear" (click)="toggleSearch()">
+        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ng-container>
@@ -44,7 +44,7 @@
 <ion-content fullscreen="true">
   <div class="cards-companies container">
     <ion-card
-      class="box"
+      class="box full-card"
       *ngFor="let card of filteredCards"
       routerLink="/select-professional"
     >
@@ -71,6 +71,7 @@
     </ion-card>
   </div>
 </ion-content>
+
 
 <!-- Rodapé -->
 <ion-footer>
