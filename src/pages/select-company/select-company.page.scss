@@ -74,11 +74,11 @@ ion-content {
 }
 
 .cards-companies {
-  margin-top: 200px;
+  margin-top: 150px;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 16px;
-  padding-bottom: 100px; /* espaço suficiente para o rodapé */
+  gap: 0px;
+  padding-bottom: 100px;
 }
 
 ion-card.box {
@@ -128,10 +128,6 @@ ion-card.box .inner-card {
   font-size: 12px;
 }
 
-/* Últimos visitados */
-.fixed-recent-visits {
-  padding-bottom: 20px;
-}
 
 .visited-card {
   border-radius: 16px;

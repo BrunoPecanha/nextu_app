@@ -49,7 +49,12 @@ const routes: Routes = [
   {
     path: 'customer-service',
     loadChildren: () => import('../pages/customer-service/customer-service.module').then( m => m.CustomerServicePageModule)
+  },
+  {
+    path: 'store-details',
+    loadChildren: () => import('../pages/store-details/store-details.module').then( m => m.StoreDetailsPageModule)
   }
+
 
 
 
