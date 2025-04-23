@@ -1,46 +1,43 @@
-
 .forgot-password-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #F8F8F8; 
-    height: 100vh;
-    width: 100vw;
-    padding: 0;
-    margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f8f8f8;
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
 }
 
 .forgot-password-container {
-    background: #FFFFFF; 
-    border-radius: 0px;
-    padding: 2rem;
-    width: 100%;
-    max-width: 400px;
-    margin: 0 auto; 
+  background: #ffffff;
+  border-radius: 0px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
 }
 
 .forgot-password-logo {
-    text-align: center;
-    margin-bottom: 2rem; 
+  text-align: center;
+  margin-bottom: 2rem;
 }
 
 .logo {
-    width: 100px; 
+  width: 100px;
 }
 
-
 .forgot-password-form {
-    text-align: center; 
+  text-align: center;
 }
 
 .title {
-    font-family: 'Poppins', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    color: #484745;
-    margin: 1rem 0; 
+  font-family: "Poppins", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #484745;
+  margin: 1rem 0;
 }
-
 
 .forgot-password-form .input-user,
 .forgot-password-form .input-email-user,
@@ -48,46 +45,48 @@
 .forgot-password-form .input-adress-user,
 .forgot-password-form .input-password-user,
 .forgot-password-form .input-confirm-password-user {
-    margin-bottom: 1rem; 
+  margin-bottom: 1rem;
 }
 
 .forgot-password-form ion-input {
-    background: #FBFBFB; 
-    border: 1px solid #E8E8E8; 
-    border-radius: 10px; 
-    padding: 1rem 10px; 
-    font-family: 'Poppins', sans-serif;
-    font-size: 14px;
-    color: #8A8A8A;
-    width: 100%;
-    text-align: left; 
+  background: #fbfbfb;
+  border: 1px solid #e8e8e8;
+  border-radius: 10px;
+  padding: 1rem 10px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #8a8a8a;
+  width: 100%;
+  text-align: left;
 }
 
-
 .input-submit-user ion-button {
-    background-color: #FF5678; 
-    border-radius: 50px; 
-    font-family: 'Poppins', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 600;
+  background-color: #ff5678;
+  border-radius: 50px;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 .input-submit-user ion-button:hover {
-    background-color: #E95468; 
+  background-color: #e95468;
 }
 
-
 .input-check-validation {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .input-check-validation label {
-    font-family: 'Poppins', sans-serif;
-    font-style: normal;
-    font-weight: 300;
-    font-size: 14px;
-    letter-spacing: 0.6px;
-    color: #292829;
+  font-family: "Poppins", sans-serif;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 14px;
+  letter-spacing: 0.6px;
+  color: #292829;
 }
 
-
+// Remove barra de rle scroll do ion-content
+ion-content::part(scroll) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

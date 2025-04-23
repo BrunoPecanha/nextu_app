@@ -318,3 +318,9 @@ ion-label {
   justify-content: center;
   z-index: 10;
 }
+
+// Remove barra de rle scroll do ion-content
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}

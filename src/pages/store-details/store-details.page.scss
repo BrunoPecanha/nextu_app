@@ -14,8 +14,7 @@
 .loja-container {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* Garantir que ocupe a altura total da tela */
-  overflow: hidden; /* Impede a rolagem do conteúdo inteiro */
+  height: 100%;
 }
 
 .logo-wrapper {
@@ -181,4 +180,10 @@ ion-label {
   align-items: center;
   justify-content: center;
   z-index: 10;
+}
+
+// Remove barra de rle scroll do ion-content
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
 }
