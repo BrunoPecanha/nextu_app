@@ -57,7 +57,12 @@ const routes: Routes = [
   {
     path: 'queue-admin',
     loadChildren: () => import('../pages/queue-admin/queue-admin.module').then( m => m.QueueAdminPageModule)
+  },
+  {
+    path: 'queue-details',
+    loadChildren: () => import('../pages/queue-details/queue-details.module').then( m => m.QueueDetailsPageModule)
   }
+
 ];
 
 @NgModule({

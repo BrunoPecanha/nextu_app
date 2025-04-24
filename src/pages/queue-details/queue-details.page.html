@@ -1,0 +1,83 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-back-button
+      defaultHref="/queue-admin"
+      text=""
+      icon="arrow-back-outline"
+    ></ion-back-button>
+  </ion-buttons>
+  <ion-title>DETALHES DA FILA</ion-title>
+  <ion-buttons slot="end">
+    <ion-button></ion-button>    
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content>
+  <div class="details-header">
+    <h2>RESUMO DO DIA - {{ selectedDate | date:'dd/MM/yyyy' }}</h2>
+  
+    <div class="resumo-valores">
+      <div class="resumo-item">
+        <ion-icon name="people-outline"></ion-icon>
+        <span>TOTAL ATENDIDOS: <strong>{{ totalAttendedClients }}</strong></span>
+      </div>
+  
+      <div class="resumo-item">
+        <ion-icon name="cash-outline"></ion-icon>
+        <span>DINHEIRO: <strong>R$ {{ totalDinheiro }}</strong></span>
+      </div>
+  
+      <div class="resumo-item">
+        <ion-icon name="card-outline"></ion-icon>
+        <span>CARTÃO: <strong>R$ {{ totalCartao }}</strong></span>
+      </div>
+  
+      <div class="resumo-item">
+        <ion-icon name="qr-code-outline"></ion-icon>
+        <span>PIX: <strong>R$ {{ totalPix }}</strong></span>
+      </div>
+  
+      <div class="resumo-item total-final">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+        <span>TOTAL DO DIA: <strong>R$ {{ total }}</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <ion-list>
+    <ion-item *ngFor="let client of attendedClients">
+      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3>{{ client.name }}</h3>
+        <p><strong>Início:</strong> {{ client.startTime | date:'HH:mm' }}</p>
+        <p><strong>Fim:</strong> {{ client.endTime | date:'HH:mm' }}</p>
+        <p><strong>Pagamento:</strong> {{ client.paymentMethod }}</p>
+        <p><strong>Tempo Total:</strong> {{ client.totalTime }} min</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>Notificações</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>
