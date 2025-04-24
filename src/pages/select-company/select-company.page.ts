@@ -36,9 +36,27 @@ export class SelectCompanyPage implements OnInit {
   ];
 
   companyCards = [
-    { name: 'KING\'S SONS', type: 'barbearia', queue: 'FILA MENOR: 3 PESSOAS', img: 'assets/images/company-logo/kingssons.jpeg' },
-    { name: 'SALÃO AUTO ESTIMA', type: 'salão de beleza', queue: 'FILA MENOR: 5 PESSOAS', img: 'assets/images/company-logo/autoestima.png' },
-    { name: 'UOMAN - BEATY SALON', type: 'salão de beleza', queue: 'FILA MENOR: 10 PESSOAS', img: 'assets/images/company-logo/uoman.png' }
+    {
+      name: 'KING\'S SONS',
+      type: 'barbearia',
+      queue: 'FILA MENOR: 3 PESSOAS',
+      img: 'assets/images/company-logo/kingssons.jpeg',
+      liked: false
+    },
+    {
+      name: 'SALÃO AUTO ESTIMA',
+      type: 'salão de beleza',
+      queue: 'FILA MENOR: 5 PESSOAS',
+      img: 'assets/images/company-logo/autoestima.png',
+      liked: false
+    },
+    {
+      name: 'UOMAN-BEATY SALON',
+      type: 'salão de beleza',
+      queue: 'FILA MENOR: 10 PESSOAS',
+      img: 'assets/images/company-logo/uoman.png',
+      liked: false
+    }
   ];
 
   ngOnInit() { }
@@ -56,6 +74,17 @@ export class SelectCompanyPage implements OnInit {
     this.searching = !this.searching;
     this.searchQuery = '';
   }
+
+  toggleLike(card: any, event: MouseEvent): void {
+    event.stopPropagation(); // Evita que o clique selecione o card
+    card.liked = !card.liked;
+    console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
+  }
+  
+  selectCard(card: any): void {
+    console.log('Card selecionado:', card.name);
+  }
+  
 
   onSearch(event: any) {
     this.searchQuery = event.detail.value;

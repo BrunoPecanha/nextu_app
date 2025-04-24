@@ -342,3 +342,13 @@ ion-content::part(scroll) {
   border-radius: 2px;
 }
 
+.like-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 24px;
+  color: var(--ion-color-danger);
+  z-index: 10;
+  cursor: pointer;
+}
+
