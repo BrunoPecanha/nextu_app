@@ -123,7 +123,7 @@ export class QueueAdminPage implements OnInit {
     if (queue.date === this.today && queue.status === 'Aberta') {
       this.router.navigate(['/customer-list-in-queue']);
     } else {
-      console.log('Visualizando detalhes da fila', queue);
+      this.router.navigate(['/queue-details']);
     }
   }
 }
