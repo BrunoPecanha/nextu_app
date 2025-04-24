@@ -19,12 +19,12 @@ export class QueuePage implements OnInit {
 
   pessoasNaFila = new Array(3);
   queue: any[] = [];
-  userPosition: number = 0;
+  userPosition: number = 3;
 
   ehMinhaVez: boolean = false;
   codigoAtendimento = '';
 
-  tempoRestanteMinutos: number = 34;
+  tempoRestanteMinutos: number = 11;
   tempoEstimado: string = '';
   corTempo: string = '';
 

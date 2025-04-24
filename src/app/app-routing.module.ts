@@ -61,7 +61,12 @@ const routes: Routes = [
   {
     path: 'queue-details',
     loadChildren: () => import('../pages/queue-details/queue-details.module').then( m => m.QueueDetailsPageModule)
+  },
+  {
+    path: 'service-registration',
+    loadChildren: () => import('../pages/service-registration/service-registration.module').then( m => m.ServiceRegistrationPageModule)
   }
+
 
 ];
 

@@ -1,0 +1,267 @@
+.service-card {
+  border-radius: 12px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px 16px; 
+  margin: 8px;
+  overflow: hidden;
+  min-height: 100px; 
+}
+
+.service-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  flex-wrap: nowrap;
+}
+
+.service-image-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+}
+
+.service-image-container {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.service-image-placeholder {
+  font-size: 24px; 
+  color: #888; 
+}
+
+.service-info {
+  flex: 1;
+}
+
+.service-info h2 {
+  font-size: 16px; 
+  margin: 0;
+  font-weight: 600;
+}
+
+.settings-icon {
+  font-size: 20px;
+  color: #888;
+  margin-right: 8px; 
+}
+
+ion-icon {
+  font-size: 20px;
+  color: #888;
+  cursor: pointer;
+}
+
+.image-upload-section {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  gap: 12px; 
+}
+
+.image-upload-section ion-button {
+  font-size: 12px; 
+  padding: 6px 12px; 
+  min-width: 120px; 
+}
+
+ion-button[expand="block"] {
+  font-size: 12px;
+  padding: 6px 12px;
+  min-width: 120px; 
+}
+
+ion-button[expand="full"] {
+  width: 100%;
+}
+
+ion-item {
+  font-size: 14px;
+}
+
+ion-input,
+ion-textarea,
+ion-select {
+  font-size: 14px;
+}
+
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-top: 1px solid #E8E8E8;
+}
+
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+}
+
+ion-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init, .go-fila, .go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8A8A8A;
+}
+
+.menu-fixed-bottom ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.small-icon {
+  font-size: 18px;
+  color: white;
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+.novo-card {
+  border: 2px solid #3880ff; 
+  box-shadow: 0 2px 10px rgba(56, 128, 255, 0.3);
+}
+
+.new-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 0.8rem;
+}
+
+.service-card.desativado {
+  opacity: 0.6;
+  filter: grayscale(80%);
+  transition: all 0.3s ease-in-out;
+  position: relative;
+}
+
+.service-card.desativado::after {
+  content: "Serviço desativado";
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(255, 0, 0, 0.1);
+  color: #ff3b30;
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.service-card {
+  transition: filter 0.3s ease, opacity 0.3s ease;
+}
+
+.service-card.desativado {
+  opacity: 0.5;
+  filter: grayscale(60%) blur(0.5px);
+}
