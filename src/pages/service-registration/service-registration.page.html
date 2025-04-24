@@ -1,0 +1,181 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>SERVIÇOS</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="adicionarNovoServico()">
+        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div *ngFor="let form of serviceFormArray; let i = index">
+    <ion-card
+      class="service-card"
+      [ngClass]="{ 'novo-card': i === 0 && isNovoServico, 'desativado': !form.value.active }"
+    >
+      <form [formGroup]="form">
+        <div class="service-header">
+          <ion-badge
+            *ngIf="i === 0 && isNovoServico"
+            color="primary"
+            class="new-badge"
+            >Novo</ion-badge
+          >
+
+          <div class="service-image-container">
+            <img
+              *ngIf="previewUrls[i]; else placeholder"
+              [src]="previewUrls[i]"
+              class="service-image"
+            />
+            <ng-template #placeholder>
+              <ion-icon
+                name="image-outline"
+                class="service-image-placeholder"
+              ></ion-icon>
+            </ng-template>
+          </div>
+
+          <div class="service-info">
+            <h2>{{ form.value.name }}</h2>
+          </div>
+
+          <ion-icon
+            name="settings-outline"
+            (click)="toggleExpand(i)"
+            class="settings-icon"
+          ></ion-icon>
+        </div>
+
+        <div *ngIf="expandedIndex === i">
+          <ion-item>
+            <ion-label position="stacked">Nome</ion-label>
+            <ion-input formControlName="name"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Descrição</ion-label>
+            <ion-textarea formControlName="description"></ion-textarea>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Categoria</ion-label>
+            <ion-select formControlName="category">
+              <ion-select-option *ngFor="let cat of categorias" [value]="cat">
+                {{ cat }}
+              </ion-select-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="floating">Preço</ion-label>
+            <ion-input
+              type="tel"
+              [value]="formattedPrices[i]"
+              (ionInput)="onPriceInput($event, i)"
+              inputmode="decimal"
+              pattern="[0-9]*"
+              maxlength="15"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Duração (minutos)</ion-label>
+            <ion-input type="number" formControlName="duration"></ion-input>
+          </ion-item>
+
+          <div class="image-upload-section">
+            <input
+              type="file"
+              accept="image/*"
+              hidden
+              #fileInput
+              (change)="onImageSelected($event, i)"
+            />
+            <ion-button (click)="fileInput.click()" size="small">
+              <ion-icon
+                name="image-outline"
+                slot="start"
+                class="small-icon"
+              ></ion-icon>
+              Selecionar Imagem
+            </ion-button>
+
+            <ion-button
+              *ngIf="previewUrls[i]"
+              (click)="removeImage(i)"
+              color="danger"
+              size="small"
+            >
+              <ion-icon
+                name="trash-outline"
+                slot="start"
+                class="small-icon"
+              ></ion-icon>
+              Remover Imagem
+            </ion-button>
+          </div>
+
+          <!-- Toggle de Ativação -->
+          <ion-item lines="none">
+            <ion-label>Serviço ativo</ion-label>
+            <ion-toggle
+              slot="end"
+              formControlName="active"
+              color="success"
+            ></ion-toggle>
+          </ion-item>
+
+          <!-- Botões -->
+          <ion-button
+            expand="block"
+            [disabled]="form.invalid || isLoading[i]"
+            (click)="salvar(i)"
+          >
+            <ion-spinner *ngIf="isLoading[i]" slot="start"></ion-spinner>
+            <ion-icon
+              *ngIf="!isLoading[i] && saved[i]"
+              name="checkmark-circle"
+              slot="start"
+            ></ion-icon>
+            {{ isLoading[i] ? 'Salvando...' : saved[i] ? 'Salvo!' : 'Salvar' }}
+          </ion-button>
+
+          <ion-button expand="block" color="light" (click)="cancelar(i)">
+            Cancelar
+          </ion-button>
+        </div>
+      </form>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>

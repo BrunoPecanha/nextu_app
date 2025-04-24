@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 
 @Component({
@@ -7,7 +8,7 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private alertController: AlertController) { }
+  constructor(private alertController: AlertController, private router: Router,) { }
 
   searching = false;
   searchQuery = '';
@@ -83,8 +84,8 @@ export class SelectCompanyPage implements OnInit {
   
   selectCard(card: any): void {
     console.log('Card selecionado:', card.name);
-  }
-  
+    this.router.navigate(['/select-professional']);
+  }  
 
   onSearch(event: any) {
     this.searchQuery = event.detail.value;
