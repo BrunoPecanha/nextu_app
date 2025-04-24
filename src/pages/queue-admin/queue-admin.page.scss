@@ -1,0 +1,257 @@
+/* ===== TOOLBAR E TÍTULOS ===== */
+ion-toolbar {
+  --background: #ffffff;
+  --color: #333;
+  padding: 0 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-weight: 700;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* ===== ÍCONES E TEXTOS ===== */
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+/* ===== FILTROS ===== */
+.filters {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* ===== LISTA DE FILAS ===== */
+.queue-list {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ===== CARDS ===== */
+ion-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 12px;
+  width: 100%;
+}
+
+ion-card-header {
+  background-color: #f5f5f5;
+  padding: 12px;
+}
+
+ion-card-title {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+ion-card-subtitle {
+  font-size: 14px;
+  color: #555;
+}
+
+ion-card-content {
+  padding: 12px;
+}
+
+ion-card.today-open {
+  border: 2px solid #28a745;
+  background-color: #e6ffed;
+}
+
+/* ===== BOTÕES ===== */
+ion-button:not([fill="clear"]):not(.open-queue-button) {
+  --background: #007bff;
+  --color: white;
+  --border-radius: 8px;
+  margin-top: 8px;
+}
+
+ion-toolbar ion-button[fill="clear"] {
+  --color: #007bff;
+  --background: transparent;
+}
+
+.open-queue-button {
+  --background: #28a745;
+  --color: white;
+}
+
+ion-button {
+  --background: #007bff;
+  --color: white;
+  --border-radius: 8px;
+  margin-top: 8px;
+}
+
+/* ===== MODAL E CALENDÁRIO ===== */
+ion-modal.custom-calendar-modal {
+  z-index: 9999 !important;
+}
+
+ion-modal.custom-calendar-modal::part(content) {
+  --width: 100%;
+  --height: auto;
+  max-height: 80vh;
+  background: transparent;
+  padding: 0;
+}
+
+ion-modal .calendar-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 340px;
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-datetime {
+  max-width: 320px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  padding: 16px;
+}
+
+ion-datetime.centered-datetime {
+  width: 100%;
+  height: auto;
+  display: block;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* ===== RODAPÉ ===== */
+ion-footer {
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-top: 1px solid #E8E8E8;
+}
+
+.menu-fixed-bottom {
+  width: 100%;
+  background: #ffffff;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init,
+.go-fila,
+.go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== NOTIFICAÇÃO ===== */
+.notification-footer {
+  position: relative;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ===== AJUSTES RESPONSIVOS ===== */
+@media (max-width: 600px) {
+  ion-content.scroll-area {
+    padding-bottom: 80px;
+  }
+
+  .fila-card {
+    margin-bottom: 12px;
+  }
+}
+
+/* ===== REMOVER SCROLLBAR ===== */
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
+/* ===== ÍCONE COM TÍTULO NO CARD ===== */
+.card-title-with-icon {
+  display: flex;
+  align-items: center;
+}
+
+
+
+
+//TESTE
+
+ion-modal.custom-calendar-modal::part(content) {
+  --width: 100%;
+  --height: auto;
+  max-height: 80vh;
+  background: transparent;
+  padding: 0;
+  display: block;
+}
+
+.calendar-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 340px;
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.centered-datetime {
+  width: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+}
