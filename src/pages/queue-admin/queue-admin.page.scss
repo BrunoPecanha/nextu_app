@@ -111,10 +111,13 @@ ion-modal.custom-calendar-modal {
 }
 
 ion-modal.custom-calendar-modal::part(content) {
-  --width: 100%;
+  --width: auto;
   --height: auto;
   max-height: 80vh;
   background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0;
 }
 
@@ -221,11 +224,6 @@ ion-content::part(scroll) {
   display: flex;
   align-items: center;
 }
-
-
-
-
-//TESTE
 
 ion-modal.custom-calendar-modal::part(content) {
   --width: 100%;

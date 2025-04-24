@@ -13,8 +13,8 @@ export class QueueAdminPage implements OnInit {
   calendarOpen = false;
 
   queues = [
-    { name: 'Fila de Lavagem', date: '2025-04-23', status: 'Fechada', currentCount: 5 },
-    { name: 'Fila de Corte', date: '2025-04-22', status: 'Fechada', currentCount: 3 },
+    { name: 'Fila de Lavagem', date: '2025-04-22', status: 'Fechada', currentCount: 5 },
+    { name: 'Fila de Corte', date: '2025-04-21', status: 'Fechada', currentCount: 3 },
     { name: 'Fila de Manicure', date: '2025-04-20', status: 'Fechada', currentCount: 2 }
   ];
 

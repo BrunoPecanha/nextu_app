@@ -68,18 +68,17 @@
 
 <ion-modal
   [isOpen]="calendarOpen"
-  [cssClass]="['custom-calendar-modal']"
-  (didDismiss)="closeCalendar()">
-  <div class="calendar-wrapper">
-    <ion-datetime
-      class="centered-datetime"
-      presentation="date"
-      [value]="filterDate"
-      (ionChange)="onDateChange($event)"
-      preferWheel="false"
-      showDefaultButtons="true">
-    </ion-datetime>
-  </div>
+  (didDismiss)="closeCalendar()"
+  cssClass="custom-calendar-modal">
+  <ng-template>
+    <div class="calendar-wrapper">
+      <ion-datetime
+        class="centered-datetime"
+        presentation="date"
+        (ionChange)="onDateChange($event)">
+      </ion-datetime>
+    </div>
+  </ng-template>
 </ion-modal>
 
 <ion-footer>
