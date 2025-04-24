@@ -1,0 +1,106 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+  <ion-title>FILAS</ion-title>
+  <ion-buttons slot="end">
+    <ion-button fill="clear" (click)="openCalendar()">
+      <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content>
+  <div class="filters">
+    <ion-button
+      expand="block"
+      shape="round"
+      size="large"
+      class="open-queue-button"
+      (click)="openQueue()"
+      [disabled]="hasTodayOpenQueue">
+      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
+      ABRIR FILA HOJE
+    </ion-button>
+  </div>
+
+  <div class="queue-list">
+    <ion-card
+      *ngFor="let queue of filteredQueues"
+      [class.today-open]="queue.status === 'Aberta' && queue.date === today">
+      <ion-card-header>
+        <ion-card-title class="card-title-with-icon">
+          <ion-icon
+            [name]="getQueueIcon(queue.name)"
+            slot="start"
+            style="margin-right: 6px">
+          </ion-icon>
+          {{ queue.name }}
+        </ion-card-title>
+        <ion-badge
+          *ngIf="queue.status === 'Aberta' && queue.date === today"
+          color="success"
+          style="margin-left: 8px; margin-top: 4px;">
+          Aberta Hoje
+        </ion-badge>
+        <ion-card-subtitle>
+          {{ queue.date | date: 'dd/MM/yyyy' }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <p>{{ queue.status }}</p>
+        <p>
+          <ion-icon name="people-outline"></ion-icon>
+          {{ queue.currentCount }} pessoa(s) na fila
+        </p>
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="viewQueueDetails(queue)">
+          <ion-icon name="information-circle-outline" slot="start"></ion-icon>
+          Ver Detalhes
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>
+
+<ion-modal
+  [isOpen]="calendarOpen"
+  (didDismiss)="closeCalendar()"
+  cssClass="custom-calendar-modal">
+  <ng-template>
+    <div class="calendar-wrapper">
+      <ion-datetime
+        class="centered-datetime"
+        presentation="date"
+        (ionChange)="onDateChange($event)">
+      </ion-datetime>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>

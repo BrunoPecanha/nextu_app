@@ -53,12 +53,11 @@ const routes: Routes = [
   {
     path: 'store-details',
     loadChildren: () => import('../pages/store-details/store-details.module').then( m => m.StoreDetailsPageModule)
+  },
+  {
+    path: 'queue-admin',
+    loadChildren: () => import('../pages/queue-admin/queue-admin.module').then( m => m.QueueAdminPageModule)
   }
-
-
-
-
-
 ];
 
 @NgModule({
