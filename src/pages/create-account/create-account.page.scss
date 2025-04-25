@@ -1,91 +1,119 @@
-.forgot-password-page {
+.register-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f5f7fb;
+  height: 100vh;
+  padding: 0;
+}
+
+.register-header {
+  background-color: #0076ff;
+  width: 100%;
+  height: 180px;
+  border-bottom-left-radius: 50% 20%;
+  border-bottom-right-radius: 50% 20%;
   display: flex;
   justify-content: center;
-  align-items: center;
-  background-color: #f8f8f8;
-  height: 100vh;
-  width: 100vw;
-  padding: 0;
-  margin: 0;
+  align-items: flex-end;
+  position: relative;
 }
 
-.forgot-password-container {
+.logo-wrapper {
   background: #ffffff;
-  border-radius: 0px;
-  padding: 2rem;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.forgot-password-logo {
-  text-align: center;
-  margin-bottom: 2rem;
+  padding: 10px;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  bottom: -30px; 
 }
 
 .logo {
-  width: 100px;
+  width: 70px;
+  height: 70px;
 }
 
-.forgot-password-form {
+.register-container {
+  background: #ffffff;
+  margin-top: 40px; 
+  width: 100%;
+  max-width: 400px;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
 
 .title {
   font-family: "Poppins", sans-serif;
-  font-size: 20px;
+  font-size: 24px;
   font-weight: 700;
-  color: #484745;
-  margin: 1rem 0;
+  color: #212121;
+  margin-bottom: 0.5rem;
 }
 
-.forgot-password-form .input-user,
-.forgot-password-form .input-email-user,
-.forgot-password-form .input-phone-user,
-.forgot-password-form .input-adress-user,
-.forgot-password-form .input-password-user,
-.forgot-password-form .input-confirm-password-user {
+.subtitle {
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
   margin-bottom: 1rem;
 }
 
-.forgot-password-form ion-input {
-  background: #fbfbfb;
-  border: 1px solid #e8e8e8;
-  border-radius: 10px;
-  padding: 1rem 10px;
-  font-family: "Poppins", sans-serif;
+ion-input {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 14px 10px;
   font-size: 14px;
-  color: #8a8a8a;
   width: 100%;
-  text-align: left;
-}
-
-.input-submit-user ion-button {
-  background-color: #ff5678;
-  border-radius: 50px;
-  font-family: "Poppins", sans-serif;
-  font-size: 1.1rem;
-  font-weight: 600;
-}
-
-.input-submit-user ion-button:hover {
-  background-color: #e95468;
 }
 
 .input-check-validation {
-  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+  font-size: 13px;
+  color: #555;
 }
 
 .input-check-validation label {
+  margin-left: 8px;
   font-family: "Poppins", sans-serif;
-  font-style: normal;
-  font-weight: 300;
-  font-size: 14px;
-  letter-spacing: 0.6px;
-  color: #292829;
 }
 
-// Remove barra de rle scroll do ion-content
+.submit-button ion-button {
+  background-color: #0076ff;
+  border-radius: 30px;
+  font-size: 16px;
+  font-weight: bold;
+  text-transform: none;
+  height: 50px;
+}
+
+.submit-button ion-button:hover {
+  background-color: #005dd1;
+}
+
+.back-to-login {
+  margin-top: 1rem;
+  font-size: 14px;
+  color: #666;
+}
+
+.back-to-login a {
+  text-decoration: none;
+  color: #0076ff;
+}
+
+.back-to-login strong {
+  font-weight: bold;
+}
+
+
 ion-content::part(scroll) {
   scrollbar-width: none;
   -ms-overflow-style: none;
