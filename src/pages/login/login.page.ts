@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import { UserModel } from 'src/models/user-model';
 import { AuthService } from 'src/services/auth-service';
@@ -15,21 +15,21 @@ import { StoreService } from 'src/services/store-service';
 export class LoginPage {
   email: string = '';
   password: string = '';
+  isLoading: boolean = false;
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private alertController: AlertController,
-    private authService: AuthService,
     private storeEmployeeService: StoreEmployeeService,
-    private storeService: StoreService
+    private storeService: StoreService,
+    private loadingController: LoadingController  // Importando o LoadingController
   ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     //TODO - remover estas linhas quando implementar o logout 
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('user');
   }
-
 
   async login() {
     if (this.email !== '' && this.password !== '') {
@@ -39,66 +39,78 @@ export class LoginPage {
       let admin: boolean = false;
       let user: UserModel = {} as UserModel;
 
-    //  try {
-        // this.authService.login(this.email, this.password).subscribe(data => {
+      let loading: HTMLIonLoadingElement | null = null;
+      try {
+        // Criando o loading
+        loading = await this.loadingController.create({
+          message: 'Verificando suas credenciais...',
+          spinner: 'crescent',
+        });
 
-        //   user = {
-        //     id: data.user.id,
-        //     name: data.user.name,
-        //     lastname: data.user.lastname,
-        //     registeringdate: data.user.registeringdate,
-        //     lastupdate: data.user.lastupdate,
-        //     phone: data.user.phone,
-        //     street: data.user.street,
-        //     number: data.user.number,
-        //     cpf: data.user.cpf,
-        //     city: data.user.city,
-        //     state: data.user.state,
-        //     email: data.user.email,
-        //     password: data.user.password,
-        //     active: data.user.active,
-        //     profile: data.user.profile,
-        //     isvalid: data.user.isvalid
-        //   };
+        await loading.present();
 
-        //   forkJoin({
-        //     storesByEmployee: this.storeEmployeeService.getStoresByEmployee(user?.id),
-        //     storesByOwner: this.storeService.getStoresByOwner(user?.id)
-        //   }).subscribe(({storesByEmployee, storesByOwner}) => {
-        //     employee = storesByEmployee.rows.length > 0;
-        //     admin = storesByOwner.rows.length > 0;
+        user = {
+          id: 1,
+          name: 'João',
+          lastname: 'Silva',
+          registeringdate: '2024-01-10T12:00:00Z',
+          lastupdate: '2025-04-01T15:30:00Z',
+          phone: '(21) 91234-5678',
+          street: 'Rua das Flores',
+          number: '123',
+          cpf: '123.456.789-00',
+          city: 'Niterói',
+          state: 'RJ',
+          email: 'joao.silva@email.com',
+          active: true,
+          profile: 'cliente',
+          isvalid: true,
+        };
 
-        //     if(!employee && !admin) {
-        //       client = true;
-        //     }
+        // forkJoin({
+        //   storesByEmployee: this.storeEmployeeService.getStoresByEmployee(user?.id),
+        //   storesByOwner: this.storeService.getStoresByOwner(user?.id)
+        // }).subscribe(({ storesByEmployee, storesByOwner }) => {
+        //   employee = storesByEmployee.rows.length > 0;
+        //   admin = storesByOwner.rows.length > 0;
+
+        //   if (!employee && !admin) {
+        //     client = true;
+        //   }
+
+        //   sessionStorage.setItem('token', 'fake_token');
+        //   sessionStorage.setItem('user', JSON.stringify(user));
+
+        // });
+
+        if (true) {
+          this.router.navigate(['/select-company']);
+        } else {
+          this.router.navigate(['/role-registration']);
+        }
+        loading?.dismiss();
 
 
-        //     sessionStorage.setItem('token', data.token);
-        //     sessionStorage.setItem('user', JSON.stringify(data.user));
+      } catch (error) {
+        const alert = await this.alertController.create({
+          header: 'Aviso',
+          message: 'Usuário ou senha incorretos!',
+          buttons: ['OK'],
+        });
+        await alert.present();
 
-            if (client) {
-              this.router.navigate(['/select-company']);
-            } else {
-              this.router.navigate(['/role-registration']);
-            }
-          
-    //     });
-    //   });
-    //   } catch (error) {
-    //     const alert = await this.alertController.create({
-    //       header: 'Aviso',
-    //       message: 'Usuário ou senha incorretos!',
-    //       buttons: ['OK'],
-    //     });
-    //     await alert.present();
-    //   }
-    // } else {
-    //   const alert = await this.alertController.create({
-    //     header: 'Aviso',
-    //     message: 'Email ou senha incorretos.',
-    //     buttons: ['OK'],
-    //   });
-    //   await alert.present();
-     }   
+        if (loading) {
+          await loading?.dismiss();
+        }
+        await loading?.dismiss();
+      }
+    } else {
+      const alert = await this.alertController.create({
+        header: 'Aviso',
+        message: 'Email ou senha incorretos.',
+        buttons: ['OK'],
+      });
+      await alert.present();
+    }
   }
 }

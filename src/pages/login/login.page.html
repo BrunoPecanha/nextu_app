@@ -1,38 +1,58 @@
-<ion-content class="ion-padding login-page" scroll="false">
-  <div class="login-container">
-    <div class="login-logo">
-      <img class="logo" src="assets/images/login/logo-login.svg" alt="Logo" />
+<ion-content class="ion-padding login-screen" scroll="false">
+  <!-- Faixa curva animada -->
+  <div class="curved-header animated-slide-down">
+    <div class="logo-wrapper animated-bounce-in">
+      <img src="assets/images/login/logo-login.svg" alt="Logo" />
     </div>
+  </div>
 
-    <div class="login-form">
-      <form (submit)="login()">
-        <ion-item lines="none">
-          <ion-input type="email" placeholder="e-mail/celular" [(ngModel)]="email" name="email" required></ion-input>
-        </ion-item>
+  <!-- Card de login animado -->
+  <div class="login-container animated-fade-in">
+    <h1>Entrar</h1>
+    <p class="subtitle">Acesse sua conta para continuar</p>
 
-        <ion-item lines="none" class="password-container">
-          <ion-input type="password" placeholder="senha" [(ngModel)]="password" name="password" required></ion-input>
-        </ion-item>
+    <form (submit)="login()" class="login-form">
+      <ion-item lines="none" class="input-field">
+        <ion-icon slot="start" name="mail-outline"></ion-icon>
+        <ion-input
+          type="email"
+          placeholder="E-mail ou celular"
+          [(ngModel)]="email"
+          name="email"
+          required
+        ></ion-input>
+      </ion-item>
 
-        <a routerLink="/generate-password" class="forgot-password">Esqueceu a senha?</a>
+      <ion-item lines="none" class="input-field">
+        <ion-icon slot="start" name="lock-closed-outline"></ion-icon>
+        <ion-input
+          type="password"
+          placeholder="Senha"
+          [(ngModel)]="password"
+          name="password"
+          required
+        ></ion-input>
+      </ion-item>
 
-        <div class="login-actions">
-          <ion-button expand="full" type="submit" class="login-btn">Login</ion-button>
-        </div>
+      <ion-loading
+        [isOpen]="isLoading"
+        message="Carregando..."
+        spinner="crescent"
+      >
+      </ion-loading>
 
-        <div class="social-login">
-          <p>Ou faça login com</p>
-          <ion-row>
-            <ion-col><ion-icon name="logo-facebook"></ion-icon></ion-col>
-            <ion-col><ion-icon name="logo-google"></ion-icon></ion-col>
-            <ion-col><ion-icon name="logo-linkedin"></ion-icon></ion-col>
-          </ion-row>
-        </div>
+      <ion-button expand="block" type="submit" class="login-btn">
+        Entrar
+      </ion-button>
+    </form>
 
-        <div class="signup">
-          <p>Não tem conta? <a routerLink="/create-account"> Cadastre-se</a></p>
-        </div>
-      </form>
+    <a routerLink="/generate-password" class="forgot-password"
+      >Esqueceu sua senha?</a
+    >
+
+    <div class="register-link">
+      <span>Não tem conta?</span>
+      <a routerLink="/create-account">Cadastre-se</a>
     </div>
   </div>
 </ion-content>
