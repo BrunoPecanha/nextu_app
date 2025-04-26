@@ -14,7 +14,9 @@ export class SelectServicesPage {
     { id: '5', desc: 'Massagem Terapêutica', time: 60, price: 80 },
     { id: '6', desc: 'Limpeza de Pele', time: 45, price: 60 },
     { id: '7', desc: 'Peeling', time: 60, price: 90 },
-    // mais serviços...
+    { id: '8', desc: 'Peeling', time: 60, price: 90 },
+    { id: '9', desc: 'Peeling', time: 60, price: 90 },
+    { id: '10', desc: 'Peeling', time: 60, price: 90 },
   ];
 
   selectedServices: { id: string; desc: string; time: number; price: number }[] = [];

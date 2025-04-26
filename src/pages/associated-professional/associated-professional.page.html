@@ -4,11 +4,6 @@
   </ion-buttons>
   <ion-title *ngIf="userRole === 'owner'">GERENC. COLABORADOR</ion-title>
   <ion-title *ngIf="userRole === 'professional'">CONVITES RECEBIDOS</ion-title>
-  <ion-buttons slot="end">
-    <ion-button>
-      <ion-icon></ion-icon>
-    </ion-button>
-  </ion-buttons>
 </ion-toolbar>
 
 <ion-content class="ion-padding">
@@ -21,35 +16,72 @@
       </ion-item>
       <ion-button
         expand="block"
+        color="primary"
         class="ion-margin-top"
         (click)="enviarConvite()"
-        >Enviar Convite</ion-button
       >
+        <ion-icon slot="start" name="send-outline"></ion-icon>
+        Enviar Convite
+      </ion-button>
     </ion-list>
 
-    <ion-list *ngIf="professionals.length > 0">
-      <ion-item *ngFor="let prof of professionals; let i = index">
-        <ion-avatar slot="start">
-          <ion-icon
-            name="person-circle-outline"
-            style="font-size: 32px"
-          ></ion-icon>
-        </ion-avatar>
-        <ion-label>
-          <h3>{{ prof.name }}</h3>
-          <p>CPF: {{ prof.cpf }}</p>
-        </ion-label>
-        <ion-button
-          fill="clear"
-          color="danger"
-          size="small"
-          slot="end"
-          (click)="removerProfissional(i)"
-        >
-          <ion-icon name="trash-outline"></ion-icon>
-        </ion-button>
-      </ion-item>
-    </ion-list>
+    <!-- Funcionários Aceitos -->
+    <ion-card *ngIf="professionals.length > 0">
+      <ion-card-header>
+        <ion-card-title>Funcionários ({{ professionals.length }})</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let prof of professionals; let i = index">
+            <ion-avatar slot="start">
+              <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>{{ prof.name }}</h3>
+              <p>CPF: {{ prof.cpf }}</p>
+            </ion-label>
+            <ion-button
+              fill="clear"
+              color="danger"
+              size="small"
+              slot="end"
+              (click)="confirmarRemocaoProfissional(i)"
+            >
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Convites Pendentes -->
+    <ion-card *ngIf="sentInvites.length > 0">
+      <ion-card-header>
+        <ion-card-title>Convites Pendentes ({{ sentInvites.length }})</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <ion-item *ngFor="let invite of sentInvites; let i = index">
+            <ion-avatar slot="start">
+              <ion-icon name="hourglass-outline" style="font-size: 32px; color: orange;"></ion-icon>
+            </ion-avatar>
+            <ion-label>
+              <h3>{{ invite.establishmentName }}</h3>
+              <p>Aguardando resposta</p>
+            </ion-label>
+            <ion-button
+              fill="clear"
+              color="danger"
+              size="small"
+              slot="end"
+              (click)="confirmarCancelamentoConvite(i)"
+            >
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
   </ng-container>
 
   <!-- Profissional com Convites -->
@@ -73,10 +105,7 @@
             color="success"
             (click)="aceitarConvite(invite.id)"
           >
-            <ion-icon
-              slot="icon-only"
-              name="checkmark-circle-outline"
-            ></ion-icon>
+            <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
           </ion-button>
           <ion-button
             size="small"
@@ -112,7 +141,7 @@
       <div class="go-config notification-footer">
         <ion-icon name="notifications-outline"></ion-icon>
         <span class="notification-badge">3</span>
-        <ion-label>NOTIFICAÇÕES</ion-label>
+        <ion-label>Notificações</ion-label>
       </div>
       <div class="go-menu">
         <ion-menu-button></ion-menu-button>
@@ -121,4 +150,3 @@
     </div>
   </div>
 </ion-footer>
-

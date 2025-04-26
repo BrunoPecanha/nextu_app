@@ -7,8 +7,6 @@ import { IonicModule } from '@ionic/angular';
 import { AssociatedProfessionalPageRoutingModule } from './associated-professional-routing.module';
 import { AssociatedProfessionalPage } from './associated-professional.page';
 
-
-
 @NgModule({
   imports: [
     CommonModule,

@@ -14,7 +14,7 @@ interface Invite {
 @Component({
   selector: 'app-associated-professional',
   templateUrl: './associated-professional.page.html',
-  styleUrls: ['./associated-professional.page.scss'],
+  styleUrls: ['./associated-professional.page.scss']
 })
 export class AssociatedProfessionalPage {
   userRole: 'owner' | 'professional' = 'owner';
@@ -29,9 +29,14 @@ export class AssociatedProfessionalPage {
     { id: 2, establishmentName: 'Estética Bella' }
   ];
 
+  sentInvites: Invite[] = [
+    { id: 3, establishmentName: 'Convite enviado para João' },
+    { id: 4, establishmentName: 'Convite enviado para Maria' }
+  ];
+
   cpfInput: string = '';
 
-  constructor(private alertController: AlertController) {}
+  constructor(private alertController: AlertController) { }
 
   async presentAlert(message: string) {
     const alert = await this.alertController.create({
@@ -46,15 +51,62 @@ export class AssociatedProfessionalPage {
     const cpf = this.cpfInput.trim();
     if (!cpf) return;
 
-    // Lógica real virá depois
     this.presentAlert(`Convite enviado para CPF ${cpf}`);
     this.cpfInput = '';
+  }
+
+  async confirmarRemocaoProfissional(index: number) {
+    const alert = await this.alertController.create({
+      header: 'Remover Funcionário',
+      message: 'Tem certeza que deseja remover este profissional?',
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Remover',
+          role: 'destructive',
+          handler: () => {
+            this.removerProfissional(index);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   removerProfissional(index: number): void {
     const prof = this.professionals[index];
     this.professionals.splice(index, 1);
     this.presentAlert(`${prof.name} foi removido do estabelecimento.`);
+  }
+
+  async confirmarCancelamentoConvite(index: number) {
+    const alert = await this.alertController.create({
+      header: 'Cancelar Convite',
+      message: 'Deseja cancelar este convite?',
+      buttons: [
+        {
+          text: 'Não',
+          role: 'cancel'
+        },
+        {
+          text: 'Sim, cancelar',
+          role: 'destructive',
+          handler: () => {
+            this.cancelarConvite(index);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  cancelarConvite(index: number): void {
+    const convite = this.sentInvites[index];
+    this.sentInvites.splice(index, 1);
+    this.presentAlert(`Convite para "${convite.establishmentName}" cancelado.`);
   }
 
   aceitarConvite(id: number): void {
