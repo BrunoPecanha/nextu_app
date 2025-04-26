@@ -25,6 +25,8 @@ export class ServiceRegistrationPage implements OnInit {
       status: false,
       duration: 30,
       image: 'assets/images/utils/corte-tesoura.jpg',
+      variablePrice: true,
+      variableTime: false
     },
     {
       name: 'Corte à tesoura',
@@ -34,6 +36,8 @@ export class ServiceRegistrationPage implements OnInit {
       status: true,
       duration: 20,
       image: 'assets/images/utils/corte-tesoura.jpg',
+      variablePrice: true,
+      variableTime: false
     },
     {
       name: 'Manicure Simples',
@@ -43,6 +47,8 @@ export class ServiceRegistrationPage implements OnInit {
       duration: 35,      
       status: true,
       image: 'assets/images/utils/unha.png',
+      variablePrice: true,
+      variableTime: true
     },
     {
       name: 'Corte à máquina desfarçado',
@@ -52,6 +58,8 @@ export class ServiceRegistrationPage implements OnInit {
       status: false,
       duration: 45,
       image: 'assets/images/utils/corte-maquina.jpg',
+      variablePrice: true,
+      variableTime: true
     },
     {
       name: 'Descoloração',
@@ -61,6 +69,8 @@ export class ServiceRegistrationPage implements OnInit {
       status: true,
       duration: 40,
       image: 'assets/images/utils/descoloracao.jpg',
+      variablePrice: true,
+      variableTime: true
     },
   ];
 
@@ -79,6 +89,8 @@ export class ServiceRegistrationPage implements OnInit {
           duration: [service.duration, [Validators.required, Validators.min(1)]],
           image: [service.image],
           active: [service.status],
+          variablePrice: [service.variablePrice],
+          variableTime: [service.variableTime],
         })
       );
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -7,131 +7,100 @@ import { Router } from '@angular/router';
   templateUrl: './company-configurations.page.html',
   styleUrls: ['./company-configurations.page.scss'],
 })
-export class CompanyConfigurationsPage implements OnInit {
-
-  @ViewChild('fileInput') fileInput: any;
+export class CompanyConfigurationsPage  {
+  @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
+  @ViewChild('wallpaperInput') wallpaperInput!: ElementRef<HTMLInputElement>;
 
   cadastroForm: FormGroup;
-  diasAtivos: boolean[] = [];
-  logoFile: File | null = null;
-  logoPreview: string | null = null;
-  imagemPreview: string | null = null;
-  imagemFile: File | null = null;
+  imagemPreview: string | ArrayBuffer | null = null;
+  wallpaperPreview: string | ArrayBuffer | null = null;
   enviando = false;
   enviado = false;
 
+  diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
-  diasSemana = ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
-
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder) {
     this.cadastroForm = this.fb.group({
       cpf: [''],
       cnpj: [''],
       nomeEmpresa: [''],
       endereco: [''],
+      horarios: this.fb.array(this.diasSemana.map(() => this.createHorarioForm())),
       abrirAutomaticamente: [false],
-      horarios: this.fb.array(
-        this.diasSemana.map(() =>
-          this.fb.group({
-            ativo: [false],
-            inicio: [''],
-            fim: ['']
-          })
-        )
-      )
+      aceitarOutrasFilas: [false],
+      atenderForaDeOrdem: [false],
+      subtituloLoja: [''],
+      destaques: this.fb.array([]), // ← novo FormArray para ícones + frases
     });
-
   }
 
-  ngOnInit() { }
-
-  get horarios(): FormArray {
-    return this.cadastroForm.get('horarios') as FormArray;
-  }
-
-  criarHorario(): FormGroup {
+  createHorarioForm(): FormGroup {
     return this.fb.group({
       ativo: [false],
       inicio: [''],
-      fim: ['']
+      fim: [''],
     });
+  }
+
+  get destaques(): FormArray {
+    return this.cadastroForm.get('destaques') as FormArray;
+  }
+
+  adicionarIconeFrase() {
+    this.destaques.push(this.fb.group({
+      icone: [''],
+      frase: [''],
+    }));
+  }
+
+  removerIconeFrase(index: number) {
+    this.destaques.removeAt(index);
+  }
+
+  getHorarioFormGroup(index: number): FormGroup {
+    return (this.cadastroForm.get('horarios') as FormArray).at(index) as FormGroup;
   }
 
   selecionarImagem() {
     this.fileInput.nativeElement.click();
   }
 
-
   onImagemSelecionada(event: any) {
     const file = event.target.files[0];
     if (file) {
-      this.imagemFile = file;
-
       const reader = new FileReader();
       reader.onload = () => {
-        this.imagemPreview = reader.result as string;
+        this.imagemPreview = reader.result;
       };
       reader.readAsDataURL(file);
     }
   }
 
-  getHorarioFormGroup(index: number): FormGroup {
-    return this.horarios.at(index) as FormGroup;
+  selecionarWallpaper() {
+    this.wallpaperInput.nativeElement.click();
   }
 
-  // async enviar() {
-  //   if (this.cadastroForm.valid) {
-  //     this.enviando = true;
+  onWallpaperSelecionado(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.wallpaperPreview = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
 
-  //     const formData = new FormData();
-  //     formData.append('cpf', this.cadastroForm.value.cpf);
-  //     formData.append('cnpj', this.cadastroForm.value.cnpj);
-  //     formData.append('nomeEmpresa', this.cadastroForm.value.nomeEmpresa);
-  //     formData.append('abrirAutomaticamente', this.cadastroForm.value.abrirAutomaticamente);
-
-  //     this.cadastroForm.value.horarios.forEach((h: any, index: number) => {
-  //       formData.append(`horarios[${index}][ativo]`, h.ativo);
-  //       formData.append(`horarios[${index}][inicio]`, h.inicio);
-  //       formData.append(`horarios[${index}][fim]`, h.fim);
-  //     });
-
-  //     if (this.imagemFile) {
-  //       formData.append('logo', this.imagemFile);
-  //     }
-
-  //     // Simulando envio (troque pelo seu serviço HTTP real)
-  //     setTimeout(() => {
-  //       console.log('Dados enviados:', formData);
-  //       this.enviando = false;
-  //     }, 2000);
-
-  //   } else {
-  //     this.cadastroForm.markAllAsTouched();
-  //   }
-  // }
-
-  enviar() {
-    if (this.cadastroForm.valid) {
-      this.enviando = true;
-
-      setTimeout(() => {
-        this.enviando = false;
-        this.enviado = true;
-      
-        setTimeout(() => {
-          this.enviado = false;
-          this.router.navigate(['/role-registration']); // 
-        }, 3000);
-      
-      }, 2000);       
-    } else {
-      this.cadastroForm.markAllAsTouched();
+  removerWallpaper() {
+    this.wallpaperPreview = null;
+    if (this.wallpaperInput) {
+      this.wallpaperInput.nativeElement.value = '';
     }
   }
 
   formatarCPF(event: any) {
-    let valor = event.target.value.replace(/\D/g, '');
-    if (valor.length > 11) valor = valor.substring(0, 11);
+    let valor = event.detail.value;
+    valor = valor.replace(/\D/g, '');
     valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
     valor = valor.replace(/(\d{3})(\d)/, '$1.$2');
     valor = valor.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
@@ -139,12 +108,27 @@ export class CompanyConfigurationsPage implements OnInit {
   }
 
   formatarCNPJ(event: any) {
-    let valor = event.target.value.replace(/\D/g, '');
-    if (valor.length > 14) valor = valor.substring(0, 14);
+    let valor = event.detail.value;
+    valor = valor.replace(/\D/g, '');
     valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');
     valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3');
     valor = valor.replace(/\.(\d{3})(\d)/, '.$1/$2');
     valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
     this.cadastroForm.get('cnpj')?.setValue(valor, { emitEvent: false });
+  }
+
+  enviar() {
+    if (this.cadastroForm.invalid) {
+      return;
+    }
+
+    this.enviando = true;
+
+    // Simulação de envio
+    setTimeout(() => {
+      this.enviando = false;
+      this.enviado = true;
+      console.log('Dados enviados:', this.cadastroForm.value);
+    }, 2000);
   }
 }
