@@ -1,0 +1,124 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-menu-button></ion-menu-button>
+  </ion-buttons>
+  <ion-title *ngIf="userRole === 'owner'">GERENC. COLABORADOR</ion-title>
+  <ion-title *ngIf="userRole === 'professional'">CONVITES RECEBIDOS</ion-title>
+  <ion-buttons slot="end">
+    <ion-button>
+      <ion-icon></ion-icon>
+    </ion-button>
+  </ion-buttons>
+</ion-toolbar>
+
+<ion-content class="ion-padding">
+  <!-- Dono do Estabelecimento -->
+  <ng-container *ngIf="userRole === 'owner'">
+    <ion-list>
+      <ion-item>
+        <ion-label position="floating">CPF do Profissional</ion-label>
+        <ion-input [(ngModel)]="cpfInput" type="text"></ion-input>
+      </ion-item>
+      <ion-button
+        expand="block"
+        class="ion-margin-top"
+        (click)="enviarConvite()"
+        >Enviar Convite</ion-button
+      >
+    </ion-list>
+
+    <ion-list *ngIf="professionals.length > 0">
+      <ion-item *ngFor="let prof of professionals; let i = index">
+        <ion-avatar slot="start">
+          <ion-icon
+            name="person-circle-outline"
+            style="font-size: 32px"
+          ></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{ prof.name }}</h3>
+          <p>CPF: {{ prof.cpf }}</p>
+        </ion-label>
+        <ion-button
+          fill="clear"
+          color="danger"
+          size="small"
+          slot="end"
+          (click)="removerProfissional(i)"
+        >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-item>
+    </ion-list>
+  </ng-container>
+
+  <!-- Profissional com Convites -->
+  <ng-container *ngIf="userRole === 'professional'">
+    <ion-list *ngIf="pendingInvites.length > 0">
+      <ion-item *ngFor="let invite of pendingInvites">
+        <ion-avatar slot="start">
+          <ion-icon
+            name="business-outline"
+            style="font-size: 32px; color: #3880ff"
+          ></ion-icon>
+        </ion-avatar>
+        <ion-label>
+          <h3>{{ invite.establishmentName }}</h3>
+          <p>Convite para associação</p>
+        </ion-label>
+        <ion-buttons slot="end">
+          <ion-button
+            size="small"
+            fill="clear"
+            color="success"
+            (click)="aceitarConvite(invite.id)"
+          >
+            <ion-icon
+              slot="icon-only"
+              name="checkmark-circle-outline"
+            ></ion-icon>
+          </ion-button>
+          <ion-button
+            size="small"
+            fill="clear"
+            color="medium"
+            (click)="recusarConvite(invite.id)"
+          >
+            <ion-icon slot="icon-only" name="close-circle-outline"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </ion-item>
+    </ion-list>
+
+    <ion-card *ngIf="pendingInvites.length === 0">
+      <ion-card-content class="text-center">
+        Nenhum convite pendente no momento.
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+</ion-content>
+
+<ion-footer>
+  <div class="menu-fixed-bottom">
+    <div class="content-menu-border">
+      <div class="go-init">
+        <ion-icon name="home-outline"></ion-icon>
+        <ion-label>Início</ion-label>
+      </div>
+      <div class="go-fila">
+        <ion-icon name="list-outline"></ion-icon>
+        <ion-label>Fila</ion-label>
+      </div>
+      <div class="go-config notification-footer">
+        <ion-icon name="notifications-outline"></ion-icon>
+        <span class="notification-badge">3</span>
+        <ion-label>NOTIFICAÇÕES</ion-label>
+      </div>
+      <div class="go-menu">
+        <ion-menu-button></ion-menu-button>
+        <ion-label>Menu</ion-label>
+      </div>
+    </div>
+  </div>
+</ion-footer>
+

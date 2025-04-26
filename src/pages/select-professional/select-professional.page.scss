@@ -154,18 +154,16 @@ ion-label {
   justify-content: center;
 }
 
-/* Ajuste para telas menores */
 @media (max-width: 600px) {
   ion-content.scroll-area {
     padding-bottom: 80px;
   }
 
   .fila-card {
-    margin-bottom: 12px; /* Reduz o espaço entre os cards */
+    margin-bottom: 12px; 
   }
 }
 
-// Remove barra de rle scroll do ion-content
 ion-content::part(scroll) {
   scrollbar-width: none; 
   -ms-overflow-style: none; 
