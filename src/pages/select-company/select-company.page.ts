@@ -77,7 +77,7 @@ export class SelectCompanyPage implements OnInit {
   }
 
   toggleLike(card: any, event: MouseEvent): void {
-    event.stopPropagation(); // Evita que o clique selecione o card
+    event.stopPropagation(); 
     card.liked = !card.liked;
     console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
   }

@@ -7,16 +7,12 @@ import { Router } from '@angular/router';
   styleUrls: ['./role-registration.page.scss'],
 })
 export class RoleRegistrationPage implements OnInit {
-
-
+  
   usuario: any;
 
   constructor(private router: Router) { }
 
   ngOnInit() {
-    // this.usuario = {
-    //   company: 'Lucas'
-    // };
   }
 
   criarEmpresa() {
