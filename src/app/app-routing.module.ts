@@ -65,9 +65,11 @@ const routes: Routes = [
   {
     path: 'service-registration',
     loadChildren: () => import('../pages/service-registration/service-registration.module').then( m => m.ServiceRegistrationPageModule)
+  },
+  {
+    path: 'associated-professional',
+    loadChildren: () => import('../pages/associated-professional/associated-professional.module').then( m => m.AssociatedProfessionalPageModule)
   }
-
-
 ];
 
 @NgModule({
