@@ -11,7 +11,7 @@ import { environment } from "src/environments/environment";
   
     constructor(private http: HttpClient) { }
   
-    getStoresByOwner(ownerId: number): Observable<any> {
+    getStores(ownerId: number): Observable<any> {
       return this.http.get(`${this.apiUrl}/store/owner/${ownerId}`);
     }
 

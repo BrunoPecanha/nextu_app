@@ -3,21 +3,19 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthResponse } from "src/models/responses/auth-responsel";
+import { CategoryModel } from "src/models/category-model";
+import { CategoryResponse } from "src/models/responses/category-response";
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class SelectCompanyService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
-  login(credentials: { email: string, password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials);
-  }
-
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/logout`, {});
-  }
+  loadCategories(): Observable<CategoryResponse> {
+    return this.http.get<CategoryResponse>(`${this.apiUrl}/category/all`);
+  } 
 }

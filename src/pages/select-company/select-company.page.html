@@ -30,14 +30,14 @@
   </ng-template>
 </ion-toolbar>
 
-<div class="horizontal-scroll" *ngIf="serviceTypes?.length">
+<div class="horizontal-scroll" *ngIf="categories?.length">
   <div
     class="service-type-card"
-    *ngFor="let serviceType of serviceTypes"
-    (click)="selectService(serviceType)"
+    *ngFor="let category of categories"
+    (click)="selectService(categories)"
   >
-    <img [src]="serviceType.img" alt="{{ serviceType.name }}" />
-    <h2>{{ serviceType.name }}</h2>
+    <img [src]="category.imgPath" alt="{{ category.name }}" />
+    <h2>{{ category.name }}</h2>
   </div>
 </div>
 
