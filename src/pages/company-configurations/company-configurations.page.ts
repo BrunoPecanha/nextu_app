@@ -29,6 +29,7 @@ export class CompanyConfigurationsPage  {
       abrirAutomaticamente: [false],
       aceitarOutrasFilas: [false],
       atenderForaDeOrdem: [false],
+      atenderHoraMarcada: [false],
       subtituloLoja: [''],
       destaques: this.fb.array([]), // ← novo FormArray para ícones + frases
     });
