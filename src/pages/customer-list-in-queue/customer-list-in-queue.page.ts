@@ -132,4 +132,11 @@ export class CustomerListInQueuePage implements OnInit {
   //     }
   //   }).catch((e: any) => console.log('Erro ao preparar o QR Scanner', e));
   // } 
+
+  openWhatsapp(cliente: any) {
+    const phoneNumber = '55' + '21981970792';
+    const message = encodeURIComponent('Olá, gostaria de saber mais sobre o seu serviço!');
+    const url = `https://wa.me/${phoneNumber}?text=${message}`;
+    window.open(url, '_blank');
+  }
 }

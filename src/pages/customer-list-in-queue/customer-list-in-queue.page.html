@@ -60,6 +60,16 @@
           ></ion-icon>
           {{ cliente.emAtendimento ? 'Em Atendimento' : 'Atender' }}
         </ion-button>
+        <!-- Ícone do WhatsApp -->
+        <ion-button *ngIf="true"
+          size="small"
+          color="success"
+          (click)="openWhatsapp(cliente)"
+          class="whatsapp-button"
+        >
+          <ion-icon name="logo-whatsapp"></ion-icon>
+          WhatsApp
+        </ion-button>
       </div>
     </div>
   </div>
