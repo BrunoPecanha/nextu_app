@@ -7,11 +7,13 @@ import { IonicModule } from '@ionic/angular';
 import { QueueAdminPageRoutingModule } from './queue-admin-routing.module';
 
 import { QueueAdminPage } from './queue-admin.page';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     IonicModule,
     QueueAdminPageRoutingModule
   ],

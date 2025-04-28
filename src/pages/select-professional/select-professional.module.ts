@@ -8,12 +8,14 @@ import { SelectProfessionalPageRoutingModule } from './select-professional-routi
 
 import { SelectProfessionalPage } from './select-professional.page';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     SelectProfessionalPageRoutingModule
   ],
   declarations: [SelectProfessionalPage],

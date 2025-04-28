@@ -23,6 +23,7 @@ export class UserConfigurationsPage {
       endereco: [''],
       aceitarMensagemOutrosUsuarios: [false],
       profile: [''],
+      senha: [''],
       wallpaper: ['']
     });
   }

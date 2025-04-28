@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { CustomerListInQueuePageRoutingModule } from './customer-list-in-queue-routing.module';
 import { CustomerListInQueuePage } from './customer-list-in-queue.page';
+import { SharedModule } from 'src/shared/shared.module';
 
 
 
@@ -12,6 +13,7 @@ import { CustomerListInQueuePage } from './customer-list-in-queue.page';
   imports: [
     CommonModule,
     FormsModule,
+    SharedModule,
     IonicModule,
     CustomerListInQueuePageRoutingModule
   ],
