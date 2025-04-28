@@ -1,0 +1,305 @@
+/* ============================== */
+/* GERAL */
+/* ============================== */
+
+ion-content::part(scroll) {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  
+  ion-item {
+    --background: transparent;
+    --padding-start: 8px;
+    --inner-padding-end: 8px;
+    --min-height: 60px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    background: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+  
+  ion-label {
+    font-size: 15px;
+    color: #333;
+  }
+  
+  ion-input, ion-select {
+    font-size: 15px;
+  }
+  
+  ion-toggle {
+    margin-left: auto;
+  }
+  
+  /* ============================== */
+  /* HEADER E TÍTULO */
+  /* ============================== */
+  
+  ion-toolbar {
+    --min-height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    background-color: #001e61;
+    color: #fff;
+  }
+  
+  ion-title {
+    flex: 1;
+    color: #000000;
+    text-align: center;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  
+  /* ============================== */
+  /* BOTÃO CADASTRO */
+  /* ============================== */
+  
+  .btn-cadastro {
+    margin-top: 20px;
+    background-color: #001e61;
+    color: #ffffff;
+    border-radius: 12px;
+    height: 52px;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 12px rgba(0, 30, 97, 0.4);
+  }
+  
+  /* ============================== */
+  /* LOGO UPLOAD */
+  /* ============================== */
+  
+  .logo-wrapper {
+    text-align: center;
+    margin: 0px 0;
+  
+    .logo-container {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background-color: #f9f9f9;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      border: 2px dashed #ccc;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+      &:hover {
+        border-color: #001e61;
+        background: #eef1f8;
+        transform: scale(1.02);
+      }
+  
+      .upload-icon {
+        font-size: 42px;
+        color: #666;
+      }
+  
+      .logo-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 50%;
+      }
+    }
+  
+    .logo-msg {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #777;
+    }
+  }
+  
+  /* ============================== */
+  /* HORÁRIO DE ATENDIMENTO */
+  /* ============================== */
+  
+  .horario-box {
+    margin-top: 24px;
+  
+    .label-titulo {
+      font-weight: bold;
+      font-size: 16px;
+      color: #001e61;
+      margin-bottom: 10px;
+      display: block;
+    }
+  
+    .horario-scroll {
+      max-height: 320px;
+      overflow-y: auto;
+      background: #f7f9fc;
+      border-radius: 12px;
+      padding: 14px;
+      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
+    }
+  
+    ion-grid {
+      padding: 0;
+    }
+  
+    ion-row {
+      padding: 8px 0;
+      border-bottom: 1px solid #eaeaea;
+  
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  
+    ion-label {
+      font-size: 14px;
+      color: #555;
+    }
+  }
+  
+  /* ============================== */
+  /* SUCESSO CADASTRO */
+  /* ============================== */
+  
+  .sucesso-msg {
+    text-align: center;
+    color: #2dd36f;
+    margin-top: 20px;
+    font-weight: bold;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  .check-icon {
+    font-size: 24px;
+    color: #2dd36f;
+  }
+  
+  .check-icon-big {
+    font-size: 28px;
+    color: #2dd36f;
+    animation: pulse 0.8s ease-in-out;
+  }
+  
+  /* ============================== */
+  /* ANIMAÇÕES */
+  /* ============================== */
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(0.9);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  .wallpaper-wrapper {
+    text-align: center;
+    margin: 24px 0;
+  
+    .wallpaper-container {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+      height: 180px;
+      margin: 0 auto;
+      background-color: #f9f9f9;
+      border: 2px dashed #ccc;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  
+      &:hover {
+        border-color: #001e61;
+        background-color: #eef1f8;
+        transform: scale(1.02);
+      }
+  
+      .wallpaper-preview {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+  
+      .upload-icon {
+        font-size: 48px;
+        color: #888;
+        position: absolute;
+        z-index: 2;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+  
+      .overlay {
+        position: absolute;
+        background: rgba(0, 0, 0, 0.3);
+        color: white;
+        width: 100%;
+        height: 100%;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 16px;
+        z-index: 2;
+      }
+  
+      &:hover .overlay {
+        display: flex;
+      }
+    }
+  
+    .wallpaper-msg {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #666;
+    }
+  }
+  
+  /* Botão para remover papel de parede */
+  .remove-wallpaper-btn {
+    margin-top: 12px;
+    background: #ff3b30;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  
+    &:hover {
+      background: #e3322a;
+    }
+  }
+  
+  

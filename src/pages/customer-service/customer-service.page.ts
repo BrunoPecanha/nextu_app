@@ -30,7 +30,7 @@ export class CustomerServicePage {
         {
           text: 'Sim',
           handler: () => {
-            this.navCtrl.navigateForward('/costumer-list-in-queue');
+            this.navCtrl.navigateForward('/customer-list-in-queue');
           },
         },
       ],

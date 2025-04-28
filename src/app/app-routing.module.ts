@@ -73,7 +73,12 @@ const routes: Routes = [
   {
     path: 'choose-establishment',
     loadChildren: () => import('../pages/choose-establishment/choose-establishment.module').then( m => m.ChooseEstablishmentPageModule)
+  },
+  {
+    path: 'user-configurations',
+    loadChildren: () => import('../pages/user-configurations/user-configurations.module').then( m => m.UserConfigurationsPageModule)
   }
+
 
 ];
 
