@@ -1,14 +1,23 @@
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-menu-button></ion-menu-button>
-  </ion-buttons>
-  <ion-title>FILAS</ion-title>
-  <ion-buttons slot="end">
-    <ion-button fill="clear" (click)="openCalendar()">
-      <ion-icon slot="icon-only" name="calendar-outline"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</ion-toolbar>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>GERENC. FILAS</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button
+        fill="clear"
+        (click)="openQueue()"
+        [disabled]="hasTodayOpenQueue"
+        class="add-button"
+      >
+        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 
 <ion-content>
   <div class="filters">
@@ -16,31 +25,36 @@
       expand="block"
       shape="round"
       size="large"
-      class="open-queue-button"
-      (click)="openQueue()"
-      [disabled]="hasTodayOpenQueue">
-      <ion-icon name="add-circle-outline" slot="start"></ion-icon>
-      ABRIR FILA HOJE
+      fill="solid"
+      class="date-filter-button"
+      (click)="openCalendar()"
+      [disabled]="hasTodayOpenQueue"
+    >
+      <ion-icon name="calendar-outline" slot="start"></ion-icon>
+      <ion-label>FILTRAR POR DATA</ion-label>
     </ion-button>
   </div>
 
   <div class="queue-list">
     <ion-card
       *ngFor="let queue of filteredQueues"
-      [class.today-open]="queue.status === 'Aberta' && queue.date === today">
+      [class.today-open]="queue.status === 'Aberta' && queue.date === today"
+    >
       <ion-card-header>
         <ion-card-title class="card-title-with-icon">
           <ion-icon
             [name]="getQueueIcon(queue.name)"
             slot="start"
-            style="margin-right: 6px">
+            style="margin-right: 6px"
+          >
           </ion-icon>
           {{ queue.name }}
         </ion-card-title>
         <ion-badge
           *ngIf="queue.status === 'Aberta' && queue.date === today"
           color="success"
-          style="margin-left: 8px; margin-top: 4px;">
+          style="margin-left: 8px; margin-top: 4px"
+        >
           ABERTA HOJE
         </ion-badge>
         <ion-card-subtitle>
@@ -57,9 +71,10 @@
         <ion-button
           expand="block"
           fill="outline"
-          (click)="viewQueueDetails(queue)">
+          (click)="viewQueueDetails(queue)"
+        >
           <ion-icon name="information-circle-outline" slot="start"></ion-icon>
-          Ver Detalhes
+          VER DETALHES  
         </ion-button>
       </ion-card-content>
     </ion-card>
@@ -69,13 +84,15 @@
 <ion-modal
   [isOpen]="calendarOpen"
   (didDismiss)="closeCalendar()"
-  cssClass="custom-calendar-modal">
+  cssClass="custom-calendar-modal"
+>
   <ng-template>
     <div class="calendar-wrapper">
       <ion-datetime
         class="centered-datetime"
         presentation="date"
-        (ionChange)="onDateChange($event)">
+        (ionChange)="onDateChange($event)"
+      >
       </ion-datetime>
     </div>
   </ng-template>

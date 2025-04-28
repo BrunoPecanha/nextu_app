@@ -1,17 +1,22 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
 import { IonicModule } from '@ionic/angular';
-import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { FooterBaseComponent } from './footer-base.component';
+import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
+
 
 @NgModule({
-  declarations: [FooterBaseComponent],
+  declarations: [
+    FooterMenuComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,   
+    IonicModule
   ],
-  schemas:[CUSTOM_ELEMENTS_SCHEMA]
+  exports: [
+    FooterMenuComponent 
+  ]
 })
-export class FooterBaseModule {}
+export class SharedModule {}
