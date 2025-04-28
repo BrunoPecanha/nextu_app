@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/services/components/notification-service';
+import { NavController } from '@ionic/angular';
+import { NotificationService } from 'src/services/notification.service';
 
 @Component({
   selector: 'app-footer-menu',
@@ -7,16 +8,24 @@ import { NotificationService } from 'src/services/components/notification-servic
   styleUrls: ['./footer-menu.component.scss'],
 })
 export class FooterMenuComponent implements OnInit {
-  notificationsCount: number = 0;
+  notificationsCount$ = this.notificationService.notificacoesNaoLidas$;
 
-  constructor(private notificationService: NotificationService) {}
+  constructor(private notificationService: NotificationService, private navController: NavController) {
+  }
 
-  ngOnInit() {    
-    this.notificationService.fetchNotifications();
+  ngOnInit() {
+    this.notificationService.atualizarContadorNaoLidas();
+  }
+  
+   navegarParaHome() {
+    this.navController.navigateForward('/role-registration');
+  }
 
-    // Assine o Observable para receber atualizações
-    this.notificationService.notificationsCount$.subscribe(count => {
-      this.notificationsCount = count;
-    });
+  navegarParaFila() {
+    this.navController.navigateForward('/queue');
+  }
+
+  navegarParaNotificacoes() {
+    this.navController.navigateForward('/notification');
   }
 }
