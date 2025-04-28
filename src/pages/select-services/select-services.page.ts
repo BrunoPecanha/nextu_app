@@ -20,7 +20,7 @@ export class SelectServicesPage {
   ];
 
   selectedServices: { id: string; desc: string; time: number; price: number }[] = [];
-  isServiceListVisible = false; // Controla a visibilidade da lista de serviços
+  isServiceListVisible = false;
 
   totalTime = 0;
   totalPrice = 0;
@@ -35,25 +35,22 @@ export class SelectServicesPage {
 
   addService(service: { id: string; desc: string; time: number; price: number }) {
     this.selectedServices.push(service);
-    this.isServiceListVisible = false; // Oculta a lista após a seleção
+    this.isServiceListVisible = false;
     this.updateTotals();
   }
 
   removeService(index: number) {
-    // Remove serviço selecionado
     this.selectedServices.splice(index, 1);
     this.updateTotals();
   }
 
   updateTotals() {
-    // Atualizar o total de tempo e preço
     this.totalTime = this.selectedServices.reduce((acc, s) => acc + s.time, 0);
     this.totalPrice = this.selectedServices.reduce((acc, s) => acc + s.price, 0);
     this.formatOutput();
   }
 
   formatOutput() {
-    // Formatar a saída de tempo e preço
     const hours = Math.floor(this.totalTime / 60);
     const minutes = this.totalTime % 60;
 

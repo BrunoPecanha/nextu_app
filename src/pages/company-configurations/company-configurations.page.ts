@@ -128,7 +128,6 @@ export class CompanyConfigurationsPage {
 
     this.enviando = true;
 
-    // Simulação de envio
     setTimeout(() => {
       this.enviando = false;
       this.enviado = true;

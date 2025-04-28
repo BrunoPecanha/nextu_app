@@ -39,18 +39,18 @@
   transform: translateX(-50%);
   z-index: 2;
   background: #fff;
-  border-radius: 50%; // se você quiser que fique circular
+  border-radius: 50%; 
   box-shadow: 0 4px 12px rgba(0,0,0,0.15);
   width: 80px;
   height: 80px;
-  overflow: hidden; // <-- ESSENCIAL
+  overflow: hidden; 
 }
 
 .logo-wrapper ion-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 0; // ou remova esse se estiver usando borda no wrapper
+  border-radius: 0; 
 }
 
 .card-retratil {
@@ -190,7 +190,7 @@ ion-avatar ion-img {
 }
 
 .establishment-content {
-  position: relative; // Necessário para posicionar a logo
+  position: relative;
   --background: #f4f5f8;
 
   .header-background-modern {
@@ -212,13 +212,13 @@ ion-avatar ion-img {
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0, 0, 0, 0.2); // levemente escurecido
+      background: rgba(0, 0, 0, 0.2); 
     }
   }
 
   .logo-wrapper {
     position: absolute;
-    top: 140px; // altura ajustável conforme seu header
+    top: 140px;
     left: 50%;
     transform: translateX(-50%);
     width: 100px;
@@ -238,7 +238,7 @@ ion-avatar ion-img {
   }
 
   .card-retratil {
-    margin-top: 70px; // distancia para não ficar colado na logo
+    margin-top: 70px; 
     padding: 16px;
     border-radius: 16px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
@@ -284,7 +284,7 @@ ion-avatar ion-img {
   margin-right: 20px;
 }
 
-/* Rodapé */
+
 ion-footer {
   bottom: 0;
   width: 100%;
@@ -363,7 +363,6 @@ ion-label {
 }
 
 
-// Remove barra de rle scroll do ion-content
 ion-content::part(scroll) {
   scrollbar-width: none; 
   -ms-overflow-style: none; 

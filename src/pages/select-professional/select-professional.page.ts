@@ -72,7 +72,6 @@ export class SelectProfessionalPage implements OnInit {
   }
 
   entrarNaFila(fila: Queue) {
-    // Aqui você pode navegar para uma rota passando o ID da fila
     console.log(`Entrar na fila: ${fila.name} (ID: ${fila.id})`);
     this.router.navigate(['/select-services'], {
       queryParams: { queueId: fila.id },

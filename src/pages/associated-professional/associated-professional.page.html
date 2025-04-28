@@ -6,8 +6,7 @@
   <ion-title *ngIf="userRole === 'professional'">CONVITES RECEBIDOS</ion-title>
 </ion-toolbar>
 
-<ion-content class="ion-padding">
-  <!-- Dono do Estabelecimento -->
+<ion-content class="ion-padding"> 
   <ng-container *ngIf="userRole === 'owner'">
     <ion-list>
       <ion-item>
@@ -25,7 +24,6 @@
       </ion-button>
     </ion-list>
 
-    <!-- Funcionários Aceitos -->
     <ion-card *ngIf="professionals.length > 0">
       <ion-card-header>
         <ion-card-title
@@ -59,7 +57,6 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Convites Pendentes -->
     <ion-card *ngIf="sentInvites.length > 0">
       <ion-card-header>
         <ion-card-title
@@ -94,7 +91,6 @@
     </ion-card>
   </ng-container>
 
-  <!-- Profissional com Convites -->
   <ng-container *ngIf="userRole === 'professional'">
     <ion-list *ngIf="pendingInvites.length > 0">
       <ion-item *ngFor="let invite of pendingInvites">

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NavController } from '@ionic/angular';
+import { Observable, of } from 'rxjs';
 import { NotificationService } from 'src/services/notification.service';
 
 @Component({
@@ -27,5 +28,9 @@ export class FooterMenuComponent implements OnInit {
 
   navegarParaNotificacoes() {
     this.navController.navigateForward('/notification');
+  }
+
+  marcarComoLida(id: number, usuarioId: number): Observable<any> {    
+    return of(null);
   }
 }

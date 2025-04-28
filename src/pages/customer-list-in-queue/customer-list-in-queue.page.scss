@@ -181,7 +181,7 @@ ion-label {
 .info-extra div {
   display: flex;
   align-items: center;
-  gap: 8px; /* Espaçamento entre o ícone e o texto */
+  gap: 8px; 
 }
 
 .tempo-espera,
@@ -210,7 +210,6 @@ ion-icon {
   color: #0b3d91;
 }
 
-/* Remove barra de role scroll do ion-content */
 ion-content::part(scroll) {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -226,24 +225,24 @@ ion-content::part(scroll) {
 }
 
 .whatsapp ion-icon {
-  font-size: 24px; /* Ícone menor */
-  color: white !important; /* Garantir que a cor seja branca, usando o !important */
+  font-size: 24px; 
+  color: white !important;
 }
 
-/* Efeito de hover */
+
 .whatsapp:hover {
-  background-color: #128C7E; /* Cor do WhatsApp mais escura ao passar o mouse */
-  transform: scale(1.1); /* Leve aumento no tamanho para interatividade */
+  background-color: #128C7E; 
+  transform: scale(1.1); 
 }
 
 .whatsapp {
   position: absolute;
-  bottom: 10px; /* Distância do fundo do card */
-  right: 10px; /* Distância da lateral direita do card */
-  background-color: #25D366; /* Cor verde suave */
+  bottom: 10px; 
+  right: 10px;
+  background-color: #25D366;
   border-radius: 50%;
-  padding: 8px; /* Reduzido o padding para deixar o ícone mais discreto */
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); /* Sombras mais suaves */
+  padding: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1); 
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s ease-in-out; /* Efeito suave */
+  transition: background-color 0.3s, transform 0.2s ease-in-out; 
 }

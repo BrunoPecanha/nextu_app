@@ -86,10 +86,10 @@ ion-button:not([fill="clear"]):not(.open-queue-button) {
   --color: white;
   --border-radius: 8px;
   margin-top: 8px;
-  font-size: 16px; /* Ajusta o tamanho da fonte */
-  font-weight: 600; /* Deixa a fonte mais grossa */
-  text-transform: none; /* Evita que o texto fique em maiúsculas, caso você queira ele no formato original */
-  padding: 12px 20px; /* Ajusta o padding para melhorar a área clicável */
+  font-size: 16px; 
+  font-weight: 600; 
+  text-transform: none; 
+  padding: 12px 20px;
 }
 
 ion-toolbar ion-button[fill="clear"] {
@@ -100,9 +100,9 @@ ion-toolbar ion-button[fill="clear"] {
 .open-queue-button {
   --background: #28a745;
   --color: white;
-  font-size: 16px; /* Ajuste para o tamanho da fonte */
-  font-weight: 600; /* Deixa a fonte mais grossa */
-  padding: 12px 20px; /* Ajusta o padding para melhorar a área clicável */
+  font-size: 16px;
+  font-weight: 600;
+  padding: 12px 20px; 
 }
 
 ion-button {
@@ -110,10 +110,10 @@ ion-button {
   --color: white;
   --border-radius: 8px;
   margin-top: 8px;
-  font-size: 16px; /* Ajuste para o tamanho da fonte */
-  font-weight: 600; /* Deixa a fonte mais grossa */
-  text-transform: none; /* Evita que o texto fique em maiúsculas, caso queira */
-  padding: 12px 20px; /* Ajuste o padding para garantir que o texto tenha espaço suficiente */
+  font-size: 16px; 
+  font-weight: 600; 
+  text-transform: none; 
+  padding: 12px 20px; 
 }
 
 

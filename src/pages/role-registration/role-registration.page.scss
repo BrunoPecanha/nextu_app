@@ -23,7 +23,7 @@ ion-content {
 }
 
 .box {
-  flex: 1 1 calc(100% - 2rem); /* tela pequena: ocupa quase 100% */
+  flex: 1 1 calc(100% - 2rem); 
   max-width: 320px;
   min-width: 260px;
   box-sizing: border-box;
