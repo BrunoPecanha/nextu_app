@@ -140,7 +140,7 @@
   <!-- Botão Cadastrar -->
   <ion-button expand="block" color="primary" class="btn-cadastro" [disabled]="enviando || enviado" (click)="enviar()">
     <ion-spinner *ngIf="enviando" name="crescent"></ion-spinner>
-    <span *ngIf="!enviando && !enviado">SAlvar</span>
+    <span *ngIf="!enviando && !enviado">SALVAR</span>
     <ion-icon *ngIf="enviado" name="checkmark-circle" class="check-icon"></ion-icon>
   </ion-button>
 
