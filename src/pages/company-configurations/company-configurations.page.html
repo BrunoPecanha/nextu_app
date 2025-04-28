@@ -3,18 +3,32 @@
     <ion-buttons slot="start">
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
-    <ion-title>CONFIGURAÇÕES</ion-title>    
+    <ion-title>CONFIGURAÇÕES</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding" [formGroup]="cadastroForm">
-
   <!-- Área de Upload Logo -->
   <div class="logo-wrapper">
     <div class="logo-container" (click)="selecionarImagem()">
-      <img *ngIf="imagemPreview" [src]="imagemPreview" alt="Logo Preview" class="logo-preview" />
-      <ion-icon *ngIf="!imagemPreview" name="cloud-upload-outline" class="upload-icon"></ion-icon>
-      <input type="file" hidden accept="image/*" #fileInput (change)="onImagemSelecionada($event)" />
+      <img
+        *ngIf="imagemPreview"
+        [src]="imagemPreview"
+        alt="Logo Preview"
+        class="logo-preview"
+      />
+      <ion-icon
+        *ngIf="!imagemPreview"
+        name="cloud-upload-outline"
+        class="upload-icon"
+      ></ion-icon>
+      <input
+        type="file"
+        hidden
+        accept="image/*"
+        #fileInput
+        (change)="onImagemSelecionada($event)"
+      />
     </div>
     <div class="logo-msg">Clique para enviar a logo</div>
   </div>
@@ -23,12 +37,22 @@
   <ion-list lines="none">
     <ion-item>
       <ion-label position="floating">CPF</ion-label>
-      <ion-input type="text" formControlName="cpf" maxlength="14" (ionInput)="formatarCPF($event)"></ion-input>
+      <ion-input
+        type="text"
+        formControlName="cpf"
+        maxlength="14"
+        (ionInput)="formatarCPF($event)"
+      ></ion-input>
     </ion-item>
 
     <ion-item>
       <ion-label position="floating">CNPJ</ion-label>
-      <ion-input type="text" formControlName="cnpj" maxlength="18" (ionInput)="formatarCNPJ($event)"></ion-input>
+      <ion-input
+        type="text"
+        formControlName="cnpj"
+        maxlength="18"
+        (ionInput)="formatarCNPJ($event)"
+      ></ion-input>
     </ion-item>
 
     <ion-item>
@@ -47,7 +71,11 @@
     <ion-label class="label-titulo">Horários de Atendimento *</ion-label>
     <div class="horario-scroll">
       <ion-grid>
-        <ion-row *ngFor="let dia of diasSemana; let i = index" [formGroup]="getHorarioFormGroup(i)" class="ion-align-items-center">
+        <ion-row
+          *ngFor="let dia of diasSemana; let i = index"
+          [formGroup]="getHorarioFormGroup(i)"
+          class="ion-align-items-center"
+        >
           <ion-col size="4">
             <ion-label>{{ dia }}</ion-label>
           </ion-col>
@@ -95,19 +123,50 @@
       <ion-label>Enviar aviso por WhatsApp</ion-label>
       <ion-toggle formControlName="avisoWhatsApp"></ion-toggle>
     </ion-item>
+    
+    <ion-item>
+      <ion-label>Remover cliente chamado da fila após:</ion-label>
+      <ion-input 
+        type="number" 
+        formControlName="tempoRemocao" 
+        placeholder="Minutos" 
+        style="max-width: 80px; margin-left: 8px;">
+      </ion-input>
+    </ion-item>
   </ion-list>
 
   <!-- Papel de Parede da Loja -->
   <div class="wallpaper-wrapper">
     <div class="wallpaper-container" (click)="selecionarWallpaper()">
-      <img *ngIf="wallpaperPreview" [src]="wallpaperPreview" alt="Wallpaper Preview" class="wallpaper-preview" />
-      <ion-icon *ngIf="!wallpaperPreview" name="image-outline" class="upload-icon"></ion-icon>
+      <img
+        *ngIf="wallpaperPreview"
+        [src]="wallpaperPreview"
+        alt="Wallpaper Preview"
+        class="wallpaper-preview"
+      />
+      <ion-icon
+        *ngIf="!wallpaperPreview"
+        name="image-outline"
+        class="upload-icon"
+      ></ion-icon>
       <div class="overlay">Clique para alterar</div>
-      <input type="file" hidden accept="image/*" #wallpaperInput (change)="onWallpaperSelecionado($event)" />
+      <input
+        type="file"
+        hidden
+        accept="image/*"
+        #wallpaperInput
+        (change)="onWallpaperSelecionado($event)"
+      />
     </div>
-    <div class="wallpaper-msg">Clique para enviar o papel de parede da loja</div>
+    <div class="wallpaper-msg">
+      Clique para enviar o papel de parede da loja
+    </div>
 
-    <button *ngIf="wallpaperPreview" class="remove-wallpaper-btn" (click)="removerWallpaper()">
+    <button
+      *ngIf="wallpaperPreview"
+      class="remove-wallpaper-btn"
+      (click)="removerWallpaper()"
+    >
       Remover Papel de Parede
     </button>
   </div>
@@ -119,39 +178,59 @@
     </ion-item>
   </ion-list>
 
-<!-- Ícones e Frases -->
-<div class="icone-frase-wrapper ion-margin-top">
-  <ion-label class="label-titulo">Destaques da Loja:</ion-label>
+  <!-- Ícones e Frases -->
+  <div class="icone-frase-wrapper ion-margin-top">
+    <ion-label class="label-titulo">Destaques da Loja:</ion-label>
 
-  <div formArrayName="destaques">
-    <div *ngFor="let destaque of destaques.controls; let i = index" [formGroupName]="i" class="icone-frase-item">
-      <ion-item>
-        <ion-select formControlName="icone" placeholder="Escolher ícone">
-          <ion-select-option value="flame">🔥 Fogo</ion-select-option>
-          <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
-          <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
-        </ion-select>
+    <div formArrayName="destaques">
+      <div
+        *ngFor="let destaque of destaques.controls; let i = index"
+        [formGroupName]="i"
+        class="icone-frase-item"
+      >
+        <ion-item>
+          <ion-select formControlName="icone" placeholder="Escolher ícone">
+            <ion-select-option value="flame">🔥 Fogo</ion-select-option>
+            <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
+            <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
+          </ion-select>
 
-        <ion-input formControlName="frase" placeholder="Frase relacionada" class="ion-margin-start"></ion-input>
+          <ion-input
+            formControlName="frase"
+            placeholder="Frase relacionada"
+            class="ion-margin-start"
+          ></ion-input>
 
-        <ion-button color="danger" fill="clear" (click)="removerIconeFrase(i)">
-          <ion-icon name="trash"></ion-icon>
-        </ion-button>
-      </ion-item>
+          <ion-button
+            color="danger"
+            fill="clear"
+            (click)="removerIconeFrase(i)"
+          >
+            <ion-icon name="trash"></ion-icon>
+          </ion-button>
+        </ion-item>
+      </div>
     </div>
+
+    <ion-button expand="block" fill="outline" (click)="adicionarIconeFrase()">
+      Adicionar Ícone + Frase
+    </ion-button>
   </div>
 
-  <ion-button expand="block" fill="outline" (click)="adicionarIconeFrase()">
-    Adicionar Ícone + Frase
-  </ion-button>
-</div>
-
-
   <!-- Botão Cadastrar -->
-  <ion-button expand="block" color="primary" class="btn-cadastro" [disabled]="enviando || enviado" (click)="enviar()">
+  <ion-button
+    expand="block"
+    color="primary"
+    class="btn-cadastro"
+    [disabled]="enviando || enviado"
+    (click)="enviar()"
+  >
     <ion-spinner *ngIf="enviando" name="crescent"></ion-spinner>
     <span *ngIf="!enviando && !enviado">SALVAR</span>
-    <ion-icon *ngIf="enviado" name="checkmark-circle" class="check-icon"></ion-icon>
+    <ion-icon
+      *ngIf="enviado"
+      name="checkmark-circle"
+      class="check-icon"
+    ></ion-icon>
   </ion-button>
-
 </ion-content>

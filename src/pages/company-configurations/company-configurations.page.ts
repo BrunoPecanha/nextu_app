@@ -7,7 +7,7 @@ import { Router } from '@angular/router';
   templateUrl: './company-configurations.page.html',
   styleUrls: ['./company-configurations.page.scss'],
 })
-export class CompanyConfigurationsPage  {
+export class CompanyConfigurationsPage {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('wallpaperInput') wallpaperInput!: ElementRef<HTMLInputElement>;
 
@@ -16,6 +16,7 @@ export class CompanyConfigurationsPage  {
   wallpaperPreview: string | ArrayBuffer | null = null;
   enviando = false;
   enviado = false;
+  tempoRemocao: number | null = null;
 
   diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
@@ -30,9 +31,10 @@ export class CompanyConfigurationsPage  {
       aceitarOutrasFilas: [false],
       atenderForaDeOrdem: [false],
       atenderHoraMarcada: [false],
+      tempoRemocao: [null],
       avisoWhatsApp: [false],
       subtituloLoja: [''],
-      destaques: this.fb.array([]), // ← novo FormArray para ícones + frases
+      destaques: this.fb.array([]), 
     });
   }
 
