@@ -41,7 +41,7 @@ export class QueuePage implements OnInit {
       this.ehMinhaVez = true;
       this.horaChamada = new Date().toLocaleTimeString();
       this.gerarQrCodeMockado();
-    }, 3000); // simula chamada após 3s
+    }, 3000); 
   }
 
   verificaMinhaVez() {
@@ -54,12 +54,11 @@ export class QueuePage implements OnInit {
 
   gerarQrCodeMockado() {
     this.queueService.gerarQrCode().subscribe((res) => {
-      this.qrCodeBase64 = res.qrCode; // já no formato data:image/png;base64,...
+      this.qrCodeBase64 = res.qrCode; 
     });
   }
 
   verificaPosicaoFila() {
-    // lógica para verificar a fila e atualizar as variáveis
     this.queueService.getPosicao().subscribe((res) => {
       this.posicaoNaFila = res.posicao;
       this.ehMinhaVez = res.ehMinhaVez;
@@ -72,7 +71,7 @@ export class QueuePage implements OnInit {
 
   carregarQrCode() {
     this.queueService.gerarQrCode().subscribe((res) => {
-      this.qrCodeBase64 = res.qrCode; // já no formato data:image/png;base64,...
+      this.qrCodeBase64 = res.qrCode; 
     });
   }
 
@@ -151,7 +150,6 @@ export class QueuePage implements OnInit {
           role: 'cancel',
           cssClass: 'secondary',
           handler: () => {
-            // Lógica ao cancelar (opcional)
           },
         },
         {

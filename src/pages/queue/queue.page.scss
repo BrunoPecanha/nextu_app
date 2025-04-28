@@ -497,7 +497,6 @@ ion-title {
   font-size: 24px;
 }
 
-// Remove barra de rle scroll do ion-content
 ion-content::part(scroll) {
   scrollbar-width: none; 
   -ms-overflow-style: none; 

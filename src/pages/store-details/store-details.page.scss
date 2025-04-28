@@ -19,20 +19,20 @@
 
 .logo-wrapper {
   position: absolute;
-  bottom: -40px; /* ajustando para descer a logo */
+  bottom: -40px;
   left: 50%;
   transform: translateX(-50%);
   background: white;
   border-radius: 50%;
-  padding: 8px; /* aumentei um pouco o padding para balancear melhor */
+  padding: 8px; 
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
   z-index: 10;
 }
 
 .logo-loja {
-  width: 100px; /* aumentei para 100px se quiser manter em 80px pode voltar */
+  width: 100px; 
   height: 100px;
-  border-radius: 50%; /* deixei o border-radius igual para manter o círculo perfeito */
+  border-radius: 50%;
   object-fit: cover;
   object-position: center center;
 }
@@ -41,7 +41,7 @@
   margin-top: 60px;
   padding: 0 16px 16px;
   text-align: center;
-  flex-shrink: 0; /* Impede que a área de informações encolha */
+  flex-shrink: 0;
 }
 
 .nome-loja {
@@ -182,7 +182,6 @@ ion-label {
   z-index: 10;
 }
 
-// Remove barra de rle scroll do ion-content
 ion-content::part(scroll) {
   scrollbar-width: none; 
   -ms-overflow-style: none; 
