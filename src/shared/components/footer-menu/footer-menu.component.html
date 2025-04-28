@@ -1,21 +1,32 @@
 <ion-footer class="menu-fixed-bottom">
   <div class="content-menu-border">
-    <div class="go-init">
+    
+    <!-- Redireciona para a página inicial com NavController -->
+    <div class="go-init" (click)="navegarParaHome()">
       <ion-icon name="home-outline"></ion-icon>
       <ion-label>INÍCIO</ion-label>
     </div>
-    <div class="go-fila">
+    
+    <!-- Redireciona para a página de fila com NavController -->
+    <div class="go-fila" (click)="navegarParaFila()">
       <ion-icon name="list-outline"></ion-icon>
       <ion-label>FILA</ion-label>
     </div>
-    <div class="go-config notification-footer">
+    
+    <!-- Redireciona para a página de notificações com NavController -->
+    <div class="go-config notification-footer" (click)="navegarParaNotificacoes()">
       <ion-icon name="notifications-outline"></ion-icon>
-      <span class="notification-badge">3</span>
+      <span class="notification-badge" *ngIf="(notificationsCount$ | async) as contador">
+        {{ contador }}
+      </span>
       <ion-label>NOTIFICAÇÕES</ion-label>
     </div>
+    
+    <!-- Redireciona para o menu -->
     <div class="go-menu">
       <ion-menu-button></ion-menu-button>
       <ion-label>MENU</ion-label>
     </div>
+    
   </div>
 </ion-footer>

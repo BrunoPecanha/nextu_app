@@ -77,7 +77,12 @@ const routes: Routes = [
   {
     path: 'user-configurations',
     loadChildren: () => import('../pages/user-configurations/user-configurations.module').then( m => m.UserConfigurationsPageModule)
+  },
+  {
+    path: 'notification',
+    loadChildren: () => import('../pages/notification/notification.module').then( m => m.NotificationPageModule)
   }
+
 ];
 
 @NgModule({

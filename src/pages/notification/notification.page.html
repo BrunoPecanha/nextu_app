@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Notificações</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <ion-list>
+    <ion-accordion-group (ionAccordionChange)="aoAbrirNotificacao($event)">
+
+      <ion-accordion *ngFor="let noti of notificacoes; let i = index" value="{{noti.id}}">
+        <ion-item slot="header" color="light">
+          <ion-label>{{ noti.titulo }}</ion-label>
+          <ion-button fill="clear" color="danger" size="small" (click)="removerNotificacao(i)">
+            <ion-icon name="trash-outline"></ion-icon>
+          </ion-button>
+        </ion-item>
+
+        <div class="ion-padding" slot="content">
+          {{ noti.mensagem }}
+        </div>
+      </ion-accordion>
+
+    </ion-accordion-group>
+  </ion-list>
+
+  <div *ngIf="notificacoes.length === 0" class="no-notificacoes">
+    Nenhuma notificação no momento 📭
+  </div>
+
+</ion-content>
