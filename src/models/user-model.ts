@@ -1,18 +1,19 @@
 export interface UserModel {
   id: number;
   name: string;
-  lastname: string;
-  registeringdate: string;
-  lastupdate: string | null;
+  lastName: string; 
   phone: string;
-  street: string;
+  address: string; 
   number: string;
-  cpf: string;
   city: string;
-  state: string;
+  stateId: string; 
+  cpf: string | null;
+  status: number; 
   email: string;
   password?: string;
-  active: boolean;
-  profile: string | null;
-  isvalid: boolean;
+  storeId: number | null; 
+  profile: number | null; 
+  stores: any[]; 
+  registeringDate: string;
+  lastUpdate: string | null;
 }

@@ -9,6 +9,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class CreateAccountPage {
   name: string = '';
+  lastname: string = '';
   email: string = '';
   phone: string = '';
   password: string = '';
@@ -21,7 +22,7 @@ export class CreateAccountPage {
   async onSubmit(event: Event) {
     event.preventDefault();
 
-    if (!this.name || !this.email || !this.phone || !this.cpf || !this.password || !this.confirmPassword) {
+    if (!this.name || !this.lastname || !this.email || !this.phone || !this.cpf || !this.password || !this.confirmPassword) {
       const alert = await this.alertController.create({
         header: 'Informação',
         message: 'Por favor, preencha todos os campos obrigatórios.',

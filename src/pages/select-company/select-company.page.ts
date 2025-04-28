@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { CategoryModel } from 'src/models/category-model';
+import { SelectCompanyService } from 'src/services/select-company-service';
 
 @Component({
   selector: 'app-select-company',
@@ -8,9 +10,11 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private alertController: AlertController, private router: Router,) { }
+  constructor(private alertController: AlertController, private router: Router, private service: SelectCompanyService) {
+  }
 
   searching = false;
+  categories: CategoryModel[] = [];
   searchQuery = '';
   showRecentCards = false;
   selectedServiceType: any;
@@ -19,22 +23,6 @@ export class SelectCompanyPage implements OnInit {
     pagination: true,
     navigation: false
   };
-
-  serviceTypes = [
-    { img: 'assets/images/select-companie/car-wash.png', name: 'LAVA JATOS' },
-    { img: 'assets/images/select-companie/barbershop.png', name: 'BARBEARIAS' },
-    { img: 'assets/images/select-companie/beauty-salon.png', name: 'SALÕES DE BELEZA' },
-    { img: 'assets/images/select-companie/manicure.png', name: 'MANICURES' },
-    { img: 'assets/images/select-companie/car-service.png', name: 'OFICINAS MECÂNICAS' },
-    { img: 'assets/images/select-companie/restaurant.png', name: 'RESTAURANTES' },
-    { img: 'assets/images/select-companie/lab.png', name: 'LABORATÓRIOS' },
-    { img: 'assets/images/select-companie/postoffice.png', name: 'CORREIOS' },
-    { img: 'assets/images/select-companie/pet.png', name: 'PETSHOP' },
-    { img: 'assets/images/select-companie/laundry.png', name: 'LAVANDERIA' },
-    { img: 'assets/images/select-companie/veterinarian.png', name: 'VETERINÁRIOS' },
-    { img: 'assets/images/select-companie/clinic.png', name: 'CLÍNICAS MÉDICAS' },
-    { img: 'assets/images/select-companie/stores.png', name: 'OUTROS' }
-  ];
 
   companyCards = [
     {
@@ -60,7 +48,20 @@ export class SelectCompanyPage implements OnInit {
     }
   ];
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.loadCategories()
+  }
+
+  loadCategories() {
+    this.service.loadCategories().subscribe({
+      next: (response) => {
+        this.categories = response.data; 
+      },
+      error: (err) => {
+        console.error('Erro ao carregar categorias:', err);
+      }
+    });
+  }
 
   onSlideChange(e: any) {
     console.log('SwiperRef:', e.detail[0].activeIndex);
@@ -77,15 +78,15 @@ export class SelectCompanyPage implements OnInit {
   }
 
   toggleLike(card: any, event: MouseEvent): void {
-    event.stopPropagation(); 
+    event.stopPropagation();
     card.liked = !card.liked;
     console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
   }
-  
+
   selectCard(card: any): void {
     console.log('Card selecionado:', card.name);
     this.router.navigate(['/select-professional']);
-  }  
+  }
 
   onSearch(event: any) {
     this.searchQuery = event.detail.value;
@@ -94,7 +95,7 @@ export class SelectCompanyPage implements OnInit {
   toggleRecentCards() {
     this.showRecentCards = !this.showRecentCards;
   }
-  // Lógica para o envio da busca
+
   onSearchSubmit(searchQuery: string) {
     if (searchQuery && searchQuery.trim() !== '') {
       console.log('Busca por:', searchQuery);
@@ -105,7 +106,6 @@ export class SelectCompanyPage implements OnInit {
   }
 
   selectService(serviceType: any): void {
-    // No futuro pode navegar ou filtrar empresas por tipo
     console.log('Serviço selecionado:', serviceType);
   }
 
@@ -122,5 +122,4 @@ export class SelectCompanyPage implements OnInit {
       container.scrollBy({ left: 100, behavior: 'smooth' });
     }
   }
-
 }

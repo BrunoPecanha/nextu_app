@@ -11,7 +11,11 @@
 
     <form (submit)="onSubmit($event)">
       <div class="input-group">
-        <ion-input type="text" placeholder="Nome completo*" required [(ngModel)]="name" name="name"></ion-input>
+        <ion-input type="text" placeholder="Nome *" required [(ngModel)]="name" name="name"></ion-input>
+      </div>
+
+      <div class="input-group">
+        <ion-input type="text" placeholder="Sobrenome*" required [(ngModel)]="lastname" name="lastname"></ion-input>
       </div>
 
       <div class="input-group">
