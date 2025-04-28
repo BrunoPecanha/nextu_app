@@ -78,8 +78,6 @@ const routes: Routes = [
     path: 'user-configurations',
     loadChildren: () => import('../pages/user-configurations/user-configurations.module').then( m => m.UserConfigurationsPageModule)
   }
-
-
 ];
 
 @NgModule({

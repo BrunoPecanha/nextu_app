@@ -28,12 +28,12 @@ ion-label {
   margin-top: 5px;
   font-size: 12px;
   text-transform: uppercase;
-  color: #8A8A8A;
+  color: #ffff;
 }
 
 /* ===== FILTROS ===== */
 .filters {
-  padding: 16px;
+  padding: 15px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -86,6 +86,10 @@ ion-button:not([fill="clear"]):not(.open-queue-button) {
   --color: white;
   --border-radius: 8px;
   margin-top: 8px;
+  font-size: 16px; /* Ajusta o tamanho da fonte */
+  font-weight: 600; /* Deixa a fonte mais grossa */
+  text-transform: none; /* Evita que o texto fique em maiúsculas, caso você queira ele no formato original */
+  padding: 12px 20px; /* Ajusta o padding para melhorar a área clicável */
 }
 
 ion-toolbar ion-button[fill="clear"] {
@@ -96,6 +100,9 @@ ion-toolbar ion-button[fill="clear"] {
 .open-queue-button {
   --background: #28a745;
   --color: white;
+  font-size: 16px; /* Ajuste para o tamanho da fonte */
+  font-weight: 600; /* Deixa a fonte mais grossa */
+  padding: 12px 20px; /* Ajusta o padding para melhorar a área clicável */
 }
 
 ion-button {
@@ -103,7 +110,12 @@ ion-button {
   --color: white;
   --border-radius: 8px;
   margin-top: 8px;
+  font-size: 16px; /* Ajuste para o tamanho da fonte */
+  font-weight: 600; /* Deixa a fonte mais grossa */
+  text-transform: none; /* Evita que o texto fique em maiúsculas, caso queira */
+  padding: 12px 20px; /* Ajuste o padding para garantir que o texto tenha espaço suficiente */
 }
+
 
 /* ===== MODAL E CALENDÁRIO ===== */
 ion-modal.custom-calendar-modal {
@@ -111,33 +123,31 @@ ion-modal.custom-calendar-modal {
 }
 
 ion-modal.custom-calendar-modal::part(content) {
-  --width: auto;
+  --width: 100%;
   --height: auto;
   max-height: 80vh;
   background: transparent;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   padding: 0;
+  display: block;
 }
 
-ion-modal .calendar-wrapper {
+.calendar-wrapper {
   background: white;
   padding: 20px;
   border-radius: 12px;
   max-width: 340px;
   width: 90%;
+  margin: 0 auto;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
 .centered-datetime {
-  max-width: 320px;
   width: 100%;
-  background: #ffffff;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 16px;
 }
 
@@ -150,8 +160,7 @@ ion-datetime.centered-datetime {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-/* ===== RODAPÉ ===== */
-ion-footer {
+on-footer {
   bottom: 0;
   width: 100%;
   z-index: 1000;
@@ -164,6 +173,13 @@ ion-footer {
   background: #ffffff;
 }
 
+ion-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background-color: white;
+}
+
 .content-menu-border {
   display: flex;
   justify-content: space-around;
@@ -171,18 +187,57 @@ ion-footer {
   padding: 10px 0;
 }
 
-.go-init,
-.go-fila,
-.go-config {
+.go-init, .go-fila, .go-config {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-/* ===== NOTIFICAÇÃO ===== */
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+.go-init ion-label,
+.go-fila ion-label,
+.go-config ion-label {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 700;
+  font-size: 12px;
+  text-align: center;
+  color: #8A8A8A;
+}
+
+.menu-fixed-bottom ion-label a {
+  text-decoration: none;
+  color: #007bff;
+  font-size: 12px;
+}
+
 .notification-footer {
   position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-footer ion-icon {
+  position: relative;
+  font-size: 24px;
 }
 
 .notification-badge {
@@ -200,6 +255,7 @@ ion-footer {
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 10;
 }
 
 /* ===== AJUSTES RESPONSIVOS ===== */
@@ -253,3 +309,4 @@ ion-modal.custom-calendar-modal::part(content) {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   padding: 16px;
 }
+

@@ -28,13 +28,18 @@
     <!-- Funcionários Aceitos -->
     <ion-card *ngIf="professionals.length > 0">
       <ion-card-header>
-        <ion-card-title>Funcionários ({{ professionals.length }})</ion-card-title>
+        <ion-card-title
+          >Funcionários ({{ professionals.length }})</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
         <ion-list>
           <ion-item *ngFor="let prof of professionals; let i = index">
             <ion-avatar slot="start">
-              <ion-icon name="person-circle-outline" style="font-size: 32px;"></ion-icon>
+              <ion-icon
+                name="person-circle-outline"
+                style="font-size: 32px"
+              ></ion-icon>
             </ion-avatar>
             <ion-label>
               <h3>{{ prof.name }}</h3>
@@ -57,13 +62,18 @@
     <!-- Convites Pendentes -->
     <ion-card *ngIf="sentInvites.length > 0">
       <ion-card-header>
-        <ion-card-title>Convites Pendentes ({{ sentInvites.length }})</ion-card-title>
+        <ion-card-title
+          >Convites Pendentes ({{ sentInvites.length }})</ion-card-title
+        >
       </ion-card-header>
       <ion-card-content>
         <ion-list>
           <ion-item *ngFor="let invite of sentInvites; let i = index">
             <ion-avatar slot="start">
-              <ion-icon name="hourglass-outline" style="font-size: 32px; color: orange;"></ion-icon>
+              <ion-icon
+                name="hourglass-outline"
+                style="font-size: 32px; color: orange"
+              ></ion-icon>
             </ion-avatar>
             <ion-label>
               <h3>{{ invite.establishmentName }}</h3>
@@ -105,7 +115,10 @@
             color="success"
             (click)="aceitarConvite(invite.id)"
           >
-            <ion-icon slot="icon-only" name="checkmark-circle-outline"></ion-icon>
+            <ion-icon
+              slot="icon-only"
+              name="checkmark-circle-outline"
+            ></ion-icon>
           </ion-button>
           <ion-button
             size="small"
@@ -127,26 +140,5 @@
   </ng-container>
 </ion-content>
 
-<ion-footer>
-  <div class="menu-fixed-bottom">
-    <div class="content-menu-border">
-      <div class="go-init">
-        <ion-icon name="home-outline"></ion-icon>
-        <ion-label>Início</ion-label>
-      </div>
-      <div class="go-fila">
-        <ion-icon name="list-outline"></ion-icon>
-        <ion-label>Fila</ion-label>
-      </div>
-      <div class="go-config notification-footer">
-        <ion-icon name="notifications-outline"></ion-icon>
-        <span class="notification-badge">3</span>
-        <ion-label>Notificações</ion-label>
-      </div>
-      <div class="go-menu">
-        <ion-menu-button></ion-menu-button>
-        <ion-label>Menu</ion-label>
-      </div>
-    </div>
-  </div>
-</ion-footer>
+<app-footer-menu></app-footer-menu>
+
