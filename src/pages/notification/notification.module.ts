@@ -6,6 +6,7 @@ import { IonicModule } from '@ionic/angular';
 
 import { NotificationPagePageRoutingModule } from './notification-routing.module';
 import { NotificationPage } from './notification.page';
+import { SharedModule } from 'src/shared/shared.module';
 
 
 
@@ -14,6 +15,7 @@ import { NotificationPage } from './notification.page';
     CommonModule,
     FormsModule,
     IonicModule,
+    SharedModule,
     NotificationPagePageRoutingModule
   ],
   declarations: [NotificationPage]

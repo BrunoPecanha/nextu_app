@@ -1,18 +1,109 @@
 .no-notificacoes {
-    text-align: center;
-    color: #888;
-    margin-top: 40px;
-    font-size: 16px;
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+  font-size: 16px;
+}
+
+ion-accordion {
+  margin-bottom: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+ion-item {
+  --background: #f7f9fc;
+}
+
+.no-notificacoes {
+  text-align: center;
+  color: #888;
+  margin-top: 40px;
+  font-size: 16px;
+}
+
+ion-accordion {
+  margin-bottom: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+ion-accordion {
+  margin-bottom: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+ion-accordion {
+  margin-bottom: 8px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.notification-item {
+  --background: #f7f9fc;
+  font-weight: normal;
+  position: relative;
+  padding-left: 12px;
+  transition: opacity 0.3s ease;
+
+  &.lida {
+    opacity: 0.8;
   }
-  
-  ion-accordion {
-    margin-bottom: 8px;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-  
-  ion-item {
-    --background: #f7f9fc;
-  }
-  
+}
+
+.notification-item.nao-lida {
+  --background: #d8ebff;
+  font-weight: bold;
+}
+
+.notification-item.lida {
+  --background: #f0f0f0;
+  font-weight: normal;
+}
+
+.indicator {
+  width: 5px;
+  height: 100%;
+  background-color: transparent;
+  position: absolute;
+  right: 0;
+  top: 0;
+  border-radius: 4px 0 0 4px;
+}
+
+.indicator.nova {
+  background-color: #3880ff;
+}
+
+.badge-nova {
+  margin-left: 8px;
+  font-size: 10px;
+  height: 16px;
+  line-height: 16px;
+  vertical-align: middle;
+}
+
+ion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
+}
+
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}

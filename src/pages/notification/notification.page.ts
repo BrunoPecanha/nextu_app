@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-notification',
@@ -7,28 +8,39 @@ import { Component } from '@angular/core';
 })
 export class NotificationPage {
 
+  constructor(private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
+
+  //Título precisa ter no máximo 18 caracteres
   notificacoes = [
-    { id: '1', titulo: 'Bem-vindo!', mensagem: 'Obrigado por se cadastrar no app.' },
-    { id: '2', titulo: 'Promoção!', mensagem: 'Hoje temos 10% de desconto para novos clientes.' },
-    { id: '3', titulo: 'Agendamento Confirmado', mensagem: 'Seu horário foi confirmado para 15h.' }
+    { id: '1', titulo: 'É a sua vez', mensagem: 'Obrigado por se cadastrar no app.', lida: false },
+    { id: '2', titulo: 'Promoção Venha!', mensagem: 'Hoje temos 10% de desconto para novos clientes.', lida: false },
+    { id: '3', titulo: 'Agend. Confirmado', mensagem: 'Seu horário foi confirmado para 15h.', lida: false }
   ];
+
+  aoAbrirNotificacao(event: CustomEvent) {
+    const notificacaoId = event.detail.value;
+
+    if (notificacaoId) {
+      const notificacao = this.notificacoes.find(noti => noti.id === notificacaoId);
+      if (notificacao && !notificacao.lida) {
+        notificacao.lida = true;
+        this.cdr.detectChanges();
+      }
+    }
+  }
+
+  marcarComoLida(id: string) {
+    const notificacao = this.notificacoes.find(n => n.id === id);
+    if (notificacao && !notificacao.lida) {
+      notificacao.lida = true;
+    }
+  }
 
   removerNotificacao(index: number) {
     this.notificacoes.splice(index, 1);
   }
 
-  aoAbrirNotificacao(event: any) {
-    const idAberto = event.detail.value;
-    if (idAberto) {
-      console.log('Usuário abriu notificação com id:', idAberto);
-      this.marcarComoLida(idAberto);
-    }
-  }
-
-  marcarComoLida(id: string) {
-    // Aqui você chamaria seu serviço para avisar o backend
-    console.log(`Enviando ao backend que a notificação ${id} foi lida`);
-    
-    // Exemplo: this.notificacaoService.marcarComoLida(id).subscribe();
+  voltar() {
+    this.navCtrl.back(); 
   }
 }

@@ -1,35 +1,62 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="/"></ion-back-button>
+      <ion-buttons slot="start">
+        <ion-button (click)="voltar()">
+          <ion-icon slot="icon-only" name="arrow-back-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-buttons>
-    <ion-title>Notificações</ion-title>
+    <ion-title>NOTIFICAÇÕES</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear">
+        <ion-icon></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
-
   <ion-list>
-    <ion-accordion-group (ionAccordionChange)="aoAbrirNotificacao($event)">
+    <ion-accordion-group (ionChange)="aoAbrirNotificacao($event)">
+      <ion-accordion
+        *ngFor="let noti of notificacoes; let i = index"
+        [value]="noti.id"
+      >
+        <ion-item
+          slot="header"
+          class="notification-item"
+          [class.nao-lida]="!noti.lida"
+          [class.lida]="noti.lida"
+          lines="none"
+        >
+          <div class="indicator" [class.nova]="!noti.lida"></div>
 
-      <ion-accordion *ngFor="let noti of notificacoes; let i = index" value="{{noti.id}}">
-        <ion-item slot="header" color="light">
-          <ion-label>{{ noti.titulo }}</ion-label>
-          <ion-button fill="clear" color="danger" size="small" (click)="removerNotificacao(i)">
+          <ion-label>
+            {{ noti.titulo }}
+            <ion-badge *ngIf="!noti.lida" color="primary" class="badge-nova"
+              >Nova</ion-badge
+            >
+          </ion-label>
+
+          <ion-button
+            fill="clear"
+            color="danger"
+            size="small"
+            (click)="removerNotificacao(i)"
+          >
             <ion-icon name="trash-outline"></ion-icon>
           </ion-button>
         </ion-item>
 
-        <div class="ion-padding" slot="content">
-          {{ noti.mensagem }}
-        </div>
+        <div class="ion-padding" slot="content">{{ noti.mensagem }}</div>
       </ion-accordion>
-
     </ion-accordion-group>
   </ion-list>
 
   <div *ngIf="notificacoes.length === 0" class="no-notificacoes">
-    Nenhuma notificação no momento 📭
+    Não há notificações novas.
   </div>
-
 </ion-content>
+
+<app-footer-menu></app-footer-menu>

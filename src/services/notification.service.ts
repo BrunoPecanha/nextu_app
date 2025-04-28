@@ -18,15 +18,13 @@ export class NotificationService {
     const notificacoesMockadas = [
       { id: 1, mensagem: 'Você tem 3 novos seguidores!', lida: false },
       { id: 2, mensagem: 'Seu pedido foi enviado!', lida: false },
-      { id: 3, mensagem: 'Novo comentário na sua postagem.', lida: false },
-      { id: 4, mensagem: 'Novo comentário na sua postagem.', lida: false }
+      { id: 3, mensagem: 'Novo comentário na sua postagem.', lida: false }
     ];
     
     return of(notificacoesMockadas);
   }
 
-  marcarComoLida(id: string, usuarioId: string): Observable<any> {
-    debugger
+  marcarComoLida(id: number, usuarioId: number): Observable<any> {    
     const payload = {
       notificacaoId: id,
       usuarioId: usuarioId,
