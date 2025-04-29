@@ -70,7 +70,7 @@ ion-content {
 }
 
 .cards-companies {
-  margin-top: 110px;
+  margin-top: 135px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -356,4 +356,17 @@ ion-content::part(scroll) {
   font-size: 16px; /* ou qualquer tamanho que você preferir */
   width: 16px !important;
   height: 16px !important;
+}
+
+.service-type-card {
+  transition: all 0.3s ease;
+}
+
+.service-type-card.selected {
+  background-color: #007bff; 
+  color: white; 
+}
+
+.service-type-card.selected h2 {
+  color: white;
 }

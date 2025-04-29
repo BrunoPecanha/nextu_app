@@ -18,6 +18,10 @@ export class SelectCompanyService {
 
   loadCategories(): Observable<CategoryResponse> {
     return this.http.get<CategoryResponse>(`${this.apiUrl}/category/all`);
+  }  
+
+  loadStoresByCategoryId(id: number): Observable<StoreResponse> {
+    return this.http.get<StoreResponse>(`${this.apiUrl}/store/${id}/stores`);
   } 
 
   loadStores(): Observable<StoreResponse> {

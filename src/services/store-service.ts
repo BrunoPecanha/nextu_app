@@ -16,8 +16,7 @@ import { StoreModel } from "src/models/store-model";
       return this.http.get(`${this.apiUrl}/store/owner/${ownerId}`);
     }
 
-    getAllStores(): Observable<StoreModel> {
-      debugger
+    getAllStores(): Observable<StoreModel> {      
       return this.http.get<StoreModel>(`${this.apiUrl}/store/all`);
     }
 
