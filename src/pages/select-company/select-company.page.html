@@ -57,15 +57,16 @@
     <ion-card-content>
       <div class="inner-card">
         <div class="logo-container">
-          <img [src]="card.img" alt="{{ card.name }} logo" class="company-logo" />
+          <img [src]="card.logoPath" alt="{{ card.name }} logo" class="company-logo" />
         </div>
         <div class="company-info">
           <h2>{{ card.name }}</h2>
-          <p>{{ card.type }}</p>
-          <p>{{ card.queue }}</p>
+           <p>{{ card.category }}</p>
+           <!-- <p> Fila menor: {{ card.minorQueue }} pessoas</p>            -->
+           <p> Fila menor: 4 pessoas</p>    
           <ion-chip color="success" class="ratting-area">
-            <ion-icon name="star"></ion-icon>
-            4.8 (963 avaliações)
+            <ion-icon class="star-icon" name="star"></ion-icon>
+            {{ card.rating }} ({{ card.votes }} avaliações)          
           </ion-chip>
         </div>
       </div>

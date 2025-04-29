@@ -5,6 +5,7 @@ import { environment } from "src/environments/environment";
 import { AuthResponse } from "src/models/responses/auth-responsel";
 import { CategoryModel } from "src/models/category-model";
 import { CategoryResponse } from "src/models/responses/category-response";
+import { StoreResponse } from "src/models/responses/store-response";
 
 
 @Injectable({
@@ -17,5 +18,9 @@ export class SelectCompanyService {
 
   loadCategories(): Observable<CategoryResponse> {
     return this.http.get<CategoryResponse>(`${this.apiUrl}/category/all`);
+  } 
+
+  loadStores(): Observable<StoreResponse> {
+    return this.http.get<StoreResponse>(`${this.apiUrl}/store/all`);
   } 
 }

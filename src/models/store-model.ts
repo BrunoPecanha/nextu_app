@@ -1,25 +1,33 @@
-import { ServiceModel } from "./service-model";
+import { HighLight } from "./hig-hlight-model";
+import { OpeningHours } from "./opening-hours";
+import { StatusEnum } from "./status-enum";
+import { To } from "./to";
+import { UserModel } from "./user-model";
 
-export interface StoreModel {
-    id: string;
-    ownerId: string;
-    name: string;
-    description: string;
-    registeringDate?: Date;
-    lastUpDate?: Date;
-    phone?: string;
-    street?: string;
-    number?: string;
-    city?: string;
-    state?: string;
-    logo?: string;
-    backgrounding?: string;
-    status?: StatusStoreEnum;
-    services?: ServiceModel[];
-  }
-
-export enum StatusStoreEnum {
-    ACTIVE = 'ACTIVE',
-    INACTIVE = 'INACTIVE',
-    PENDING = 'PENDING'
+export interface StoreModel extends To {
+  cnpj: string;
+  name: string;
+  address: string;
+  number: string;
+  rating: number;
+  votes: number;
+  minorQueue: number;
+  city: string;
+  category: string;
+  state: string;
+  openAutomatic: boolean;
+  storeSubtitle: string;
+  acceptOtherQueues: boolean;
+  answerOutOfOrder: boolean;
+  answerScheduledTime: boolean;
+  timeRemoval?: number; 
+  whatsAppNotice: boolean;
+  logoPath?: string;
+  wallPaperPath?: string; 
+  openingHours: OpeningHours[];
+  highLights: HighLight[];
+  ownerId: number;
+  owner?: UserModel;
+  status: StatusEnum;
+  liked: boolean;
 }
