@@ -18,7 +18,7 @@ export class SelectCompanyPage implements OnInit {
   companies: StoreModel[] = []
   searchQuery = '';
   showRecentCards = false;
-  selectedServiceType: any;
+  selectedCategoryId: number | null = null; 
   slideOpts = {
     slidesPerView: 1,
     pagination: true,
@@ -61,9 +61,10 @@ export class SelectCompanyPage implements OnInit {
     console.log('SwiperRef:', e.detail[0].activeIndex);
   }
 
-  get filteredCards() {
+  get filteredCards() {    
     const query = this.searchQuery.toLowerCase();
-    return this.companies.filter(card => card.name.toLowerCase().includes(query));
+    var teste = this.companies.filter(card => card.name.toLowerCase().includes(query));
+    return teste;
   }
 
   toggleSearch() {
@@ -86,21 +87,16 @@ export class SelectCompanyPage implements OnInit {
     this.searchQuery = event.detail.value;
   }
 
-  toggleRecentCards() {
-    this.showRecentCards = !this.showRecentCards;
-  }
-
-  onSearchSubmit(searchQuery: string) {
-    if (searchQuery && searchQuery.trim() !== '') {
-      console.log('Busca por:', searchQuery);
-      // FAZER O REQUEST PARA O BACKEND COM O VALOR DIGITADO PARA FILTRAR
-    } else {
-      console.log('Nenhum valor informado para busca');
-    }
-  }
-
-  selectService(serviceType: any): void {
-    console.log('Serviço selecionado:', serviceType);
+  selectCategory(idCategory: any): void {    
+    this.selectedCategoryId = idCategory;
+    this.service.loadStoresByCategoryId(idCategory).subscribe({
+      next: (response) => {
+        this.companies = response.data; 
+      },
+      error: (err) => {
+        console.error('Erro ao filtrar:', err);
+      }
+    });
   }
 
   scrollLeft() {

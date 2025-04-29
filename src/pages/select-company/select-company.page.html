@@ -34,7 +34,8 @@
   <div
     class="service-type-card"
     *ngFor="let category of categories"
-    (click)="selectService(categories)"
+    (click)="selectCategory(category.id)"
+    [class.selected]="selectedCategoryId === category.id"
   >
     <img [src]="category.imgPath" alt="{{ category.name }}" />
     <h2>{{ category.name }}</h2>
@@ -44,35 +45,38 @@
 <ion-content fullscreen="true">
   <div class="cards-companies container">
     <ion-card
-    class="box full-card"
-    *ngFor="let card of filteredCards"
-    (click)="selectCard(card)"
-  >
-    <ion-icon
-      name="{{ card.liked ? 'heart' : 'heart-outline' }}"
-      class="like-icon"
-      (click)="toggleLike(card, $event)"
-    ></ion-icon>
-  
-    <ion-card-content>
-      <div class="inner-card">
-        <div class="logo-container">
-          <img [src]="card.logoPath" alt="{{ card.name }} logo" class="company-logo" />
+      class="box full-card"
+      *ngFor="let card of filteredCards"
+      (click)="selectCard(card)"
+    >
+      <ion-icon
+        name="{{ card.liked ? 'heart' : 'heart-outline' }}"
+        class="like-icon"
+        (click)="toggleLike(card, $event)"
+      ></ion-icon>
+
+      <ion-card-content>
+        <div class="inner-card">
+          <div class="logo-container">
+            <img
+              [src]="card.logoPath"
+              alt="{{ card.name }} logo"
+              class="company-logo"
+            />
+          </div>
+          <div class="company-info">
+            <h2>{{ card.name }}</h2>
+            <p>{{ card.category }}</p>
+            <!-- <p> Fila menor: {{ card.minorQueue }} pessoas</p>            -->
+            <p>Fila menor: 4 pessoas</p>
+            <ion-chip color="success" class="ratting-area">
+              <ion-icon class="star-icon" name="star"></ion-icon>
+              {{ card.rating }} ({{ card.votes }} avaliações)
+            </ion-chip>
+          </div>
         </div>
-        <div class="company-info">
-          <h2>{{ card.name }}</h2>
-           <p>{{ card.category }}</p>
-           <!-- <p> Fila menor: {{ card.minorQueue }} pessoas</p>            -->
-           <p> Fila menor: 4 pessoas</p>    
-          <ion-chip color="success" class="ratting-area">
-            <ion-icon class="star-icon" name="star"></ion-icon>
-            {{ card.rating }} ({{ card.votes }} avaliações)          
-          </ion-chip>
-        </div>
-      </div>
-    </ion-card-content>
-  </ion-card>
-  
+      </ion-card-content>
+    </ion-card>
   </div>
 </ion-content>
 
