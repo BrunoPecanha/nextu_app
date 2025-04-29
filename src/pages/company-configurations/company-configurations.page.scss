@@ -32,28 +32,6 @@ ion-toggle {
 }
 
 /* ============================== */
-/* HEADER E TÍTULO */
-/* ============================== */
-
-ion-toolbar {
-  --min-height: 64px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 12px;
-  background-color: #001e61;
-  color: #fff;
-}
-
-ion-title {
-  flex: 1;
-  color: #000000;
-  text-align: center;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-/* ============================== */
 /* BOTÃO CADASTRO */
 /* ============================== */
 
@@ -302,3 +280,11 @@ ion-title {
   }
 }
 
+ion-toolbar {
+  --background: #ffffff;
+  --color: #000000;
+  ion-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+  }
+}

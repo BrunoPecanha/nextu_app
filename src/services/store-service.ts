@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
+import { StoreModel } from "src/models/store-model";
 
 @Injectable({
     providedIn: 'root'
@@ -15,8 +16,9 @@ import { environment } from "src/environments/environment";
       return this.http.get(`${this.apiUrl}/store/owner/${ownerId}`);
     }
 
-    getAllStores(): Observable<any> {
-      return this.http.get(`${this.apiUrl}/store/getAll`);
+    getAllStores(): Observable<StoreModel> {
+      debugger
+      return this.http.get<StoreModel>(`${this.apiUrl}/store/all`);
     }
 
     getAllStoresWithSmallestQueue(): Observable<any> {

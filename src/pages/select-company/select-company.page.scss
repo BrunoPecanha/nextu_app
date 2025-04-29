@@ -70,7 +70,7 @@ ion-content {
 }
 
 .cards-companies {
-  margin-top: 150px;
+  margin-top: 110px;
   display: flex;
   flex-direction: column;
   gap: 12px;
@@ -135,7 +135,7 @@ ion-card.box .inner-card {
   margin-top: 6px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 15px;
 }
 
 .visited-card {
@@ -352,3 +352,8 @@ ion-content::part(scroll) {
   cursor: pointer;
 }
 
+.star-icon {
+  font-size: 16px; /* ou qualquer tamanho que você preferir */
+  width: 16px !important;
+  height: 16px !important;
+}

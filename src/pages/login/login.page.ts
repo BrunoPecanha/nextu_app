@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
-import { AuthService } from 'src/services/auth-service';
+import { AuthService } from 'src/services/auth.service';
 import { StoreService } from 'src/services/store-service';
 
 @Component({

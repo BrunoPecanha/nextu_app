@@ -36,16 +36,6 @@
   <!-- Campos Básicos -->
   <ion-list lines="none">
     <ion-item>
-      <ion-label position="floating">CPF</ion-label>
-      <ion-input
-        type="text"
-        formControlName="cpf"
-        maxlength="14"
-        (ionInput)="formatarCPF($event)"
-      ></ion-input>
-    </ion-item>
-
-    <ion-item>
       <ion-label position="floating">CNPJ</ion-label>
       <ion-input
         type="text"
@@ -56,13 +46,30 @@
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Nome da Empresa</ion-label>
-      <ion-input formControlName="nomeEmpresa"></ion-input>
+      <ion-label position="floating">NOME DA EMPRESA</ion-label>
+      <ion-input formControlName="name"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label position="floating">Endereço</ion-label>
-      <ion-input formControlName="endereco"></ion-input>
+      <ion-label position="floating">ENDEREÇO</ion-label>
+      <ion-input formControlName="address" placeholder="endereço, número"></ion-input>
+    </ion-item>  
+
+    <ion-item>
+      <ion-label position="floating">CIDADE</ion-label>
+      <ion-input formControlName="city"></ion-input>
+    </ion-item>  
+
+    <ion-item>
+      <ion-label position="floating">ESTADO</ion-label>
+      <ion-select 
+        formControlName="state"
+        interface="action-sheet" 
+        placeholder="Selecione seu estado">
+        <ion-select-option *ngFor="let state of states" [value]="state.id">
+          {{ state.id }} ({{ state.name }})
+        </ion-select-option>
+      </ion-select>
     </ion-item>
   </ion-list>
 
@@ -80,16 +87,16 @@
             <ion-label>{{ dia }}</ion-label>
           </ion-col>
           <ion-col size="2">
-            <ion-toggle formControlName="ativo"></ion-toggle>
+            <ion-toggle formControlName="activated"></ion-toggle>
           </ion-col>
-          <ion-col size="6" *ngIf="getHorarioFormGroup(i).get('ativo')?.value">
+          <ion-col size="6" *ngIf="getHorarioFormGroup(i).get('activated')?.value">
             <ion-item>
               <ion-label position="floating">Início</ion-label>
-              <ion-input type="time" formControlName="inicio"></ion-input>
+              <ion-input type="time" formControlName="start"></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="floating">Fim</ion-label>
-              <ion-input type="time" formControlName="fim"></ion-input>
+              <ion-input type="time" formControlName="end"></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -98,7 +105,7 @@
 
     <ion-item lines="none" class="ion-margin-top">
       <ion-label>Abrir fila automaticamente</ion-label>
-      <ion-toggle formControlName="abrirAutomaticamente"></ion-toggle>
+      <ion-toggle formControlName="openAutomatic"></ion-toggle>
     </ion-item>
   </div>
 
@@ -106,29 +113,29 @@
   <ion-list lines="none">
     <ion-item>
       <ion-label>Aceitar pessoas em outras filas</ion-label>
-      <ion-toggle formControlName="aceitarOutrasFilas"></ion-toggle>
+      <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
     </ion-item>
 
     <ion-item>
       <ion-label>Atender fora de ordem</ion-label>
-      <ion-toggle formControlName="atenderForaDeOrdem"></ion-toggle>
+      <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
     </ion-item>
 
     <ion-item>
       <ion-label>Atender com hora marcada</ion-label>
-      <ion-toggle formControlName="atenderHoraMarcada"></ion-toggle>
+      <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
     </ion-item>
 
     <ion-item>
       <ion-label>Enviar aviso por WhatsApp</ion-label>
-      <ion-toggle formControlName="avisoWhatsApp"></ion-toggle>
+      <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
     </ion-item>
     
     <ion-item>
       <ion-label>Remover cliente da fila após:</ion-label>
       <ion-input 
         type="number" 
-        formControlName="tempoRemocao" 
+        formControlName="timeRemoval" 
         placeholder="Minutos" 
         style="max-width: 80px; margin-left: 8px;">
       </ion-input>
@@ -173,30 +180,30 @@
 
   <ion-list lines="none">
     <ion-item>
-      <ion-label position="floating">Subtítulo da Loja</ion-label>
-      <ion-input formControlName="subtituloLoja"></ion-input>
+      <ion-label position="floating">SUBTITULO LOJA</ion-label>
+      <ion-input formControlName="storeSubtitle"></ion-input>
     </ion-item>
   </ion-list>
 
   <!-- Ícones e Frases -->
   <div class="icone-frase-wrapper ion-margin-top">
-    <ion-label class="label-titulo">Destaques da Loja:</ion-label>
+    <ion-label class="label-titulo">DESTAQUES DA LOJA:</ion-label>
 
-    <div formArrayName="destaques">
+    <div formArrayName="highLights">
       <div
-        *ngFor="let destaque of destaques.controls; let i = index"
+        *ngFor="let highlight of highLights.controls; let i = index"
         [formGroupName]="i"
         class="icone-frase-item"
       >
         <ion-item>
-          <ion-select formControlName="icone" placeholder="Escolher ícone">
+          <ion-select formControlName="icon" placeholder="Escolher ícone">
             <ion-select-option value="flame">🔥 Fogo</ion-select-option>
             <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
             <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
           </ion-select>
 
           <ion-input
-            formControlName="frase"
+            formControlName="phrase"
             placeholder="Frase relacionada"
             class="ion-margin-start"
           ></ion-input>
@@ -222,13 +229,13 @@
     expand="block"
     color="primary"
     class="btn-cadastro"
-    [disabled]="enviando || enviado"
+    [disabled]="sending || sent"
     (click)="enviar()"
   >
-    <ion-spinner *ngIf="enviando" name="crescent"></ion-spinner>
-    <span *ngIf="!enviando && !enviado">SALVAR</span>
+    <ion-spinner *ngIf="sending" name="crescent"></ion-spinner>
+    <span *ngIf="!sending && !sent">SALVAR</span>
     <ion-icon
-      *ngIf="enviado"
+      *ngIf="sent"
       name="checkmark-circle"
       class="check-icon"
     ></ion-icon>

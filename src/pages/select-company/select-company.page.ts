@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
 import { CategoryModel } from 'src/models/category-model';
+import { StoreModel } from 'src/models/store-model';
 import { SelectCompanyService } from 'src/services/select-company-service';
 
 @Component({
@@ -10,11 +10,12 @@ import { SelectCompanyService } from 'src/services/select-company-service';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private alertController: AlertController, private router: Router, private service: SelectCompanyService) {
+  constructor(private router: Router, private service: SelectCompanyService) {
   }
 
   searching = false;
   categories: CategoryModel[] = [];
+  companies: StoreModel[] = []
   searchQuery = '';
   showRecentCards = false;
   selectedServiceType: any;
@@ -24,32 +25,14 @@ export class SelectCompanyPage implements OnInit {
     navigation: false
   };
 
-  companyCards = [
-    {
-      name: 'KING\'S SONS',
-      type: 'barbearia',
-      queue: 'FILA MENOR: 3 PESSOAS',
-      img: 'assets/images/company-logo/kingssons.jpeg',
-      liked: false
-    },
-    {
-      name: 'SALÃO AUTO ESTIMA',
-      type: 'salão de beleza',
-      queue: 'FILA MENOR: 5 PESSOAS',
-      img: 'assets/images/company-logo/autoestima.png',
-      liked: false
-    },
-    {
-      name: 'UOMAN-BEATY SALON',
-      type: 'salão de beleza',
-      queue: 'FILA MENOR: 10 PESSOAS',
-      img: 'assets/images/company-logo/uoman.png',
-      liked: false
-    }
-  ];
-
   ngOnInit() {
-    this.loadCategories()
+    this.loadCategories();
+    this.loadStores();
+  }
+
+  ionViewWillEnter() {
+    this.loadCategories();
+    this.loadStores();
   }
 
   loadCategories() {
@@ -63,13 +46,24 @@ export class SelectCompanyPage implements OnInit {
     });
   }
 
+  loadStores() {
+    this.service.loadStores().subscribe({
+      next: (response) => {
+        this.companies = response.data; 
+      },
+      error: (err) => {
+        console.error('Erro ao carregar lojas:', err);
+      }
+    });
+  }
+
   onSlideChange(e: any) {
     console.log('SwiperRef:', e.detail[0].activeIndex);
   }
 
   get filteredCards() {
     const query = this.searchQuery.toLowerCase();
-    return this.companyCards.filter(card => card.name.toLowerCase().includes(query));
+    return this.companies.filter(card => card.name.toLowerCase().includes(query));
   }
 
   toggleSearch() {
