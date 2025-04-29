@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { UserRequest } from 'src/models/requests/user-request';
+import { UserService } from 'src/services/user-service';
 
 @Component({
   selector: 'app-create-account',
@@ -10,14 +12,14 @@ import { AlertController } from '@ionic/angular';
 export class CreateAccountPage {
   name: string = '';
   lastname: string = '';
+  cpf: string = '';
   email: string = '';
   phone: string = '';
   password: string = '';
   confirmPassword: string = '';
   termsAccepted: boolean = false;
-  cpf: string = '';
 
-  constructor(private router: Router, private alertController: AlertController) {}
+  constructor(private userService: UserService, private router: Router, private alertController: AlertController) { }
 
   async onSubmit(event: Event) {
     event.preventDefault();
@@ -32,7 +34,7 @@ export class CreateAccountPage {
       return;
     }
 
-    if ( !this.termsAccepted) {
+    if (!this.termsAccepted) {
       const alert = await this.alertController.create({
         header: 'Informação',
         message: 'Você precisa aceitar os termos de uso.',
@@ -52,18 +54,42 @@ export class CreateAccountPage {
       return;
     }
 
-    const alert = await this.alertController.create({
-      header: 'Sucesso',
-      message: 'Cadastro realizado com sucesso!',
-      buttons: [
-        {
-          text: 'OK',
-          handler: () => {
-            this.router.navigate(['/login']);
+    let userData: UserRequest = {
+      name: this.name,
+      lastName: this.lastname,
+      email: this.email,
+      phone: this.phone,
+      cpf: this.cpf,
+      password: this.password,
+      address: '',
+      number: '',
+      city: '',
+      stateId: ''
+    };
+
+    try {
+      await this.userService.createUser(userData).toPromise();
+      const alert = await this.alertController.create({
+        header: 'Sucesso',
+        message: 'Cadastro realizado com sucesso!',
+        buttons: [
+          {
+            text: 'OK',
+            handler: () => {
+              this.router.navigate(['/login']);
+            }
           }
-        }
-      ],
-    });
-    await alert.present();
+        ],
+      });
+      await alert.present();
+
+    } catch (err) {
+      const alert = await this.alertController.create({
+        header: 'Erro',
+        message: 'Erro ao cadastrar usuário:',
+        buttons: ['OK']
+      });
+      await alert.present();
+    }
   }
 }

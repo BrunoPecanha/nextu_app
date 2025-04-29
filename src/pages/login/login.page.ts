@@ -48,10 +48,8 @@ export class LoginPage {
           const { token, user } = response.data;
 
           sessionStorage.setItem('token', token);
-          sessionStorage.setItem('user', JSON.stringify(user));
-            
+          sessionStorage.setItem('user', JSON.stringify(user));           
 
-          debugger
           var stores = firstValueFrom(this.storeService.getStores(user.id))
 
           this.router.navigate(['/select-company']);

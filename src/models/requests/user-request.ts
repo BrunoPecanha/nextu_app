@@ -1,6 +1,4 @@
-import { To } from "./to";
-
-export interface UserModel extends To {  
+export interface UserRequest {  
   name: string;
   lastName: string;
   phone: string;
@@ -8,10 +6,7 @@ export interface UserModel extends To {
   number: string;
   city: string;
   stateId: string;
-  cpf: string | null;
-  status: number;
+  cpf: string | null; 
   email: string;
   password?: string;
-  storeId: number | null;
-  stores: any[];
 }
