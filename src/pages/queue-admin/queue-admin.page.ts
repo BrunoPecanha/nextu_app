@@ -23,11 +23,10 @@ export class QueueAdminPage implements OnInit {
   constructor(
     private alertController: AlertController,
     private router: Router
-  ) {}
+  ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  // === GETTERS ===
   get filteredQueues() {
     return this.queues.filter(queue => {
       const matchesSearch = queue.name.toLowerCase().includes(this.searchQuery.toLowerCase());
@@ -48,7 +47,11 @@ export class QueueAdminPage implements OnInit {
     return 'list-outline';
   }
 
-  // === UI HANDLING ===
+  // No arquivo queue-admin.page.ts
+  clearDateFilter() {
+    this.filterDate = ''; // Remove o filtro definindo como string vazia
+  }
+
   openCalendar() {
     console.info('Abrindo calendário...');
     this.calendarOpen = true;
@@ -74,7 +77,6 @@ export class QueueAdminPage implements OnInit {
     this.searchQuery = event.detail.value;
   }
 
-  // === FILA ===
   async openQueue() {
     const alert = await this.alertController.create({
       header: 'ABRIR NOVA FILA',
