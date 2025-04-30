@@ -16,6 +16,7 @@ export class QueuePage implements OnInit {
   mostrarDetalhes = false;
   horaChamada = '10:00';
   qrCodeBase64: string | null = null;
+  tolerance = 5; // Vai vir das configrações da empresa
 
   pessoasNaFila = new Array(3);
   queue: any[] = [];

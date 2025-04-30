@@ -1,25 +1,25 @@
-/* ===== TOOLBAR E TÍTULOS ===== */
 ion-toolbar {
-  --background: #ffffff;
-  --color: #333;
-  padding: 0 16px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   display: flex;
   align-items: center;
   justify-content: space-between;
   --min-height: 56px;
+  padding: 0 8px;
   box-sizing: border-box;
+  height: 55px;
+}
+
+.header-ios ion-toolbar:last-of-type {
+  --border-width: 0 0 0.0px;
 }
 
 ion-title {
   flex: 1;
   text-align: center;
-  font-weight: 700;
   font-size: 18px;
   font-weight: bold;
 }
 
-/* ===== ÍCONES E TEXTOS ===== */
+
 ion-icon {
   font-size: 24px;
 }
@@ -31,24 +31,16 @@ ion-label {
   color: #ffff;
 }
 
-/* ===== FILTROS ===== */
-.filters {
-  padding: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-/* ===== LISTA DE FILAS ===== */
 .queue-list {
+  margin-top: -40px;
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
   align-items: center;
 }
 
-/* ===== CARDS ===== */
+
 ion-card {
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -80,7 +72,6 @@ ion-card.today-open {
   background-color: #e6ffed;
 }
 
-/* ===== BOTÕES ===== */
 ion-button:not([fill="clear"]):not(.open-queue-button) {
   --background: #007bff;
   --color: white;
@@ -117,7 +108,7 @@ ion-button {
 }
 
 
-/* ===== MODAL E CALENDÁRIO ===== */
+
 ion-modal.custom-calendar-modal {
   z-index: 9999 !important;
 }
@@ -310,3 +301,76 @@ ion-modal.custom-calendar-modal::part(content) {
   padding: 16px;
 }
 
+.add-button {
+  margin-right: -30px; 
+}
+
+ion-buttons[slot="end"] {
+  padding-right: 12px;
+}
+
+
+.filters {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.filter-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr; 
+  gap: 12px;
+  
+  ion-button {
+    margin: 0;
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.filters {
+  padding: 15px;
+}
+
+.filter-buttons {
+  display: flex;
+  gap: 12px;
+  
+
+  ion-button {
+    margin: 0;
+    
+    &:only-child {
+      width: 100%;
+    }
+  }
+  
+
+  &:has(> ion-button:nth-child(2)) {
+    ion-button {
+      flex: 1;
+      min-width: 0;
+      
+      .button-inner {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
+
+.clear-filter-button {
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--ion-color-medium);
+}
+
+.filter-buttons {
+  transition: all 0.3s ease;
+  
+  ion-button {
+    transition: all 0.3s ease;
+  }
+}
