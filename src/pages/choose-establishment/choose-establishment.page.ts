@@ -21,7 +21,7 @@ export class ChooseEstablishmentPage implements OnInit {
 
   ngOnInit(): void {
     this.loadEstablishments();
-  }
+  }  
 
   loadEstablishments() {
     let user = this.session.getUser();

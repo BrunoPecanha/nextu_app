@@ -19,7 +19,7 @@ export class FooterMenuComponent implements OnInit {
   }
   
    navegarParaHome() {
-    this.navController.navigateForward('/role-registration');
+    this.navController.navigateForward('/select-company');
   }
 
   navegarParaFila() {
