@@ -58,11 +58,16 @@
       <ion-card-content>
         <div class="inner-card">
           <div class="logo-container">
-            <img
-              [src]="card.logoPath"
-              alt="{{ card.name }} logo"
-              class="company-logo"
-            />
+            <ng-container *ngIf="card.logoPath; else defaultLogo">
+              <img
+                [src]="card.logoPath"
+                alt="{{ card.name }} logo"
+                class="company-logo"
+              />
+            </ng-container>
+            <ng-template #defaultLogo>
+              <ion-icon name="business" class="company-logo default-logo"></ion-icon>
+            </ng-template>
           </div>
           <div class="company-info">
             <h2>{{ card.name }}</h2>

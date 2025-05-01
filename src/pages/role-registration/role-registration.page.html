@@ -15,7 +15,7 @@
 <ion-content>
   <div class="container">
     <div class="cards-function">
-      <ion-card class="box" routerLink="/select-company">
+      <ion-card class="box card-wrapper" routerLink="/select-company">
         <div class="card-inner">
           <div class="circle-icon">
             <ion-icon name="person-circle"></ion-icon>
@@ -30,8 +30,22 @@
         </div>
       </ion-card>
 
+      <ion-card class="box card-wrapper" routerLink="/select-company">
+        <div class="card-inner">
+          <div class="circle-icon">
+            <ion-icon name="hammer"></ion-icon>
+          </div>
+          <ion-card-header>
+            <ion-card-title class="card-title">COLABORADOR</ion-card-title>
+          </ion-card-header>
+          <ion-card-content class="description-card">
+            <h2>PRESTANDO SERVIÇO</h2>
+            <h3>Eu sou um funcionário</h3>
+          </ion-card-content>
+        </div>
+      </ion-card>
 
-      <ion-card class="box" *ngIf="!usuario?.company" (click)="criarEmpresa()">
+      <ion-card class="box card-wrapper" *ngIf="!usuario?.company" (click)="criarEmpresa()">
         <div class="card-inner">
           <div class="circle-icon add-icon">
             <ion-icon name="add-circle-outline"></ion-icon>
@@ -46,7 +60,7 @@
         </div>
       </ion-card>
 
-      <ion-card class="box" *ngIf="usuario?.company" routerLink="/costumer-list-in-queue">
+      <ion-card class="box card-wrapper" *ngIf="usuario?.company" routerLink="/costumer-list-in-queue">
         <div class="card-inner">
           <div class="circle-icon">
             <ion-icon name="briefcase"></ion-icon>
@@ -56,7 +70,7 @@
           </ion-card-header>
           <ion-card-content class="description-card">
             <h2>Estabelecimento</h2>
-            <h3>Eu sou um profissional</h3>
+            <h3>Eu sou empreendedor</h3>
           </ion-card-content>
         </div>
       </ion-card>

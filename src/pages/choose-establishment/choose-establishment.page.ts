@@ -6,7 +6,7 @@ interface Establishment {
   name: string;
   description: string;
   logo?: string;
-  headerImage?: string; // novo campo para imagem no topo
+  headerImage?: string;
 }
 
 @Component({
@@ -23,7 +23,7 @@ export class ChooseEstablishmentPage {
       logo: 'assets/images/company-logo/kingssons.jpeg',
       headerImage: 'assets/images/company-logo/kingssons.jpeg',
       icon: 'cut-outline',
-      color: '#FFE4B5'
+    
     },
     {
       id: 2,
@@ -45,7 +45,6 @@ export class ChooseEstablishmentPage {
     }
   ];
 
-
   selectedHeaderImage: string = 'assets/images/utils/default-logo.jpg';
   selectedLogo: string = 'assets/images/utils/default-logo.png';
 
@@ -65,7 +64,7 @@ export class ChooseEstablishmentPage {
     // Se sim, redireciona para tela de fila, se não, redireciona para tela de abrir fila
     // Aqui, apenas redirecionamos para a tela de fila, mas o ideal é fazer a verificação
 
-    var filaAberta = true;
+    var filaAberta = false;
 
     if (!filaAberta) {
       this.router.navigate(['/queue-admin']);
@@ -76,3 +75,27 @@ export class ChooseEstablishmentPage {
 
   }
 }
+
+// this.storeService.getStores(user.id).subscribe((response) => {
+//   this.userStores = response;
+
+//   if (this.userStores.data.length === 0) {
+//     this.router.navigate(['/select-company']);
+//   }
+//   else {
+//     this.sessionService.setStores(this.userStores);
+//     this.router.navigate(['/choose-establishment']);
+//   }
+// });
+
+
+// if (user.profile === UserProfileEnum.employee || user.profile === UserProfileEnum.owner) {
+//   this.router.navigate(['/choose-establishment']);
+// }
+// else if (user.profile === UserProfileEnum.customer) {
+//   this.router.navigate(['/role-registration']);
+// }
+// }
+// else {
+// await this.showAlert('Usuário ou senha incorretos!');
+// }

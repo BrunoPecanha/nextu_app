@@ -4,6 +4,9 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 import { StoreService } from 'src/services/store-service';
+import { SessionService } from 'src/services/session.service';
+import { StoreResponse } from 'src/models/responses/store-response';
+import { UserProfileEnum } from 'src/models/user-model';
 
 @Component({
   selector: 'app-login',
@@ -14,18 +17,19 @@ export class LoginPage {
   email: string = '';
   password: string = '';
   isLoading: boolean = false;
+  userStores: StoreResponse | null = null;
 
   constructor(
     private router: Router,
-    private authService: AuthService,    
+    private authService: AuthService,
     private storeService: StoreService,
+    private sessionService: SessionService,
     private alertController: AlertController,
     private loadingController: LoadingController
   ) { }
 
   ngOnInit() {
-    sessionStorage.removeItem('token');
-    sessionStorage.removeItem('user');
+    this.sessionService.clear();
   }
 
   async login() {
@@ -43,29 +47,16 @@ export class LoginPage {
           password: this.password
         }));
 
-        
         if (response && response.valid && response.data?.token && response.data?.user) {
           const { token, user } = response.data;
 
-          sessionStorage.setItem('token', token);
-          sessionStorage.setItem('user', JSON.stringify(user));           
+          this.sessionService.setToken(token);
+          this.sessionService.setUser(user);
 
-          var stores = firstValueFrom(this.storeService.getStores(user.id))
-
-          this.router.navigate(['/select-company']);
-
-          // const isEmployee = storesByEmployee.rows.length > 0;
-          // const isAdmin = storesByOwner.rows.length > 0;
-
-          // if (isEmployee || isAdmin) {
-          //   this.router.navigate(['/select-company']);
-          // } else {
-          //   this.router.navigate(['/role-registration']);
-          // }
-        } else {
-          await this.showAlert('Usuário ou senha incorretos!');
+          this.router.navigate(['/role-registration']);
         }
-      } catch (error) {
+      }
+      catch (error) {
         console.error('Erro no login', error);
         await this.showAlert('Erro ao tentar fazer login. Verifique seus dados.');
       } finally {
