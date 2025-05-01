@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserProfileEnum } from 'src/models/enums/user-profile.enum';
+import { UserModel } from 'src/models/user-model';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-role-registration',
@@ -8,18 +11,26 @@ import { Router } from '@angular/router';
 })
 export class RoleRegistrationPage implements OnInit {
 
-  usuario: any;
+  user: UserModel | undefined;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, private sessionService: SessionService) {
+    this.user = this.sessionService.getUser();
 
-  ngOnInit() {
-    this.usuario = {
-      company: 'João da Silva',
-      email: ''
-    }
+    console.log('user', this.user);
   }
 
-  criarEmpresa() {
-    this.router.navigate(['/company-configurations']);
+  ngOnInit() {    
+  }
+
+  redirect(rota: string) {
+
+    this.router.navigate([rota]);
+
+
+    // if (this.user?.profile === UserProfileEnum.customer) {
+    //   this.router.navigate(['/select-company']);
+    // } else if (this.user?.profile === UserProfileEnum.employee) {
+    //   this.router.navigate(['/employee-configurations']);
+    // }  
   }
 }

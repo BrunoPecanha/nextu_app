@@ -6,7 +6,7 @@ import { AuthService } from 'src/services/auth.service';
 import { StoreService } from 'src/services/store-service';
 import { SessionService } from 'src/services/session.service';
 import { StoreResponse } from 'src/models/responses/store-response';
-import { UserProfileEnum } from 'src/models/user-model';
+
 
 @Component({
   selector: 'app-login',
@@ -22,7 +22,6 @@ export class LoginPage {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private storeService: StoreService,
     private sessionService: SessionService,
     private alertController: AlertController,
     private loadingController: LoadingController

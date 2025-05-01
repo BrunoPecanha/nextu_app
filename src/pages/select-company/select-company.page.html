@@ -1,7 +1,12 @@
 <ion-toolbar>
   <ion-buttons slot="start">
-    <ion-menu-button></ion-menu-button>
+    <ion-back-button
+      defaultHref="/role-registration"
+      text=""
+      icon="arrow-back-outline"
+    ></ion-back-button>
   </ion-buttons>
+
 
   <ng-container *ngIf="!searching; else searchBar">
     <ion-title *ngIf="!searching">ESTABELECIMENTOS</ion-title>

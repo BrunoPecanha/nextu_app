@@ -4,11 +4,13 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
+import { SideMenuComponent } from './components/side-menu/side-menu.component';
 
 
 @NgModule({
   declarations: [
-    FooterMenuComponent
+    FooterMenuComponent,
+    SideMenuComponent
   ],
   imports: [
     CommonModule,
@@ -16,7 +18,8 @@ import { FooterMenuComponent } from './components/footer-menu/footer-menu.compon
     IonicModule
   ],
   exports: [
-    FooterMenuComponent 
+    FooterMenuComponent,
+    SideMenuComponent
   ]
 })
 export class SharedModule {}

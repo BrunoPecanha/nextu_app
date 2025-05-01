@@ -7,7 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" [formGroup]="cadastroForm">  
+<ion-content class="ion-padding" [formGroup]="cadastroForm">
   <div class="logo-wrapper">
     <div class="logo-container" (click)="selecionarImagem()">
       <img
@@ -91,7 +91,6 @@
     </ion-item>
   </ion-list>
 
-  
   <div class="horario-box">
     <ion-label class="label-titulo">Horários de Atendimento *</ion-label>
     <div class="horario-scroll">
@@ -128,14 +127,14 @@
         </ion-row>
       </ion-grid>
     </div>
+  </div>
 
-    <ion-item lines="none" class="ion-margin-top">
+  <ion-list lines="none">
+    <ion-item>
       <ion-label>Abrir fila automaticamente</ion-label>
       <ion-toggle formControlName="openAutomatic"></ion-toggle>
     </ion-item>
-  </div>
 
-    <ion-list lines="none">
     <ion-item>
       <ion-label>Aceitar pessoas em outras filas</ion-label>
       <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
@@ -167,7 +166,7 @@
       </ion-input>
     </ion-item>
   </ion-list>
-  
+
   <div class="wallpaper-wrapper">
     <div class="wallpaper-container" (click)="selecionarWallpaper()">
       <img

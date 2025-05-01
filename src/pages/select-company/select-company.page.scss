@@ -71,10 +71,10 @@ ion-content {
 }
 
 .cards-companies {
-  margin-top: 135px;
+  margin-top: 150px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 0px;
   padding-bottom: 100px;
 }
 
@@ -82,6 +82,7 @@ ion-card.box {
   border-radius: 16px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  margin-top: -15px;
 }
 
 ion-card.box ion-card-content {
