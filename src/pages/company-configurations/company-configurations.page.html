@@ -7,8 +7,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" [formGroup]="cadastroForm">
-  <!-- Área de Upload Logo -->
+<ion-content class="ion-padding" [formGroup]="cadastroForm">  
   <div class="logo-wrapper">
     <div class="logo-container" (click)="selecionarImagem()">
       <img
@@ -33,7 +32,6 @@
     <div class="logo-msg">Clique para enviar a logo</div>
   </div>
 
-  <!-- Campos Básicos -->
   <ion-list lines="none">
     <ion-item>
       <ion-label position="floating">CNPJ</ion-label>
@@ -52,51 +50,79 @@
 
     <ion-item>
       <ion-label position="floating">ENDEREÇO</ion-label>
-      <ion-input formControlName="address" placeholder="endereço, número"></ion-input>
-    </ion-item>  
+      <ion-input
+        formControlName="address"
+        placeholder="endereço, número"
+      ></ion-input>
+    </ion-item>
 
     <ion-item>
       <ion-label position="floating">CIDADE</ion-label>
       <ion-input formControlName="city"></ion-input>
-    </ion-item>  
+    </ion-item>
 
     <ion-item>
       <ion-label position="floating">ESTADO</ion-label>
-      <ion-select 
+      <ion-select
         formControlName="state"
-        interface="action-sheet" 
-        placeholder="Selecione seu estado">
+        interface="action-sheet"
+        placeholder="Selecione seu estado"
+      >
         <ion-select-option *ngFor="let state of states" [value]="state.id">
           {{ state.id }} ({{ state.name }})
         </ion-select-option>
       </ion-select>
     </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">CATEGORIA</ion-label>
+      <ion-select
+        formControlName="category"
+        interface="action-sheet"
+        placeholder="Selecione a categoria"
+      >
+        <ion-select-option
+          *ngFor="let category of categories"
+          [value]="category.id"
+        >
+          {{ category.name }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
   </ion-list>
 
-  <!-- Horários -->
+  
   <div class="horario-box">
     <ion-label class="label-titulo">Horários de Atendimento *</ion-label>
     <div class="horario-scroll">
       <ion-grid>
         <ion-row
-          *ngFor="let dia of diasSemana; let i = index"
+          *ngFor="let weekday of weekDays; let i = index"
           [formGroup]="getHorarioFormGroup(i)"
           class="ion-align-items-center"
         >
           <ion-col size="4">
-            <ion-label>{{ dia }}</ion-label>
+            <ion-label>{{ weekday }}</ion-label>
+            <input type="hidden" formControlName="weekday" [value]="weekday" />
           </ion-col>
           <ion-col size="2">
             <ion-toggle formControlName="activated"></ion-toggle>
           </ion-col>
-          <ion-col size="6" *ngIf="getHorarioFormGroup(i).get('activated')?.value">
+          <ion-col
+            size="6"
+            *ngIf="getHorarioFormGroup(i).get('activated')?.value"
+          >
             <ion-item>
               <ion-label position="floating">Início</ion-label>
-              <ion-input type="time" formControlName="start"></ion-input>
+              <ion-input
+                type="time"
+                formControlName="start"
+                required
+              ></ion-input>
             </ion-item>
             <ion-item>
               <ion-label position="floating">Fim</ion-label>
-              <ion-input type="time" formControlName="end"></ion-input>
+              <ion-input type="time" formControlName="end" required></ion-input>
             </ion-item>
           </ion-col>
         </ion-row>
@@ -109,8 +135,7 @@
     </ion-item>
   </div>
 
-  <!-- Outras Configurações -->
-  <ion-list lines="none">
+    <ion-list lines="none">
     <ion-item>
       <ion-label>Aceitar pessoas em outras filas</ion-label>
       <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
@@ -130,19 +155,19 @@
       <ion-label>Enviar aviso por WhatsApp</ion-label>
       <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
     </ion-item>
-    
+
     <ion-item>
       <ion-label>Remover cliente chamado da fila após:</ion-label>
-      <ion-input 
-        type="number" 
-        formControlName="timeRemoval" 
-        placeholder="Minutos" 
-        style="max-width: 80px; margin-left: 8px;">
+      <ion-input
+        type="number"
+        formControlName="timeRemoval"
+        placeholder="Minutos"
+        style="max-width: 80px; margin-left: 8px"
+      >
       </ion-input>
     </ion-item>
   </ion-list>
-
-  <!-- Papel de Parede da Loja -->
+  
   <div class="wallpaper-wrapper">
     <div class="wallpaper-container" (click)="selecionarWallpaper()">
       <img
@@ -185,7 +210,7 @@
     </ion-item>
   </ion-list>
 
-  <!-- Ícones e Frases -->
+  <!-- Ícones e Frases pra colocar embaixo da logo no perfil da empresa -->
   <div class="icone-frase-wrapper ion-margin-top">
     <ion-label class="label-titulo">DESTAQUES DA LOJA:</ion-label>
 
@@ -224,20 +249,19 @@
     </ion-button>
   </div>
 
-  <!-- Botão Cadastrar -->
   <ion-button
     expand="block"
     color="primary"
     class="btn-cadastro"
-    [disabled]="sending || sent"
+    [disabled]="sending"
     (click)="enviar()"
   >
-    <ion-spinner *ngIf="sending" name="crescent"></ion-spinner>
-    <span *ngIf="!sending && !sent">SALVAR</span>
+    <ion-spinner *ngIf="sending" name="crescent" slot="start"></ion-spinner>
     <ion-icon
-      *ngIf="sent"
+      *ngIf="!sending && saved"
       name="checkmark-circle"
-      class="check-icon"
+      slot="start"
     ></ion-icon>
+    {{ sending ? 'Salvando...' : saved ? 'Salvo!' : 'SALVAR' }}
   </ion-button>
 </ion-content>

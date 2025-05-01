@@ -1,6 +1,10 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { CategoryModel } from 'src/models/category-model';
+import { CategoryResponse } from 'src/models/responses/category-response';
+import { CategoryService } from 'src/services/category-service';
 import { StatesService } from 'src/services/states.service';
+import { StoreService } from 'src/services/store-service';
 
 @Component({
   selector: 'app-company-configurations',
@@ -16,40 +20,56 @@ export class CompanyConfigurationsPage {
   wallpaperPreview: string | ArrayBuffer | null = null;
   sending = false;
   sent = false;
+  category: number | null = null;
+  cnpj: string | null = null;
+  name: string | null = null;
+  address: string | null = null;
   timeRemoval: number | null = null;
   states: Array<{ id: string, name: string }> = [];
+  categories: CategoryModel[] = [];
+  loading = false;
+  successMessage: string | null = null;
+  errorMessage: string | null = null;
+  saved = false;
 
-  diasSemana = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
+  weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
-  constructor(private fb: FormBuilder, private stateService: StatesService) {
+  constructor(private fb: FormBuilder, private stateService: StatesService, private categoryService: CategoryService,
+    private storeService: StoreService) {
+
     this.cadastroForm = this.fb.group({
+      ownerId: 1,
+      logoPath: [''],
       cnpj: [''],
       name: [''],
       address: [''],
-      number: [''],
       city: [''],
-      state: [''],      
+      state: [''],
+      category: [''],
+      openingHours: this.fb.array(
+        this.weekDays.map(day => this.createHorarioForm(day))
+      ),
       openAutomatic: [false],
-      storeSubtitle: [''],
-      acceptOtherQueues: [true],
+      acceptOtherQueues: [false],
       answerOutOfOrder: [false],
       answerScheduledTime: [false],
+      whatsAppNotice: [false],
       timeRemoval: [null],
-      whatsAppNotice: [false],    
-      logoPath: [''],
       wallPaperPath: [''],
-      openingHours: this.fb.array(this.diasSemana.map(() => this.createHorarioForm())),
-      highLights: this.fb.array([]),
+      storeSubtitle: [''],
+      highLights: this.fb.array([])
     });
 
-      this.states = this.stateService.getStates();    
+    this.loadStates();
+    this.loadCategories();
   }
 
-  createHorarioForm(): FormGroup {
+  createHorarioForm(weekday: string): FormGroup {
     return this.fb.group({
+      weekday: [weekday],
       activated: [false],
-      start: [''],
-      end: [''],
+      start: [null],
+      end: [null]
     });
   }
 
@@ -62,6 +82,34 @@ export class CompanyConfigurationsPage {
       icon: [''],
       phrase: [''],
     }));
+  }
+
+  loadCategories(): void {
+    this.categoryService.getCategories().subscribe({
+      next: (response: CategoryResponse) => {
+        if (response.valid && response.data) {
+          this.categories = response.data.map(category => ({
+            id: category.id,
+            name: category.name,
+            imgPath: category.imgPath
+          }));
+        } else {
+          console.warn('Resposta inválida ao carregar categorias');
+          this.categories = [];
+        }
+      },
+      error: (error) => {
+        console.error('Erro ao carregar categorias:', error);
+        this.categories = [];
+      },
+      complete: () => {
+        console.log('Carregamento de categorias concluído');
+      }
+    });
+  }
+
+  loadStates() {
+    this.states = this.stateService.getStates();
   }
 
   removerIconeFrase(index: number) {
@@ -118,29 +166,70 @@ export class CompanyConfigurationsPage {
     this.cadastroForm.get('cnpj')?.setValue(valor, { emitEvent: false });
   }
 
-  enviar() {
-    if (this.cadastroForm.invalid) {
-      return;
+  enviar(): void {
+    this.successMessage = null;
+    this.errorMessage = null;
+    this.saved = false; 
+  
+    const cnpjControl = this.cadastroForm.get('cnpj');
+    if (cnpjControl && cnpjControl.value) {
+      const cnpjLimpo = cnpjControl.value.replace(/[\.\/\-]/g, '');
+      cnpjControl.setValue(cnpjLimpo);
     }
+  
+    if (this.cadastroForm.valid) {
+      this.sending = true;
+      this.loading = true; 
+  
+      const storeData = this.storeService.prepareStoreData(this.cadastroForm);
+  
+      this.storeService.createStore(storeData).subscribe({
+        next: (response) => {
+          this.sending = false;
+          this.loading = false; 
+  
+          if (response.valid) {
+            this.saved = true; 
+            this.successMessage = 'Loja cadastrada com sucesso!';
+            console.log('Loja criada com sucesso!', response.data);  
+          } else {
+            this.errorMessage = response.message || 'Falha ao cadastrar loja. Por favor, tente novamente.';
+            console.error('Falha ao criar loja:', response.message);
+          }
+        },
+        error: (error) => {
+          this.sending = false;
+          this.loading = false;
+          this.errorMessage = 'Erro ao conectar com o servidor. Por favor, verifique sua conexão.';
+          console.error('Erro na requisição:', error);
+        }
+      });
+    } else {
+      this.errorMessage = 'Por favor, preencha todos os campos obrigatórios.';
+      console.warn('Formulário inválido');
+      this.markFormGroupTouched(this.cadastroForm);
+    }
+  }
+  
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
 
-    this.sending = true;
-
-    setTimeout(() => {
-      this.sending = false;
-      this.sent = true;
-      console.log('Dados enviados:', this.cadastroForm.value);
-    }, 2000);
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
   }
 
-  formatPhoneNumber(phoneNumber: any): string | null {    
+  formatPhoneNumber(phoneNumber: any): string | null {
     const cleaned = phoneNumber.replace(/\D/g, '');
-    
+
     if (cleaned.length < 10 || cleaned.length > 11) {
       return null;
     }
 
     const isMobile = cleaned.length === 11;
-   
+
     if (isMobile) {
       return cleaned.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
     } else {

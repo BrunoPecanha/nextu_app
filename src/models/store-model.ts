@@ -1,5 +1,6 @@
-import { HighLight } from "./hig-hlight-model";
-import { OpeningHours } from "./opening-hours";
+import { HighLightModel } from "./highlight-model";
+import { OpeningHoursModel } from "./opening-hours-model";
+
 import { StatusEnum } from "./status-enum";
 import { To } from "./to";
 import { UserModel } from "./user-model";
@@ -24,8 +25,8 @@ export interface StoreModel extends To {
   whatsAppNotice: boolean;
   logoPath?: string;
   wallPaperPath?: string; 
-  openingHours: OpeningHours[];
-  highLights: HighLight[];
+  openingHours: OpeningHoursModel[];
+  highLights: HighLightModel[];
   ownerId: number;
   owner?: UserModel;
   status: StatusEnum;

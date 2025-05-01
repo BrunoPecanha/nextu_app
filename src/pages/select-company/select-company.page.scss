@@ -54,6 +54,7 @@ ion-content {
   justify-content: center;
   text-align: center;
   gap: 4px;
+  transition: all 0.3s ease;
 }
 
 .service-type-card img {
@@ -99,6 +100,8 @@ ion-card.box .inner-card {
   display: flex;
   justify-content: center;
   flex-shrink: 0;
+  width: 60px;
+  height: 60px;
 }
 
 .company-logo,
@@ -107,6 +110,19 @@ ion-card.box .inner-card {
   height: 60px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.default-business-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: #888;
   border: 2px solid #ddd;
 }
 
@@ -353,13 +369,9 @@ ion-content::part(scroll) {
 }
 
 .star-icon {
-  font-size: 16px; /* ou qualquer tamanho que você preferir */
+  font-size: 16px;
   width: 16px !important;
   height: 16px !important;
-}
-
-.service-type-card {
-  transition: all 0.3s ease;
 }
 
 .service-type-card.selected {
