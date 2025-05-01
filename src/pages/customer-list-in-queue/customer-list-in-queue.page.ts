@@ -103,6 +103,9 @@ export class CustomerListInQueuePage implements OnInit {
     }, 1200);
   }
 
+  carregarClientes() {    
+  }
+
   // startQRCodeScan(cliente: any) {
   //   this.qrScanner.prepare().then((status: QRScannerStatus) => {
   //     if (status.authorized) {

@@ -17,6 +17,13 @@
 </ion-header>
 
 <ion-content>
+  <div *ngIf="clientes?.length === 0" class="empty-queue-message">
+    <ion-icon name="refresh-outline" (click)="carregarClientes()" class="clickable"></ion-icon>
+    <p>Não há clientes na fila</p>
+  </div>
+
+
+
   <div *ngFor="let cliente of clientes" class="card-cliente">
     <div class="card-content">
       <h3>{{ cliente.nome }}</h3>

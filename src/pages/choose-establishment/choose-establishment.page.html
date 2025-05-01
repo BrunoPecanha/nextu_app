@@ -33,7 +33,6 @@
           detail="false"
           class="custom-card"
           *ngFor="let establishment of establishments"
-          [ngStyle]="{ 'background-color': establishment.color }"
           lines="none"
           button
           (click)="selecionarEmpresa(establishment)"
@@ -42,7 +41,7 @@
 
           <ion-label>
             <h2>{{ establishment.name }}</h2>
-            <p>{{ establishment.description }}</p>
+            <p>{{ establishment.storeSubtitle }}</p>
           </ion-label>
 
           <ion-icon

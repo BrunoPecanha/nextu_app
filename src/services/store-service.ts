@@ -20,6 +20,10 @@ export class StoreService {
     return this.http.get<StoreResponse>(`${this.apiUrl}/store/owner/${id}`);
   }
 
+  loadEmployeeStores(id: number): Observable<StoreResponse> {
+    return this.http.get<StoreResponse>(`${this.apiUrl}/store/employee/${id}`);
+  }
+
   createStore(storeData: StoreRequest): Observable<StoreResponse> {
     return this.http.post<StoreResponse>(`${this.apiUrl}/store`, storeData).pipe(
       catchError(error => {

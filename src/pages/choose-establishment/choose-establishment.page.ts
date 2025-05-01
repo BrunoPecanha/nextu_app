@@ -1,63 +1,49 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
-interface Establishment {
-  id: number;
-  name: string;
-  description: string;
-  logo?: string;
-  headerImage?: string;
-}
+import { StoreResponse } from 'src/models/responses/store-response';
+import { StoreModel } from 'src/models/store-model';
+import { SessionService } from 'src/services/session.service';
+import { StoreService } from 'src/services/store-service';
 
 @Component({
   selector: 'app-choose-establishment',
   templateUrl: './choose-establishment.page.html',
   styleUrls: ['./choose-establishment.page.scss'],
 })
-export class ChooseEstablishmentPage {
-  establishments = [
-    {
-      id: 1,
-      name: 'Barbearia do Zé',
-      description: 'Especialistas em cortes modernos',
-      logo: 'assets/images/company-logo/kingssons.jpeg',
-      headerImage: 'assets/images/company-logo/kingssons.jpeg',
-      icon: 'cut-outline',
-    
-    },
-    {
-      id: 2,
-      name: 'Clínica Vida',
-      description: 'Cuidando de você sempre',
-      logo: 'assets/images/company-logo/autoestima.png',
-      headerImage: 'assets/images/company-logo/autoestima.png',
-      icon: 'medkit-outline',
-      color: '#E0FFFF'
-    },
-    {
-      id: 3,
-      name: 'Pet Shop Animalia',
-      description: 'Tudo para seu pet',
-      logo: 'assets/images/company-logo/uoman.png',
-      headerImage: 'assets/images/company-logo/uoman.png',
-      icon: 'paw-outline',
-      color: '#F0E68C'
-    }
-  ];
-
+export class ChooseEstablishmentPage implements OnInit {
   selectedHeaderImage: string = 'assets/images/utils/default-logo.jpg';
   selectedLogo: string = 'assets/images/utils/default-logo.png';
 
-  constructor(private router: Router) { }
+  establishments: StoreResponse | any;
 
-  selecionarEmpresa(est: Establishment) {
-    console.log(`Empresa apenas selecionada: ${est.name}`);
-    this.selectedHeaderImage = est.headerImage ?? this.selectedHeaderImage;
-    this.selectedLogo = est.logo ?? this.selectedLogo;
+  constructor(private router: Router, private storeService: StoreService, private session: SessionService) {
   }
 
-  acessarEmpresa(event: Event, est: Establishment) {
-    event.stopPropagation(); 
+  ngOnInit(): void {
+    this.loadEstablishments();
+  }  
+
+  loadEstablishments() {
+    let user = this.session.getUser();
+
+    this.storeService.loadEmployeeStores(user.id).subscribe({
+      next: (response) => {
+        this.establishments = response.data;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar estabelecimentos:', err);
+      }
+    });
+  }
+
+  selecionarEmpresa(est: StoreModel) {
+    console.log(`Empresa apenas selecionada: ${est.name}`);
+    this.selectedHeaderImage = est.logoPath ?? this.selectedHeaderImage;
+    this.selectedLogo = est.logoPath ?? this.selectedLogo;
+  }
+
+  acessarEmpresa(event: Event, est: StoreModel) {
+    event.stopPropagation();
     console.log(`Redirecionando para empresa: ${est.name}`);
 
     // No redirecionamento, deveerá ser verificado se o usuário já possui fila aberta para essa empresa
@@ -75,27 +61,3 @@ export class ChooseEstablishmentPage {
 
   }
 }
-
-// this.storeService.getStores(user.id).subscribe((response) => {
-//   this.userStores = response;
-
-//   if (this.userStores.data.length === 0) {
-//     this.router.navigate(['/select-company']);
-//   }
-//   else {
-//     this.sessionService.setStores(this.userStores);
-//     this.router.navigate(['/choose-establishment']);
-//   }
-// });
-
-
-// if (user.profile === UserProfileEnum.employee || user.profile === UserProfileEnum.owner) {
-//   this.router.navigate(['/choose-establishment']);
-// }
-// else if (user.profile === UserProfileEnum.customer) {
-//   this.router.navigate(['/role-registration']);
-// }
-// }
-// else {
-// await this.showAlert('Usuário ou senha incorretos!');
-// }

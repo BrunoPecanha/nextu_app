@@ -11,6 +11,7 @@ export class SessionService {
   private readonly TOKEN_KEY = 'token';
   private readonly USER_KEY = 'user';
   private readonly STORES_KEY = 'stores';
+  private readonly PROFILE_KEY = 'profile';
 
   getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN_KEY);
@@ -22,8 +23,13 @@ export class SessionService {
   }
 
   getStores(): any | null {
-    const userJson = sessionStorage.getItem(this.STORES_KEY);
-    return userJson ? JSON.parse(userJson) : null;
+    const storeJson = sessionStorage.getItem(this.STORES_KEY);
+    return storeJson ? JSON.parse(storeJson) : null;
+  }
+
+  getProfile(): any | null {
+    const profile = sessionStorage.getItem(this.PROFILE_KEY);
+    return profile ? JSON.parse(profile) : null;
   }
 
   setToken(token: string): void {
@@ -34,6 +40,10 @@ export class SessionService {
     sessionStorage.setItem(this.STORES_KEY, stores);
   }
 
+  setProfile(profile: number) {
+    sessionStorage.setItem(this.PROFILE_KEY, profile.toString());
+  }
+
   setUser(user: any): void {
     sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
@@ -41,6 +51,8 @@ export class SessionService {
   clear(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USER_KEY);
+    sessionStorage.removeItem(this.STORES_KEY);
+    sessionStorage.removeItem(this.PROFILE_KEY);
   }
 
   logout(): void {

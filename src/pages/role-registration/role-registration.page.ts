@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserModel } from 'src/models/user-model';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-role-registration',
@@ -8,18 +10,21 @@ import { Router } from '@angular/router';
 })
 export class RoleRegistrationPage implements OnInit {
 
-  usuario: any;
+  user: UserModel | undefined;
 
-  constructor(private router: Router) { }
-
-  ngOnInit() {
-    this.usuario = {
-      company: 'João da Silva',
-      email: ''
-    }
+  constructor(private router: Router, private sessionService: SessionService) {
   }
 
-  criarEmpresa() {
-    this.router.navigate(['/company-configurations']);
+  ngOnInit() {
+  }
+
+  ionViewWillEnter() {    
+    this.user = this.sessionService.getUser();
+  }
+
+  redirect(rota: string, profile: number) {    
+    if (profile >= 0)
+      this.sessionService.setProfile(profile)
+    this.router.navigate([rota]);
   }
 }

@@ -12,6 +12,6 @@ export class SplashPage {
   ngOnInit() {
      setTimeout(() => {
        this.router.navigate(['/login']);
-     }, 5000); 
+     }, 2000); 
   }
 }
