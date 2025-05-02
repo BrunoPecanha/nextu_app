@@ -11,42 +11,66 @@ import { QueueService } from 'src/services/queue-service';
 })
 export class QueuePage implements OnInit {
   empresa: any = {};
-  posicaoNaFila: number = 1;
   progressoFila: number = 0.5;
   mostrarDetalhes = false;
   horaChamada = '10:00';
   qrCodeBase64: string | null = null;
-  tolerance = 5; // Vai vir das configrações da empresa
+  tolerance = 5;
 
   pessoasNaFila = new Array(3);
   queue: any[] = [];
-  userPosition: number = 3;
+  userPosition: number = 2;
 
   ehMinhaVez: boolean = false;
   codigoAtendimento = '';
 
-  tempoRestanteMinutos: number = 11;
+  tempoRestanteMinutos: number = 30;
   tempoEstimado: string = '';
   corTempo: string = '';
+  formaPagamentoResumo = "Cartão";
+
+
+  servicosSelecionados = [
+    { nome: 'Corte de Cabelo Masculino', preco: 50, icone: 'cut-outline' },
+    { nome: 'Tintura', preco: 120, icone: 'color-palette-outline' }
+  ];
+  
+
+
+  quantidadeServicos: number = 2;
+formaPagamento: string = 'Cartão de Crédito';
+pagamentoDetalhes: string = 'final 1234';
+pagamentoIcon: string = 'card-outline';
+pagamentoChipColor: string = 'success';
+nomeProfissional: string = 'Léo';
 
   constructor(private alertController: AlertController, private router: Router, private queueService: QueueService ) {
     this.simularFila(5);
   }
 
   ngOnInit() {
-    this.loadQueueData();
-    this.atualizarTempoEstimado();
-    this.verificaMinhaVez();
+    this.refreshFila();
 
     setTimeout(() => {
-      this.ehMinhaVez = true;
+      this.ehMinhaVez = false;
       this.horaChamada = new Date().toLocaleTimeString();
       this.gerarQrCodeMockado();
     }, 3000); 
   }
 
+  refreshFila() {
+    this.loadQueueData();
+    this.atualizarTempoEstimado();
+    this.verificaMinhaVez();
+  }
+
+  editarServicos() {
+    // Lógica para navegar de volta para a página de seleção
+    // com os serviços atuais pré-selecionados
+  }
+
   verificaMinhaVez() {
-    this.ehMinhaVez = this.posicaoNaFila === 1;
+    this.ehMinhaVez = this.userPosition === 1;
   }
 
   alternarDetalhes() {
@@ -61,7 +85,7 @@ export class QueuePage implements OnInit {
 
   verificaPosicaoFila() {
     this.queueService.getPosicao().subscribe((res) => {
-      this.posicaoNaFila = res.posicao;
+      this.userPosition = res.posicao;
       this.ehMinhaVez = res.ehMinhaVez;
 
       if (this.ehMinhaVez) {
@@ -83,7 +107,7 @@ export class QueuePage implements OnInit {
       avatar: 'person-circle',
     }));
 
-    this.progressoFila = 1 - (this.posicaoNaFila - 1) / qtd;
+    this.progressoFila = 1 - (this.userPosition - 1) / qtd;
   }
 
   async presentInfoPopup() {
@@ -93,10 +117,7 @@ export class QueuePage implements OnInit {
       buttons: [
         {
           text: 'x',
-          role: 'cancel',
-          handler: () => {
-            console.log('Modal fechado');
-          }
+          role: 'cancel'         
         }
       ]
     });
