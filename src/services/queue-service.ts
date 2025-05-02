@@ -25,7 +25,7 @@ export class QueueService {
   getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueResponse> {
     return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
   }
-  
+
   getAllCustomersInQueueByEmployeeAndStoreId(storeId: number, employeeId: number): Observable<QueueResponse> {
     return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${storeId}/${employeeId}/customers-in-queue`);
   }
@@ -34,16 +34,16 @@ export class QueueService {
     return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
   }
 
-   hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
-      return this.getOpenedQueueByEmployeeId(employeeId).pipe(
-        map((response: QueueResponse) => {            
-          return response.valid && 
-                 response.data?.length > 0 && 
-                 response.data[0].status === StatusQueueEnum.open;
-        }),
-        catchError(() => of(false))
-      );
-    }  
+  hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
+    return this.getOpenedQueueByEmployeeId(employeeId).pipe(
+      map((response: QueueResponse) => {
+        return response.valid &&
+          response.data?.length > 0 &&
+          response.data[0].status === StatusQueueEnum.open;
+      }),
+      catchError(() => of(false))
+    );
+  }
 
   getPosicao(): Observable<{
     pessoasNaFila: { avatar: string }[];

@@ -1,10 +1,9 @@
-/* Estilos Gerais */
 .fila-content {
   --background: #f5f5f5;
   padding-bottom: 80px;
 }
 
-/* Header - Mantendo seu estilo original */
+
 .header-background {
   position: relative;
   height: 20%;
@@ -30,7 +29,7 @@
   border-radius: 50%;
 }
 
-/* Estilo da Logo Circular - Ajuste Principal */
+
 .logo {
   width: 50px;
   height: 50px;
@@ -38,20 +37,20 @@
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid #e0e0e0;
-  overflow: hidden; /* Garante que a imagem não ultrapasse o círculo */
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white; /* Fundo branco caso a imagem tenha transparência */
+  background-color: white; 
 }
 
 .logo img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Garante que a imagem cubra todo o espaço sem distorcer */
+  object-fit: cover; 
 }
 
-/* Card Principal */
+
 .card-retratil {
   margin: 16px;
   border-radius: 12px;
@@ -60,7 +59,7 @@
   transition: all 0.3s ease;
 }
 
-/* Cabeçalho do Card */
+
 .card-topo {
   display: flex;
   justify-content: space-between;
@@ -78,7 +77,7 @@
   min-width: 0;
 }
 
-/* Restante do CSS permanece igual ao anterior */
+
 .info-principal {
   flex: 1;
   min-width: 0;
@@ -143,7 +142,7 @@
   color: #666;
 }
 
-/* Conteúdo Expandido */
+
 .card-conteudo {
   background: white;
   padding: 0 16px 16px;
@@ -286,7 +285,7 @@ ion-item-divider {
   color: #f44336;
 }
 
-/* Botões */
+
 .botoes-acao {
   margin-top: 24px;
 }
@@ -298,7 +297,7 @@ ion-item-divider {
   color: #fff;
 }
 
-/* Footer e FAB */
+
 ion-footer {
   border-top: 1px solid #ddd;
   position: fixed;
@@ -377,7 +376,7 @@ ion-label {
   z-index: 10;
 }
 
-/* Animações */
+
 @keyframes expandir {
   from { opacity: 0; transform: translateY(-10px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -408,7 +407,7 @@ ion-label {
   to { transform: rotate(360deg); }
 }
 
-/* Componentes Específicos */
+
 .refresh-icon {
   font-size: 18px;
 }
@@ -417,7 +416,7 @@ ion-label {
   animation: spin 0.5s linear 1;
 }
 
-/* Header Moderno Alternativo */
+
 .header-background-modern {
   position: relative;
   height: 200px;
@@ -455,7 +454,7 @@ ion-label {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-/* Toolbar */
+
 ion-toolbar {
   display: flex;
   align-items: center;
@@ -477,7 +476,7 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   color: #007bff;
 }
 
-/* Alert Customizado */
+
 .custom-alert .alert-wrapper {
   border-radius: 10px;
 }
@@ -530,13 +529,12 @@ ion-content::part(scroll) {
   -ms-overflow-style: none;
 }
 
-/* Tipografia Base */
+
 .card-topo,
 .card-conteudo {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
-/* Estilos para o cabeçalho (fechado) */
 .titulo-principal {
   font-size: 16px;
   font-weight: 500;
@@ -561,7 +559,7 @@ ion-content::part(scroll) {
   margin-right: 4px;
 }
 
-/* Estilos para o conteúdo expandido (aberto) */
+
 .card-conteudo {
   font-size: 14px;
   color: #333;
@@ -597,7 +595,7 @@ ion-content::part(scroll) {
   margin-right: 12px;
 }
 
-/* Seção de Pagamento */
+
 .item-pagamento {
   --min-height: 48px;
 }
@@ -618,7 +616,7 @@ ion-content::part(scroll) {
   margin-right: 12px;
 }
 
-/* QR Section */
+
 .nota-qr {
   font-size: 13px;
   color: #ff9800;
@@ -627,7 +625,7 @@ ion-content::part(scroll) {
   margin: 4px 0;
 }
 
-/* Visualização da Fila */
+
 .saudacao {
   font-size: 16px;
   color: #333;
@@ -640,7 +638,7 @@ ion-content::part(scroll) {
   margin-top: 0;
 }
 
-/* Tempo Estimado */
+
 .estimado {
   font-size: 15px;
   font-weight: 500;
@@ -660,7 +658,7 @@ ion-content::part(scroll) {
   color: #f44336;
 }
 
-/* Botões */
+
 .botao-sair-fila,
 .botao-editar {
   font-size: 14px;
@@ -669,4 +667,65 @@ ion-content::part(scroll) {
 .icon-botao {
   font-size: 18px;
   margin-right: 8px;
+}
+
+.item-total {
+  --min-height: 52px;
+  --background: #f9f9f9;
+  border-top: 1px solid #eee;
+  margin-top: 8px;
+}
+
+.icon-total {
+  font-size: 22px;
+  color: #2e7d32;
+  margin-right: 12px;
+}
+
+.label-total {
+  font-size: 15px;
+  font-weight: 500;
+  color: #333;
+}
+
+.valor-total {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.botao-editar {
+  --border-width: 1px;
+  --border-style: solid;
+  --border-color: var(--ion-color-primary);
+  
+  &:hover, &:focus {
+    --border-width: 1px;
+  }
+}
+
+.fila-info {
+  margin-bottom: 10px;
+}
+
+.fila-visual {
+  margin-bottom: 16px;
+}
+
+.estimado {
+  margin-bottom: 10px; 
+}
+
+.servicos-section {
+  margin-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  padding-top: 16px;
+}
+
+.header-date {
+  font-size: 0.7rem;
+  display: block;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-top: -3px;
 }

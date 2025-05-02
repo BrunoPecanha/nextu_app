@@ -7,7 +7,10 @@
         icon="arrow-back-outline"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>FILAS DE ESPERA</ion-title>
+    <ion-title>
+      FILAS DE ESPERA
+      <span class="header-date">{{ currentDate | date:'dd/MM/yyyy' }}</span>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="refreshFila()">
         <ion-icon name="refresh-outline" class="refresh-icon"></ion-icon>
@@ -17,8 +20,7 @@
 </ion-header>
 
 <ion-content class="fila-content">
-  <ion-card class="card-retratil" [class.expandido]="mostrarDetalhes">
-    <!-- Cabeçalho do Card - Versão Compacta -->
+  <ion-card class="card-retratil" [class.expandido]="mostrarDetalhes">    
     <div class="card-topo" (click)="alternarDetalhes()">
       <div class="logo-info">
         <div class="logo-container">
@@ -55,57 +57,13 @@
         </div>
       </div>
     </div>
-
-    <!-- Conteúdo Expandido -->
-    <div class="card-conteudo" *ngIf="mostrarDetalhes">
-      <!-- Seção de Detalhes dos Serviços -->
-      <div class="servicos-section">
-        <ion-item-divider class="divider">
-          <ion-label class="subtitulo">Serviços Selecionados</ion-label>
-        </ion-item-divider>
-        
-        <ion-list lines="none" class="lista-servicos">
-          <ion-item *ngFor="let servico of servicosSelecionados" class="item-servico">
-            <ion-icon [name]="servico.icone" slot="start" class="icon-servico"></ion-icon>
-            <ion-label class="nome-servico">{{ servico.nome }}</ion-label>
-            <ion-note slot="end" class="preco-servico">{{ servico.preco | currency:'BRL' }}</ion-note>
-          </ion-item>
-        </ion-list>
-      </div>
-
-      <!-- Seção de Forma de Pagamento -->
-      <div class="pagamento-section">
-        <ion-item-divider class="divider">
-          <ion-label class="subtitulo">Forma de Pagamento</ion-label>
-        </ion-item-divider>
-        
-        <ion-item class="item-pagamento">
-          <ion-icon [name]="pagamentoIcon" slot="start" class="icon-pagamento"></ion-icon>
-          <ion-label class="tipo-pagamento">{{ formaPagamento }}</ion-label>
-          <ion-note *ngIf="pagamentoDetalhes" slot="end" class="detalhe-pagamento">{{ pagamentoDetalhes }}</ion-note>
-        </ion-item>
-      </div>
-
-      <!-- Área do QR Code -->
-      <div *ngIf="ehMinhaVez" class="qr-section">
-        <ion-note class="nota-qr">Chamado às {{ horaChamada }}.</ion-note>
-        <ion-spinner *ngIf="!qrCodeBase64" name="dots" class="spinner-qr"></ion-spinner>
-        <img
-          *ngIf="qrCodeBase64"
-          [src]="qrCodeBase64"
-          alt="QR Code"
-          class="qr-code-img"
-        />
-        <ion-note class="nota-qr">Mostre esse QR Code para o atendente.</ion-note>
-        <ion-note class="nota-qr">Fique atento! Tolerância de {{tolerance}} minutos após ser chamado.</ion-note>
-      </div>
-
-      <!-- Visualização da Fila -->
+    
+    <div class="card-conteudo" *ngIf="mostrarDetalhes">      
       <div *ngIf="!ehMinhaVez" class="fila-info">
         <h6 class="saudacao">E aí, Bruno, tudo bem?</h6>
         <p class="info-profissional">Você está na fila do(a) {{ nomeProfissional }}.</p>
       </div>
-
+    
       <div *ngIf="!ehMinhaVez" class="fila-visual">
         <div class="fila-scroll-container" [ngClass]="{ scroll: pessoasNaFila.length > 5 }">
           <div
@@ -122,18 +80,63 @@
           </div>
         </div>
       </div>
-
+    
       <div *ngIf="!ehMinhaVez" class="estimado" [ngClass]="corTempo">
         Tempo estimado: {{ tempoEstimado }}
       </div>
-
-      <!-- Botões de Ação -->
+    
+   
+      <div *ngIf="ehMinhaVez" class="qr-section">
+        <ion-note class="nota-qr">Chamado às {{ horaChamada }}.</ion-note>
+        <ion-spinner *ngIf="!qrCodeBase64" name="dots" class="spinner-qr"></ion-spinner>
+        <img
+          *ngIf="qrCodeBase64"
+          [src]="qrCodeBase64"
+          alt="QR Code"
+          class="qr-code-img"
+        />
+        <ion-note class="nota-qr">Mostre esse QR Code para o atendente.</ion-note>
+        <ion-note class="nota-qr">Fique atento! Tolerância de {{tolerance}} minutos após ser chamado.</ion-note>
+      </div>
+          
+      <div class="servicos-section">
+        <ion-item-divider class="divider">
+          <ion-label class="subtitulo">Serviços Selecionados</ion-label>
+        </ion-item-divider>
+        
+        <ion-list lines="none" class="lista-servicos">
+          <ion-item *ngFor="let servico of servicosSelecionados" class="item-servico">
+            <ion-icon [name]="servico.icone" slot="start" class="icon-servico"></ion-icon>
+            <ion-label class="nome-servico">{{ servico.nome }}</ion-label>
+            <ion-note slot="end" class="preco-servico">{{ servico.preco | currency:'BRL' }}</ion-note>
+          </ion-item>
+                    
+          <ion-item class="item-total">
+            <ion-icon name="cash-outline" slot="start" class="icon-total"></ion-icon>
+            <ion-label class="label-total">Total</ion-label>
+            <ion-note slot="end" class="valor-total">{{ calcularTotal() | currency:'BRL' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </div>
+      
+      <div class="pagamento-section">
+        <ion-item-divider class="divider">
+          <ion-label class="subtitulo">Forma de Pagamento</ion-label>
+        </ion-item-divider>
+        
+        <ion-item class="item-pagamento">
+          <ion-icon [name]="pagamentoIcon" slot="start" class="icon-pagamento"></ion-icon>
+          <ion-label class="tipo-pagamento">{{ formaPagamento }}</ion-label>
+          <ion-note *ngIf="pagamentoDetalhes" slot="end" class="detalhe-pagamento">{{ pagamentoDetalhes }}</ion-note>
+        </ion-item>
+      </div>
+          
       <div class="botoes-acao">
         <ion-button expand="block" color="danger" class="botao-sair-fila" (click)="exitQueue()">
           <ion-icon name="exit-outline" slot="start" class="icon-botao"></ion-icon>
           Sair da fila
         </ion-button>
-
+    
         <ion-button expand="block" fill="outline" class="botao-editar" (click)="editarServicos()">
           <ion-icon name="create-outline" slot="start" class="icon-botao"></ion-icon>
           Alterar serviços/pagamento

@@ -290,3 +290,19 @@ ion-toolbar ion-button[slot="end"] ion-icon {
 .refresh-spin {
   animation: spin 0.5s linear 1;
 }
+
+.header-date {
+  font-size: 0.7rem;
+  display: block;
+  font-weight: normal;
+  opacity: 0.8;
+  margin-top: -3px;
+}
+
+.mini-date {
+  font-size: 0.6rem;
+  opacity: 0.6;
+  align-self: center;
+  margin-right: 8px;
+  margin-top: 2px;
+}
