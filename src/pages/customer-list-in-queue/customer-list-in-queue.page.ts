@@ -14,6 +14,7 @@ export class CustomerListInQueuePage implements OnInit {
   clients: any;
   store: any;
   employee: any;
+  currentDate = new Date();
 
   constructor(private navCtrl: NavController,
     private queueService: QueueService,
@@ -29,10 +30,10 @@ export class CustomerListInQueuePage implements OnInit {
   loadAllCustomersInQueueByEmployeeAndStoreId() {
     this.store = this.sessionService.getStore();
     this.employee = this.sessionService.getUser();
-
+    
     if (this.store && this.employee) {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
-        next: (response) => {
+        next: (response) => {          
           this.clients = response.data;
         },
         error: (err) => {
@@ -44,7 +45,7 @@ export class CustomerListInQueuePage implements OnInit {
     }
   }
 
-  calcularTempoEspera(horaEntrada: string): string {
+  calcularTempoEspera(horaEntrada: string): string {    
     const agora = new Date();
     const [h, m] = horaEntrada.split(':').map(Number);
     const entrada = new Date();

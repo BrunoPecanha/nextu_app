@@ -28,7 +28,7 @@ export class QueuePage implements OnInit {
   tempoEstimado: string = '';
   corTempo: string = '';
   formaPagamentoResumo = "Cartão";
-
+  currentDate = new Date();
 
   servicosSelecionados = [
     { nome: 'Corte de Cabelo Masculino', preco: 50, icone: 'cut-outline' },
@@ -98,6 +98,10 @@ nomeProfissional: string = 'Léo';
     this.queueService.gerarQrCode().subscribe((res) => {
       this.qrCodeBase64 = res.qrCode; 
     });
+  }
+
+  calcularTotal(): number {
+    return this.servicosSelecionados.reduce((total, servico) => total + servico.preco, 0);
   }
 
   simularFila(qtd: number) {

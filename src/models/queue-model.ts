@@ -8,6 +8,7 @@ export interface QueueModel {
     registeringDate?: Date;
     lastUpDate?: Date;
     status: StatusQueueEnum;
+    timeGotInQueue: string;
     employeeId: string;
     services: string[];
 }

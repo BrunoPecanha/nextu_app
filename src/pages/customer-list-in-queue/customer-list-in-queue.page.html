@@ -7,7 +7,9 @@
         icon="arrow-back-outline"
       ></ion-back-button>
     </ion-buttons>
-    <ion-title>FILA ATUAL</ion-title>
+    <ion-title>FILA ATUAL
+      <span class="header-date">{{ currentDate | date:'dd/MM/yyyy' }}</span>
+    </ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="loadAllCustomersInQueueByEmployeeAndStoreId()">
         <ion-icon name="refresh-outline"></ion-icon>

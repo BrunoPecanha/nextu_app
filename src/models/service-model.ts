@@ -4,6 +4,7 @@ export interface ServiceModel {
     name: string,
     description: string,
     price: number,
+    icon: string;
     serviceType: string,
     estimateTime: number
 }
