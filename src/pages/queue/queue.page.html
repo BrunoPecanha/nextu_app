@@ -9,8 +9,8 @@
     </ion-buttons>
     <ion-title>FILAS DE ESPERA</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="presentInfoPopup()">
-        <ion-icon name="help-circle-outline"></ion-icon>
+      <ion-button (click)="refreshFila()">
+        <ion-icon name="refresh-outline" class="refresh-icon"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -18,49 +18,92 @@
 
 <ion-content class="fila-content">
   <ion-card class="card-retratil" [class.expandido]="mostrarDetalhes">
+    <!-- Cabeçalho do Card - Versão Compacta -->
     <div class="card-topo" (click)="alternarDetalhes()">
       <div class="logo-info">
-        <ion-img
-          src="assets/images/company-logo/kingssons.jpeg"
-          class="logo"
-        ></ion-img>
-        <div class="nome-empresa">
-          <h6 *ngIf="!ehMinhaVez">Você é o {{ posicaoNaFila }}º na fila</h6>
-          <h6 *ngIf="ehMinhaVez">É a sua vez !</h6>
+        <div class="logo-container">
+          <ion-img
+            src="assets/images/company-logo/kingssons.jpeg"
+            class="logo"
+            alt="Logo da Empresa"
+          ></ion-img>
+        </div>
+        <div class="info-principal">
+          <div class="posicao-fila">
+            <h6 class="titulo-principal" *ngIf="!ehMinhaVez">Você é o {{ userPosition }}º na fila</h6>
+            <h6 class="titulo-principal" *ngIf="ehMinhaVez">É a sua vez!</h6>
+          </div>
+          <div class="info-secundaria">
+            <span class="info-item">
+              <ion-icon name="cut-outline" class="icon-small"></ion-icon>
+              {{ quantidadeServicos }} serviços
+            </span>
+            <span class="info-item pagamento">
+              <ion-icon [name]="pagamentoIcon" class="icon-small"></ion-icon>
+              {{ formaPagamentoResumo }}
+            </span>
+          </div>
         </div>
       </div>
 
-      <div *ngIf="!mostrarDetalhes" class="tempo-indicador" [ngClass]="corTempo"></div>
-      <div class="botao-toggle">
-        <ion-icon
-          [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'">
-        </ion-icon>
+      <div class="controles-direita">
+        <div *ngIf="!mostrarDetalhes" class="tempo-indicador" [ngClass]="corTempo"></div>
+        <div class="botao-toggle">
+          <ion-icon
+            [name]="mostrarDetalhes ? 'chevron-up-outline' : 'chevron-down-outline'">
+          </ion-icon>
+        </div>
       </div>
     </div>
 
+    <!-- Conteúdo Expandido -->
     <div class="card-conteudo" *ngIf="mostrarDetalhes">
-      <!-- QR Code quando for a vez do usuário -->
-      <div
-        *ngIf="ehMinhaVez"
-        class="qr-section"
-        style="text-align: center; margin: 16px 0"
-      >
-        <ion-note color="warning">Chamado às {{ horaChamada }}.</ion-note>
-        <ion-spinner *ngIf="!qrCodeBase64" name="dots"></ion-spinner>
+      <!-- Seção de Detalhes dos Serviços -->
+      <div class="servicos-section">
+        <ion-item-divider class="divider">
+          <ion-label class="subtitulo">Serviços Selecionados</ion-label>
+        </ion-item-divider>
+        
+        <ion-list lines="none" class="lista-servicos">
+          <ion-item *ngFor="let servico of servicosSelecionados" class="item-servico">
+            <ion-icon [name]="servico.icone" slot="start" class="icon-servico"></ion-icon>
+            <ion-label class="nome-servico">{{ servico.nome }}</ion-label>
+            <ion-note slot="end" class="preco-servico">{{ servico.preco | currency:'BRL' }}</ion-note>
+          </ion-item>
+        </ion-list>
+      </div>
+
+      <!-- Seção de Forma de Pagamento -->
+      <div class="pagamento-section">
+        <ion-item-divider class="divider">
+          <ion-label class="subtitulo">Forma de Pagamento</ion-label>
+        </ion-item-divider>
+        
+        <ion-item class="item-pagamento">
+          <ion-icon [name]="pagamentoIcon" slot="start" class="icon-pagamento"></ion-icon>
+          <ion-label class="tipo-pagamento">{{ formaPagamento }}</ion-label>
+          <ion-note *ngIf="pagamentoDetalhes" slot="end" class="detalhe-pagamento">{{ pagamentoDetalhes }}</ion-note>
+        </ion-item>
+      </div>
+
+      <!-- Área do QR Code -->
+      <div *ngIf="ehMinhaVez" class="qr-section">
+        <ion-note class="nota-qr">Chamado às {{ horaChamada }}.</ion-note>
+        <ion-spinner *ngIf="!qrCodeBase64" name="dots" class="spinner-qr"></ion-spinner>
         <img
           *ngIf="qrCodeBase64"
           [src]="qrCodeBase64"
           alt="QR Code"
-          style="width: 200px; height: 200px; margin: 12px auto"
+          class="qr-code-img"
         />
-        <ion-note color="warning">Mostre esse QR Code para o atendente.</ion-note>
-        <ion-note color="warning">Fique atento! Tolerância de {{tolerance}} minutos após ser chamado.</ion-note>
+        <ion-note class="nota-qr">Mostre esse QR Code para o atendente.</ion-note>
+        <ion-note class="nota-qr">Fique atento! Tolerância de {{tolerance}} minutos após ser chamado.</ion-note>
       </div>
 
-      <!-- Infos padrão caso ainda não seja a vez -->
+      <!-- Visualização da Fila -->
       <div *ngIf="!ehMinhaVez" class="fila-info">
-        <h6>E aí, Bruno, tudo bem?</h6>
-        <p>Você está na fila do(a) Léo.</p>
+        <h6 class="saudacao">E aí, Bruno, tudo bem?</h6>
+        <p class="info-profissional">Você está na fila do(a) {{ nomeProfissional }}.</p>
       </div>
 
       <div *ngIf="!ehMinhaVez" class="fila-visual">
@@ -69,11 +112,11 @@
             *ngFor="let pessoa of pessoasNaFila; let idx = index"
             class="avatar-container"
           >
-            <div class="avatar" [class.user]="idx === posicaoNaFila - 1">
-              <ion-icon [name]="pessoa.avatar"></ion-icon>
-              <div *ngIf="idx === posicaoNaFila - 1" class="voce">Você</div>
+            <div class="avatar" [class.user]="idx === userPosition - 1">
+              <ion-icon [name]="pessoa.avatar" class="icon-avatar"></ion-icon>
+              <div *ngIf="idx === userPosition - 1" class="voce">Você</div>
             </div>
-            <div *ngIf="idx === posicaoNaFila - 1" class="posicao-numero">
+            <div *ngIf="idx === userPosition - 1" class="posicao-numero">
               {{ idx + 1 }}
             </div>
           </div>
@@ -84,12 +127,26 @@
         Tempo estimado: {{ tempoEstimado }}
       </div>
 
-      <ion-button expand="block" color="danger" class="botao-sair-fila" (click)="exitQueue()">
-        <ion-icon name="exit-outline" slot="start"></ion-icon>
-        Sair da fila
-      </ion-button>
+      <!-- Botões de Ação -->
+      <div class="botoes-acao">
+        <ion-button expand="block" color="danger" class="botao-sair-fila" (click)="exitQueue()">
+          <ion-icon name="exit-outline" slot="start" class="icon-botao"></ion-icon>
+          Sair da fila
+        </ion-button>
+
+        <ion-button expand="block" fill="outline" class="botao-editar" (click)="editarServicos()">
+          <ion-icon name="create-outline" slot="start" class="icon-botao"></ion-icon>
+          Alterar serviços/pagamento
+        </ion-button>
+      </div>
     </div>
   </ion-card>
 </ion-content>
+
+<ion-fab vertical="bottom" (click)="presentInfoPopup()" horizontal="end" slot="fixed" class="help-fab">
+  <ion-fab-button color="primary">
+    <ion-icon name="help-circle-outline"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
 
 <app-footer-menu></app-footer-menu>

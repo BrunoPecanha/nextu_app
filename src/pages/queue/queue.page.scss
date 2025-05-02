@@ -1,3 +1,10 @@
+/* Estilos Gerais */
+.fila-content {
+  --background: #f5f5f5;
+  padding-bottom: 80px;
+}
+
+/* Header - Mantendo seu estilo original */
 .header-background {
   position: relative;
   height: 20%;
@@ -23,22 +30,157 @@
   border-radius: 50%;
 }
 
-ion-card {
-  margin-top: 25%;
-  padding-top: 20px;
+/* Estilo da Logo Circular - Ajuste Principal */
+.logo {
+  width: 50px;
+  height: 50px;
+  min-width: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e0e0e0;
+  overflow: hidden; /* Garante que a imagem não ultrapasse o círculo */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white; /* Fundo branco caso a imagem tenha transparência */
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Garante que a imagem cubra todo o espaço sem distorcer */
+}
+
+/* Card Principal */
+.card-retratil {
+  margin: 16px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+/* Cabeçalho do Card */
+.card-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  cursor: pointer;
+  background: white;
+}
+
+.logo-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Restante do CSS permanece igual ao anterior */
+.info-principal {
+  flex: 1;
+  min-width: 0;
+}
+
+.posicao-fila h6 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+.info-secundaria {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  color: #666;
+}
+
+.info-item.pagamento {
+  color: #2e7d32;
+}
+
+.icon-small {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+.controles-direita {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tempo-indicador {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  animation: piscar 2s infinite ease-in-out;
+}
+
+.tempo-indicador.verde {
+  background-color: #4caf50;
+}
+
+.tempo-indicador.amarelo {
+  background-color: #ff9800;
+}
+
+.tempo-indicador.vermelho {
+  background-color: #f44336;
+}
+
+.botao-toggle ion-icon {
+  font-size: 20px;
+  color: #666;
+}
+
+/* Conteúdo Expandido */
+.card-conteudo {
+  background: white;
+  padding: 0 16px 16px;
+  border-top: 1px solid #f0f0f0;
+  animation: expandir 0.3s ease-in-out;
+}
+
+.servicos-section,
+.pagamento-section {
+  margin-bottom: 16px;
+}
+
+ion-item-divider {
+  --background: #f8f8f8;
+  --color: #555;
+  font-size: 14px;
+  margin-top: 12px;
+}
+
+.qr-section {
+  text-align: center;
+  margin: 16px 0;
+  padding: 16px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.qr-code-img {
+  width: 200px;
+  height: 200px;
+  margin: 12px auto;
+  display: block;
 }
 
 .fila-info {
   text-align: center;
   margin-bottom: 16px;
-}
-
-fila-card {
-  margin-top: 50px !important;
-}
-
-.fila-content {
-  padding-bottom: 100px;
 }
 
 .fila-info h3 {
@@ -52,164 +194,26 @@ fila-card {
   color: #666;
 }
 
-.posicao-fila {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.posicao-fila p {
-  margin: 0;
-  font-size: 14px;
-  color: #888;
-}
-
-.posicao-fila h1 {
-  margin: 10px 0;
-  font-size: 48px;
-  color: #e85c41;
-}
-
-ion-progress-bar {
-  margin: 16px 0;
-}
-
-ion-button {
-  margin-top: 16px;
-}
-
-ion-note {
-  display: block;
-  text-align: center;
-  font-size: 12px;
-  color: #ff9800;
-}
-
-ion-footer {
-  border-top: 1px solid #ddd;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-}
-
-.menu-fixed-bottom {
-  background-color: white;
-  border-top: 1px solid #e8e8e8;
-}
-
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
-}
-
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff;
-}
-
-.botao-sair-fila {
-  --background: #007bff !important;
-  --background-hover: #0056b3;
-  --background-activated: #004494;
-  color: #fff;
-}
-
-.go-init,
-.go-fila,
-.go-config {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-ion-icon {
-  font-size: 24px;
-}
-
-ion-label {
-  margin-top: 5px;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #8a8a8a;
-}
-
-ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
-}
-
-.notification-footer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notification-footer ion-icon {
-  position: relative;
-  font-size: 24px;
-}
-
-.notification-badge {
-  position: absolute;
-  top: 0px;
-  right: 8px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 5px;
-  border-radius: 50%;
-  min-width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
 .fila-visual {
   display: flex;
   width: 100%;
-  overflow-x: auto; 
+  overflow-x: auto;
   white-space: nowrap;
-  justify-content: center; 
+  justify-content: center;
   align-items: center;
   padding: 16px 0;
+  margin: 16px 0;
 }
-
-.fila-scroll-container.scroll {
-  justify-content: flex-start; 
-}
-
 
 .fila-scroll-container {
   display: flex;
   gap: 12px;
-  justify-content: center; 
+  justify-content: center;
   min-width: 100%;
 }
 
-.posicao-numero {
-  position: absolute;
-  top: -15px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 14px;
-  font-weight: bold;
-  color: #007bff;
-  z-index: 1;
-}
-
-
-.fila-scroll-container.center {
-  justify-content: center; 
+.fila-scroll-container.scroll {
+  justify-content: flex-start;
 }
 
 .avatar-container {
@@ -263,6 +267,127 @@ ion-label a {
   z-index: 1;
 }
 
+.estimado {
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  margin: 16px 0;
+}
+
+.estimado.verde {
+  color: #4caf50;
+}
+
+.estimado.amarelo {
+  color: #ff9800;
+}
+
+.estimado.vermelho {
+  color: #f44336;
+}
+
+/* Botões */
+.botoes-acao {
+  margin-top: 24px;
+}
+
+.botao-sair-fila {
+  --background: #007bff !important;
+  --background-hover: #0056b3;
+  --background-activated: #004494;
+  color: #fff;
+}
+
+/* Footer e FAB */
+ion-footer {
+  border-top: 1px solid #ddd;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.menu-fixed-bottom {
+  background-color: white;
+  border-top: 1px solid #e8e8e8;
+}
+
+.content-menu-border {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 10px 0;
+}
+
+.go-init,
+.go-fila,
+.go-config {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.go-init ion-icon,
+.go-fila ion-icon,
+.go-config ion-icon {
+  font-size: 25px;
+  color: #007bff;
+}
+
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.notification-footer {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.notification-badge {
+  position: absolute;
+  top: 0px;
+  right: 8px;
+  background: red;
+  color: white;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 2px 5px;
+  border-radius: 50%;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.help-fab {
+  margin-bottom: 80px;
+  margin-right: 16px;
+  z-index: 10;
+}
+
+/* Animações */
+@keyframes expandir {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes piscar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
 @keyframes pulse {
   0% {
     transform: scale(1.4);
@@ -278,32 +403,21 @@ ion-label a {
   }
 }
 
-.tempo-estimado {
-  text-align: center;
-  font-size: 16px;
-  font-weight: bold;
-  margin: 16px 0;
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
-.tempo-estimado.verde {
-  color: #4caf50;
+/* Componentes Específicos */
+.refresh-icon {
+  font-size: 18px;
 }
 
-.estimado {
-  text-align: center;
-  width: 100%;
-  font-size: 16px;
-  margin: 16px 0;
+.refresh-spin {
+  animation: spin 0.5s linear 1;
 }
 
-.tempo-estimado.amarelo {
-  color: #ff9800;
-}
-
-.tempo-estimado.vermelho {
-  color: #f44336;
-}
-
+/* Header Moderno Alternativo */
 .header-background-modern {
   position: relative;
   height: 200px;
@@ -341,18 +455,7 @@ ion-label a {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 }
 
-.logo-wrapper ion-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-  overflow: hidden;
-}
-
-ion-card.fila-card {
-  margin-top: 30px;
-}
-
+/* Toolbar */
 ion-toolbar {
   display: flex;
   align-items: center;
@@ -369,113 +472,38 @@ ion-title {
   font-weight: bold;
 }
 
-.card-retratil {
-  margin: 20px;
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.card-topo {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px;
-  cursor: pointer;
-}
-
-.logo-info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.logo {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
-  overflow: hidden;
-  border: 2px solid #e0e0e0; 
-}
-
-.nome-empresa h2 {
-  font-size: 18px;
-  margin: 0;
-}
-
-.botao-toggle {
-  font-size: 24px;
+ion-toolbar ion-button[slot="end"] ion-icon {
+  font-size: 15px;
   color: #007bff;
 }
 
-.card-conteudo {
-  padding: 16px;
-  animation: expandir 0.3s ease-in-out;
-}
-
-@keyframes expandir {
-  from { opacity: 0; transform: translateY(-10px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.tempo-indicador {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  margin-left: auto;
-  margin-right: 30px;
-  animation: piscar 2s infinite ease-in-out;
-}
-
-.tempo-indicador.verde {
-  background-color: #4caf50;
-}
-
-.tempo-indicador.amarelo {
-  background-color: #ff9800;
-}
-
-.tempo-indicador.vermelho {
-  background-color: #f44336;
-}
-
-@keyframes piscar {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
+/* Alert Customizado */
 .custom-alert .alert-wrapper {
-  border-radius: 10px;  
+  border-radius: 10px;
 }
 
 .custom-alert .alert-header {
-  padding-right: 30px; 
+  padding-right: 30px;
 }
 
 .custom-alert .info-container {
   display: flex;
-  flex-direction: column; 
-  align-items: flex-start;  
+  flex-direction: column;
+  align-items: flex-start;
   margin-top: 20px;
 }
 
 .custom-alert .info-item {
   display: flex;
-  align-items: center; 
+  align-items: center;
   margin-bottom: 10px;
 }
 
 .custom-alert .dot {
-  width: 20px;  
+  width: 20px;
   height: 20px;
-  border-radius: 50%;  
-  margin-right: 10px;  
+  border-radius: 50%;
+  margin-right: 10px;
 }
 
 .custom-alert .legend {
@@ -485,12 +513,12 @@ ion-title {
 
 .close-button {
   position: absolute;
-  top: 10px; 
+  top: 10px;
   right: 10px;
-  font-size: 20px; 
-  color: #000; 
-  background: none; 
-  border: none;  
+  font-size: 20px;
+  color: #000;
+  background: none;
+  border: none;
 }
 
 .close-button ion-icon {
@@ -498,6 +526,147 @@ ion-title {
 }
 
 ion-content::part(scroll) {
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+/* Tipografia Base */
+.card-topo,
+.card-conteudo {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* Estilos para o cabeçalho (fechado) */
+.titulo-principal {
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+  margin: 0;
+}
+
+.info-item {
+  font-size: 13px;
+  font-weight: 400;
+  color: #666;
+  display: flex;
+  align-items: center;
+}
+
+.info-item.pagamento {
+  color: #2e7d32;
+}
+
+.icon-small {
+  font-size: 14px;
+  margin-right: 4px;
+}
+
+/* Estilos para o conteúdo expandido (aberto) */
+.card-conteudo {
+  font-size: 14px;
+  color: #333;
+}
+
+.subtitulo {
+  font-size: 14px;
+  font-weight: 500;
+  color: #555;
+}
+
+.lista-servicos {
+  margin: 8px 0;
+}
+
+.item-servico {
+  --min-height: 48px;
+}
+
+.nome-servico {
+  font-size: 14px;
+  color: #333;
+}
+
+.preco-servico {
+  font-size: 14px;
+  color: #666;
+}
+
+.icon-servico {
+  font-size: 20px;
+  color: #007bff;
+  margin-right: 12px;
+}
+
+/* Seção de Pagamento */
+.item-pagamento {
+  --min-height: 48px;
+}
+
+.tipo-pagamento {
+  font-size: 14px;
+  color: #333;
+}
+
+.detalhe-pagamento {
+  font-size: 14px;
+  color: #666;
+}
+
+.icon-pagamento {
+  font-size: 20px;
+  color: #4caf50;
+  margin-right: 12px;
+}
+
+/* QR Section */
+.nota-qr {
+  font-size: 13px;
+  color: #ff9800;
+  display: block;
+  text-align: center;
+  margin: 4px 0;
+}
+
+/* Visualização da Fila */
+.saudacao {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.info-profissional {
+  font-size: 14px;
+  color: #666;
+  margin-top: 0;
+}
+
+/* Tempo Estimado */
+.estimado {
+  font-size: 15px;
+  font-weight: 500;
+  text-align: center;
+  margin: 16px 0;
+}
+
+.estimado.verde {
+  color: #4caf50;
+}
+
+.estimado.amarelo {
+  color: #ff9800;
+}
+
+.estimado.vermelho {
+  color: #f44336;
+}
+
+/* Botões */
+.botao-sair-fila,
+.botao-editar {
+  font-size: 14px;
+}
+
+.icon-botao {
+  font-size: 18px;
+  margin-right: 8px;
 }
