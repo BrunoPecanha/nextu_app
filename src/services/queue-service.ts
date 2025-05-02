@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { delay, from, Observable, of } from 'rxjs';
+import { catchError, delay, from, map, Observable, of } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import QRCode from 'qrcode';
+import { QueueResponse } from 'src/models/responses/queue-response';
+import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
+
 
 @Injectable({
   providedIn: 'root'
@@ -19,9 +22,28 @@ export class QueueService {
 
   constructor(private http: HttpClient) { }
 
+  getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueResponse> {
+    return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
+  }
+  
+  getAllCustomersInQueueByEmployeeAndStoreId(storeId: number, employeeId: number): Observable<QueueResponse> {
+    return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${storeId}/${employeeId}/customers-in-queue`);
+  }
+
   getAvailableQueues(storeId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
   }
+
+   hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
+      return this.getOpenedQueueByEmployeeId(employeeId).pipe(
+        map((response: QueueResponse) => {            
+          return response.valid && 
+                 response.data?.length > 0 && 
+                 response.data[0].status === StatusQueueEnum.open;
+        }),
+        catchError(() => of(false))
+      );
+    }  
 
   getPosicao(): Observable<{
     pessoasNaFila: { avatar: string }[];
@@ -48,7 +70,6 @@ export class QueueService {
       ehMinhaVez
     }).pipe(delay(1000));
   }
-
 
   gerarQrCode(): Observable<{ qrCode: string }> {
     const qrData = `empresaId=${this.empresaId}&filaId=${this.filaId}&clienteId=${this.clienteId}`;

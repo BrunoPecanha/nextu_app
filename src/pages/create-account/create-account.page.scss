@@ -113,6 +113,15 @@ ion-input {
   font-weight: bold;
 }
 
+.go-back {
+  position: absolute;
+}
+
+.go-back img {
+  width: 24px;
+  height: 24px;
+}
+
 
 ion-content::part(scroll) {
   scrollbar-width: none;

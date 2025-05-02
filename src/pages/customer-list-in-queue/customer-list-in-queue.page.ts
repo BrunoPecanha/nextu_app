@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
+import { QueueService } from 'src/services/queue-service';
+import { SessionService } from 'src/services/session.service';
 
 
 @Component({
@@ -9,40 +11,38 @@ import { AlertController, NavController } from '@ionic/angular';
 })
 export class CustomerListInQueuePage implements OnInit {
 
-  clientes: any;
+  clients: any;
+  store: any;
+  employee: any;
 
   constructor(private navCtrl: NavController,
+    private queueService: QueueService,
+    private sessionService: SessionService,
     private alertController: AlertController) {
-    this.clientes = [
-      { nome: 'JOSÉ', servicos: 'CORTE À MÁQUINA, BARBA', hora: '14:00', pagamento: 'DINHEIRO', emAtendimento: false },
-      { nome: 'ANDRÉ', servicos: 'CORTE À TESOURA, BARBA', hora: '14:10', pagamento: 'CRÉDITO', emAtendimento: false },
-      { nome: 'CAMILA', servicos: 'CORTE À TESOURA, PINTAR CABELO', hora: '14:15', pagamento: 'DINHEIRO', emAtendimento: false },
-      { nome: 'CAMILA', servicos: 'CORTE À TESOURA, PINTAR CABELO', hora: '14:30', pagamento: 'PIX', emAtendimento: false },
 
-    ];
-
+    this.loadAllCustomersInQueueByEmployeeAndStoreId();
   }
 
   ngOnInit() {
   }
 
-  getIconPagamento(pagamento: string): string {
-    switch (pagamento.toUpperCase()) {
-      case 'DINHEIRO':
-        return 'cash-outline';
-      case 'C. CRÉDITO':
-      case 'CRÉDITO':
-        return 'card-outline';
-      case 'DÉBITO':
-      case 'C. DÉBITO':
-        return 'card-outline';
-      case 'PIX':
-        return 'qr-code-outline';
-      default:
-        return 'help-circle-outline';
+  loadAllCustomersInQueueByEmployeeAndStoreId() {
+    this.store = this.sessionService.getStore();
+    this.employee = this.sessionService.getUser();
+
+    if (this.store && this.employee) {
+      this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
+        next: (response) => {
+          this.clients = response.data;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar estabelecimentos:', err);
+        }
+      });
+    } else {
+      console.error('Loja ou funcionário não localizado.');
     }
   }
-
 
   calcularTempoEspera(horaEntrada: string): string {
     const agora = new Date();
@@ -101,9 +101,6 @@ export class CustomerListInQueuePage implements OnInit {
 
       this.navCtrl.navigateForward('/customer-service');
     }, 1200);
-  }
-
-  carregarClientes() {    
   }
 
   // startQRCodeScan(cliente: any) {

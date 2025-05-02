@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-splash',
@@ -7,11 +8,14 @@ import { Router } from '@angular/router';
   styleUrls: ['./splash.page.scss']
 })
 export class SplashPage {
-  constructor(private router: Router) {}
 
-  ngOnInit() {
-     setTimeout(() => {
-       this.router.navigate(['/login']);
-     }, 2000); 
+  constructor(private router: Router, 
+    private sesstion: SessionService) { }
+
+  ionViewDidEnter() {
+    setTimeout(() => {
+      this.sesstion.clear();
+      this.router.navigate(['/login']);
+    }, 2000);
   }
 }
