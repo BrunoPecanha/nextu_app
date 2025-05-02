@@ -10,7 +10,7 @@ export class SessionService {
 
   private readonly TOKEN_KEY = 'token';
   private readonly USER_KEY = 'user';
-  private readonly STORES_KEY = 'stores';
+  private readonly STORES_KEY = 'store';
   private readonly PROFILE_KEY = 'profile';
 
   getToken(): string | null {
@@ -22,22 +22,22 @@ export class SessionService {
     return userJson ? JSON.parse(userJson) : null;
   }
 
-  getStores(): any | null {
+  getStore(): any | null {
     const storeJson = sessionStorage.getItem(this.STORES_KEY);
     return storeJson ? JSON.parse(storeJson) : null;
   }
 
   getProfile(): any | null {
     const profile = sessionStorage.getItem(this.PROFILE_KEY);
-    return profile ? JSON.parse(profile) : null;
+    return profile ? JSON.parse(profile) : -1;
   }
 
   setToken(token: string): void {
     sessionStorage.setItem(this.TOKEN_KEY, token);
   }
 
-  setStores(stores: any): void {
-    sessionStorage.setItem(this.STORES_KEY, stores);
+  setStore(store: any): void {
+    sessionStorage.setItem(this.STORES_KEY, JSON.stringify(store));
   }
 
   setProfile(profile: number) {
@@ -46,6 +46,19 @@ export class SessionService {
 
   setUser(user: any): void {
     sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+  }
+
+  setGenericKey(item: any, key: string): void {
+    sessionStorage.setItem(key, JSON.stringify(item));
+  }
+
+  getGenericKey(key : string) {
+    const item = sessionStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  }
+
+  removeGenericKey(key : string) {
+    sessionStorage.removeItem(key);
   }
 
   clear(): void {

@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AlertController } from '@ionic/angular';
+import { AlertController, MenuController } from '@ionic/angular';
 import { SessionService } from 'src/services/session.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -16,17 +16,20 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   constructor(
     private alertController: AlertController,
     private router: Router,
+    private menuCtrl: MenuController,
     private sessionService: SessionService
-  ) {}
+  ) { }
 
   userName: string = '';
   profile: number = -1;
   queues: number = 0;
   customersWaiting: number = 0;
+  companyName: string = '';
+  companyLogoPath: string = '';
 
   ngOnInit(): void {
     this.loadUserInformations();
-        
+
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -34,7 +37,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {    
+  ngOnDestroy() {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
@@ -62,14 +65,23 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   }
 
   loadUserInformations() {
+    
     const userFromSession = this.sessionService.getUser();
+    const companyFromSession = this.sessionService.getStore();
     if (userFromSession) {
-      this.userName = `${userFromSession.name} ${userFromSession.lastName}`;    
-      this.profile = this.sessionService.getProfile();
+      this.userName = `${userFromSession.name} ${userFromSession.lastName}`;
+
     }
+    if (companyFromSession) {
+      this.companyName = companyFromSession?.name || 'Empresa não identificada';
+      this.companyLogoPath = companyFromSession?.logoPath || '';
+    }    
+
+    this.profile = this.sessionService.getProfile();
   }
 
-  navigateTo(route: string) {
+  async navigateTo(route: string) {
+    await this.menuCtrl.close();
     this.router.navigate([route]);
   }
 }

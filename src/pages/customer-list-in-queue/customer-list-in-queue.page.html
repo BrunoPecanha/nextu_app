@@ -9,40 +9,38 @@
     </ion-buttons>
     <ion-title>FILA ATUAL</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
+      <ion-button (click)="loadAllCustomersInQueueByEmployeeAndStoreId()">
+        <ion-icon name="refresh-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div *ngIf="clientes?.length === 0" class="empty-queue-message">
-    <ion-icon name="refresh-outline" (click)="carregarClientes()" class="clickable"></ion-icon>
+  <div *ngIf="clients?.length === 0" class="empty-queue-message">
+    <ion-icon name="refresh-outline" (click)="loadAllCustomersInQueueByEmployeeAndStoreId()" class="clickable"></ion-icon>
     <p>Não há clientes na fila</p>
   </div>
 
-
-
-  <div *ngFor="let cliente of clientes" class="card-cliente">
+  <div *ngFor="let client of clients" class="card-cliente">
     <div class="card-content">
-      <h3>{{ cliente.nome }}</h3>
-      <p class="servico">{{ cliente.servicos }}</p>
+      <h3>{{ client.name }}</h3>
+      <p class="servico">{{ client.services }}</p>
 
       <div class="info-extra">
         <div class="tempo-espera">
           <ion-icon name="time-outline"></ion-icon>
-          <span>Entrou na fila: {{ cliente.hora }}</span>
+          <span>Entrou na fila: {{ client.timeGotInQueue }}</span>
         </div>
 
         <div class="pagamento">
-          <ion-icon [name]="getIconPagamento(cliente.pagamento)"></ion-icon>
-          <span>{{ cliente.pagamento }}</span>
+          <ion-icon [name]="client.paymentIcon"></ion-icon>
+          <span>{{ client.payment }}</span>
         </div>
 
         <div class="espera">
           <ion-icon name="person-circle"></ion-icon>
-          <span>{{ calcularTempoEspera(cliente.hora) }}</span>
+          <span>{{ calcularTempoEspera(client.timeGotInQueue) }}</span>
         </div>
       </div>
 
@@ -57,21 +55,21 @@
         </ion-button>
         <ion-button
           size="small"
-          (click)="startQRCodeScan(cliente)"
-          [color]="cliente.emAtendimento ? 'warning' : 'primary'"
+          (click)="startQRCodeScan(client)"
+          [color]="client.emAtendimento ? 'warning' : 'primary'"
         >
           <ion-icon
-            [name]="cliente.emAtendimento ? 'time-outline' : 'walk-outline'"
+            [name]="client.emAtendimento ? 'time-outline' : 'walk-outline'"
             slot="start"
             style="color: white;"
           ></ion-icon>
-          {{ cliente.emAtendimento ? 'Em Atendimento' : 'Atender' }}
+          {{ client.inService ? 'Em Atendimento' : 'Atender' }}
         </ion-button>
  
         <ion-button *ngIf="true"
           size="small"
           color="success"
-          (click)="openWhatsapp(cliente)"
+          (click)="openWhatsapp(client)"
           class="whatsapp-button"
         >
           <ion-icon name="logo-whatsapp"></ion-icon>

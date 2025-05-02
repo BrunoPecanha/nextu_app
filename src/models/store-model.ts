@@ -1,11 +1,12 @@
 import { HighLightModel } from "./highlight-model";
 import { OpeningHoursModel } from "./opening-hours-model";
 
-import { StatusEnum } from "./status-enum";
+import { StatusEnum } from "./enums/status-enum";
 import { To } from "./to";
 import { UserModel } from "./user-model";
 
 export interface StoreModel extends To {
+  id: number;
   cnpj: string;
   name: string;
   address: string;
