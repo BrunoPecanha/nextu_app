@@ -12,6 +12,7 @@ export class SessionService {
   private readonly USER_KEY = 'user';
   private readonly STORES_KEY = 'store';
   private readonly PROFILE_KEY = 'profile';
+  private readonly CUSTOMER_KEY = 'customer';
 
   getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN_KEY);
@@ -20,6 +21,10 @@ export class SessionService {
   getUser(): any | null {
     const userJson = sessionStorage.getItem(this.USER_KEY);
     return userJson ? JSON.parse(userJson) : null;
+  }
+
+  getCustomer(): string | null {
+    return sessionStorage.getItem(this.CUSTOMER_KEY);
   }
 
   getStore(): any | null {
@@ -42,6 +47,10 @@ export class SessionService {
 
   setProfile(profile: number) {
     sessionStorage.setItem(this.PROFILE_KEY, profile.toString());
+  }
+
+  setCustomer(customer: number) {
+    sessionStorage.setItem(this.CUSTOMER_KEY, customer.toString());
   }
 
   setUser(user: any): void {

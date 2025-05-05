@@ -1,10 +1,10 @@
-export interface CustomerInQueueReducedModel {
+export interface CustomerInQueueCardModel {
   id?: number;
   position: number;
   serviceQtd: number;
+  storeIcon: string;
   payment: string;
   paymentIcon: string;
-  timeToWait: string;
   logoPath: string;
   queueId: number;
 }
