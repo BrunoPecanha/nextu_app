@@ -24,7 +24,9 @@ export class UserConfigurationsPage {
       aceitarMensagemOutrosUsuarios: [false],
       profile: [''],
       senha: [''],
-      wallpaper: ['']
+      wallpaper: [''],
+      subtitle: '',
+      servicesProvided: ''
     });
   }
 

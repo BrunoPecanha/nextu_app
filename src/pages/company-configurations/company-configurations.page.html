@@ -130,42 +130,42 @@
   </div>
 
   <ion-list lines="none">
-    <ion-item>
-      <ion-label>Abrir fila automaticamente</ion-label>
-      <ion-toggle formControlName="openAutomatic"></ion-toggle>
-    </ion-item>
-
-    <ion-item>
+    <ion-item class="item-with-toggle">
       <ion-label>Aceitar pessoas em outras filas</ion-label>
       <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="item-with-toggle">
       <ion-label>Atender fora de ordem</ion-label>
       <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="item-with-toggle">
       <ion-label>Atender com hora marcada</ion-label>
       <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
     </ion-item>
 
-    <ion-item>
+    <ion-item class="item-with-toggle">
       <ion-label>Enviar aviso por WhatsApp</ion-label>
       <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
     </ion-item>
 
-    <ion-item>
-      <ion-label>Remover cliente chamado da fila após:</ion-label>
-      <ion-input
-        type="number"
-        formControlName="timeRemoval"
-        placeholder="Minutos"
-        style="max-width: 80px; margin-left: 8px"
-      >
-      </ion-input>
+    <ion-item class="item-with-toggle">
+      <ion-label>Abrir fila automaticamente</ion-label>
+      <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
     </ion-item>
   </ion-list>
+
+  <ion-item>
+    <ion-label>Remover cliente chamado da fila após:</ion-label>
+    <ion-input
+      type="number"
+      formControlName="timeRemoval"
+      placeholder="Minutos"
+      style="max-width: 80px; margin-left: 8px"
+    >
+    </ion-input>
+  </ion-item>
 
   <div class="wallpaper-wrapper">
     <div class="wallpaper-container" (click)="selecionarWallpaper()">

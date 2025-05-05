@@ -302,4 +302,27 @@ ion-content::part(scroll) {
     }
   }
   
+  ion-item.item-with-toggle ion-label {
+    flex: 1;
+    white-space: normal;
+    margin-right: 5%;
+  }
   
+  .item-with-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+  
+    ion-label {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-right: 12px;
+    }
+  
+    ion-toggle {
+      flex-shrink: 0;
+      margin-right: -60%;
+    }
+  }

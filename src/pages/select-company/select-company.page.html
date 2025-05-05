@@ -1,88 +1,99 @@
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-back-button
-      defaultHref="/role-registration"
-      text=""
-      icon="arrow-back-outline"
-    ></ion-back-button>
-  </ion-buttons>
-
-
-  <ng-container *ngIf="!searching; else searchBar">
-    <ion-title *ngIf="!searching">ESTABELECIMENTOS</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="toggleSearch()">
-        <ion-icon slot="icon-only" name="search-outline"></ion-icon>
-      </ion-button>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/role-registration" text="" icon="arrow-back-outline"></ion-back-button>
     </ion-buttons>
-  </ng-container>
 
-  <ng-template #searchBar>
-    <ion-searchbar
-      [(ngModel)]="searchQuery"
-      (ionInput)="onSearch($event)"
-      placeholder="Filtrar"
-      (ionCancel)="toggleSearch()"
-      clear-input="false"
-      [showClearButton]="false"
-    >
-    </ion-searchbar>
-    <ion-buttons slot="end">
-      <ion-button (click)="toggleSearch()">
-        <ion-icon name="close"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ng-template>
-</ion-toolbar>
+    <ng-container *ngIf="!searching; else searchBar">
+      <ion-title class="header-title">ESTABELECIMENTOS</ion-title>
+      <ion-buttons slot="end">
+        <ion-button fill="clear" (click)="toggleSearch()" class="search-button">
+          <ion-icon slot="icon-only" name="search-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-container>
 
-<div class="horizontal-scroll" *ngIf="categories?.length">
-  <div
-    class="service-type-card"
-    *ngFor="let category of categories"
-    (click)="selectCategory(category.id)"
-    [class.selected]="selectedCategoryId === category.id"
-  >
-    <img [src]="category.imgPath" alt="{{ category.name }}" />
-    <h2>{{ category.name }}</h2>
+    <ng-template #searchBar>
+      <ion-searchbar
+        [(ngModel)]="searchQuery"
+        (ionInput)="onSearch($event)"
+        placeholder="Buscar estabelecimentos..."
+        (ionCancel)="toggleSearch()"
+        class="custom-searchbar"
+        animated
+        clear-input="true">
+      </ion-searchbar>
+    </ng-template>
+  </ion-toolbar>
+
+  <!-- Barra de Categorias Moderna -->
+  <div class="categories-container" *ngIf="categories?.length">
+    <div class="categories-scroll">
+      <div
+        *ngFor="let category of categories"
+        (click)="selectCategory(category.id)"
+        [class.selected]="selectedCategoryId === category.id"
+        class="category-pill">
+        <div class="category-icon">
+          <img [src]="category.imgPath" alt="{{ category.name }}" />
+        </div>
+        <span class="category-name">{{ category.name }}</span>
+      </div>
+    </div>
   </div>
-</div>
+</ion-header>
 
-<ion-content fullscreen="true">
-  <div class="cards-companies container">
+<ion-content class="modern-content">
+  <!-- Estado de Carregamento -->
+  <div *ngIf="!companies?.length" class="loading-container">
+    <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
+    <p class="loading-text">Carregando estabelecimentos...</p>
+  </div>
+  
+  <!-- Lista de Estabelecimentos -->
+  <div class="companies-grid">
     <ion-card
-      class="box full-card"
       *ngFor="let card of filteredCards"
-      (click)="selectCard(card)"
-    >
-      <ion-icon
-        name="{{ card.liked ? 'heart' : 'heart-outline' }}"
-        class="like-icon"
-        (click)="toggleLike(card, $event)"
-      ></ion-icon>
+      class="company-card"
+      (click)="selectCard(card)">
+      
+      <div class="card-header">
+        <div class="logo-wrapper">
+          <ng-container *ngIf="card.logoPath; else defaultLogo">
+            <img [src]="card.logoPath" alt="{{ card.name }}" class="company-logo" />
+          </ng-container>
+          <ng-template #defaultLogo>
+            <div class="default-logo">
+              <ion-icon name="business"></ion-icon>
+            </div>
+          </ng-template>
+        </div>
+        
+        <!-- Badge Novo (opcional) -->
+        <div class="new-badge" *ngIf="card.isNew">NOVO</div>
+        
+        <ion-button fill="clear" class="like-button" (click)="toggleLike(card, $event)">
+          <ion-icon 
+            [name]="card.liked ? 'heart' : 'heart-outline'" 
+            [color]="card.liked ? 'danger' : 'medium'">
+          </ion-icon>
+        </ion-button>
+      </div>
 
-      <ion-card-content>
-        <div class="inner-card">
-          <div class="logo-container">
-            <ng-container *ngIf="card.logoPath; else defaultLogo">
-              <img
-                [src]="card.logoPath"
-                alt="{{ card.name }} logo"
-                class="company-logo"
-              />
-            </ng-container>
-            <ng-template #defaultLogo>
-              <ion-icon name="business" class="company-logo default-logo"></ion-icon>
-            </ng-template>
+      <ion-card-content class="card-content">
+        <h2 class="company-name">{{ card.name }}</h2>
+        <p class="company-category">{{ card.category }}</p>
+        
+        <div class="company-stats">
+          <div class="stat-item">
+            <ion-icon name="people-outline" class="stat-icon"></ion-icon>
+            <span>Fila: 4 pessoas</span>
           </div>
-          <div class="company-info">
-            <h2>{{ card.name }}</h2>
-            <p>{{ card.category }}</p>
-            <!-- <p> Fila menor: {{ card.minorQueue }} pessoas</p>            -->
-            <p>Fila menor: 4 pessoas</p>
-            <ion-chip color="success" class="ratting-area">
-              <ion-icon class="star-icon" name="star"></ion-icon>
-              {{ card.rating }} ({{ card.votes }} avaliações)
-            </ion-chip>
+          
+          <div class="rating-badge">
+            <ion-icon name="star" class="star-icon"></ion-icon>
+            <span>{{ card.rating || '0' }}</span>
+            <small>({{ card.votes || '0' }} avaliações)</small>
           </div>
         </div>
       </ion-card-content>
