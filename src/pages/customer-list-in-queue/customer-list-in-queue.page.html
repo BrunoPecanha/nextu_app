@@ -58,10 +58,10 @@
         <ion-button
           size="small"
           (click)="startQRCodeScan(client)"
-          [color]="client.emAtendimento ? 'warning' : 'primary'"
+          [color]="client.inService ? 'warning' : 'primary'"
         >
           <ion-icon
-            [name]="client.emAtendimento ? 'time-outline' : 'walk-outline'"
+            [name]="client.inService ? 'time-outline' : 'walk-outline'"
             slot="start"
             style="color: white;"
           ></ion-icon>

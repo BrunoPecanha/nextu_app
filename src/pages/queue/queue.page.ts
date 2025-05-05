@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { CustomerInQueueCardDetailModel } from 'src/models/customer-in-queue-card-detail-model';
+import { CustomerInQueueCardModel } from 'src/models/customer-in-queue-card-model';
 import { QueueService } from 'src/services/queue-service';
-
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-queue',
@@ -10,179 +12,136 @@ import { QueueService } from 'src/services/queue-service';
   styleUrls: ['./queue.page.scss'],
 })
 export class QueuePage implements OnInit {
-  empresa: any = {};
-  progressoFila: number = 0.5;
-  mostrarDetalhes = false;
+  // Propriedades do componente
+  customerCards: CustomerInQueueCardModel[] | null = null;
+  currentDate = new Date();
   horaChamada = '10:00';
   qrCodeBase64: string | null = null;
   tolerance = 5;
+  customer: any;
 
-  pessoasNaFila = new Array(3);
-  queue: any[] = [];
-  userPosition: number = 2;
+  // Mapeamentos privados para controle de estado
+  private cardDetailsMap = new Map<number, CustomerInQueueCardDetailModel>();
+  private expandedStates = new Map<number, boolean>();
 
-  ehMinhaVez: boolean = false;
-  codigoAtendimento = '';
+  constructor(
+    private alertController: AlertController,
+    public router: Router,
+    private queueService: QueueService,
+    private sessionService: SessionService
+  ) {}
 
-  tempoRestanteMinutos: number = 30;
-  tempoEstimado: string = '';
-  corTempo: string = '';
-  formaPagamentoResumo = "Cartão";
-  currentDate = new Date();
-
-  servicosSelecionados = [
-    { nome: 'Corte de Cabelo Masculino', preco: 50, icone: 'cut-outline' },
-    { nome: 'Tintura', preco: 120, icone: 'color-palette-outline' }
-  ];
-  
-
-
-  quantidadeServicos: number = 2;
-formaPagamento: string = 'Cartão de Crédito';
-pagamentoDetalhes: string = 'final 1234';
-pagamentoIcon: string = 'card-outline';
-pagamentoChipColor: string = 'success';
-nomeProfissional: string = 'Léo';
-
-  constructor(private alertController: AlertController, private router: Router, private queueService: QueueService ) {
-    this.simularFila(5);
+  ngOnInit(): void {
+    this.loadCustomersInQueueCard();
   }
 
-  ngOnInit() {
-    this.refreshFila();
-
-    setTimeout(() => {
-      this.ehMinhaVez = false;
-      this.horaChamada = new Date().toLocaleTimeString();
-      this.gerarQrCodeMockado();
-    }, 3000); 
+  // Métodos públicos para controle da UI
+  public toggleCardDetails(card: CustomerInQueueCardModel): void {
+    debugger
+    const isExpanded = this.isCardExpanded(card);
+    
+    if (!isExpanded && !this.cardDetailsMap.has(card.queueId)) {
+      this.loadCustomerInQueueCardDetails(card);
+    } else {
+      this.expandedStates.set(card.queueId, !isExpanded);
+    }
   }
 
-  refreshFila() {
-    this.loadQueueData();
-    this.atualizarTempoEstimado();
-    this.verificaMinhaVez();
+  public isCardExpanded(card: CustomerInQueueCardModel): boolean {
+    return this.expandedStates.get(card.queueId) || false;
   }
 
-  editarServicos() {
-    // Lógica para navegar de volta para a página de seleção
-    // com os serviços atuais pré-selecionados
+  public getCardDetails(card: CustomerInQueueCardModel): CustomerInQueueCardDetailModel | undefined {
+    return this.cardDetailsMap.get(card.queueId);
   }
 
-  verificaMinhaVez() {
-    this.ehMinhaVez = this.userPosition === 1;
+  // Métodos auxiliares
+  public getTempoColor(timeToWait: number | undefined): string {
+    if (!timeToWait) return '';
+    if (timeToWait > 45) return 'vermelho';
+    if (timeToWait > 15) return 'amarelo';
+    return 'verde';
   }
 
-  alternarDetalhes() {
-    this.mostrarDetalhes = !this.mostrarDetalhes;
+  public formatEstimatedTime(timeToWait: number | undefined): string {
+    if (!timeToWait) return 'Calculando...';
+    if (timeToWait > 45) {
+      return `${Math.floor(timeToWait / 60)} hora(s)`;
+    }
+    return `${timeToWait} minutos`;
   }
 
-  gerarQrCodeMockado() {
-    this.queueService.gerarQrCode().subscribe((res) => {
-      this.qrCodeBase64 = res.qrCode; 
-    });
+  public generateQueuePeople(total: number): any[] {
+    return Array.from({ length: total }, (_, idx) => ({
+      id: idx + 1,
+      avatar: 'person-circle-outline'
+    }));
   }
 
-  verificaPosicaoFila() {
-    this.queueService.getPosicao().subscribe((res) => {
-      this.userPosition = res.posicao;
-      this.ehMinhaVez = res.ehMinhaVez;
+  // Métodos de serviço
+  public loadCustomersInQueueCard(): void {
+    // this.customer = this.sessionService.getCustomer();
+    // if (!this.customer) {
+    //   console.error('Cliente não autenticado');
+    //   return;
+    // }
 
-      if (this.ehMinhaVez) {
-        this.carregarQrCode();
+    this.queueService.getCustomerInQueueCard(/*this.customer.id*/1).subscribe({
+      next: (response) => {
+        this.customerCards = response.data;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar filas:', err);
+        this.customerCards = [];
       }
     });
   }
 
-  carregarQrCode() {
-    this.queueService.gerarQrCode().subscribe((res) => {
-      this.qrCodeBase64 = res.qrCode; 
-    });
-  }
+  private loadCustomerInQueueCardDetails(card: CustomerInQueueCardModel): void {
+    // this.customer = this.sessionService.getCustomer();
+    // if (!this.customer) 
+    //   return;
 
-  calcularTotal(): number {
-    return this.servicosSelecionados.reduce((total, servico) => total + servico.preco, 0);
-  }
-
-  simularFila(qtd: number) {
-    this.pessoasNaFila = Array.from({ length: qtd }, (_, idx) => ({
-      id: idx + 1,
-      nome: `Pessoa ${idx + 1}`,
-      avatar: 'person-circle',
-    }));
-
-    this.progressoFila = 1 - (this.userPosition - 1) / qtd;
-  }
-
-  async presentInfoPopup() {
-    const alert = await this.alertController.create({
-      header: 'Legenda',
-      message: '',
-      buttons: [
-        {
-          text: 'x',
-          role: 'cancel'         
+    this.queueService.getCustomerInQueueCardDetails(/*this.customer.id, card.queueId*/1, 2).subscribe({
+      next: (response) => {
+        this.cardDetailsMap.set(card.queueId, response.data);
+        this.expandedStates.set(card.queueId, true);
+        
+        if (response.data.position === 1) {
+          this.generateQrCode();
         }
-      ]
+      },
+      error: (err) => {
+        console.error('Erro ao carregar detalhes:', err);
+      }
     });
-
-    await alert.present();
-
-    const modalElement = document.querySelector('.alert-message') as HTMLElement;
-
-    modalElement.innerHTML = `
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: red; margin-right: 8px;"></div>
-      <span><small>Ainda precisa esperar | > 60 min</small></span>
-    </div>
-    <div style="display: flex; align-items: center; margin-bottom: 5px;">
-      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: yellow; margin-right: 8px;"></div>
-      <span><small>Sua vez está chegando | < 30 min</small></span>
-    </div>
-    <div style="display: flex; align-items: center;">
-      <div style="width: 14px; height: 14px; border-radius: 50%; background-color: green; margin-right: 8px;"></div>
-      <span><small>Você é o próximo | < 15 min</small></span>
-    </div>
-  `;
   }
 
-  private loadQueueData() {
-    this.queue = Array(10).fill({});
+  private generateQrCode(): void {
+    this.queueService.gerarQrCode().subscribe({
+      next: (res) => {
+        this.qrCodeBase64 = res.qrCode;
+      },
+      error: (err) => {
+        console.error('Erro ao gerar QR Code:', err);
+      }
+    });
   }
 
-  atualizarTempoEstimado() {
-    const min = this.tempoRestanteMinutos;
-
-    if (min > 45) {
-      this.tempoEstimado = `${Math.floor(min / 60)} hora(s)`;
-      this.corTempo = 'vermelho';
-    } else if (min > 15) {
-      this.tempoEstimado = `${min} minutos`;
-      this.corTempo = 'amarelo';
-    } else {
-      this.tempoEstimado = `${min} minutos`;
-      this.corTempo = 'verde';
-    }
-  }
-
-
-  async exitQueue() {
+  // Métodos de ação do usuário
+  public async exitQueue(queueId: number): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirmar Saída',
       message: 'Você tem certeza que deseja sair da fila?',
       buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel',
-          cssClass: 'secondary',
-          handler: () => {
-          },
-        },
+        { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Confirmar',
           handler: () => {
-            this.removeUserFromQueue();
-            this.router.navigate(['/select-company']);
+            this.queueService.exitQueue(queueId, 2).subscribe({
+              next: () => this.loadCustomersInQueueCard(),
+              error: (err) => console.error('Erro ao sair da fila:', err)
+            });
           },
         },
       ],
@@ -190,7 +149,49 @@ nomeProfissional: string = 'Léo';
     await alert.present();
   }
 
-  private removeUserFromQueue() {
-    console.log('Usuário removido da fila.');
+  public editarServicos(card: CustomerInQueueCardModel): void {
+    const details = this.getCardDetails(card);
+    if (!details) return;
+
+    this.router.navigate(['/edit-services'], {
+      state: {
+        services: details.services,
+        payment: details.payment,
+        queueId: card.queueId
+      }
+    });
+  }
+
+  public async presentInfoPopup(): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Legenda',
+      message: '',
+      buttons: [
+        {
+          text: 'x',
+          role: 'cancel'
+        }
+      ]
+    });
+
+    await alert.present();
+
+    const modalElement = document.querySelector('.alert-message') as HTMLElement;
+    if (modalElement) {
+      modalElement.innerHTML = `
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+          <div style="width: 14px; height: 14px; border-radius: 50%; background-color: red; margin-right: 8px;"></div>
+          <span><small>Ainda precisa esperar | > 60 min</small></span>
+        </div>
+        <div style="display: flex; align-items: center; margin-bottom: 5px;">
+          <div style="width: 14px; height: 14px; border-radius: 50%; background-color: yellow; margin-right: 8px;"></div>
+          <span><small>Sua vez está chegando | < 30 min</small></span>
+        </div>
+        <div style="display: flex; align-items: center;">
+          <div style="width: 14px; height: 14px; border-radius: 50%; background-color: green; margin-right: 8px;"></div>
+          <span><small>Você é o próximo | < 15 min</small></span>
+        </div>
+      `;
+    }
   }
 }

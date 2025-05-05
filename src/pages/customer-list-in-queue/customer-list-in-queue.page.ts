@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
+import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { QueueService } from 'src/services/queue-service';
 import { SessionService } from 'src/services/session.service';
 
@@ -11,7 +12,7 @@ import { SessionService } from 'src/services/session.service';
 })
 export class CustomerListInQueuePage implements OnInit {
 
-  clients: any;
+  clients: CustomerInQueueForEmployeeModel[] | null = null;
   store: any;
   employee: any;
   currentDate = new Date();
@@ -30,10 +31,10 @@ export class CustomerListInQueuePage implements OnInit {
   loadAllCustomersInQueueByEmployeeAndStoreId() {
     this.store = this.sessionService.getStore();
     this.employee = this.sessionService.getUser();
-    
+
     if (this.store && this.employee) {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
-        next: (response) => {          
+        next: (response) => {
           this.clients = response.data;
         },
         error: (err) => {
@@ -45,7 +46,7 @@ export class CustomerListInQueuePage implements OnInit {
     }
   }
 
-  calcularTempoEspera(horaEntrada: string): string {    
+  calcularTempoEspera(horaEntrada: string): string {
     const agora = new Date();
     const [h, m] = horaEntrada.split(':').map(Number);
     const entrada = new Date();
@@ -53,8 +54,9 @@ export class CustomerListInQueuePage implements OnInit {
 
     const diffMs = agora.getTime() - entrada.getTime();
     const diffMin = Math.floor(diffMs / 60000);
+    const fomatedTime = this.formatMinutesToHHMM(diffMin);
 
-    return `Esperando há ${diffMin} min`;
+    return `Esperando há ${fomatedTime} min`;
   }
 
   async openRemoveConfirmation() {
@@ -104,6 +106,20 @@ export class CustomerListInQueuePage implements OnInit {
     }, 1200);
   }
 
+  formatMinutesToHHMM(minutes: number): string {
+    const totalMinutes = Math.floor(minutes);
+
+    const hours = Math.floor(totalMinutes / 60);
+    const mins = totalMinutes % 60;
+
+    const formattedHours = hours.toString().padStart(2, '0');
+    const formattedMinutes = mins.toString().padStart(2, '0');
+
+    return `${formattedHours}:${formattedMinutes}`;
+  }
+
+
+
   // startQRCodeScan(cliente: any) {
   //   this.qrScanner.prepare().then((status: QRScannerStatus) => {
   //     if (status.authorized) {
@@ -134,9 +150,9 @@ export class CustomerListInQueuePage implements OnInit {
   //   }).catch((e: any) => console.log('Erro ao preparar o QR Scanner', e));
   // } 
 
-  openWhatsapp(cliente: any) {
-    const phoneNumber = '55' + '21981970792';
-    const message = encodeURIComponent('Olá, gostaria de saber mais sobre o seu serviço!');
+  openWhatsapp(client: any) {
+    const phoneNumber = '55' + 'client.phone';
+    const message = encodeURIComponent('Ô seu viado, é a tua vez, carai, vou chamar o próximo, arrombado!');
     const url = `https://wa.me/${phoneNumber}?text=${message}`;
     window.open(url, '_blank');
   }

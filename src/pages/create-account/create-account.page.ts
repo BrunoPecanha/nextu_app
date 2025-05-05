@@ -21,8 +21,107 @@ export class CreateAccountPage {
 
   constructor(private userService: UserService, private router: Router, private alertController: AlertController) { }
 
+  formatPhone(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+    if (value.length > 2) {
+      value = value.substring(0, 11);
+
+      if (value.length > 2) {
+        value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+      }
+      if (value.length > 10) {
+        value = `${value.substring(0, 5)} ${value.substring(5, 9)}-${value.substring(9)}`;
+      } else if (value.length > 5) {
+        value = `${value.substring(0, 5)} ${value.substring(5)}`;
+      }
+    }
+
+    this.phone = value;
+    event.target.value = value;
+  }
+
+  formatCPF(event: any) {
+    let value = event.target.value.replace(/\D/g, '');
+    
+    if (value.length > 11) {
+      value = value.substring(0, 11);
+    }
+
+    if (value.length > 3) {
+      value = value.substring(0, 3) + '.' + value.substring(3);
+    }
+    if (value.length > 7) {
+      value = value.substring(0, 7) + '.' + value.substring(7);
+    }
+    if (value.length > 11) {
+      value = value.substring(0, 11) + '-' + value.substring(11);
+    }
+
+    this.cpf = value;
+    event.target.value = value;
+  }
+
+  validateCPF(cpf: string): boolean {
+    cpf = cpf.replace(/\D/g, '');
+
+    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) {
+      return false;
+    }
+
+    let sum = 0;
+    let remainder;
+
+    for (let i = 1; i <= 9; i++) {
+      sum += parseInt(cpf.substring(i - 1, i)) * (11 - i);
+    }
+
+    remainder = (sum * 10) % 11;
+    if ((remainder === 10) || (remainder === 11)) {
+      remainder = 0;
+    }
+    if (remainder !== parseInt(cpf.substring(9, 10))) {
+      return false;
+    }
+
+    sum = 0;
+    for (let i = 1; i <= 10; i++) {
+      sum += parseInt(cpf.substring(i - 1, i)) * (12 - i);
+    }
+
+    remainder = (sum * 10) % 11;
+    if ((remainder === 10) || (remainder === 11)) {
+      remainder = 0;
+    }
+    if (remainder !== parseInt(cpf.substring(10, 11))) {
+      return false;
+    }
+
+    return true;
+  }
+
   async onSubmit(event: Event) {
     event.preventDefault();
+
+    const phoneDigits = this.phone.replace(/\D/g, '');
+    if (phoneDigits.length < 10 || phoneDigits.length > 11) {
+      const alert = await this.alertController.create({
+        header: 'Informação',
+        message: 'Por favor, insira um número de telefone válido com DDD (10 ou 11 dígitos).',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }    
+
+    if (!this.validateCPF(this.cpf)) {
+      const alert = await this.alertController.create({
+        header: 'Informação',
+        message: 'Por favor, insira um cpf válido.',
+        buttons: ['OK']
+      });
+      await alert.present();
+      return;
+    }
 
     if (!this.name || !this.lastname || !this.email || !this.phone || !this.cpf || !this.password || !this.confirmPassword) {
       const alert = await this.alertController.create({
@@ -58,8 +157,8 @@ export class CreateAccountPage {
       name: this.name,
       lastName: this.lastname,
       email: this.email,
-      phone: this.phone,
-      cpf: this.cpf,
+      phone: phoneDigits,
+      cpf: this.cpf.replace(/\D/g, ''),
       password: this.password,
       address: '',
       number: '',

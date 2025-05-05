@@ -8,7 +8,10 @@
   <div class="register-container">
     <div class="go-back">
       <a routerLink="/login">
-        <img src="assets/images/create-account/icon-go-back.svg" alt="Icon go back" />
+        <img
+          src="assets/images/create-account/icon-go-back.svg"
+          alt="Icon go back"
+        />
       </a>
     </div>
     <h1 class="title">Criar Nova Conta</h1>
@@ -16,35 +19,86 @@
 
     <form (submit)="onSubmit($event)">
       <div class="input-group">
-        <ion-input type="text" placeholder="Nome *" required [(ngModel)]="name" name="name"></ion-input>
+        <ion-input
+          type="text"
+          placeholder="Nome *"
+          required
+          [(ngModel)]="name"
+          name="name"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="text" placeholder="Sobrenome*" required [(ngModel)]="lastname" name="lastname"></ion-input>
+        <ion-input
+          type="text"
+          placeholder="Sobrenome*"
+          required
+          [(ngModel)]="lastname"
+          name="lastname"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="text" placeholder="CPF*" required [(ngModel)]="cpf" name="cpf"></ion-input>
+        <ion-input
+          type="tel"
+          placeholder="CPF*"
+          required
+          [(ngModel)]="cpf"
+          name="cpf"
+          (ionInput)="formatCPF($event)"
+          maxlength="15"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="email" placeholder="E-mail*" required [(ngModel)]="email" name="email"></ion-input>
+        <ion-input
+          type="email"
+          placeholder="E-mail*"
+          required
+          [(ngModel)]="email"
+          name="email"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="tel" placeholder="Telefone*" required [(ngModel)]="phone" name="phone"></ion-input>
+        <ion-input
+          type="tel"
+          placeholder="Telefone* (DDD + Número)"
+          required
+          [(ngModel)]="phone"
+          name="phone"
+          (ionInput)="formatPhone($event)"
+          maxlength="16"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="password" placeholder="Senha*" required [(ngModel)]="password" name="password"></ion-input>
+        <ion-input
+          type="password"
+          placeholder="Senha*"
+          required
+          [(ngModel)]="password"
+          name="password"
+        ></ion-input>
       </div>
 
       <div class="input-group">
-        <ion-input type="password" placeholder="Confirmar senha*" required [(ngModel)]="confirmPassword" name="confirmPassword"></ion-input>
+        <ion-input
+          type="password"
+          placeholder="Confirmar senha*"
+          required
+          [(ngModel)]="confirmPassword"
+          name="confirmPassword"
+        ></ion-input>
       </div>
 
       <div class="input-check-validation">
-        <ion-checkbox slot="start" required [(ngModel)]="termsAccepted" name="termsAccepted"></ion-checkbox>
+        <ion-checkbox
+          slot="start"
+          required
+          [(ngModel)]="termsAccepted"
+          name="termsAccepted"
+        ></ion-checkbox>
         <label>Política de Privacidade e Termos de Uso</label>
       </div>
 

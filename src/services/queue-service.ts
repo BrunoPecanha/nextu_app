@@ -5,6 +5,9 @@ import { environment } from 'src/environments/environment';
 import QRCode from 'qrcode';
 import { QueueResponse } from 'src/models/responses/queue-response';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
+import { CustomerInQueueForEmployeeResponse } from 'src/models/responses/customer-in-queue-for-employee-response';
+import { CustomerInQueueCardResponse } from 'src/models/responses/customer-in-queue-card-response';
+import { CustomerInQueueCardDetailResponse } from 'src/models/responses/customer-in-queue-card-detail-response';
 
 
 @Injectable({
@@ -26,8 +29,8 @@ export class QueueService {
     return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
   }
 
-  getAllCustomersInQueueByEmployeeAndStoreId(storeId: number, employeeId: number): Observable<QueueResponse> {
-    return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${storeId}/${employeeId}/customers-in-queue`);
+  getAllCustomersInQueueByEmployeeAndStoreId(storeId: number, employeeId: number): Observable<CustomerInQueueForEmployeeResponse> {
+    return this.http.get<CustomerInQueueForEmployeeResponse>(`${this.apiUrl}/queue/${storeId}/${employeeId}/customers-in-queue`);
   }
 
   getAvailableQueues(storeId: string): Observable<any> {
@@ -85,5 +88,17 @@ export class QueueService {
           return { qrCode: '' };
         })
     );
+  }
+
+  getCustomerInQueueCard(customerId: number) : Observable<CustomerInQueueCardResponse> {
+    return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${customerId}/card`);
+  }
+
+  getCustomerInQueueCardDetails(customerId: number, queueId: number) : Observable<CustomerInQueueCardDetailResponse> {
+    return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);
+  }
+
+  exitQueue(custeomerId: number, queueId: number) :  Observable<any>{
+      return of({ success: true });
   }
 }
