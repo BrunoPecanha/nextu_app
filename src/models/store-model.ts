@@ -32,4 +32,6 @@ export interface StoreModel extends To {
   owner?: UserModel;
   status: StatusEnum;
   liked: boolean;
+  createdAt?: string | any;
+  isNew?: boolean
 }

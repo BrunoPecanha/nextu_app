@@ -59,13 +59,21 @@
     <ion-input formControlName="senha"></ion-input>
   </ion-item>
 
+  <ion-item>
+    <ion-label position="floating">SUBTÍTULO</ion-label>
+    <ion-input formControlName="subtitle"></ion-input>
+  </ion-item>
 
-  <ion-list lines="none">
-    <ion-item>
-      <ion-label>Não aceitar mensagens de outros usuários</ion-label>
-      <ion-toggle formControlName="aceitarMensagemOutrosUsuarios"></ion-toggle>
-    </ion-item>
-  </ion-list>
+
+  <ion-item>
+    <ion-label position="floating">SERVIÇOS PRESTADOS</ion-label>
+    <ion-input formControlName="servicesProvided"></ion-input>
+  </ion-item>
+
+  <ion-item class="item-with-toggle">
+    <ion-label>Não aceitar mensagens de outros usuários</ion-label>
+    <ion-toggle formControlName="aceitarMensagemOutrosUsuarios"></ion-toggle>
+  </ion-item>
 
   <div class="wallpaper-wrapper">
     <div class="wallpaper-container" (click)="selecionarWallpaper()">

@@ -1,224 +1,342 @@
-.container {
-  padding-top: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-}
-
-ion-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
-  background-color: #fff;
-}
-
+/* Variáveis de tema premium */
 :root {
-  --header-height: 56px;
+  --ion-color-primary: #3880ff;
+  --ion-color-primary-rgb: 56, 128, 255;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #3171e0;
+  --ion-color-primary-tint: #4c8dff;
+  
+  --ion-color-premium: #6a11cb;
+  --ion-color-premium-rgb: 106,17,203;
+  --ion-color-premium-contrast: #ffffff;
+  --ion-color-premium-shade: #5d0fb3;
+  --ion-color-premium-tint: #7929d0;
+  
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-secondary-rgb: 61, 194, 255;
+  --ion-color-secondary-contrast: #ffffff;
+  --ion-color-secondary-contrast-rgb: 255, 255, 255;
+  --ion-color-secondary-shade: #36abe0;
+  --ion-color-secondary-tint: #50c8ff;
+  
+  --ion-color-tertiary: #5260ff;
+  --ion-color-tertiary-rgb: 82, 96, 255;
+  --ion-color-tertiary-contrast: #ffffff;
+  --ion-color-tertiary-contrast-rgb: 255, 255, 255;
+  --ion-color-tertiary-shade: #4854e0;
+  --ion-color-tertiary-tint: #6370ff;
+  
+  --ion-color-success: #2dd36f;
+  --ion-color-success-rgb: 45, 211, 111;
+  --ion-color-success-contrast: #ffffff;
+  --ion-color-success-contrast-rgb: 255, 255, 255;
+  --ion-color-success-shade: #28ba62;
+  --ion-color-success-tint: #42d77d;
+  
+  --ion-color-warning: #ffc409;
+  --ion-color-warning-rgb: 255, 196, 9;
+  --ion-color-warning-contrast: #000000;
+  --ion-color-warning-contrast-rgb: 0, 0, 0;
+  --ion-color-warning-shade: #e0ac08;
+  --ion-color-warning-tint: #ffca22;
+  
+  --ion-color-danger: #eb445a;
+  --ion-color-danger-rgb: 235, 68, 90;
+  --ion-color-danger-contrast: #ffffff;
+  --ion-color-danger-contrast-rgb: 255, 255, 255;
+  --ion-color-danger-shade: #cf3c4f;
+  --ion-color-danger-tint: #ed576b;
+  
+  --ion-color-medium: #92949c;
+  --ion-color-medium-rgb: 146, 148, 156;
+  --ion-color-medium-contrast: #ffffff;
+  --ion-color-medium-contrast-rgb: 255, 255, 255;
+  --ion-color-medium-shade: #808289;
+  --ion-color-medium-tint: #9d9fa6;
+  
+  --ion-color-light: #f4f5f8;
+  --ion-color-light-rgb: 244, 245, 248;
+  --ion-color-light-contrast: #000000;
+  --ion-color-light-contrast-rgb: 0, 0, 0;
+  --ion-color-light-shade: #d7d8da;
+  --ion-color-light-tint: #f5f6f9;
+  
+  --header-height: 64px;
+  --categories-height: 90px;
+  --footer-height: 70px;
 }
 
-ion-content {
-  margin-top: var(--header-height);
-  padding-top: 0 !important;
-  --padding-top: 0;
+.categories-container {
+  background: white;
+  padding: 12px 16px 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: var(--header-height);
+  z-index: 10;
 }
 
-.horizontal-scroll {
-  position: relative;
-  top: 0%;
-  z-index: 999;
-  background-color: #fff;
-  padding: 10px 16px;
+.categories-scroll {
   display: flex;
+  gap: 12px;
   overflow-x: auto;
-  gap: 12px;
-  border-bottom: 1px solid #ddd;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  padding-bottom: 4px;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
-.service-type-card-container {
-  display: flex;
-  gap: 12px;
-}
-
-.service-type-card {
-  height: 60px;
-  min-width: 100px;
-  max-width: 120px;
-  border-radius: 20px;
-  padding: 6px 12px;
-  background-color: #f5f5f5;
+.category-pill {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  gap: 4px;
-  transition: all 0.3s ease;
-}
-
-.service-type-card img {
-  width: 24px;
-  height: 24px;
-  margin-bottom: 0;
-}
-
-.service-type-card h2 {
-  font-size: 12px;
-  margin: 0;
-  color: #333;
-  line-height: 1.2;
-}
-
-.cards-companies {
-  margin-top: 150px;
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-  padding-bottom: 100px;
-}
-
-ion-card.box {
+  min-width: 70px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 8px 4px;
   border-radius: 16px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  margin-top: -15px;
+  flex-shrink: 0;
+
+  .category-icon {
+    width: 48px;
+    height: 48px;
+    background: #f5f7fa;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+
+    img {
+      width: 24px;
+      height: 24px;
+      object-fit: contain;
+      transition: all 0.2s ease;
+    }
+  }
+
+  .category-name {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--ion-color-medium);
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  &:hover {
+    background: rgba(var(--ion-color-primary-rgb), 0.05);
+  }
+
+  &.selected {
+    background: rgba(var(--ion-color-primary-rgb), 0.1);
+
+    .category-icon {
+      background: var(--ion-color-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(var(--ion-color-primary-rgb), 0.2);
+      
+      img {
+        filter: brightness(0) invert(1);
+        transform: scale(1.1);
+      }
+    }
+
+    .category-name {
+      color: var(--ion-color-primary);
+      font-weight: 600;
+    }
+  }
 }
 
-ion-card.box ion-card-content {
-  padding: 12px;
-}
-
-ion-card.box .inner-card {
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-  text-align: left;
+.loading-container {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+
+  .loading-spinner {
+    width: 48px;
+    height: 48px;
+    --color: var(--ion-color-primary);
+    animation: spin 1s linear infinite;
+  }
+
+  .loading-text {
+    margin-top: 16px;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+    animation: fadeIn 0.5s ease;
+  }
 }
 
-.logo-container {
+.companies-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  padding: 16px;
+}
+
+.company-card {
+  --background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+  margin: 0;
+  overflow: visible;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+
+  &:active {
+    transform: scale(0.98);
+    box-shadow: 0 2px 8px rgba(var(--ion-color-primary-rgb), 0.3);
+  }
+}
+
+.card-header {
+  position: relative;
+  padding: 16px 16px 0;
+}
+
+.logo-wrapper {
+  width: 100%;
   display: flex;
   justify-content: center;
-  flex-shrink: 0;
-  width: 60px;
-  height: 60px;
+  margin-bottom: 12px;
 }
 
-.company-logo,
-.logo-container img {
-  width: 60px;
-  height: 60px;
+.company-logo {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid #ddd;
+  border: 3px solid white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
-.default-business-icon {
-  width: 60px;
-  height: 60px;
+.default-logo {
+  width: 80px;
+  height: 80px;
   border-radius: 50%;
-  background-color: #f0f0f0;
+  background: linear-gradient(135deg, var(--ion-color-light), #e0e5eb);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 28px;
-  color: #888;
-  border: 2px solid #ddd;
+  border: 3px solid white;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  color: var(--ion-color-medium);
+  transition: all 0.3s ease;
+
+  ion-icon {
+    font-size: 32px;
+  }
 }
 
-.company-info h2 {
-  font-size: 18px;
+.new-badge {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: var(--ion-color-success);
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: bold;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  animation: bounceIn 0.5s ease;
+}
+
+.like-button {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  --padding-start: 0;
+  --padding-end: 0;
+  --padding-top: 0;
+  --padding-bottom: 0;
+  --ripple-color: transparent;
+  z-index: 10;
+
+  ion-icon {
+    font-size: 24px;
+    background: white;
+    border-radius: 50%;
+    padding: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  &:active ion-icon {
+    transform: scale(1.2);
+  }
+}
+
+.card-content {
+  padding: 0 16px 16px;
+}
+
+.company-name {
+  font-size: 1.1rem;
   font-weight: 600;
-  margin: 0 0 4px;
   color: #222;
+  margin: 0 0 4px;
+  text-align: center;
+  transition: color 0.3s ease;
 }
 
-.company-info p {
-  font-size: 14px;
-  margin: 0;
-  color: #555;
+.company-category {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  margin: 0 0 12px;
+  text-align: center;
+}
+
+.company-stats {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.stat-item {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+  transition: color 0.3s ease;
+
+  .stat-icon {
+    font-size: 1rem;
+    color: var(--ion-color-primary);
+  }
 }
 
-.ratting-area {
-  background-color: #e6f4ea;
-  color: #28a745;
+.rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(var(--ion-color-success-rgb), 0.1);
   padding: 4px 8px;
   border-radius: 12px;
-  font-size: 13px;
-  margin-top: 6px;
-  display: inline-flex;
-  align-items: center;
-  gap: 15px;
-}
+  font-size: 0.85rem;
+  color: var(--ion-color-success);
+  transition: all 0.3s ease;
 
-.visited-card {
-  border-radius: 16px;
-}
+  .star-icon {
+    font-size: 0.9rem;
+    color: var(--ion-color-warning);
+  }
 
-.recent-cards-container {
-  display: flex;
-  gap: 12px;
-  padding: 12px;
-}
-
-.recent-card {
-  flex: 1;
-}
-
-.recent-card-item {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.recent-logo-container .recent-company-logo {
-  width: 40px;
-  height: 40px;
-  background-color: #ddd;
-  border-radius: 50%;
-}
-
-.recent-company-info h2 {
-  font-size: 14px;
-  margin: 0;
-}
-
-.recent-company-info p {
-  font-size: 12px;
-  margin: 0;
-  color: #666;
-}
-
-.visited-title {
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
-  margin-top: 4px;
-}
-
-.toggle-button {
-  background: none;
-  border: none;
-  width: 100%;
-  text-align: center;
-  padding: 8px 0;
-}
-
-.toggle-button .arrow {
-  width: 16px;
-  height: 16px;
-  background-image: url("/assets/icons/arrow.svg");
-  background-size: cover;
-  transform: rotate(0deg);
-  transition: transform 0.3s;
-}
-
-.toggle-button .arrow.expanded {
-  transform: rotate(180deg);
+  small {
+    font-size: 0.7rem;
+    opacity: 0.8;
+  }
 }
 
 ion-toolbar {
@@ -237,34 +355,107 @@ ion-title {
   font-weight: bold;
 }
 
-ion-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  z-index: 1000;
-  background-color: #ffffff;
-  border-top: 1px solid #E8E8E8;
+ion-icon {
+  font-size: 24px;
 }
 
-.menu-fixed-bottom {
-  width: 100%;
-  background: #ffffff;
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
 }
 
-.content-menu-border {
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes bounceIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.heart-animation {
+  animation: pulse 0.5s ease;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+
+@media (min-width: 576px) {
+  .companies-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .category-pill {
+    min-width: 80px;
+    
+    .category-icon {
+      width: 56px;
+      height: 56px;
+      
+      img {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+}
+
+@media (min-width: 768px) {
+  .companies-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+  }
+
+  .company-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    
+    .company-logo, .default-logo {
+      transform: scale(1.05);
+    }
+    
+    .company-name {
+      color: var(--ion-color-primary);
+    }
+  }
+}
+
+@media (min-width: 992px) {
+  .companies-grid {
+    grid-template-columns: repeat(4, 1fr);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+}
+
+ion-toolbar {
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  padding: 10px 0;
+  justify-content: space-between;
+  --min-height: 56px;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
-.go-init,
-.go-fila,
-.go-config {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+ion-title {
+  flex: 1;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
 ion-icon {
@@ -278,108 +469,3 @@ ion-label {
   color: #8A8A8A;
 }
 
-.go-init ion-icon,
-.go-fila ion-icon,
-.go-config ion-icon {
-  font-size: 25px;
-  color: #007bff;
-}
-
-.go-init ion-label,
-.go-fila ion-label,
-.go-config ion-label {
-  font-family: 'Poppins', sans-serif;
-  font-weight: 700;
-  font-size: 12px;
-  text-align: center;
-  color: #8A8A8A;
-}
-
-.menu-fixed-bottom ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
-}
-
-.notification-footer {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.notification-footer ion-icon {
-  position: relative;
-  font-size: 24px;
-}
-
-.notification-badge {
-  position: absolute;
-  top: 0px;
-  right: 8px;
-  background: red;
-  color: white;
-  font-size: 10px;
-  font-weight: bold;
-  padding: 2px 5px;
-  border-radius: 50%;
-  min-width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
-}
-
-ion-content::part(scroll) {
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.page-title {
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.5px;
-  color: #333;
-}
-
-.content-menu-border > div.active ion-icon,
-.content-menu-border > div.active ion-label {
-  color: #007bff;
-  font-weight: 600;
-}
-
-.content-menu-border > div.active::after {
-  content: '';
-  margin-top: 4px;
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: #007bff;
-  border-radius: 2px;
-}
-
-.like-icon {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  font-size: 24px;
-  color: var(--ion-color-danger);
-  z-index: 10;
-  cursor: pointer;
-}
-
-.star-icon {
-  font-size: 16px;
-  width: 16px !important;
-  height: 16px !important;
-}
-
-.service-type-card.selected {
-  background-color: #007bff; 
-  color: white; 
-}
-
-.service-type-card.selected h2 {
-  color: white;
-}

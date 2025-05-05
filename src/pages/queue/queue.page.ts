@@ -36,8 +36,7 @@ export class QueuePage implements OnInit {
   }
 
   // Métodos públicos para controle da UI
-  public toggleCardDetails(card: CustomerInQueueCardModel): void {
-    debugger
+  public toggleCardDetails(card: CustomerInQueueCardModel): void {    
     const isExpanded = this.isCardExpanded(card);
     
     if (!isExpanded && !this.cardDetailsMap.has(card.queueId)) {
