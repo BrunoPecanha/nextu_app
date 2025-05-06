@@ -17,23 +17,38 @@
 </ion-header>
 
 <div class="header-loja-fixo">
-  <img [src]="store?.imageUrl || 'assets/imgs/logo-placeholder.png'" class="logo-loja" />
+  <img
+    [src]="store?.storeLogoPath || 'assets/images/utils/default-logo.png'"
+    class="logo-loja"
+  />
   <h2 class="nome-loja">{{ store?.name }}</h2>
-  <p class="descricao-loja">{{ store?.description || 'Bem-vindo à nossa loja!' }}</p>
+  <p class="descricao-loja">
+    {{ store?.subtitle || 'Bem-vindo à nossa loja!' }}
+  </p>
 </div>
 
 <ion-content class="scroll-area">
-  <div class="filas-wrapper" *ngIf="store?.queues?.length; else semFilas">
-    <ion-card class="fila-card" *ngFor="let fila of store?.queues" (click)="entrarNaFila(fila)">
+  <div
+    class="filas-wrapper"
+    *ngIf="store?.professionals?.length; else semFilas"
+  >
+    <ion-card
+      class="fila-card"
+      *ngFor="let fila of store?.professionals"
+      (click)="entrarNaFila(fila)"
+    >
       <ion-card-header>
         <ion-item lines="none">
           <ion-label>
             <h2>{{ fila.name }}</h2>
-            <p>{{ fila.description || 'Serviço disponível' }}</p>
+            <p>{{ fila.subtitle || 'Serviço disponível' }}</p>
           </ion-label>
           <ion-buttons slot="end">
             <ion-button fill="clear" (click)="toggleLike(fila, $event)">
-              <ion-icon [name]="fila.liked ? 'heart' : 'heart-outline'" color="danger"></ion-icon>
+              <ion-icon
+                [name]="fila.liked ? 'heart' : 'heart-outline'"
+                color="danger"
+              ></ion-icon>
             </ion-button>
           </ion-buttons>
         </ion-item>
@@ -41,23 +56,43 @@
       <ion-card-content>
         <div class="fila-info">
           <ion-icon name="time-outline"></ion-icon>
-          <span>Média de espera: {{ fila.avgWait || '--' }} min</span>
+          <div class="tempo-estimado-texto">
+            <span
+              >Estimado de espera: {{ fila.averageWaitingTime | slice:0:5
+              || '--' }} min</span
+            >
+            <small class="tempo-estimado-observacao"
+              >O tempo é estimado, pode ser que demore menos ou mais</small
+            >
+            <div
+              class="barra-progresso-wrapper"
+              [attr.title]="getStatusFilaTexto(fila.customersWaiting)"
+            >
+              <div
+                class="barra-progresso"
+                [style.width.%]="getProgressoFila(fila.customersWaiting)"
+                [ngStyle]="{ 'background-color': getCorProgresso(fila.customersWaiting) }"
+              ></div>
+            </div>
+          </div>
         </div>
+
         <div class="fila-info">
           <ion-icon name="people-outline"></ion-icon>
-          <span>Pessoas na fila: {{ fila.peopleWaiting || 0 }}</span>
+          <span>Pessoas na fila: {{ fila.customersWaiting || 0 }}</span>
         </div>
-        <div class="fila-info" *ngIf="fila.services?.length">
+
+        <div class="fila-info" *ngIf="fila.servicesProvided">
           <ion-icon name="construct-outline"></ion-icon>
-          <span>Serviços: {{ fila.services?.join(', ') }}</span>
-        </div>       
+          <span>Serviços: {{ fila.servicesProvided }}</span>
+        </div>
       </ion-card-content>
     </ion-card>
   </div>
 
   <ng-template #semFilas>
     <div class="mensagem-vazia">
-      <p>Nenhuma fila cadastrada no momento.</p>
+      <p>Nenhuma fila disponível no momento.</p>
     </div>
   </ng-template>
 </ion-content>

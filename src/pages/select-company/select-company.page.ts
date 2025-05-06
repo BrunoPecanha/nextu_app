@@ -25,7 +25,6 @@ export class SelectCompanyPage implements OnInit {
   };
 
   ngOnInit() {
-    this.loadData();
   }
 
   ionViewWillEnter() {
@@ -102,10 +101,10 @@ export class SelectCompanyPage implements OnInit {
     console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
   }
 
-  selectCard(card: any): void {
+  selectCard(card: any): void {    
     console.log('Card selecionado:', card.name);
     this.router.navigate(['/select-professional'], {
-      state: { store: card }
+      queryParams: { storeId: card.id } 
     });
   }
 
