@@ -10,7 +10,7 @@ import { SelectCompanyService } from 'src/services/select-company-service';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private router: Router, private service: SelectCompanyService) {}
+  constructor(private router: Router, private service: SelectCompanyService) { }
 
   searching = false;
   categories: CategoryModel[] = [];
@@ -68,7 +68,7 @@ export class SelectCompanyPage implements OnInit {
       const createdDate = new Date(createdAt);
       const today = new Date();
       const diffTime = Math.abs(today.getTime() - createdDate.getTime());
-      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
       return diffDays <= 7;
     } catch (e) {
       console.warn('Erro ao verificar data:', e);
@@ -76,9 +76,9 @@ export class SelectCompanyPage implements OnInit {
     }
   }
 
-  get filteredCards() {    
+  get filteredCards() {
     const query = this.searchQuery.toLowerCase();
-    return this.companies.filter(card => 
+    return this.companies.filter(card =>
       card.name.toLowerCase().includes(query) ||
       (card.category && card.category.toLowerCase().includes(query))
     );
@@ -92,19 +92,18 @@ export class SelectCompanyPage implements OnInit {
   toggleLike(card: any, event: MouseEvent): void {
     event.stopPropagation();
     card.liked = !card.liked;
-        
+
     const heart = event.target as HTMLElement;
     heart.classList.add('heart-animation');
     setTimeout(() => heart.classList.remove('heart-animation'), 500);
-   
+
     // Chamar rotina de like do back passando id do usuario e empresa // Regra: Empresas com like virão na frente por ordem alfabética
     console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
   }
 
-  selectCard(card: any): void {    
-    console.log('Card selecionado:', card.name);
+  selectCard(card: any): void {
     this.router.navigate(['/select-professional'], {
-      queryParams: { storeId: card.id } 
+      queryParams: { storeId: card.id }
     });
   }
 
@@ -112,13 +111,13 @@ export class SelectCompanyPage implements OnInit {
     this.searchQuery = event.detail.value;
   }
 
-  selectCategory(idCategory: number): void {        
+  selectCategory(idCategory: number): void {
     if (this.selectedCategoryId === idCategory) {
       this.selectedCategoryId = null;
-      this.loadStores(); 
+      this.loadStores();
       return;
     }
-      
+
     this.selectedCategoryId = idCategory;
     this.service.loadStoresByCategoryId(idCategory).subscribe({
       next: (response) => {
@@ -146,5 +145,5 @@ export class SelectCompanyPage implements OnInit {
     if (container) {
       container.scrollBy({ left: 100, behavior: 'smooth' });
     }
-  } 
+  }
 }

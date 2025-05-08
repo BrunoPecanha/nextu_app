@@ -6,4 +6,5 @@ export interface ProfessionalModel {
   servicesProvided: string;
   customersWaiting: number;
   averageWaitingTime: string;
+  averageServiceTime: string;
 }

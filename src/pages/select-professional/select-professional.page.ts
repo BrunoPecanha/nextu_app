@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
 import { StoreService } from 'src/services/store-service';
@@ -12,15 +13,21 @@ import { StoreService } from 'src/services/store-service';
 export class SelectProfessionalPage implements OnInit {
   store: StoreProfessionalModel | null = null;
   storeId: number = 0;
+
+  bannerLoaded = false;
+  logoLoaded = false;
+
   constructor(private router: Router, private route: ActivatedRoute, private service: StoreService) { }
+
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-    console.log('Query Params:', params['storeId']);
-    this.storeId = params['storeId'];
-  });
+      console.log('Id loja:', params['storeId']);
+      this.storeId = params['storeId'];
+    });
 
-    this.loadStoreAndProfessionals(this.storeId );
+    this.resetImageStates()
+    this.loadStoreAndProfessionals(this.storeId);
   }
 
   loadStoreAndProfessionals(storeId: number) {
@@ -36,7 +43,7 @@ export class SelectProfessionalPage implements OnInit {
 
   entrarNaFila(fila: ProfessionalModel) {
     this.router.navigate(['/select-services'], {
-      queryParams: { storeId: 1 },
+      queryParams: { professionalId: 1 },
     });
   }
 
@@ -68,5 +75,10 @@ export class SelectProfessionalPage implements OnInit {
     if (qtdPessoas <= 3) return 'Fila leve';
     if (qtdPessoas <= 7) return 'Fila moderada';
     return 'Fila cheia';
+  }
+
+  resetImageStates() {
+    this.bannerLoaded = false;
+    this.logoLoaded = false;
   }
 }

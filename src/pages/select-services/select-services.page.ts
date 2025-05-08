@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProfessionalModel } from 'src/models/professional-model';
 
 @Component({
   selector: 'app-select-services',
@@ -19,6 +21,8 @@ export class SelectServicesPage {
     { id: '10', desc: 'Peeling', time: 60, price: 90 },
   ];
 
+  professionalId: number = 0;
+
   selectedServices: { id: string; desc: string; time: number; price: number }[] = [];
   isServiceListVisible = false;
 
@@ -28,6 +32,34 @@ export class SelectServicesPage {
   totalPriceString = '';
   observacao = '';
   formaPagamento = '';
+
+  constructor(private router: Router, private route: ActivatedRoute) { }
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      console.log('Id fila:', params['professionalId']);
+      this.professionalId = params['professionalId'];
+    });
+
+ //   this.loadStoreAndProfessionals(this.professionalId);
+  }
+
+  // loadStoreAndProfessionals(storeId: number) {
+  //   this.service.loadStoreAndProfessionals(storeId).subscribe({
+  //     next: (response) => {
+  //       this.store = response.data;
+  //     },
+  //     error: (err) => {
+  //       console.error('Erro ao carregar filas disponíveis:', err);
+  //     }
+  //   });
+  // }
+
+  entrarNaFila(fila: ProfessionalModel) {
+    // this.router.navigate(['/select-services'], {
+    //   queryParams: { professionalId: 1 },
+    // });
+  }
 
   toggleServiceList() {
     this.isServiceListVisible = !this.isServiceListVisible;

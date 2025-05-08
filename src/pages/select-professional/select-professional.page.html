@@ -16,15 +16,28 @@
   </ion-toolbar>
 </ion-header>
 
-<div class="header-loja-fixo">
-  <img
-    [src]="store?.storeLogoPath || 'assets/images/utils/default-logo.png'"
-    class="logo-loja"
-  />
-  <h2 class="nome-loja">{{ store?.name }}</h2>
-  <p class="descricao-loja">
-    {{ store?.subtitle || 'Bem-vindo à nossa loja!' }}
-  </p>
+<div class="header-loja-dinamico">
+  <div class="banner-loja" *ngIf="store?.storeLogoPath">
+    <img
+      [src]="store?.storeLogoPath"
+      alt="Banner da loja"
+      class="banner-image"
+    />
+  </div>
+  <div class="info-loja">
+    <img
+      [src]="store?.storeLogoPath || 'assets/images/utils/default-logo.png'"
+      (load)="logoLoaded = true"
+      [class.loaded]="logoLoaded"
+      class="logo-loja shimmer"
+    />
+    <div *ngIf="!logoLoaded" class="shimmer-placeholder logo-placeholder"></div>
+    <h2 class="nome-loja">{{ store?.name || "King's Sons - Barbershop" }}</h2>
+    <p class="descricao-loja">
+      {{ store?.subtitle || 'Cortes na régua, química e aquele trato na régua.'
+      }}
+    </p>
+  </div>
 </div>
 
 <ion-content class="scroll-area">
@@ -58,8 +71,8 @@
           <ion-icon name="time-outline"></ion-icon>
           <div class="tempo-estimado-texto">
             <span
-              >Estimado de espera: {{ fila.averageWaitingTime | slice:0:5
-              || '--' }} min</span
+              >Estimado de espera: {{ fila.averageWaitingTime | slice:0:5 ||
+              '--' }} min</span
             >
             <small class="tempo-estimado-observacao"
               >O tempo é estimado, pode ser que demore menos ou mais</small
