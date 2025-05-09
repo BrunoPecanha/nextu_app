@@ -47,7 +47,7 @@ export class SelectCompanyPage implements OnInit {
     });
   }
 
-  loadStores() {
+  loadStores() {    
     this.service.loadStores().subscribe({
       next: (response) => {
         this.companies = response.data.map(store => ({
@@ -61,7 +61,6 @@ export class SelectCompanyPage implements OnInit {
       }
     });
   }
-
 
   private checkIfNew(createdAt: string): boolean {
     try {

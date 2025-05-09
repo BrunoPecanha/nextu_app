@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
 import { StoreService } from 'src/services/store-service';
@@ -19,13 +18,8 @@ export class SelectProfessionalPage implements OnInit {
 
   constructor(private router: Router, private route: ActivatedRoute, private service: StoreService) { }
 
-
   ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      console.log('Id loja:', params['storeId']);
-      this.storeId = params['storeId'];
-    });
-
+    this.getSelectedStoreId();
     this.resetImageStates()
     this.loadStoreAndProfessionals(this.storeId);
   }
@@ -41,9 +35,15 @@ export class SelectProfessionalPage implements OnInit {
     });
   }
 
+  getSelectedStoreId() {
+    this.route.queryParams.subscribe(params => {
+      this.storeId = params['storeId'];
+    });
+  }
+
   entrarNaFila(fila: ProfessionalModel) {
     this.router.navigate(['/select-services'], {
-      queryParams: { professionalId: 1 },
+      queryParams: { queueId: fila.queueId, storeId: this.storeId },
     });
   }
 

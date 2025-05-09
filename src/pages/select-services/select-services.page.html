@@ -2,38 +2,60 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-        defaultHref="/home"
+        defaultHref="/select-professional"
         text=""
         icon="arrow-back-outline"
       ></ion-back-button>
     </ion-buttons>
     <ion-title>SELEÇÃO DE SERVIÇOS</ion-title>
-    <ion-buttons slot="end">      
+    <ion-buttons slot="end"> 
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding">
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Serviços Disponíveis</ion-card-title>
+<ion-content class="ion-padding">  
+  <ion-card class="service-card">
+    <ion-card-header  class="compact-header">
+      <ion-card-title class="card-title">SERVIÇOS DISPONÍVEIS</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div class="service-list-container">
-        <ion-list>
+      <div class="scroll-container">
+        <ion-list class="service-list">
           <ion-item
             *ngFor="let service of serviceOptions"
             (click)="addService(service)"
             button
-            lines="inset"
+            detail="false"
+            class="service-item"
           >
-            <ion-icon name="cut-outline" slot="start"></ion-icon>
-            <ion-label>
+            <div slot="start" class="service-image-container">
+              <img
+                *ngIf="service.image"
+                [src]="service.image"
+                class="service-image"
+                alt=""
+              />
+              <ion-icon
+                *ngIf="!service.image"
+                name="cut-outline"
+                class="service-icon"
+              ></ion-icon>
+            </div>
+
+            <ion-label class="service-info">
               <h3>{{ service.desc }}</h3>
-              <p>
-                Tempo: {{ service.time }} min • Preço: R$ {{ service.price }}
+              <p class="service-meta">
+                <span
+                  ><ion-icon name="time-outline"></ion-icon> {{ service.time }}
+                  min</span
+                >
+                <span
+                  ><ion-icon name="cash-outline"></ion-icon> R$ {{ service.price
+                  | number:'1.2-2' }}</span
+                >
               </p>
             </ion-label>
+
             <ion-icon
               name="add-circle-outline"
               color="primary"
@@ -45,20 +67,30 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="selectedServices.length > 0">
+  <!-- Card de Serviços Selecionados -->
+  <ion-card *ngIf="selectedServices.length > 0" class="selected-card">
     <ion-card-header>
-      <ion-card-title>Serviços Selecionados</ion-card-title>
+      <ion-card-title class="card-title">Serviços Selecionados</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <div class="service-chips">
+      <div class="selected-chips">
         <ion-chip
           *ngFor="let selected of selectedServices; let i = index"
           color="primary"
           outline
+          class="service-chip"
         >
-          <ion-label>{{ selected.desc }}</ion-label>
+          <div class="chip-image-container" *ngIf="selected.image">
+            <img [src]="selected.image" class="chip-image" alt="" />
+          </div>
+          <ion-label>
+            {{ selected.description }}
+            <span *ngIf="selected.quantity > 1" class="quantity-badge"
+              >{{ selected.quantity }}</span
+            >
+          </ion-label>
           <ion-icon
-            name="close-circle"
+            name="remove-circle"
             (click)="removeService(i)"
             color="danger"
           ></ion-icon>
@@ -67,26 +99,39 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-item lines="inset">
-    <ion-label position="floating">Observação</ion-label>
-    <ion-textarea [(ngModel)]="observacao" name="observacao"></ion-textarea>
+  <!-- Observações -->
+  <ion-item class="notes-item">
+    <ion-label position="floating">Observações</ion-label>
+    <ion-textarea
+      [(ngModel)]="observacao"
+      name="observacao"
+      rows="3"
+      autoGrow="true"
+      placeholder="Alguma observação especial sobre os serviços..."
+    ></ion-textarea>
   </ion-item>
 
-  <ion-card>
+  <!-- Forma de Pagamento -->
+  <ion-card class="payment-card">
     <ion-card-header>
-      <ion-card-title>Forma de Pagamento</ion-card-title>
+      <ion-card-title class="card-title">Forma de Pagamento</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-segment [(ngModel)]="formaPagamento" name="formaPagamento" value="">
-        <ion-segment-button value="1">
+      <ion-segment
+        [(ngModel)]="formaPagamento"
+        name="formaPagamento"
+        value="1"
+        class="payment-segment"
+      >
+        <ion-segment-button value="1" class="payment-option">
           <ion-icon name="cash-outline"></ion-icon>
           <ion-label>Dinheiro</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="2">
+        <ion-segment-button value="2" class="payment-option">
           <ion-icon name="qr-code-outline"></ion-icon>
           <ion-label>Pix</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="3">
+        <ion-segment-button value="3" class="payment-option">
           <ion-icon name="card-outline"></ion-icon>
           <ion-label>Cartão</ion-label>
         </ion-segment-button>
@@ -94,29 +139,35 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card>
+  <!-- Resumo -->
+  <ion-card class="summary-card">
     <ion-card-content>
-      <ion-list>
-        <ion-item lines="none">
-          <ion-label>Total:</ion-label>
-          <ion-note slot="end">{{ totalPriceString }}</ion-note>
-        </ion-item>
-        <ion-item lines="none">
-          <ion-label>Tempo Estimado:</ion-label>
+      <ion-list lines="none">
+        <ion-item>
+          <ion-label>Tempo Total:</ion-label>
           <ion-note slot="end">{{ totalTimeString }}</ion-note>
+        </ion-item>
+        <ion-item>
+          <ion-label>Valor Total:</ion-label>
+          <ion-note slot="end" color="primary"
+            ><strong>{{ totalPriceString }}</strong></ion-note
+          >
         </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
-  <ion-button
-    expand="block"
-    class="ion-margin-top"
-    routerLink="/queue"
-    size="large"
-    color="primary"
-  >
-    <ion-icon name="log-in-outline" slot="start"></ion-icon>
-    ENTRAR NA FILA
-  </ion-button>
+  <!-- Botão de Ação -->
+  <div class="action-button">
+    <ion-button
+      expand="block"
+      size="large"
+      color="primary"
+      (click)="confirmSelection()"
+      [disabled]="selectedServices.length === 0"
+    >
+      <ion-icon name="log-in-outline" slot="start"></ion-icon>
+      Confirmar Serviços
+    </ion-button>
+  </div>
 </ion-content>

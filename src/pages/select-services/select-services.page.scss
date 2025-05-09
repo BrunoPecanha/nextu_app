@@ -1,72 +1,251 @@
 ion-content {
-  --background: var(--bg-white);
+  --background: #f5f5f5;
+  --padding-top: 16px;
+  --padding-bottom: 16px;
   display: flex;
   flex-direction: column;
-  overflow: hidden;
   height: 100%;
-  position: relative;
 }
 
-ion-card {
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--ion-color-primary);
+}
+
+/* Estilos para os serviços */
+.service-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  margin-top: 0px;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Ocupa o espaço disponível */
+
+  ion-card-content {
+    padding: 0; /* Remove padding padrão para o scroll container */
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+/* Container de rolagem */
+.scroll-container {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 50vh; /* Altura máxima de 50% da viewport */
+  border-radius: 8px;
+  margin: -8px; /* Compensa o padding do card-content */
+
+  /* Estilização da barra de rolagem para WebKit */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    margin: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--ion-color-medium);
+    border-radius: 10px;
+
+    &:hover {
+      background: var(--ion-color-medium-shade);
+    }
+  }
+
+  /* Para Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--ion-color-medium) rgba(0, 0, 0, 0.05);
+}
+
+.service-list {
+  background: transparent;
+  padding: 8px 0; /* Padding apenas top/bottom */
+
+  .service-item {
+    --padding-start: 8px;
+    --padding-end: 8px;
+    --inner-padding-end: 8px;
+    --border-radius: 8px;
+    margin: 0 8px 8px 8px; /* Margens laterais e bottom */
+
+    &:last-child {
+      margin-bottom: 8px; /* Mantém margem no último item */
+    }
+  }
+}
+
+.service-image-container {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 12px;
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #f0f0f0;
+}
+
+.service-icon {
+  font-size: 24px;
+  color: var(--ion-color-medium);
+}
+
+.service-info {
+  h3 {
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+}
+
+.service-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 0.85rem;
+  color: var(--ion-color-medium);
+
+  ion-icon {
+    font-size: 0.9rem;
+    vertical-align: middle;
+    margin-right: 4px;
+  }
+}
+
+/* Estilos para serviços selecionados */
+.selected-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   margin-bottom: 20px;
 }
 
-ion-list {
-  padding: 0;
-  margin: 0;
-}
-
-.service-chips {
+.selected-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin: 0;
 }
 
-.service-selector-wrapper {
-  position: relative;
-  max-height: 300px;
-  overflow-y: auto;
+.service-chip {
+  --border-radius: 20px;
+  padding: 6px 12px;
 }
 
-.service-list-container {
-  height: 300px;
-  overflow-y: auto;
-  padding-right: 8px;
-  box-sizing: border-box;
-  background-color: white;
+.chip-image-container {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+}
+
+.chip-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Estilos para observações */
+.notes-item {
   border-radius: 8px;
-  z-index: 200;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  --background: #fff;
 }
 
-.service-list-container::-webkit-scrollbar {
-  width: 6px;
+/* Estilos para pagamento */
+.payment-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
 }
 
-.service-list-container::-webkit-scrollbar-track {
-  background: transparent;
+.payment-segment {
+  --background: #f0f0f0;
+  border-radius: 8px;
+  padding: 4px;
 }
 
-.service-list-container::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border-radius: 10px;
+.payment-option {
+  --border-radius: 6px;
+  --color-checked: #fff;
+  --indicator-color: var(--ion-color-primary);
+  min-height: 40px;
+
+  ion-icon {
+    font-size: 1.2rem;
+  }
 }
 
-ion-chip {
-  margin-bottom: 8px;
+/* Estilos para resumo */
+.summary-card {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+
+  ion-item {
+    --padding-start: 0;
+    --inner-padding-end: 0;
+  }
+
+  ion-note {
+    font-size: 1rem;
+  }
 }
 
-.enter-queue {
-  position: fixed;
-  bottom: 20px;
-  left: 5%;
-  right: 5%;
-  z-index: 999;
-  background-color: var(--bg);
+/* Botão de ação */
+.action-button {
+  padding: 0 16px 16px;
+
+  ion-button {
+    --border-radius: 8px;
+    --box-shadow: 0 4px 12px rgba(0, 123, 255, 0.3);
+    font-weight: 500;
+    height: 50px;
+
+    &[disabled] {
+      opacity: 0.7;
+      --box-shadow: none;
+    }
+  }
+}
+
+.quantity-badge {
+  display: inline-block;
+  background: var(--ion-color-danger);
   color: white;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  line-height: 20px;
+  font-size: 0.8rem;
+  margin-left: 6px;
+  vertical-align: middle;
 }
+
+.service-chip {
+  position: relative;
+  
+  ion-icon {
+    margin-left: 8px;
+  }
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+
 
 ion-toolbar {
   display: flex;
@@ -84,59 +263,94 @@ ion-title {
   font-weight: bold;
 }
 
-.payment-buttons ion-button {
-  --border-radius: 12px;
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+/* Ajustes no ion-content */
+ion-content {
+  --background: #f5f5f5;
+  --padding-top: 8px;  /* Reduzido de 16px */
+  --padding-bottom: 8px;
+  --padding-start: 8px; /* Adicionado padding lateral */
+  --padding-end: 8px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Ajustes nos cards principais */
+.service-card,
+.selected-card,
+.payment-card,
+.summary-card,
+.notes-item {
+  margin: 0 0 12px 0; /* Reduzido de 20px e removido margens laterais */
+  width: 100%; /* Garante que ocupa toda largura disponível */
+}
+
+/* Ajuste específico para o card de serviços */
+.service-card {
   flex: 1;
-  min-width: 0;
-  text-transform: none;
-  font-weight: 500;
-  justify-content: center;
+  margin-bottom: 12px;
+  
+  ion-card-content {
+    padding: 0;
+  }
 }
 
-ion-button {
-  --background: #007bff !important;
-  --background-hover: #0056b3;
-  --background-activated: #004494;
-  color: #fff;
-  font-size: 14px;
+/* Ajuste no container de rolagem */
+.scroll-container {
+  max-height: 55vh; /* Aumentado de 50vh para usar mais espaço */
 }
 
-ion-button ion-icon {
-  margin-right: 8px;
+/* Ajuste no card de pagamento */
+.payment-segment {
+  padding: 2px; /* Reduzido para economizar espaço */
 }
 
-ion-textarea {
-  min-height: 60px;
-  resize: none;
+/* Ajuste no botão de ação */
+.action-button {
+  padding: 0 0 8px 0; /* Reduzido padding lateral */
+  
+  ion-button {
+    margin: 0; /* Remove margens padrão */
+  }
 }
 
-ion-card {
-  padding: 0px;
-  margin-bottom: 0px;
+/* Ajuste nos itens da lista */
+.service-item {
+  --padding-start: 6px; /* Reduzido de 8px */
+  --padding-end: 6px;
+  margin: 0 4px 6px 4px; /* Reduzido espaçamento */
 }
 
-ion-card-header {
-  background-color: var(--bg-light);
-  padding: 10px;
+/* Ajuste para observações */
+.notes-item {
+  --inner-padding-start: 0;
+  --inner-padding-end: 0;
 }
 
-ion-card-title {
-  font-size: 16px;
-  font-weight: bold;
+/* Ajuste para chips de serviços selecionados */
+.selected-chips {
+  gap: 6px; /* Reduzido de 8px */
+  padding: 4px;
 }
 
-.payment-options {
-  margin-top: 20px;
+/* Ajuste para o card de resumo */
+.summary-card {
+  ion-item {
+    --min-height: 32px; /* Reduz altura dos itens */
+  }
 }
 
-.payment-title {
-  font-weight: bold;
-  font-size: 14px;
-  margin-bottom: 8px;
-  display: block;
-}
-
-ion-content::part(scroll) {
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+.compact-header {
+  padding: 8px 12px; /* Header mais compacto */
 }

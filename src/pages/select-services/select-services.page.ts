@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ProfessionalModel } from 'src/models/professional-model';
+import { AlertController } from '@ionic/angular';
+import { ServiceModel } from 'src/models/service-model';
+
+
 
 @Component({
   selector: 'app-select-services',
@@ -8,77 +11,126 @@ import { ProfessionalModel } from 'src/models/professional-model';
   styleUrls: ['./select-services.page.scss'],
 })
 export class SelectServicesPage {
-  serviceOptions = [
-    { id: '1', desc: 'Corte à máquina', time: 25, price: 20 },
-    { id: '2', desc: 'Corte à tesoura', time: 30, price: 25 },
-    { id: '3', desc: 'Corte desfarçado', time: 40, price: 30 },
-    { id: '4', desc: 'Massagem Relaxante', time: 50, price: 70 },
-    { id: '5', desc: 'Massagem Terapêutica', time: 60, price: 80 },
-    { id: '6', desc: 'Limpeza de Pele', time: 45, price: 60 },
-    { id: '7', desc: 'Peeling', time: 60, price: 90 },
-    { id: '8', desc: 'Peeling', time: 60, price: 90 },
-    { id: '9', desc: 'Peeling', time: 60, price: 90 },
-    { id: '10', desc: 'Peeling', time: 60, price: 90 },
+
+  selectedServices: ServiceModel[] = [];
+
+  serviceOptions: any[] = [
+    {
+      id: '1',
+      desc: 'Corte à máquina',
+      time: 25,
+      price: 20,
+      image: 'assets/images/haircut-machine.jpg'
+    },
+    {
+      id: '2',
+      desc: 'Corte à tesoura',
+      time: 30,
+      price: 25,
+      image: 'assets/images/haircut-scissors.jpg'
+    },
+    {
+      id: '3',
+      desc: 'Corte desfarçado',
+      time: 40,
+      price: 30,
+      image: 'assets/images/haircut-fade.jpg'
+    },
+    {
+      id: '4',
+      desc: 'Massagem Relaxante',
+      time: 50,
+      price: 70,
+      image: 'assets/images/massage.jpg'
+    },
+    {
+      id: '5',
+      desc: 'Massagem Terapêutica',
+      time: 60,
+      price: 80,
+      image: 'assets/images/therapeutic-massage.jpg'
+    },
+    {
+      id: '5',
+      desc: 'Massagem Terapêutica',
+      time: 60,
+      price: 80,
+      image: 'assets/images/utils/corte-tesoura.jpg',
+    },
+    {
+      id: '5',
+      desc: 'Massagem Terapêutica',
+      time: 60,
+      price: 80,
+      image: 'assets/images/utils/unha.png',
+    }, {
+      id: '5',
+      desc: 'Massagem Terapêutica',
+      time: 60,
+      price: 80,
+      image: 'assets/images/utils/corte-maquina.jpg',
+    }, {
+      id: '5',
+      desc: 'Massagem Terapêutica',
+      time: 60,
+      price: 80,
+      image: 'assets/images/utils/descoloracao.jpg',
+    }
   ];
 
-  professionalId: number = 0;
-
-  selectedServices: { id: string; desc: string; time: number; price: number }[] = [];
-  isServiceListVisible = false;
-
+  queueId: number = 0;
+  storeId: number = 0;
   totalTime = 0;
   totalPrice = 0;
   totalTimeString = '';
   totalPriceString = '';
   observacao = '';
-  formaPagamento = '';
+  formaPagamento = '1'; 
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private alertController: AlertController
+  ) { }
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
-      console.log('Id fila:', params['professionalId']);
-      this.professionalId = params['professionalId'];
+      this.queueId = params['queueId'];
+      this.storeId = params['storeId'];
+      console.log('Id loja:', this.storeId);
+      console.log('Id fila profissional:', this.queueId);
     });
-
- //   this.loadStoreAndProfessionals(this.professionalId);
   }
 
-  // loadStoreAndProfessionals(storeId: number) {
-  //   this.service.loadStoreAndProfessionals(storeId).subscribe({
-  //     next: (response) => {
-  //       this.store = response.data;
-  //     },
-  //     error: (err) => {
-  //       console.error('Erro ao carregar filas disponíveis:', err);
-  //     }
-  //   });
-  // }
+  addService(service: ServiceModel) {
+    const existingServiceIndex = this.selectedServices.findIndex(s => s.id === service.id);
 
-  entrarNaFila(fila: ProfessionalModel) {
-    // this.router.navigate(['/select-services'], {
-    //   queryParams: { professionalId: 1 },
-    // });
-  }
+    if (existingServiceIndex >= 0) {      
+      this.selectedServices[existingServiceIndex].quantity++;
+    } else {      
+      this.selectedServices.push({
+        ...service,
+        quantity: 1
+      });
+    }
 
-  toggleServiceList() {
-    this.isServiceListVisible = !this.isServiceListVisible;
-  }
-
-  addService(service: { id: string; desc: string; time: number; price: number }) {
-    this.selectedServices.push(service);
-    this.isServiceListVisible = false;
     this.updateTotals();
   }
 
   removeService(index: number) {
-    this.selectedServices.splice(index, 1);
+    if (this.selectedServices[index].quantity > 1) {      
+      this.selectedServices[index].quantity--;
+    } else {      
+      this.selectedServices.splice(index, 1);
+    }
+
     this.updateTotals();
   }
 
+
   updateTotals() {
-    this.totalTime = this.selectedServices.reduce((acc, s) => acc + s.time, 0);
-    this.totalPrice = this.selectedServices.reduce((acc, s) => acc + s.price, 0);
+    this.totalTime = this.selectedServices.reduce((acc, s) => acc + (s.estimateTime * s.quantity), 0);
+    this.totalPrice = this.selectedServices.reduce((acc, s) => acc + (s.price * s.quantity), 0);
     this.formatOutput();
   }
 
@@ -87,9 +139,57 @@ export class SelectServicesPage {
     const minutes = this.totalTime % 60;
 
     this.totalTimeString = hours > 0
-      ? `${hours}h e ${minutes} minutos`
-      : `${minutes} minutos`;
+      ? `${hours}h ${minutes}min`
+      : `${minutes}min`;
 
-    this.totalPriceString = `R$ ${this.totalPrice.toFixed(2)}`;
+    this.totalPriceString = `R$ ${this.totalPrice.toFixed(2).replace('.', ',')}`;
+  }
+
+  async confirmSelection() {
+    if (this.selectedServices.length === 0) {
+      await this.presentAlert('Nenhum serviço selecionado', 'Por favor, selecione pelo menos um serviço.');
+      return;
+    }
+
+    const alert = await this.alertController.create({
+      header: 'Confirmar Serviços',
+      message: `Você selecionou ${this.selectedServices.length} serviço(s) com valor total de ${this.totalPriceString}. Deseja continuar?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: () => {
+            this.proceedToQueue();
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  proceedToQueue() {
+    this.router.navigate(['/queue'], {
+      queryParams: {
+        queueId: this.queueId,
+        storeId: this.storeId,
+        services: JSON.stringify(this.selectedServices),
+        observation: this.observacao,
+        paymentMethod: this.formaPagamento
+      }
+    });
+  }
+
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header,
+      message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
