@@ -469,3 +469,7 @@ ion-label {
   color: #8A8A8A;
 }
 
+ion-content::part(scroll) {
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}

@@ -1,23 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-interface Queue {
-  id: number;
-  name: string;
-  description?: string;
-  avgWait?: number;
-  services?: string[];
-  peopleWaiting?: number;
-  professionalId?: number;
-}
-
-interface Store {
-  id: number;
-  name: string;
-  description?: string;
-  imageUrl?: string;
-  queues?: Queue[];
-}
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProfessionalModel } from 'src/models/professional-model';
+import { StoreProfessionalModel } from 'src/models/store-professional-model';
+import { StoreService } from 'src/services/store-service';
 
 @Component({
   selector: 'app-select-professional',
@@ -25,78 +10,75 @@ interface Store {
   styleUrls: ['./select-professional.page.scss'],
 })
 export class SelectProfessionalPage implements OnInit {
-  store: Store | null = null;
+  store: StoreProfessionalModel | null = null;
+  storeId: number = 0;
 
-  constructor(private router: Router) {}
+  bannerLoaded = false;
+  logoLoaded = false;
+
+  constructor(private router: Router, private route: ActivatedRoute, private service: StoreService) { }
 
   ngOnInit() {
-    // Simulação de dados - Substituir depois por chamada HTTP
-    this.store = {
-      id: 1,
-      name: 'King¨s Sons - Barbershop',
-      description: 'Cortes na régua, química e aquele trato na régua.',
-      imageUrl: 'assets/images/company-logo/kingssons.jpeg',
-      queues: [
-        {
-          id: 1,
-          name: 'Léo - Neymar',
-          description: 'Tesoura e máquina',
-          avgWait: 20,
-          services: ['Corte', 'Barba'],
-          peopleWaiting: 3,
-          professionalId: 10,
-        },
-        {
-          id: 2,
-          name: 'Alisson Pretão',
-          description: 'Combo completo',
-          avgWait: 30,
-          services: ['Corte', 'Barba'],
-          peopleWaiting: 2,
-          professionalId: 11,
-        },
-        {
-          id: 3,
-          name: 'Bruno Peçanha',
-          description: 'Tesoura e máquina',
-          avgWait: 20,
-          services: ['Corte', 'Barba'],
-          peopleWaiting: 3,
-          professionalId: 10,
-        },
-      ],
-    };
-
-    // TODO: Substituir por chamada real para buscar a loja e suas filas
-    // TODO: Buscar nome dos serviços e calcular tempo estimado por fila
+    this.getSelectedStoreId();
+    this.resetImageStates()
+    this.loadStoreAndProfessionals(this.storeId);
   }
 
-  entrarNaFila(fila: Queue) {
-    console.log(`Entrar na fila: ${fila.name} (ID: ${fila.id})`);
-    this.router.navigate(['/select-services'], {
-      queryParams: { queueId: fila.id },
+  loadStoreAndProfessionals(storeId: number) {
+    this.service.loadStoreAndProfessionals(storeId).subscribe({
+      next: (response) => {
+        this.store = response.data;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar filas disponíveis:', err);
+      }
     });
   }
 
-  toggleLike(queue: Queue, event: Event) {
+  getSelectedStoreId() {
+    this.route.queryParams.subscribe(params => {
+      this.storeId = params['storeId'];
+    });
+  }
+
+  entrarNaFila(fila: ProfessionalModel) {
+    this.router.navigate(['/select-services'], {
+      queryParams: { queueId: fila.queueId, storeId: this.storeId },
+    });
+  }
+
+  toggleLike(queue: ProfessionalModel, event: Event) {
     event.stopPropagation();
-    event.preventDefault();
-    queue.liked = !queue.liked;
-    console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
+    // event.preventDefault();
+    // queue.liked = !queue.liked;
+    // console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
   }
 
   abrirLojaDetalhada() {
     this.router.navigate(['/store-details', /*this.store?.id*/]);
-  }  
-}
+  }
 
-interface Queue {
-  id: number;
-  name: string;
-  description?: string;
-  avgWait?: number;
-  services?: string[];
-  peopleWaiting?: number;
-  professionalId?: number;
-  liked?: boolean; 
+  getProgressoFila(qtdPessoas: number): number {
+    const maxPessoas = 10;
+    const progresso = (qtdPessoas / maxPessoas) * 100;
+    return Math.min(progresso, 100);
+  }
+
+  getCorProgresso(qtdPessoas: number): string {
+    if (qtdPessoas <= 3) return '#4caf50'; // verde
+    if (qtdPessoas <= 7) return '#ff9800'; // laranja
+    return '#f44336'; // vermelho
+  }
+
+  getStatusFilaTexto(qtdPessoas: number): string {
+    if (qtdPessoas === 0) return 'Fila vazia';
+    if (qtdPessoas <= 3) return 'Fila leve';
+    if (qtdPessoas <= 7) return 'Fila moderada';
+    return 'Fila cheia';
+  }
+
+  resetImageStates() {
+    this.bannerLoaded = false;
+    this.logoLoaded = false;
+  }
 }

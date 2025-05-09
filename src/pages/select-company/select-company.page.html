@@ -25,8 +25,7 @@
       </ion-searchbar>
     </ng-template>
   </ion-toolbar>
-
-  <!-- Barra de Categorias Moderna -->
+  
   <div class="categories-container" *ngIf="categories?.length">
     <div class="categories-scroll">
       <div
@@ -43,14 +42,12 @@
   </div>
 </ion-header>
 
-<ion-content class="modern-content">
-  <!-- Estado de Carregamento -->
+<ion-content class="modern-content">  
   <div *ngIf="!companies?.length" class="loading-container">
     <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
     <p class="loading-text">Carregando estabelecimentos...</p>
   </div>
-  
-  <!-- Lista de Estabelecimentos -->
+    
   <div class="companies-grid">
     <ion-card
       *ngFor="let card of filteredCards"
@@ -68,8 +65,7 @@
             </div>
           </ng-template>
         </div>
-        
-        <!-- Badge Novo (opcional) -->
+                
         <div class="new-badge" *ngIf="card.isNew">NOVO</div>
         
         <ion-button fill="clear" class="like-button" (click)="toggleLike(card, $event)">
@@ -87,7 +83,7 @@
         <div class="company-stats">
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
-            <span>Fila: 4 pessoas</span>
+            <span>Fila menor: 4 pessoas</span>
           </div>
           
           <div class="rating-badge">

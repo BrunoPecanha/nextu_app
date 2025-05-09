@@ -6,6 +6,7 @@ import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { OpeningHoursRequest } from "src/models/requests/opening-hours-request";
 import { StoreRequest } from "src/models/requests/store-request";
+import { StoreProfessionalsResponse } from "src/models/responses/store-professionals-response";
 import { StoreResponse } from "src/models/responses/store-response";
 
 @Injectable({
@@ -22,6 +23,10 @@ export class StoreService {
 
   loadEmployeeStores(id: number): Observable<StoreResponse> {
     return this.http.get<StoreResponse>(`${this.apiUrl}/store/employee/${id}`);
+  }
+
+  loadStoreAndProfessionals(id: number): Observable<StoreProfessionalsResponse> {
+    return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/professionals/${id}`);
   }
 
   createStore(storeData: StoreRequest): Observable<StoreResponse> {

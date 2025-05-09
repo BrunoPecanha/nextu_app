@@ -12,7 +12,6 @@ import { SessionService } from 'src/services/session.service';
   styleUrls: ['./queue.page.scss'],
 })
 export class QueuePage implements OnInit {
-  // Propriedades do componente
   customerCards: CustomerInQueueCardModel[] | null = null;
   currentDate = new Date();
   horaChamada = '10:00';
@@ -20,7 +19,6 @@ export class QueuePage implements OnInit {
   tolerance = 5;
   customer: any;
 
-  // Mapeamentos privados para controle de estado
   private cardDetailsMap = new Map<number, CustomerInQueueCardDetailModel>();
   private expandedStates = new Map<number, boolean>();
 
@@ -29,16 +27,16 @@ export class QueuePage implements OnInit {
     public router: Router,
     private queueService: QueueService,
     private sessionService: SessionService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.loadCustomersInQueueCard();
   }
 
   // Métodos públicos para controle da UI
-  public toggleCardDetails(card: CustomerInQueueCardModel): void {    
+  public toggleCardDetails(card: CustomerInQueueCardModel): void {
     const isExpanded = this.isCardExpanded(card);
-    
+
     if (!isExpanded && !this.cardDetailsMap.has(card.queueId)) {
       this.loadCustomerInQueueCardDetails(card);
     } else {
@@ -105,7 +103,7 @@ export class QueuePage implements OnInit {
       next: (response) => {
         this.cardDetailsMap.set(card.queueId, response.data);
         this.expandedStates.set(card.queueId, true);
-        
+
         if (response.data.position === 1) {
           this.generateQrCode();
         }
