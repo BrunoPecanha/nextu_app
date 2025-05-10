@@ -1,6 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ServiceCategoryResponse } from 'src/models/responses/service-category-response';
+import { ServiceResponse } from 'src/models/responses/service-response';
+import { ServiceCategoryModel } from 'src/models/service-category-model';
+import { ServiceModel } from 'src/models/service-model';
+import { ServiceCategoryService } from 'src/services/service-category-service';
+import { ServiceService } from 'src/services/services-service';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-service-registration',
@@ -8,102 +14,29 @@ import { Router } from '@angular/router';
   styleUrls: ['./service-registration.page.scss'],
 })
 export class ServiceRegistrationPage implements OnInit {
-  constructor(private fb: FormBuilder, private router: Router, private cdRef: ChangeDetectorRef) { }
-
+  @ViewChildren('fileInput') fileInputs: QueryList<ElementRef> = new QueryList<ElementRef>();
   expandedIndex: number | null = null;
   previewUrls: (string | ArrayBuffer | null)[] = [];
   formattedPrices: string[] = [];
-  isNovoServico = false;
-  categorias = ['Cabelo', 'Barba', 'Manicure', 'Carro', 'Pet', 'Outros'];
-
-  services = [
-    {
-      name: 'Corte Masculino',
-      description: 'Corte de cabelo completo com finalização.',
-      category: 'Cabelo',
-      price: 40,      
-      status: false,
-      duration: 30,
-      image: 'assets/images/utils/corte-tesoura.jpg',
-      variablePrice: true,
-      variableTime: false
-    },
-    {
-      name: 'Corte à tesoura',
-      description: 'Modelagem, aparo e toalha quente.',
-      category: 'Barba',
-      price: 25,      
-      status: true,
-      duration: 20,
-      image: 'assets/images/utils/corte-tesoura.jpg',
-      variablePrice: true,
-      variableTime: false
-    },
-    {
-      name: 'Manicure Simples',
-      description: 'Limpeza e esmaltação básica.',
-      category: 'Manicure',
-      price: 30,
-      duration: 35,      
-      status: true,
-      image: 'assets/images/utils/unha.png',
-      variablePrice: true,
-      variableTime: true
-    },
-    {
-      name: 'Corte à máquina desfarçado',
-      description: 'Lavagem externa e aspiração interna.',
-      category: 'Carro',
-      price: 50,      
-      status: false,
-      duration: 45,
-      image: 'assets/images/utils/corte-maquina.jpg',
-      variablePrice: true,
-      variableTime: true
-    },
-    {
-      name: 'Descoloração',
-      description: 'Tosa leve para higiene do pet.',
-      category: 'Pet',
-      price: 60,
-      status: true,
-      duration: 40,
-      image: 'assets/images/utils/descoloracao.jpg',
-      variablePrice: true,
-      variableTime: true
-    },
-  ];
+  isNewService = false;
+  categories: ServiceCategoryModel[] = [];
+  store: any;
+  isInitialLoading: boolean = true;
+  noRecordsFound: boolean = false;
 
   serviceFormArray: FormGroup[] = [];
   isLoading: boolean[] = [];
   saved: boolean[] = [];
 
-  ngOnInit() {
-    this.services.forEach((service, index) => {
-      this.serviceFormArray.push(
-        this.fb.group({
-          name: [service.name, Validators.required],
-          description: [service.description],
-          category: [service.category, Validators.required],
-          price: [service.price, [Validators.required, Validators.min(0)]],
-          duration: [service.duration, [Validators.required, Validators.min(1)]],
-          image: [service.image],
-          active: [service.status],
-          variablePrice: [service.variablePrice],
-          variableTime: [service.variableTime],
-        })
-      );
+  services: ServiceModel[] = [];
 
-      this.previewUrls.push(service.image);
-      this.formattedPrices.push(
-        service.price.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })
-      );
-      this.isLoading.push(false);
-      this.saved.push(false);
-    });
+  constructor(private fb: FormBuilder, public session: SessionService, private cdRef: ChangeDetectorRef, private categoryService: ServiceCategoryService, private service: ServiceService) {
+      }
+
+  ngOnInit() {
+    this.store = this.session.getStore();
+    this.loadCategories();
+    this.loadServices();
   }
 
   onImageSelected(event: Event, index: number) {
@@ -145,89 +78,325 @@ export class ServiceRegistrationPage implements OnInit {
     this.serviceFormArray[index].get('price')?.setValue(float);
   }
 
+  triggerFileInput(index: number) {
+    const fileInputs = this.fileInputs.toArray();
+    if (fileInputs[index]) {
+      fileInputs[index].nativeElement.click();
+    }
+  }
+
+  loadServices(): Promise<void> {
+    this.isInitialLoading = true;
+    this.noRecordsFound = false;
+
+    return new Promise((resolve, reject) => {
+      this.service.loadServicesByStore(this.store.id).subscribe({
+        next: (response: ServiceResponse) => {
+          this.services = response.data;
+          this.noRecordsFound = this.services.length === 0;
+          this.initializeForms();
+          this.isInitialLoading = false;
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar serviços', err);
+          this.isInitialLoading = false;
+          this.noRecordsFound = true;
+          reject(err);
+        }
+      });
+    });
+  }
+
+  initializeForms() {
+    this.serviceFormArray = [];
+    this.previewUrls = [];
+    this.formattedPrices = [];
+    this.isLoading = [];
+    this.saved = [];
+
+    this.services.forEach((service) => {
+      const totalMinutes = this.timeSpanToMinutes(service.duration.toString());
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+
+      this.serviceFormArray.push(
+        this.fb.group({
+          id: [service.id],
+          name: [service.name, Validators.required],
+          description: [service.description],
+          category: [this.categories.find(c => c.id === service.category.id)],
+          price: [service.price, [Validators.required, Validators.min(0)]],
+          durationHours: [hours, [Validators.required, Validators.min(0)]],
+          durationMinutes: [minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
+          image: [service.imgPath],
+          active: [service.activated],
+          variablePrice: [service.variablePrice],
+          variableTime: [service.variableTime],
+        })
+      );
+
+      this.previewUrls.push(service.imgPath);
+      this.formattedPrices.push(
+        service.price.toLocaleString('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        })
+      );
+      this.isLoading.push(false);
+      this.saved.push(false);
+    });
+
+    this.cdRef.detectChanges();
+  }
+
+  loadCategories(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.categoryService.getServiceCategories().subscribe({
+        next: (response: ServiceCategoryResponse) => {
+          this.categories = response.data.map(cat => ({
+            ...cat,
+            icon: this.unicodeToEmoji(cat.icon)
+          }));
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar categorias', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  unicodeToEmoji(text: string): string {
+    if (text) {
+      return text.replace(/\\u([\dA-F]{4})|\\u\{([\dA-F]{1,6})\}/gi,
+        (match, g1, g2) => {
+          const hexCode = g1 || g2;
+          return String.fromCodePoint(parseInt(hexCode, 16));
+        }
+      );
+    }
+    return '';
+  }
+
+  private timeSpanToMinutes(timeSpan: string): number {
+    if (!timeSpan) return 0;
+
+    const [hours, minutes] = timeSpan.split(':').map(Number);
+    return (hours * 60) + minutes;
+  }
+
   async salvar(index: number) {
     const form = this.serviceFormArray[index];
-    if (form.invalid) return;
-  
+    if (form.invalid) {
+      this.markFormGroupTouched(form);
+      return;
+    }
+
     this.isLoading[index] = true;
     this.saved[index] = false;
-  
-    const updatedService = form.value;
-  
-    setTimeout(() => {
-      this.isLoading[index] = false;
+    this.cdRef.detectChanges();
+
+    try {
+      const formData = form.value;
+      const duration = this.formatDuration(formData);
+
+      const serviceData = {
+        id: formData.id,
+        name: formData.name,
+        description: formData.description,
+        categoryId: formData.category.id,
+        price: formData.price,
+        duration: duration,
+        activated: formData.active,
+        variablePrice: formData.variablePrice,
+        variableTime: formData.variableTime,
+        storeId: this.store.id
+      };
+
+      if (this.isNewService && index === 0) {
+        await this.createNewService(serviceData, formData.image, index);
+      } else {
+        const serviceId = this.services[this.isNewService ? index - 1 : index].id;
+        await this.updateExistingService(serviceId, serviceData, formData.image, index);
+      }
+
       this.saved[index] = true;
-  
-      this.cdRef.detectChanges();
-  
       setTimeout(() => {
-        this.expandedIndex = null;
         this.saved[index] = false;
-      }, 1000);
-    }, 1500);
+        this.cdRef.detectChanges();
+      }, 2000);
+
+      await this.loadServices();
+      this.isNewService = false;
+      this.expandedIndex = null;
+
+    } catch (error) {
+      console.error('Erro ao salvar serviço:', error);
+
+    } finally {
+      this.isLoading[index] = false;
+      this.cdRef.detectChanges();
+    }
   }
-  
+
+  private async createNewService(serviceData: any, imageFile: File | null, index: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+
+      Object.keys(serviceData).forEach(key => {
+        formData.append(key, serviceData[key]);
+      });
+
+      if (imageFile) {
+        formData.append('imageFile', imageFile);
+      }
+
+      console.log('Serviço criado com sucesso:', formData);
+
+      this.service.createService(formData).subscribe({
+        next: (response) => {
+          console.log('Serviço criado com sucesso:', response);
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao criar serviço:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  private async updateExistingService(serviceId: number, serviceData: any, imageFile: File | null, index: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const formData = new FormData();
+
+      Object.keys(serviceData).forEach(key => {
+        formData.append(key, serviceData[key]);
+      });
+
+      if (imageFile) {
+        formData.append('imageFile', imageFile);
+      }
+
+      this.service.updateService(serviceId, formData).subscribe({
+        next: (response) => {
+          console.log('Serviço atualizado com sucesso:', response);
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao atualizar serviço:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  private markFormGroupTouched(formGroup: FormGroup) {
+    Object.values(formGroup.controls).forEach(control => {
+      control.markAsTouched();
+
+      if (control instanceof FormGroup) {
+        this.markFormGroupTouched(control);
+      }
+    });
+  }
+
   adicionarNovoServico() {
-    const novoForm = this.fb.group({
+    if (this.isNewService) {
+      return;
+    }
+
+    const newForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
       category: [null, Validators.required],
       price: [null, [Validators.required, Validators.min(0)]],
-      duration: [null, [Validators.required, Validators.min(1)]],
+      durationHours: [0, [Validators.required, Validators.min(0)]],
+      durationMinutes: [30, [Validators.required, Validators.min(0), Validators.max(59)]],
       image: [null],
-      active: [true], 
+      variablePrice: [false],
+      variableTime: [false],
+      active: [true]
     });
 
-    this.serviceFormArray.unshift(novoForm);
+    this.serviceFormArray.unshift(newForm);
     this.previewUrls.unshift(null);
     this.formattedPrices.unshift('');
     this.isLoading.unshift(false);
     this.saved.unshift(false);
+
+    this.isNewService = true;
     this.expandedIndex = 0;
-    this.isNovoServico = true;
+
+    this.cdRef.detectChanges();
   }
 
-  cancelar(i: number) {
-    if (i === 0 && this.isNovoServico) {
-      this.serviceFormArray.splice(i, 1);
-      this.previewUrls.splice(i, 1);
-      this.formattedPrices.splice(i, 1);
-      this.isLoading.splice(i, 1);
-      this.saved.splice(i, 1);
+  getHours(duration: number): number {
+    return Math.floor(duration / 60);
+  }
 
-      this.isNovoServico = false;
+  getMinutes(duration: number): number {
+    return duration % 60;
+  }
+
+  cancelar(index: number) {
+    if (this.isNewService && index === 0) {
+      this.serviceFormArray.shift();
+      this.previewUrls.shift();
+      this.formattedPrices.shift();
+      this.isLoading.shift();
+      this.saved.shift();
+
+      this.isNewService = false;
     } else {
-      const original = this.services[i]; 
-      const form = this.serviceFormArray[i];
+      const serviceIndex = this.isNewService ? index - 1 : index;
+      const originalService = this.services[serviceIndex];
 
-      form.patchValue({
-        name: original.name,
-        description: original.description,
-        category: original.category,
-        price: original.price,
-        duration: original.duration,
-        image: original.image,
+      const totalMinutes = this.timeSpanToMinutes(originalService.duration.toString());
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+
+      this.serviceFormArray[index].patchValue({
+        name: originalService.name,
+        description: originalService.description,
+        category: this.categories.find(c => c.id === originalService.category.id),
+        price: originalService.price,
+        durationHours: hours,
+        durationMinutes: minutes,
+        image: originalService.imgPath,
+        active: originalService.activated,
+        variablePrice: originalService.variablePrice,
+        variableTime: originalService.variableTime
       });
 
-      this.previewUrls[i] = original.image;
-      this.formattedPrices[i] = original.price.toLocaleString('pt-BR', {
+      this.previewUrls[index] = originalService.imgPath;
+      this.formattedPrices[index] = originalService.price.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL',
       });
     }
 
-    if (this.expandedIndex === i) {
-      this.expandedIndex = null;
-    }
-
+    this.expandedIndex = null;
     this.cdRef.detectChanges();
   }
 
   toggleExpand(i: number) {
     if (this.expandedIndex === i) {
-      this.expandedIndex = null; 
+      this.expandedIndex = null;
     } else {
       this.expandedIndex = i;
     }
+  }
+
+  formatDuration(formData: any) {
+    const hours = formData.durationHours.toString().padStart(2, '0');
+    const minutes = formData.durationMinutes.toString().padStart(2, '0');
+    return `${hours}:${minutes}:00`;
+  }
+
+  trackByFn(index: number, item: any): any {
+    return item.id || index;
   }
 }

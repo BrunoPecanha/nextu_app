@@ -306,3 +306,13 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   margin-right: 8px;
   margin-top: 2px;
 }
+
+.add-fab {
+  margin-bottom: 80px;
+  margin-right: 16px;
+  z-index: 10;  
+}
+
+.icon-white {
+  color: white;
+}

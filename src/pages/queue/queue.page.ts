@@ -33,7 +33,6 @@ export class QueuePage implements OnInit {
     this.loadCustomersInQueueCard();
   }
 
-  // Métodos públicos para controle da UI
   public toggleCardDetails(card: CustomerInQueueCardModel): void {
     const isExpanded = this.isCardExpanded(card);
 
@@ -52,7 +51,6 @@ export class QueuePage implements OnInit {
     return this.cardDetailsMap.get(card.queueId);
   }
 
-  // Métodos auxiliares
   public getTempoColor(timeToWait: number | undefined): string {
     if (!timeToWait) return '';
     if (timeToWait > 45) return 'vermelho';
@@ -75,7 +73,6 @@ export class QueuePage implements OnInit {
     }));
   }
 
-  // Métodos de serviço
   public loadCustomersInQueueCard(): void {
     // this.customer = this.sessionService.getCustomer();
     // if (!this.customer) {
@@ -125,7 +122,6 @@ export class QueuePage implements OnInit {
     });
   }
 
-  // Métodos de ação do usuário
   public async exitQueue(queueId: number): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirmar Saída',

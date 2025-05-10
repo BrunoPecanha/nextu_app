@@ -4,7 +4,6 @@ import { AlertController } from '@ionic/angular';
 import { ServiceModel } from 'src/models/service-model';
 
 
-
 @Component({
   selector: 'app-select-services',
   templateUrl: './select-services.page.html',
@@ -17,62 +16,62 @@ export class SelectServicesPage {
   serviceOptions: any[] = [
     {
       id: '1',
-      desc: 'Corte à máquina',
-      time: 25,
+      description: 'Corte à máquina',
+      duration: 25,
       price: 20,
       image: 'assets/images/haircut-machine.jpg'
     },
     {
       id: '2',
-      desc: 'Corte à tesoura',
-      time: 30,
+      description: 'Corte à tesoura',
+      duration: 30,
       price: 25,
       image: 'assets/images/haircut-scissors.jpg'
     },
     {
       id: '3',
-      desc: 'Corte desfarçado',
-      time: 40,
+      description: 'Corte desfarçado',
+      duration: 40,
       price: 30,
       image: 'assets/images/haircut-fade.jpg'
     },
     {
       id: '4',
-      desc: 'Massagem Relaxante',
-      time: 50,
+      description: 'Massagem Relaxante',
+      duration: 50,
       price: 70,
       image: 'assets/images/massage.jpg'
     },
     {
       id: '5',
-      desc: 'Massagem Terapêutica',
-      time: 60,
+      description: 'Massagem Terapêutica',
+      duration: 60,
       price: 80,
       image: 'assets/images/therapeutic-massage.jpg'
     },
     {
       id: '5',
-      desc: 'Massagem Terapêutica',
-      time: 60,
+      description: 'Massagem Terapêutica',
+      duration: 60,
       price: 80,
       image: 'assets/images/utils/corte-tesoura.jpg',
     },
     {
       id: '5',
-      desc: 'Massagem Terapêutica',
-      time: 60,
+      description: 'Massagem Terapêutica',
+      duration: 60,
       price: 80,
       image: 'assets/images/utils/unha.png',
     }, {
       id: '5',
-      desc: 'Massagem Terapêutica',
-      time: 60,
+      description: 'Massagem Terapêutica',
+      duration: 60,
       price: 80,
       image: 'assets/images/utils/corte-maquina.jpg',
     }, {
       id: '5',
-      desc: 'Massagem Terapêutica',
-      time: 60,
+      description: 'Massagem Terapêutica',
+      duration: 60,
       price: 80,
       image: 'assets/images/utils/descoloracao.jpg',
     }
@@ -85,7 +84,7 @@ export class SelectServicesPage {
   totalTimeString = '';
   totalPriceString = '';
   observacao = '';
-  formaPagamento = '1'; 
+  formaPagamento = '1';
 
   constructor(
     private router: Router,
@@ -105,9 +104,9 @@ export class SelectServicesPage {
   addService(service: ServiceModel) {
     const existingServiceIndex = this.selectedServices.findIndex(s => s.id === service.id);
 
-    if (existingServiceIndex >= 0) {      
+    if (existingServiceIndex >= 0) {
       this.selectedServices[existingServiceIndex].quantity++;
-    } else {      
+    } else {
       this.selectedServices.push({
         ...service,
         quantity: 1
@@ -118,18 +117,17 @@ export class SelectServicesPage {
   }
 
   removeService(index: number) {
-    if (this.selectedServices[index].quantity > 1) {      
+    if (this.selectedServices[index].quantity > 1) {
       this.selectedServices[index].quantity--;
-    } else {      
+    } else {
       this.selectedServices.splice(index, 1);
     }
 
     this.updateTotals();
   }
 
-
   updateTotals() {
-    this.totalTime = this.selectedServices.reduce((acc, s) => acc + (s.estimateTime * s.quantity), 0);
+    this.totalTime = this.selectedServices.reduce((acc, s) => acc + (s.duration * s.quantity), 0);
     this.totalPrice = this.selectedServices.reduce((acc, s) => acc + (s.price * s.quantity), 0);
     this.formatOutput();
   }
@@ -140,7 +138,7 @@ export class SelectServicesPage {
 
     this.totalTimeString = hours > 0
       ? `${hours}h ${minutes}min`
-      : `${minutes}min`;
+      : `${minutes} min`;
 
     this.totalPriceString = `R$ ${this.totalPrice.toFixed(2).replace('.', ',')}`;
   }

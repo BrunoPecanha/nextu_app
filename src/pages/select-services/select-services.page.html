@@ -43,10 +43,10 @@
             </div>
 
             <ion-label class="service-info">
-              <h3>{{ service.desc }}</h3>
+              <h3>{{ service.description }}</h3>
               <p class="service-meta">
                 <span
-                  ><ion-icon name="time-outline"></ion-icon> {{ service.time }}
+                  ><ion-icon name="time-outline"></ion-icon> {{ service.duration }}
                   min</span
                 >
                 <span
@@ -80,8 +80,8 @@
           outline
           class="service-chip"
         >
-          <div class="chip-image-container" *ngIf="selected.image">
-            <img [src]="selected.image" class="chip-image" alt="" />
+          <div class="chip-image-container" *ngIf="selected.imgPath">
+            <img [src]="selected.imgPath" class="chip-image" alt="" />
           </div>
           <ion-label>
             {{ selected.description }}

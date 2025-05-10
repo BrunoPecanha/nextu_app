@@ -2,8 +2,6 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
-import { AuthResponse } from "src/models/responses/auth-responsel";
-import { CategoryModel } from "src/models/category-model";
 import { CategoryResponse } from "src/models/responses/category-response";
 import { StoreResponse } from "src/models/responses/store-response";
 
