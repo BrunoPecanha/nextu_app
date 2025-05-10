@@ -1,12 +1,17 @@
+import { ServiceCategoryModel } from "./service-category-model";
+
 export interface ServiceModel {
     id: number,
     storeId: number,
     name: string,
     description: string,
+    category: ServiceCategoryModel,
     price: number,
-    icon: string;
-    serviceType: string,
-    estimateTime: number,
-    image?: string,
+    duration: number,
+    imgPath?: any,
+    activated: boolean,
+    variableTime: boolean,
+    variablePrice: boolean,
+    icon: string,
     quantity: number
 }

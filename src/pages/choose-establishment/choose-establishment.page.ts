@@ -44,8 +44,7 @@ export class ChooseEstablishmentPage implements OnInit {
     }
   }
 
-  selecionarEmpresa(est: StoreModel) {
-    console.log(`Empresa apenas selecionada: ${est.name}`);
+  selecionarEmpresa(est: StoreModel) {    
     this.selectedHeaderImage = est.logoPath ?? this.selectedHeaderImage;
     this.selectedLogo = est.logoPath ?? this.selectedLogo;
   }
