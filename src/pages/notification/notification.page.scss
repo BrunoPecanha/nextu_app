@@ -103,6 +103,18 @@ ion-title {
   font-weight: bold;
 }
 
+ion-icon {
+  font-size: 24px;
+}
+
+ion-label {
+  margin-top: 5px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: #8A8A8A;
+}
+
+
 ion-content::part(scroll) {
   scrollbar-width: none;
   -ms-overflow-style: none;

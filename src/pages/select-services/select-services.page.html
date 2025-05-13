@@ -30,20 +30,20 @@
           >
             <div slot="start" class="service-image-container">
               <img
-                *ngIf="service.image"
-                [src]="service.image"
+                *ngIf="service.category.imgPath"
+                [src]="service.category.imgPath"
                 class="service-image"
                 alt=""
               />
               <ion-icon
-                *ngIf="!service.image"
+                *ngIf="!service.category.imgPath"
                 name="cut-outline"
                 class="service-icon"
               ></ion-icon>
             </div>
 
             <ion-label class="service-info">
-              <h3>{{ service.description }}</h3>
+              <h3>{{ service.name }}</h3>
               <p class="service-meta">
                 <span
                   ><ion-icon name="time-outline"></ion-icon> {{ service.duration }}
@@ -67,7 +67,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Card de Serviços Selecionados -->
   <ion-card *ngIf="selectedServices.length > 0" class="selected-card">
     <ion-card-header>
       <ion-card-title class="card-title">Serviços Selecionados</ion-card-title>
@@ -84,7 +83,7 @@
             <img [src]="selected.imgPath" class="chip-image" alt="" />
           </div>
           <ion-label>
-            {{ selected.description }}
+            {{ selected.name }}
             <span *ngIf="selected.quantity > 1" class="quantity-badge"
               >{{ selected.quantity }}</span
             >
@@ -99,7 +98,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Observações -->
   <ion-item class="notes-item">
     <ion-label position="floating">Observações</ion-label>
     <ion-textarea
@@ -111,7 +109,6 @@
     ></ion-textarea>
   </ion-item>
 
-  <!-- Forma de Pagamento -->
   <ion-card class="payment-card">
     <ion-card-header>
       <ion-card-title class="card-title">Forma de Pagamento</ion-card-title>
@@ -139,7 +136,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Resumo -->
   <ion-card class="summary-card">
     <ion-card-content>
       <ion-list lines="none">
@@ -157,7 +153,6 @@
     </ion-card-content>
   </ion-card>
 
-  <!-- Botão de Ação -->
   <div class="action-button">
     <ion-button
       expand="block"

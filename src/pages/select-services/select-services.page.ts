@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { ServiceModel } from 'src/models/service-model';
-
+import { ServiceService } from 'src/services/services-service';
 
 @Component({
   selector: 'app-select-services',
@@ -10,72 +10,6 @@ import { ServiceModel } from 'src/models/service-model';
   styleUrls: ['./select-services.page.scss'],
 })
 export class SelectServicesPage {
-
-  selectedServices: ServiceModel[] = [];
-
-  serviceOptions: any[] = [
-    {
-      id: '1',
-      description: 'Corte à máquina',
-      duration: 25,
-      price: 20,
-      image: 'assets/images/haircut-machine.jpg'
-    },
-    {
-      id: '2',
-      description: 'Corte à tesoura',
-      duration: 30,
-      price: 25,
-      image: 'assets/images/haircut-scissors.jpg'
-    },
-    {
-      id: '3',
-      description: 'Corte desfarçado',
-      duration: 40,
-      price: 30,
-      image: 'assets/images/haircut-fade.jpg'
-    },
-    {
-      id: '4',
-      description: 'Massagem Relaxante',
-      duration: 50,
-      price: 70,
-      image: 'assets/images/massage.jpg'
-    },
-    {
-      id: '5',
-      description: 'Massagem Terapêutica',
-      duration: 60,
-      price: 80,
-      image: 'assets/images/therapeutic-massage.jpg'
-    },
-    {
-      id: '5',
-      description: 'Massagem Terapêutica',
-      duration: 60,
-      price: 80,
-      image: 'assets/images/utils/corte-tesoura.jpg',
-    },
-    {
-      id: '5',
-      description: 'Massagem Terapêutica',
-      duration: 60,
-      price: 80,
-      image: 'assets/images/utils/unha.png',
-    }, {
-      id: '5',
-      description: 'Massagem Terapêutica',
-      duration: 60,
-      price: 80,
-      image: 'assets/images/utils/corte-maquina.jpg',
-    }, {
-      id: '5',
-      description: 'Massagem Terapêutica',
-      duration: 60,
-      price: 80,
-      image: 'assets/images/utils/descoloracao.jpg',
-    }
-  ];
 
   queueId: number = 0;
   storeId: number = 0;
@@ -85,20 +19,42 @@ export class SelectServicesPage {
   totalPriceString = '';
   observacao = '';
   formaPagamento = '1';
+  selectedServices: ServiceModel[] = [];
+  serviceOptions: ServiceModel[] = [];
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private serviceService: ServiceService
+  ) {
+  }
 
   ngOnInit() {
+    this.getProfessionalAndStore();
+    this.loadAvailablesServices();
+  }
+
+  getProfessionalAndStore() {
     this.route.queryParams.subscribe(params => {
       this.queueId = params['queueId'];
       this.storeId = params['storeId'];
-      console.log('Id loja:', this.storeId);
-      console.log('Id fila profissional:', this.queueId);
     });
+  }
+
+  loadAvailablesServices() {
+    if (this.storeId) {
+      this.serviceService.loadServiceById(this.storeId).subscribe({
+        next: (response) => {
+          this.serviceOptions = response.data;
+        },
+        error: (err) => {
+          console.error('Erro ao carregar serviços do estabelecimento:', err);
+        }
+      });
+    } else {
+      console.error('Não foi possível carregar os serviços/produtos da loja.');
+    }
   }
 
   addService(service: ServiceModel) {
@@ -127,20 +83,49 @@ export class SelectServicesPage {
   }
 
   updateTotals() {
-    this.totalTime = this.selectedServices.reduce((acc, s) => acc + (s.duration * s.quantity), 0);
-    this.totalPrice = this.selectedServices.reduce((acc, s) => acc + (s.price * s.quantity), 0);
+    this.totalTime = this.selectedServices.reduce((acc, service) => {      
+      const durationInMinutes = typeof service.duration === 'string'
+        ? this.convertTimeStringToMinutes(service.duration)
+        : Number(service.duration) || 0;
+
+      const quantity = Number(service.quantity) || 0;
+      return acc + (durationInMinutes * quantity);
+    }, 0);
+
+    this.totalPrice = this.selectedServices.reduce((acc, service) => {
+      const price = Number(service.price) || 0;
+      const quantity = Number(service.quantity) || 0;
+      return acc + (price * quantity);
+    }, 0);
+
     this.formatOutput();
+  }
+
+  private convertTimeStringToMinutes(timeString: string): number {
+    if (!timeString) return 0;
+
+    const [hoursStr, minutesStr, secondsStr] = timeString.split(':');
+    const hours = parseInt(hoursStr, 10) || 0;
+    const minutes = parseInt(minutesStr, 10) || 0;
+    const seconds = parseInt(secondsStr, 10) || 0;
+
+    return hours * 60 + minutes + Math.round(seconds / 60);
   }
 
   formatOutput() {
     const hours = Math.floor(this.totalTime / 60);
-    const minutes = this.totalTime % 60;
+    const minutes = Math.round(this.totalTime % 60);
 
-    this.totalTimeString = hours > 0
-      ? `${hours}h ${minutes}min`
-      : `${minutes} min`;
+    this.totalTimeString =
+      hours > 0
+        ? `${hours}h ${minutes.toString().padStart(2, '0')}min`
+        : `${minutes}min`;
 
-    this.totalPriceString = `R$ ${this.totalPrice.toFixed(2).replace('.', ',')}`;
+    const formattedPrice = isNaN(this.totalPrice)
+      ? '0,00'
+      : this.totalPrice.toFixed(2).replace('.', ',');
+
+    this.totalPriceString = `R$ ${formattedPrice}`;
   }
 
   async confirmSelection() {

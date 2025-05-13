@@ -6,5 +6,6 @@ export interface OpeningHoursModel extends To {
   start?: string;
   end?: string;
   storeId: number;
-  store?: StoreModel; 
+  store?: StoreModel;
+  activated: boolean;
 }

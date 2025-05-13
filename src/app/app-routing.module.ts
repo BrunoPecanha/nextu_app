@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { AuthGuard } from 'src/services/auth.guard';
 
 const routes: Routes = [  
   {
@@ -52,8 +51,8 @@ const routes: Routes = [
     loadChildren: () => import('../pages/customer-service/customer-service.module').then( m => m.CustomerServicePageModule)
   },
   {
-    path: 'store-details',
-    loadChildren: () => import('../pages/store-details/store-details.module').then( m => m.StoreDetailsPageModule)
+    path: 'store-details/:id',
+    loadChildren: () => import('../pages/store-details/store-details.module').then(m => m.StoreDetailsPageModule)
   },
   {
     path: 'queue-admin',

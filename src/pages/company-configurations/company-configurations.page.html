@@ -4,263 +4,419 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>CONFIGURAÇÕES</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="enviar()" [disabled]="sending">
+        <ion-icon
+          slot="icon-only"
+          [name]="saved ? 'checkmark-done' : 'save'"
+        ></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding" [formGroup]="cadastroForm">
-  <div class="logo-wrapper">
-    <div class="logo-container" (click)="selecionarImagem()">
-      <img
-        *ngIf="imagemPreview"
-        [src]="imagemPreview"
-        alt="Logo Preview"
-        class="logo-preview"
-      />
-      <ion-icon
-        *ngIf="!imagemPreview"
-        name="cloud-upload-outline"
-        class="upload-icon"
-      ></ion-icon>
-      <input
-        type="file"
-        hidden
-        accept="image/*"
-        #fileInput
-        (change)="onImagemSelecionada($event)"
-      />
-    </div>
-    <div class="logo-msg">Clique para enviar a logo</div>
-  </div>
+  <div class="form-container">
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Imagens da Loja</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="upload-section">
+          <div class="logo-wrapper">
+            <div class="logo-container" (click)="selecionarImagem()">
+              <img
+                *ngIf="imagemPreview"
+                [src]="imagemPreview"
+                alt="Logo Preview"
+                class="logo-preview"
+              />
+              <div class="upload-placeholder" *ngIf="!imagemPreview">
+                <ion-icon name="camera-outline"></ion-icon>
+                <span>Adicionar logo</span>
+              </div>
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                #fileInput
+                (change)="onImagemSelecionada($event)"
+              />
+            </div>
+          </div>
 
-  <ion-list lines="none">
-    <ion-item>
-      <ion-label position="floating">CNPJ</ion-label>
-      <ion-input
-        type="text"
-        formControlName="cnpj"
-        maxlength="18"
-        (ionInput)="formatarCNPJ($event)"
-      ></ion-input>
-    </ion-item>
+          <div class="wallpaper-wrapper">
+            <div class="wallpaper-container" (click)="selecionarWallpaper()">
+              <img
+                *ngIf="wallpaperPreview"
+                [src]="wallpaperPreview"
+                alt="Wallpaper Preview"
+                class="wallpaper-preview"
+              />
+              <div class="upload-placeholder" *ngIf="!wallpaperPreview">
+                <ion-icon name="image-outline"></ion-icon>
+                <span>Adicionar banner</span>
+              </div>
+              <input
+                type="file"
+                hidden
+                accept="image/*"
+                #wallpaperInput
+                (change)="onWallpaperSelecionado($event)"
+              />
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label position="floating">NOME DA EMPRESA</ion-label>
-      <ion-input formControlName="name"></ion-input>
-    </ion-item>
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Informações Básicas</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">CNPJ</ion-label>
+                <ion-input
+                  type="text"
+                  formControlName="cnpj"
+                  maxlength="18"
+                  (ionInput)="formatarCNPJ($event)"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Nome da Empresa</ion-label>
+                <ion-input formControlName="name"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Subtítulo da Loja</ion-label>
+                <ion-input
+                  formControlName="storeSubtitle"
+                  placeholder="Ex: Especialista em cortes masculinos"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Categoria</ion-label>
+                <ion-select
+                  formControlName="category"
+                  interface="action-sheet"
+                  placeholder="Selecione a categoria"
+                >
+                  <ion-select-option
+                    *ngFor="let category of categories"
+                    [value]="category.id"
+                  >
+                    {{ category.name }}
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label position="floating">ENDEREÇO</ion-label>
-      <ion-input
-        formControlName="address"
-        placeholder="endereço, número"
-      ></ion-input>
-    </ion-item>
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Contato e Redes Sociais</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Telefone</ion-label>
+                <ion-input
+                  type="tel"
+                  formControlName="phone"
+                  maxlength="15"
+                  (ionInput)="formatarTelefone($event)"
+                  placeholder="(99) 99999-9999"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Site</ion-label>
+                <ion-input
+                  formControlName="website"
+                  type="url"
+                  placeholder="https://"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Facebook</ion-label>
+                <ion-input
+                  formControlName="facebook"
+                  placeholder="facebook.com/seuuser"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Instagram</ion-label>
+                <ion-input
+                  formControlName="instagram"
+                  placeholder="@seuuser"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Youtube</ion-label>
+                <ion-input
+                  formControlName="youtube"
+                  placeholder="@seuuser"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label position="floating">CIDADE</ion-label>
-      <ion-input formControlName="city"></ion-input>
-    </ion-item>
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Endereço</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-item>
+                <ion-label position="floating">Endereço</ion-label>
+                <ion-input
+                  formControlName="address"
+                  placeholder="Rua, número, complemento"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Cidade</ion-label>
+                <ion-input formControlName="city"></ion-input>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label position="floating">Estado</ion-label>
+                <ion-select
+                  formControlName="state"
+                  interface="action-sheet"
+                  placeholder="Selecione seu estado"
+                >
+                  <ion-select-option
+                    *ngFor="let state of states"
+                    [value]="state.id"
+                  >
+                    {{ state.id }} ({{ state.name }})
+                  </ion-select-option>
+                </ion-select>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label position="floating">ESTADO</ion-label>
-      <ion-select
-        formControlName="state"
-        interface="action-sheet"
-        placeholder="Selecione seu estado"
-      >
-        <ion-select-option *ngFor="let state of states" [value]="state.id">
-          {{ state.id }} ({{ state.name }})
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Horários de Atendimento</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="horario-box">
+          <div class="horario-scroll">
+            <ion-grid>
+              <ion-row
+                *ngFor="let weekday of weekDays; let i = index"
+                [formGroup]="getHorarioFormGroup(i)"
+                class="ion-align-items-center"
+              >
+                <ion-col size="4">
+                  <ion-label>{{ weekday }}</ion-label>
+                  <input
+                    type="hidden"
+                    formControlName="weekday"
+                    [value]="weekday"
+                  />
+                </ion-col>
+                <ion-col size="2">
+                  <ion-toggle formControlName="activated"></ion-toggle>
+                </ion-col>
+                <ion-col
+                  size="6"
+                  *ngIf="getHorarioFormGroup(i).get('activated')?.value"
+                >
+                  <ion-item>
+                    <ion-label position="stacked">Início</ion-label>
+                    <ion-input
+                      type="time"
+                      formControlName="start"
+                      required
+                    ></ion-input>
+                  </ion-item>
+                  <ion-item>
+                    <ion-label position="stacked">Fim</ion-label>
+                    <ion-input
+                      type="time"
+                      formControlName="end"
+                      required
+                    ></ion-input>
+                  </ion-item>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item>
-      <ion-label position="floating">CATEGORIA</ion-label>
-      <ion-select
-        formControlName="category"
-        interface="action-sheet"
-        placeholder="Selecione a categoria"
-      >
-        <ion-select-option
-          *ngFor="let category of categories"
-          [value]="category.id"
-        >
-          {{ category.name }}
-        </ion-select-option>
-      </ion-select>
-    </ion-item>
-  </ion-list>
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Configurações da Loja</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Aceitar pessoas em outras filas</ion-label>
+                <ion-toggle
+                  formControlName="acceptOtherQueues"
+                  slot="end"
+                ></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Atender fora de ordem</ion-label>
+                <ion-toggle
+                  formControlName="answerOutOfOrder"
+                  slot="end"
+                ></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Atender com hora marcada</ion-label>
+                <ion-toggle
+                  formControlName="answerScheduledTime"
+                  slot="end"
+                ></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Enviar aviso por WhatsApp</ion-label>
+                <ion-toggle
+                  formControlName="whatsAppNotice"
+                  slot="end"
+                ></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Abrir fila automaticamente</ion-label>
+                <ion-toggle
+                  formControlName="openAutomatic"
+                  slot="end"
+                ></ion-toggle>
+              </ion-item>
+            </ion-col>
+            <ion-col size="12" size-md="6">
+              <ion-item>
+                <ion-label>Remover cliente chamado da fila após:</ion-label>
+                <ion-input
+                  type="number"
+                  formControlName="timeRemoval"
+                  placeholder="Minutos"
+                  class="time-input"
+                ></ion-input>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-card-content>
+    </ion-card>
 
-  <div class="horario-box">
-    <ion-label class="label-titulo">Horários de Atendimento *</ion-label>
-    <div class="horario-scroll">
-      <ion-grid>
-        <ion-row
-          *ngFor="let weekday of weekDays; let i = index"
-          [formGroup]="getHorarioFormGroup(i)"
-          class="ion-align-items-center"
-        >
-          <ion-col size="4">
-            <ion-label>{{ weekday }}</ion-label>
-            <input type="hidden" formControlName="weekday" [value]="weekday" />
-          </ion-col>
-          <ion-col size="2">
-            <ion-toggle formControlName="activated"></ion-toggle>
-          </ion-col>
-          <ion-col
-            size="6"
-            *ngIf="getHorarioFormGroup(i).get('activated')?.value"
+    <ion-card class="form-section full-width">
+      <ion-card-header>
+        <ion-card-title>Destaques da Loja</ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div formArrayName="highLights">
+          <div
+            *ngFor="let highlight of highLights.controls; let i = index"
+            [formGroupName]="i"
+            class="icone-frase-item"
           >
             <ion-item>
-              <ion-label position="floating">Início</ion-label>
+              <ion-select
+                formControlName="icon"
+                placeholder="Escolher ícone"
+                interface="action-sheet"
+              >
+                <ion-select-option value="flame">🔥 Fogo</ion-select-option>
+                <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
+                <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
+                <ion-select-option value="star">⭐ Estrela</ion-select-option>
+                <ion-select-option value="heart">❤️ Coração</ion-select-option>
+                <ion-select-option value="thumbs-up">👍 Like</ion-select-option>
+              </ion-select>
+
               <ion-input
-                type="time"
-                formControlName="start"
-                required
+                formControlName="phrase"
+                placeholder="Frase relacionada"
               ></ion-input>
+
+              <ion-button
+                color="danger"
+                fill="clear"
+                (click)="removerIconeFrase(i)"
+              >
+                <ion-icon name="trash"></ion-icon>
+              </ion-button>
             </ion-item>
-            <ion-item>
-              <ion-label position="floating">Fim</ion-label>
-              <ion-input type="time" formControlName="end" required></ion-input>
-            </ion-item>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </div>
-  </div>
+          </div>
+        </div>
 
-  <ion-list lines="none">
-    <ion-item class="item-with-toggle">
-      <ion-label>Aceitar pessoas em outras filas</ion-label>
-      <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
-    </ion-item>
+        <ion-button
+          expand="block"
+          fill="outline"
+          (click)="adicionarIconeFrase()"
+          class="add-button"
+        >
+          <ion-icon name="add" slot="start"></ion-icon>
+          Adicionar Destaque
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
 
-    <ion-item class="item-with-toggle">
-      <ion-label>Atender fora de ordem</ion-label>
-      <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
-    </ion-item>
-
-    <ion-item class="item-with-toggle">
-      <ion-label>Atender com hora marcada</ion-label>
-      <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
-    </ion-item>
-
-    <ion-item class="item-with-toggle">
-      <ion-label>Enviar aviso por WhatsApp</ion-label>
-      <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
-    </ion-item>
-
-    <ion-item class="item-with-toggle">
-      <ion-label>Abrir fila automaticamente</ion-label>
-      <ion-toggle formControlName="whatsAppNotice"></ion-toggle>
-    </ion-item>
-  </ion-list>
-
-  <ion-item>
-    <ion-label>Remover cliente chamado da fila após:</ion-label>
-    <ion-input
-      type="number"
-      formControlName="timeRemoval"
-      placeholder="Minutos"
-      style="max-width: 80px; margin-left: 8px"
+    <!-- <ion-button
+      expand="block"
+      color="primary"
+      class="btn-cadastro"
+      [disabled]="sending"
+      (click)="enviar()"
     >
-    </ion-input>
-  </ion-item>
-
-  <div class="wallpaper-wrapper">
-    <div class="wallpaper-container" (click)="selecionarWallpaper()">
-      <img
-        *ngIf="wallpaperPreview"
-        [src]="wallpaperPreview"
-        alt="Wallpaper Preview"
-        class="wallpaper-preview"
-      />
+      <ion-spinner *ngIf="sending" name="crescent" slot="start"></ion-spinner>
       <ion-icon
-        *ngIf="!wallpaperPreview"
-        name="image-outline"
-        class="upload-icon"
+        *ngIf="!sending && saved"
+        name="checkmark-circle"
+        slot="start"
       ></ion-icon>
-      <div class="overlay">Clique para alterar</div>
-      <input
-        type="file"
-        hidden
-        accept="image/*"
-        #wallpaperInput
-        (change)="onWallpaperSelecionado($event)"
-      />
-    </div>
-    <div class="wallpaper-msg">
-      Clique para enviar o papel de parede da loja
-    </div>
-
-    <button
-      *ngIf="wallpaperPreview"
-      class="remove-wallpaper-btn"
-      (click)="removerWallpaper()"
-    >
-      Remover Papel de Parede
-    </button>
+      {{ sending ? 'Salvando...' : saved ? 'Salvo!' : 'SALVAR CONFIGURAÇÕES' }}
+    </ion-button> -->
   </div>
-
-  <ion-list lines="none">
-    <ion-item>
-      <ion-label position="floating">SUBTITULO LOJA</ion-label>
-      <ion-input formControlName="storeSubtitle"></ion-input>
-    </ion-item>
-  </ion-list>
-
-  <!-- Ícones e Frases pra colocar embaixo da logo no perfil da empresa -->
-  <div class="icone-frase-wrapper ion-margin-top">
-    <ion-label class="label-titulo">DESTAQUES DA LOJA:</ion-label>
-
-    <div formArrayName="highLights">
-      <div
-        *ngFor="let highlight of highLights.controls; let i = index"
-        [formGroupName]="i"
-        class="icone-frase-item"
-      >
-        <ion-item>
-          <ion-select formControlName="icon" placeholder="Escolher ícone">
-            <ion-select-option value="flame">🔥 Fogo</ion-select-option>
-            <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
-            <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
-          </ion-select>
-
-          <ion-input
-            formControlName="phrase"
-            placeholder="Frase relacionada"
-            class="ion-margin-start"
-          ></ion-input>
-
-          <ion-button
-            color="danger"
-            fill="clear"
-            (click)="removerIconeFrase(i)"
-          >
-            <ion-icon name="trash"></ion-icon>
-          </ion-button>
-        </ion-item>
-      </div>
-    </div>
-
-    <ion-button expand="block" fill="outline" (click)="adicionarIconeFrase()">
-      Adicionar Ícone + Frase
-    </ion-button>
-  </div>
-
-  <ion-button
-    expand="block"
-    color="primary"
-    class="btn-cadastro"
-    [disabled]="sending"
-    (click)="enviar()"
-  >
-    <ion-spinner *ngIf="sending" name="crescent" slot="start"></ion-spinner>
-    <ion-icon
-      *ngIf="!sending && saved"
-      name="checkmark-circle"
-      slot="start"
-    ></ion-icon>
-    {{ sending ? 'Salvando...' : saved ? 'Salvo!' : 'SALVAR' }}
-  </ion-button>
 </ion-content>

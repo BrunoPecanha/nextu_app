@@ -17,7 +17,7 @@ export class ServiceService {
   }
 
   loadServiceById(id: number): Observable<ServiceResponse> {
-    return this.http.get<ServiceResponse>(`${this.apiUrl}/services/${id}`);
+    return this.http.get<ServiceResponse>(`${this.apiUrl}/services/all/${id}`);
   }
 
   createService(serviceData: FormData): Observable<any> {

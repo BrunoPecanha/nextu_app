@@ -55,7 +55,7 @@ export class SelectProfessionalPage implements OnInit {
   }
 
   abrirLojaDetalhada() {
-    this.router.navigate(['/store-details', /*this.store?.id*/]);
+    this.router.navigate(['/store-details', this.storeId]);
   }
 
   getProgressoFila(qtdPessoas: number): number {

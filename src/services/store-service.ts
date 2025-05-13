@@ -6,6 +6,7 @@ import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { OpeningHoursRequest } from "src/models/requests/opening-hours-request";
 import { StoreRequest } from "src/models/requests/store-request";
+import { StoreDetailResponse } from "src/models/responses/store-detail-response";
 import { StoreProfessionalsResponse } from "src/models/responses/store-professionals-response";
 import { StoreResponse } from "src/models/responses/store-response";
 
@@ -17,8 +18,12 @@ export class StoreService {
 
   constructor(private http: HttpClient) { }
 
-  getStores(id: number): Observable<StoreResponse> {
+  getStoresByOwner(id: number): Observable<StoreResponse> {
     return this.http.get<StoreResponse>(`${this.apiUrl}/store/owner/${id}`);
+  }
+
+  getStoreById(id: number): Observable<StoreDetailResponse> {
+    return this.http.get<StoreDetailResponse>(`${this.apiUrl}/store/${id}`);
   }
 
   loadEmployeeStores(id: number): Observable<StoreResponse> {

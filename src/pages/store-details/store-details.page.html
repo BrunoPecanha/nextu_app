@@ -9,52 +9,139 @@
     </ion-buttons>
     <ion-title>LOJA</ion-title>
     <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
+      <ion-button (click)="openInfoModal()">
+        <ion-icon name="information-circle-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen class="loja-container">
-  <!-- Papel de parede da loja -->
-  <div class="loja-banner">
-    <img [src]="loja.papelParede" class="img-banner" />
+  <div *ngIf="isLoading" class="loading-spinner">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+  <div *ngIf="!isLoading" class="page-content">
+    <div class="loja-banner">
+      <img [src]="store.wallPaperPath" class="img-banner" />
+      <div class="logo-wrapper">
+        <img [src]="store.logoPath" class="logo-loja" />
+      </div>
+    </div>
 
-    <!-- Logo flutuante -->
-    <div class="logo-wrapper">
-      <img [src]="loja.logo" class="logo-loja" />
+    <div class="loja-info">
+      <h2 class="nome-loja">{{ store.name }}</h2>
+      <p class="descricao-loja">{{ store.storeSubtitle }}</p>
+
+      <ion-chip *ngFor="let chip of store.highLights" color="medium" outline>
+        <ion-icon [name]="chip.icon"></ion-icon>
+        <ion-label>{{ chip.phrase }}</ion-label>
+      </ion-chip>
+    </div>
+
+    <ion-list class="servicos-lista">
+      <ion-item *ngFor="let service of services">
+        <ion-avatar slot="start">
+          <img [src]="service.imgPath" />
+        </ion-avatar>
+        <ion-label>
+          <h3>{{ service.name }}</h3>
+          <p>{{ service.description }}</p>
+        </ion-label>
+        <ion-note slot="end" color="primary">
+          R$ {{ service.price | number:'1.2-2' }}
+        </ion-note>
+      </ion-item>
+    </ion-list>
+
+    <div *ngIf="isInfoModalOpen" class="custom-modal-content">
+      <ion-button
+        (click)="isInfoModalOpen = false"
+        class="close-button"
+        fill="clear"
+      >
+        <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+
+      <div class="info-card">
+        <ion-item lines="none" class="info-item">
+          <ion-icon
+            name="location-outline"
+            slot="start"
+            class="info-icon"
+          ></ion-icon>
+          <ion-label class="info-text">
+            <h3>Endereço</h3>
+            <p>{{ store.address || 'Endereço não informado' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none" class="info-item">
+          <ion-icon
+            name="time-outline"
+            slot="start"
+            class="info-icon"
+          ></ion-icon>
+          <ion-label class="info-text">
+            <h3>Horário de Funcionamento</h3>
+            <div class="opening-hours">
+              <div *ngFor="let hour of store?.openingHours" class="hour-row">
+                <span class="day">{{ hour.weekDay }}:</span>
+                <span class="time" *ngIf="hour?.activated">
+                  {{ hour.start?.slice(0,5) }} às {{ hour.end?.slice(0,5) }}
+                </span>
+                <span class="closed" *ngIf="!hour?.activated">Fechado</span>
+              </div>
+            </div>
+          </ion-label>
+        </ion-item>
+
+        <ion-item lines="none" class="info-item">
+          <ion-icon
+            name="call-outline"
+            slot="start"
+            class="info-icon"
+          ></ion-icon>
+          <ion-label class="info-text">
+            <h3>Contato</h3>
+            <p>{{ store.phone || 'Telefone não informado' }}</p>
+          </ion-label>
+        </ion-item>
+
+        <div class="social-media-section" *ngIf="hasSocialMedia()">
+          <div class="social-icons">
+            <a *ngIf="store.instagram" [href]="store.instagram" target="_blank">
+              <ion-icon
+                name="logo-instagram"
+                class="social-icon instagram"
+              ></ion-icon>
+            </a>
+            <a *ngIf="store.facebook" [href]="store.facebook" target="_blank">
+              <ion-icon
+                name="logo-facebook"
+                class="social-icon facebook"
+              ></ion-icon>
+            </a>
+            <a *ngIf="store.youtube" [href]="store.youtube" target="_blank">
+              <ion-icon
+                name="logo-youtube"
+                class="social-icon youtube"
+              ></ion-icon>
+            </a>
+            <a
+              *ngIf="store.whatsapp"
+              [href]="'https://wa.me/' + store.whatsapp"
+              target="_blank"
+            >
+              <ion-icon
+                name="logo-whatsapp"
+                class="social-icon whatsapp"
+              ></ion-icon>
+            </a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-
-  <!-- Informações principais -->
-  <div class="loja-info">
-    <h2 class="nome-loja">{{ loja.nome }}</h2>
-    <p class="descricao-loja">{{ loja.descricao }}</p>
-
-    <ion-chip *ngFor="let chip of loja.chips" color="medium" outline>
-      <ion-icon [name]="chip.icon"></ion-icon>
-      <ion-label>{{ chip.label }}</ion-label>
-    </ion-chip>
-  </div>
-
-  <!-- Lista de serviços -->
-  <ion-list class="servicos-lista">
-    <ion-item *ngFor="let servico of servicos">
-      <ion-avatar slot="start">
-        <img [src]="servico.imagem" />
-      </ion-avatar>
-
-      <ion-label>
-        <h3>{{ servico.nome }}</h3>
-        <p>{{ servico.descricao }}</p>
-      </ion-label>
-
-      <ion-note slot="end" color="primary">
-        R$ {{ servico.preco | number:'1.2-2' }}
-      </ion-note>
-    </ion-item>
-  </ion-list>  
 </ion-content>
 
 <app-footer-menu></app-footer-menu>
