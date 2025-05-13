@@ -37,29 +37,34 @@ export class CompanyConfigurationsPage {
   constructor(private fb: FormBuilder, private stateService: StatesService, private categoryService: CategoryService,
     private storeService: StoreService) {
 
-    this.cadastroForm = this.fb.group({
-      ownerId: 1,
-      logoPath: [''],
-      cnpj: [''],
-      name: [''],
-      address: [''],
-      city: [''],
-      state: [''],
-      category: [''],
-      openingHours: this.fb.array(
-        this.weekDays.map(day => this.createHorarioForm(day))
-      ),
-      openAutomatic: [false],
-      acceptOtherQueues: [false],
-      answerOutOfOrder: [false],
-      answerScheduledTime: [false],
-      whatsAppNotice: [false],
-      timeRemoval: [null],
-      wallPaperPath: [''],
-      storeSubtitle: [''],
-      highLights: this.fb.array([])
-    });
-
+      this.cadastroForm = this.fb.group({
+        ownerId: 1,
+        logoPath: [''],
+        cnpj: [''],
+        name: [''],
+        address: [''],
+        city: [''],
+        state: [''],
+        category: [''],
+        phone: [''],
+        website: [''],
+        facebook: [''],
+        instagram: [''],
+        youtube: [''],
+        openingHours: this.fb.array(
+          this.weekDays.map(day => this.createHorarioForm(day))
+        ),
+        openAutomatic: [false],
+        acceptOtherQueues: [false],
+        answerOutOfOrder: [false],
+        answerScheduledTime: [false],
+        whatsAppNotice: [false],
+        timeRemoval: [null],
+        wallPaperPath: [''],
+        storeSubtitle: [''],
+        highLights: this.fb.array([])
+      });
+      
     this.loadStates();
     this.loadCategories();
   }
@@ -242,6 +247,23 @@ export class CompanyConfigurationsPage {
     const phoneRegex = /^(\d{2})([2-5]\d{7}|9\d{8})$/;
 
     return phoneRegex.test(cleaned);
+  }
+
+  formatarTelefone(event: any) {
+    let valor = event.detail.value;
+    valor = valor.replace(/\D/g, '');
+    
+    if (valor.length > 2) {
+      valor = valor.replace(/^(\d{2})/, '($1) ');
+    }
+    
+    if (valor.length > 10) {
+      valor = valor.replace(/(\d{5})(\d)/, '$1-$2');
+    } else if (valor.length > 6) {
+      valor = valor.replace(/(\d{4})(\d)/, '$1-$2');
+    }
+    
+    this.cadastroForm.get('phone')?.setValue(valor, { emitEvent: false });
   }
 
   formatAndValidatePhone(phoneNumber: string): {

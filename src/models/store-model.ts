@@ -8,6 +8,7 @@ import { UserModel } from "./user-model";
 export interface StoreModel extends To {
   id: number;
   cnpj: string;
+  phone: string;
   name: string;
   address: string;
   number: string;
@@ -26,7 +27,7 @@ export interface StoreModel extends To {
   whatsAppNotice: boolean;
   logoPath?: string;
   wallPaperPath?: string; 
-  openingHours: OpeningHoursModel[];
+  openingHours?: OpeningHoursModel[];
   highLights: HighLightModel[];
   ownerId: number;
   owner?: UserModel;
@@ -34,4 +35,9 @@ export interface StoreModel extends To {
   liked: boolean;
   createdAt?: Date | any;
   isNew?: boolean
+  instagram: string;
+  facebook: string; 
+  youtube: string;
+  site: string;
+  whatsapp: string;
 }

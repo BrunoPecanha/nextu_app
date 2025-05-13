@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ServiceModel } from 'src/models/service-model';
+import { StoreModel } from 'src/models/store-model';
+import { ServiceService } from 'src/services/services-service';
+import { StoreService } from 'src/services/store-service';
 
 @Component({
   selector: 'app-store-details',
@@ -6,43 +11,92 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./store-details.page.scss'],
 })
 export class StoreDetailsPage implements OnInit {
+  storeId: number | null = null;
+  store: StoreModel = {} as StoreModel;
+  services: ServiceModel[] = [];
+  isInfoModalOpen: boolean = false;
+  isLoading: boolean = true; 
 
-  loja: any = {};
-  servicos: any[] = [];
-
-  constructor() {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private storeService: StoreService,
+    private serviceService: ServiceService
+  ) { }
 
   ngOnInit() {
-    this.loja = {
-      nome: "King’s Sons - Barbershop",
-      descricao: "Cortes na régua, química e aquele trato na régua.",
-      papelParede: "assets/images/utils/wall-paper.jpg",
-      logo: "assets/images/company-logo/kingssons.jpeg",
-      chips: [
-        { icon: 'cut-outline', label: 'Especialistas em fade' },
-        { icon: 'flame-outline', label: 'Barba na navalha' }
-      ]
-    };
+    const id = this.route.snapshot.paramMap.get('id');
+    this.storeId = id ? parseInt(id, 10) : null;
 
-    this.servicos = [
-      {
-        nome: 'Corte Simples',
-        descricao: 'Feito na régua, finalização com máquina e tesoura',
-        preco: 25,
-        imagem: 'assets/images/utils/corte-maquina.jpg'
+    if (this.storeId !== null && !isNaN(this.storeId)) {
+      this.loadData();
+    } else {
+      console.error('Loja não encontrada');
+      this.isLoading = false;
+    }
+  }
+
+  loadData() {
+    Promise.all([
+      this.loadStore(),
+      this.loadServices()
+    ]).finally(() => {
+      this.isLoading = false;
+    });
+  }
+
+  loadStore(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.storeService.getStoreById(this.storeId!).subscribe({
+        next: (response) => {
+          this.store = response.data;
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar loja:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+  loadServices(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.serviceService.loadServicesByStore(this.storeId!).subscribe({
+        next: (response) => {
+          this.services = response.data;
+          resolve();
+        },
+        error: (err) => {
+          console.error('Erro ao carregar serviços do estabelecimento:', err);
+          reject(err);
+        }
+      });
+    });
+  }
+
+
+  getStore(id: number) {
+    this.storeService.getStoreById(id).subscribe({
+      next: (response) => {
+        this.store = response.data;
       },
-      {
-        nome: 'Combo Corte + Barba',
-        descricao: 'Completo: corte, barba e sobrancelha',
-        preco: 40,
-        imagem: 'assets/images/utils/corte-tesoura.jpg'
-      },
-      {
-        nome: 'Relaxamento + Corte',
-        descricao: 'Química capilar e corte moderno',
-        preco: 60,
-        imagem: 'assets/images/utils/descoloracao.jpg'
+      error: (err) => {
+        console.error('Erro ao carregar loja:', err);
       }
-    ];
+    });
+  }
+
+  openInfoModal() {
+    this.isInfoModalOpen = true;
+  }
+
+  hasSocialMedia(): boolean {
+    return !!(
+      this.store.instagram ||
+      this.store.facebook ||
+      this.store.whatsapp ||
+      this.store.youtube
+    );
   }
 }

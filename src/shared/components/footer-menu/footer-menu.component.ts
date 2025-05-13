@@ -33,4 +33,9 @@ export class FooterMenuComponent implements OnInit {
   marcarComoLida(id: number, usuarioId: number): Observable<any> {    
     return of(null);
   }
+
+  abrirMenu() {
+    const menu = document.querySelector('ion-menu');
+    menu?.open();
+  }
 }
