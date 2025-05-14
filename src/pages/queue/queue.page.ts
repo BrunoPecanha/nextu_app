@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
 import { CustomerInQueueCardDetailModel } from 'src/models/customer-in-queue-card-detail-model';
 import { CustomerInQueueCardModel } from 'src/models/customer-in-queue-card-model';
 import { QueueService } from 'src/services/queue-service';
+import { SignalRService } from 'src/services/seignalr-service';
 import { SessionService } from 'src/services/session.service';
 
 @Component({
@@ -12,7 +13,9 @@ import { SessionService } from 'src/services/session.service';
   styleUrls: ['./queue.page.scss'],
 })
 export class QueuePage implements OnInit {
-  customerCards: CustomerInQueueCardModel[] | null = null;
+  customerCards: CustomerInQueueCardModel[] | [] = [];
+  fallbackRoute = '/select-company';
+  store: any;
   currentDate = new Date();
   horaChamada = '10:00';
   qrCodeBase64: string | null = null;
@@ -26,10 +29,50 @@ export class QueuePage implements OnInit {
     private alertController: AlertController,
     public router: Router,
     private queueService: QueueService,
-    private sessionService: SessionService
-  ) { }
+    private sessionService: SessionService,
+    private toastController: ToastController,
+    private signalRService: SignalRService
+  ) {
+  }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.startSignalRConnection();
+  }
+
+  async startSignalRConnection() {
+    try {
+      await this.signalRService.startConnection();
+
+      this.store = this.sessionService.getStore();
+
+      if (this.store) {
+        this.signalRService.joinGroup(`company-${this.store.id}`);
+      }
+
+      this.signalRService.onUpdateQueue(() => {
+        console.log('Atualização recebida via SignalR!');
+        this.forceReload();
+      });
+
+    } catch (error) {
+      console.error('Erro ao iniciar conexão SignalR:', error);
+    }
+  }
+
+  ngOnDestroy() {
+    this.signalRService.offNewPersonInQueue();
+    this.signalRService.stopConnection();
+  }
+
+  ionViewDidEnter() {
+    this.forceReload();
+  }
+
+  private forceReload(): void {
+    this.customerCards = [];
+    this.cardDetailsMap.clear();
+    this.expandedStates.clear();
+
     this.loadCustomersInQueueCard();
   }
 
@@ -74,15 +117,11 @@ export class QueuePage implements OnInit {
   }
 
   public loadCustomersInQueueCard(): void {
-    // this.customer = this.sessionService.getCustomer();
-    // if (!this.customer) {
-    //   console.error('Cliente não autenticado');
-    //   return;
-    // }
+    this.customerCards = [];
 
-    this.queueService.getCustomerInQueueCard(/*this.customer.id*/1).subscribe({
+    this.queueService.getCustomerInQueueCard(3).subscribe({
       next: (response) => {
-        this.customerCards = response.data;
+        this.customerCards = response.data || [];
       },
       error: (err) => {
         console.error('Erro ao carregar filas:', err);
@@ -92,11 +131,7 @@ export class QueuePage implements OnInit {
   }
 
   private loadCustomerInQueueCardDetails(card: CustomerInQueueCardModel): void {
-    // this.customer = this.sessionService.getCustomer();
-    // if (!this.customer) 
-    //   return;
-
-    this.queueService.getCustomerInQueueCardDetails(/*this.customer.id, card.queueId*/1, 2).subscribe({
+    this.queueService.getCustomerInQueueCardDetails(card.id, card.queueId).subscribe({
       next: (response) => {
         this.cardDetailsMap.set(card.queueId, response.data);
         this.expandedStates.set(card.queueId, true);
@@ -122,7 +157,7 @@ export class QueuePage implements OnInit {
     });
   }
 
-  public async exitQueue(queueId: number): Promise<void> {
+  public async exitQueue(card: CustomerInQueueCardModel): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Confirmar Saída',
       message: 'Você tem certeza que deseja sair da fila?',
@@ -130,16 +165,32 @@ export class QueuePage implements OnInit {
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Confirmar',
-          handler: () => {
-            this.queueService.exitQueue(queueId, 2).subscribe({
-              next: () => this.loadCustomersInQueueCard(),
-              error: (err) => console.error('Erro ao sair da fila:', err)
+          handler: async () => {
+            this.queueService.exitQueue(card.id, card.queueId).subscribe({
+              next: async () => {
+                await this.showToast('Você saiu da fila com sucesso!');
+                this.loadCustomersInQueueCard();
+              },
+              error: async (err) => {
+                console.error('Erro ao sair da fila:', err);
+                await this.showToast('Ocorreu um erro ao sair da fila', 'danger');
+              }
             });
           },
         },
       ],
     });
     await alert.present();
+  }
+
+  private async showToast(message: string, color: string = 'success'): Promise<void> {
+    const toast = await this.toastController.create({
+      message: message,
+      duration: 3000,
+      position: 'top',
+      color: color
+    });
+    await toast.present();
   }
 
   public editarServicos(card: CustomerInQueueCardModel): void {

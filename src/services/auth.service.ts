@@ -20,4 +20,8 @@ export class AuthService {
   logout(): Observable<any> {
     return this.http.post(`${this.apiUrl}/auth/logout`, {});
   }
+
+  public getToken(): string {
+    return localStorage.getItem('token') || '';
+  }
 }

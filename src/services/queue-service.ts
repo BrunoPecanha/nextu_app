@@ -127,7 +127,7 @@ export class QueueService {
     return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);
   }
 
-  exitQueue(custeomerId: number, queueId: number): Observable<any> {
-    return of({ success: true });
+  exitQueue(custeomerId: number, queueId: number): Observable<any> {    
+    return this.http.delete<any>(`${this.apiUrl}/queue/${custeomerId}/${queueId}/exit`);
   }
 }
