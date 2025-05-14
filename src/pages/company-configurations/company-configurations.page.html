@@ -1,7 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
+      <ion-back-button
+      [defaultHref]="fallbackRoute"
+        text=""
+        icon="arrow-back-outline"
+      ></ion-back-button>
     </ion-buttons>
     <ion-title>CONFIGURAÇÕES</ion-title>
     <ion-buttons slot="end">
@@ -402,21 +406,7 @@
         </ion-button>
       </ion-card-content>
     </ion-card>
-
-    <!-- <ion-button
-      expand="block"
-      color="primary"
-      class="btn-cadastro"
-      [disabled]="sending"
-      (click)="enviar()"
-    >
-      <ion-spinner *ngIf="sending" name="crescent" slot="start"></ion-spinner>
-      <ion-icon
-        *ngIf="!sending && saved"
-        name="checkmark-circle"
-        slot="start"
-      ></ion-icon>
-      {{ sending ? 'Salvando...' : saved ? 'Salvo!' : 'SALVAR CONFIGURAÇÕES' }}
-    </ion-button> -->
   </div>
 </ion-content>
+
+<app-footer-menu></app-footer-menu>

@@ -26,8 +26,27 @@
 
   <div *ngFor="let client of clients" class="card-cliente">
     <div class="card-content">
-      <h3>{{ client.name }}</h3>
+      <div class="client-header">
+        <div class="name-wrapper">
+          <h3>{{ client.name }}</h3>
+        </div>
+        <ion-button 
+          fill="clear" 
+          size="small" 
+          (click)="callCustomer(client)"
+          class="call-button"
+          title="Chamar cliente"
+        >
+          <ion-icon name="notifications-outline"></ion-icon>
+        </ion-button>
+      </div>
+      
       <p class="servico">{{ client.services }}</p>
+
+      <div class="called-time" *ngIf="client.timeCalledInQueue">
+        <ion-icon name="megaphone-outline"></ion-icon>
+        Última chamada às: {{ client.timeCalledInQueue }}
+      </div>
 
       <div class="info-extra">
         <div class="tempo-espera">
@@ -51,7 +70,7 @@
           color="medium"
           size="small"
           fill="outline"
-          (click)="openRemoveConfirmation()"
+          (click)="openRemoveConfirmation(client)"
         >
           Remover
         </ion-button>
@@ -67,8 +86,8 @@
           ></ion-icon>
           {{ client.inService ? 'Em Atendimento' : 'Atender' }}
         </ion-button>
- 
-        <ion-button *ngIf="true"
+
+        <ion-button
           size="small"
           color="success"
           (click)="openWhatsapp(client)"

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { QueueService } from 'src/services/queue-service';
 import { SessionService } from 'src/services/session.service';
-
 
 @Component({
   selector: 'app-customer-list-in-queue',
@@ -16,11 +15,14 @@ export class CustomerListInQueuePage implements OnInit {
   store: any;
   employee: any;
   currentDate = new Date();
+  calledTime = new Date();
+
 
   constructor(private navCtrl: NavController,
     private queueService: QueueService,
     private sessionService: SessionService,
-    private alertController: AlertController) {
+    private alertController: AlertController,
+    private toastController: ToastController) {
 
     this.loadAllCustomersInQueueByEmployeeAndStoreId();
   }
@@ -36,6 +38,7 @@ export class CustomerListInQueuePage implements OnInit {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
         next: (response) => {
           this.clients = response.data;
+          console.log('Clientes na fila:', this.clients);
         },
         error: (err) => {
           console.error('Erro ao carregar estabelecimentos:', err);
@@ -59,51 +62,94 @@ export class CustomerListInQueuePage implements OnInit {
     return `Esperando há ${fomatedTime} min`;
   }
 
-  async openRemoveConfirmation() {
+  async openRemoveConfirmation(client: any) {
     const alert = await this.alertController.create({
       header: 'Confirmação',
-      message: 'Tem certeza que deseja remover?',
+      message: 'Tem certeza que deseja remover: \n' + client.name + '?',
+      inputs: [
+        {
+          name: 'reason',
+          type: 'text',
+          placeholder: 'Motivo da remoção (opcional)'
+        }
+      ],
       buttons: [
         {
           text: 'Não',
-          role: 'cancel',
-          handler: () => {
-            console.log('Cancelado');
-          }
+          role: 'cancel'
         },
         {
           text: 'Sim',
-          handler: () => {
-            this.navCtrl.navigateForward('/costumer-list-in-queue');
+          handler: async (data) => {
+            const reason = data.reason || 'Removido pelo funcionário';
+            
+            try {              
+              await this.queueService.removeMissingCustomer(client.id, reason)
+                .toPromise();
+                            
+              this.loadAllCustomersInQueueByEmployeeAndStoreId();
+                            
+              const toast = await this.toastController.create({
+                message: 'Cliente removido com sucesso',
+                duration: 2000,
+                position: 'top'
+              });
+              await toast.present();
+              
+            } catch (error) {
+              console.error('Erro ao remover cliente:', error);
+              const toast = await this.toastController.create({
+                message: 'Falha ao remover cliente',
+                duration: 3000,
+                position: 'top',
+                color: 'danger'
+              });
+              await toast.present();
+            }
+            alert.dismiss();
+            return false;
           }
         }
       ]
     });
-
+  
     await alert.present();
   }
-
   redirectToCustomerService() {
     this.navCtrl.navigateForward('/customer-service');
   }
 
   startQRCodeScan(cliente: any) {
-    if (cliente.emAtendimento) {
+    if (cliente.inService) {
       console.log('Cliente já está em atendimento');
       this.navCtrl.navigateForward('/customer-service');
       return;
     }
-
+  
     console.log('Simulando leitura de QR Code...');
+  
+    this.queueService.startCustomerService(cliente.id).subscribe({
+      next: (response) => {
+        console.log('Atendimento iniciado com sucesso', response);
+        this.navCtrl.navigateForward('/customer-service');
+      },
+      error: (err) => {
+        console.error('Erro ao iniciar atendimento:', err);
+        // Aqui você pode exibir um toast ou alerta para o usuário
+      }
+    });
+  }  
 
-    setTimeout(() => {
-      const fakeQRCode = 'QR_' + cliente.nome.toUpperCase();
-      console.log('QR Code lido (fake):', fakeQRCode);
-
-      cliente.emAtendimento = true;
-
-      this.navCtrl.navigateForward('/customer-service');
-    }, 1200);
+  callCustomer(cliente: any) {  
+    this.queueService.notifyTimeCustomerWasCalledInTheQueue(cliente.id).subscribe({
+      next: (response) => {        
+        cliente.timeCalledInQueue = response.data
+        console.log('Cliente notificado com sucesso', response);
+      },
+      error: (err) => {
+        console.error('Erro ao notificar o cliente:', err);        
+      }
+    });
   }
 
   formatMinutesToHHMM(minutes: number): string {
@@ -117,38 +163,6 @@ export class CustomerListInQueuePage implements OnInit {
 
     return `${formattedHours}:${formattedMinutes}`;
   }
-
-
-
-  // startQRCodeScan(cliente: any) {
-  //   this.qrScanner.prepare().then((status: QRScannerStatus) => {
-  //     if (status.authorized) {
-  //       console.log('QR Scanner está autorizado');
-
-  //       // Ativar a câmera
-  //       this.qrScanner.show();
-
-  //       // Iniciar a leitura do QR Code
-  //       this.qrScanner.scan().subscribe({
-  //         next: (text: string) => {
-  //           console.log('QR Code lido: ', text);
-
-  //           this.navCtrl.navigateForward('/customer-service'); 
-
-  //           // Parar a câmera após o uso
-  //           this.qrScanner.hide(); 
-  //         },
-  //         error: (e: any) => {
-  //           console.error('Erro ao ler QR Code', e);
-  //         }
-  //       });
-  //     } else if (status.denied) {
-  //       console.log('Permissão negada para usar a câmera');
-  //     } else {
-  //       console.log('Permissão indefinida para acessar a câmera');
-  //     }
-  //   }).catch((e: any) => console.log('Erro ao preparar o QR Scanner', e));
-  // } 
 
   openWhatsapp(client: any) {
     const phoneNumber = '55' + 'client.phone';

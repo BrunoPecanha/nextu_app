@@ -39,6 +39,62 @@ h1 {
   letter-spacing: 1px;
 }
 
+.servicos-container {
+  width: 100%;
+  margin-bottom: 1.5rem;
+}
+
+.servico-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.servico-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.servico-detalhes {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.servico-nome {
+  font-size: 1.1rem;
+  color: #444;
+}
+
+.servico-quantidade {
+  font-size: 1rem;
+  color: #666;
+}
+
+.servico-valor {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #1e1e1e;
+}
+
+.total-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 0;
+  margin: 1rem 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+  border-top: 2px solid #f0f0f0;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.total-valor {
+  color: var(--ion-color-primary);
+}
+
 .info-bloco {
   display: flex;
   align-items: center;

@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
+import { AddQueueServiceRequest } from 'src/models/requests/add-queue-service-request';
 import { ServiceModel } from 'src/models/service-model';
+import { QueueService } from 'src/services/queue-service';
 import { ServiceService } from 'src/services/services-service';
 
 @Component({
@@ -26,7 +29,8 @@ export class SelectServicesPage {
     private router: Router,
     private route: ActivatedRoute,
     private alertController: AlertController,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private queueService: QueueService
   ) {
   }
 
@@ -83,7 +87,7 @@ export class SelectServicesPage {
   }
 
   updateTotals() {
-    this.totalTime = this.selectedServices.reduce((acc, service) => {      
+    this.totalTime = this.selectedServices.reduce((acc, service) => {
       const durationInMinutes = typeof service.duration === 'string'
         ? this.convertTimeStringToMinutes(service.duration)
         : Number(service.duration) || 0;
@@ -154,14 +158,38 @@ export class SelectServicesPage {
     await alert.present();
   }
 
+
+  addCustomerToQueue() {    
+    const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
+      serviceId: service.id,
+      quantity: service.quantity
+    }));
+
+    const command: AddCustomerToQueueRequest = {
+      selectedServices: servicesToSend,
+      notes: this.observacao,
+      paymentMethod: this.formaPagamento,
+      queueId: this.queueId,
+      userId: 3
+    };
+
+    this.queueService.addCustomerToQueue(command).subscribe({
+      next: (response) => {
+        console.log('Cliente adicionado com sucesso:', response);
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar cliente:', error);
+      }
+    });
+  }
+
+
   proceedToQueue() {
+    this.addCustomerToQueue();
+
     this.router.navigate(['/queue'], {
       queryParams: {
-        queueId: this.queueId,
-        storeId: this.storeId,
-        services: JSON.stringify(this.selectedServices),
-        observation: this.observacao,
-        paymentMethod: this.formaPagamento
+        userId: 2
       }
     });
   }

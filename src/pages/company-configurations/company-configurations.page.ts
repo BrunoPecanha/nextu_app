@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { CategoryModel } from 'src/models/category-model';
 import { CategoryResponse } from 'src/models/responses/category-response';
 import { CategoryService } from 'src/services/category-service';
@@ -31,11 +32,12 @@ export class CompanyConfigurationsPage {
   successMessage: string | null = null;
   errorMessage: string | null = null;
   saved = false;
+  fallbackRoute = '/role-registration'; 
 
   weekDays = ['Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado', 'Domingo'];
 
   constructor(private fb: FormBuilder, private stateService: StatesService, private categoryService: CategoryService,
-    private storeService: StoreService) {
+    private storeService: StoreService, private navCtrl: NavController) {
 
       this.cadastroForm = this.fb.group({
         ownerId: 1,
@@ -80,6 +82,10 @@ export class CompanyConfigurationsPage {
 
   get highLights(): FormArray {
     return this.cadastroForm.get('highLights') as FormArray;
+  }
+
+  getBack() {
+    this.navCtrl.back();
   }
 
   adicionarIconeFrase() {
