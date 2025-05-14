@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { QueueService } from 'src/services/queue-service';
+import { SignalRService } from 'src/services/seignalr-service';
 import { SessionService } from 'src/services/session.service';
 
 @Component({
@@ -17,17 +18,47 @@ export class CustomerListInQueuePage implements OnInit {
   currentDate = new Date();
   calledTime = new Date();
 
-
   constructor(private navCtrl: NavController,
     private queueService: QueueService,
     private sessionService: SessionService,
     private alertController: AlertController,
-    private toastController: ToastController) {
+    private toastController: ToastController,
+    private signalRService: SignalRService) {
 
     this.loadAllCustomersInQueueByEmployeeAndStoreId();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.startSignalRConnection();
+  }
+
+  async startSignalRConnection() {
+    try {
+      await this.signalRService.startConnection();
+  
+      this.store = this.sessionService.getStore();
+  
+      if (this.store) {
+        this.signalRService.joinGroup(`company-${this.store.id}`);
+      }
+      
+      this.signalRService.onUpdateQueue(() => {
+        console.log('Atualização recebida via SignalR!');
+        this.loadAllCustomersInQueueByEmployeeAndStoreId(); 
+      });
+  
+    } catch (error) {
+      console.error('Erro ao iniciar conexão SignalR:', error);
+    }
+  }
+
+  ngOnDestroy() {
+    this.signalRService.offNewPersonInQueue();
+    this.signalRService.stopConnection();
+  }
+
+  ionViewDidEnter() {
+    this.loadAllCustomersInQueueByEmployeeAndStoreId();
   }
 
   loadAllCustomersInQueueByEmployeeAndStoreId() {
@@ -115,6 +146,7 @@ export class CustomerListInQueuePage implements OnInit {
   
     await alert.present();
   }
+
   redirectToCustomerService() {
     this.navCtrl.navigateForward('/customer-service');
   }

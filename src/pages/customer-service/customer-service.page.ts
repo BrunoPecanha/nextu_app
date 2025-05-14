@@ -10,9 +10,10 @@ export class CustomerServicePage {
   cliente = {
     nome: 'LUANE PEÇANHA',
     servicos: [
-      { nome: 'CORTE TESOURA', quantidade: 1, valor: 50.00 },
-      { nome: 'SOBRANCELHA', quantidade: 1, valor: 15.00 }
+      { nome: 'CORTE TESOURA', quantidade: 1, valor: 50.00},
+      { nome: 'SOBRANCELHA', quantidade: 1, valor: 15.00 },
     ],
+     observacao: 'Sobrancelha com pinça porque?aaas',
     pagamento: 'CRÉDITO',
   };
 
