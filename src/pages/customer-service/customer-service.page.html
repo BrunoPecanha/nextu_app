@@ -24,9 +24,22 @@
       </div>
       <h1>{{ cliente.nome }}</h1>
 
-      <div class="info-bloco">
-        <ion-icon name="cut-outline" class="info-icon"></ion-icon>
-        <p>{{ cliente.servicos }}</p>
+      <div class="servicos-container">
+        <div *ngFor="let servico of cliente.servicos" class="servico-item">
+          <div class="servico-info">
+            <ion-icon name="cut-outline" class="info-icon"></ion-icon>
+            <span class="servico-nome">{{ servico.nome }}</span>
+          </div>
+          <div class="servico-detalhes">
+            <span class="servico-quantidade">x{{ servico.quantidade }}</span>
+            <span class="servico-valor">{{ servico.valor | currency:'BRL' }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="total-container">
+        <span>Total:</span>
+        <span class="total-valor">{{ calcularTotal() | currency:'BRL' }}</span>
       </div>
 
       <div class="info-bloco">

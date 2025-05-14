@@ -8,8 +8,11 @@ import { AlertController, NavController } from '@ionic/angular';
 })
 export class CustomerServicePage {
   cliente = {
-    nome: 'ANDRÉ JOSÉ',
-    servicos: 'CORTE TESOURA E BARBA',
+    nome: 'LUANE PEÇANHA',
+    servicos: [
+      { nome: 'CORTE TESOURA', quantidade: 1, valor: 50.00 },
+      { nome: 'SOBRANCELHA', quantidade: 1, valor: 15.00 }
+    ],
     pagamento: 'CRÉDITO',
   };
 
@@ -17,6 +20,12 @@ export class CustomerServicePage {
     private alertController: AlertController,
     private navCtrl: NavController
   ) {}
+
+  calcularTotal(): number {
+    return this.cliente.servicos.reduce((total, servico) => {
+      return total + (servico.valor * servico.quantidade);
+    }, 0);
+  }
 
   async confirmarFinalizacao() {
     const alert = await this.alertController.create({

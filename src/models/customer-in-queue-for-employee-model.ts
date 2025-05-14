@@ -7,4 +7,5 @@ export interface CustomerInQueueForEmployeeModel {
   queueId: number;
   timeGotInQueue: string;
   inService: boolean;
+  timeCalledInQueue: Date;
 }

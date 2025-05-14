@@ -31,7 +31,7 @@ export class ServiceRegistrationPage implements OnInit {
   services: ServiceModel[] = [];
 
   constructor(private fb: FormBuilder, public session: SessionService, private cdRef: ChangeDetectorRef, private categoryService: ServiceCategoryService, private service: ServiceService) {
-      }
+  }
 
   ngOnInit() {
     this.store = this.session.getStore();
@@ -90,7 +90,7 @@ export class ServiceRegistrationPage implements OnInit {
     this.noRecordsFound = false;
 
     return new Promise((resolve, reject) => {
-      this.service.loadServicesByStore(this.store.id).subscribe({
+      this.service.loadServicesByStore(this.store.id, false).subscribe({
         next: (response: ServiceResponse) => {
           this.services = response.data;
           this.noRecordsFound = this.services.length === 0;
@@ -115,37 +115,39 @@ export class ServiceRegistrationPage implements OnInit {
     this.isLoading = [];
     this.saved = [];
 
-    this.services.forEach((service) => {
-      const totalMinutes = this.timeSpanToMinutes(service.duration.toString());
-      const hours = Math.floor(totalMinutes / 60);
-      const minutes = totalMinutes % 60;
+    if (this.services.length > 0) {
+      this.services.forEach((service) => {
+        const totalMinutes = this.timeSpanToMinutes(service.duration.toString());
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
 
-      this.serviceFormArray.push(
-        this.fb.group({
-          id: [service.id],
-          name: [service.name, Validators.required],
-          description: [service.description],
-          category: [this.categories.find(c => c.id === service.category.id)],
-          price: [service.price, [Validators.required, Validators.min(0)]],
-          durationHours: [hours, [Validators.required, Validators.min(0)]],
-          durationMinutes: [minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
-          image: [service.imgPath],
-          active: [service.activated],
-          variablePrice: [service.variablePrice],
-          variableTime: [service.variableTime],
-        })
-      );
+        this.serviceFormArray.push(
+          this.fb.group({
+            id: [service.id],
+            name: [service.name, Validators.required],
+            description: [service.description],
+            category: [this.categories.find(c => c.id === service.category.id)],
+            price: [service.price, [Validators.required, Validators.min(0)]],
+            durationHours: [hours, [Validators.required, Validators.min(0)]],
+            durationMinutes: [minutes, [Validators.required, Validators.min(0), Validators.max(59)]],
+            image: [service.imgPath],
+            active: [service.activated],
+            variablePrice: [service.variablePrice],
+            variableTime: [service.variableTime],
+          })
+        );
 
-      this.previewUrls.push(service.imgPath);
-      this.formattedPrices.push(
-        service.price.toLocaleString('pt-BR', {
-          style: 'currency',
-          currency: 'BRL',
-        })
-      );
-      this.isLoading.push(false);
-      this.saved.push(false);
-    });
+        this.previewUrls.push(service.imgPath);
+        this.formattedPrices.push(
+          service.price.toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })
+        );
+        this.isLoading.push(false);
+        this.saved.push(false);
+      });
+    }
 
     this.cdRef.detectChanges();
   }
@@ -308,6 +310,14 @@ export class ServiceRegistrationPage implements OnInit {
       return;
     }
 
+    // Inicializa os arrays se estiverem vazios
+    if (this.serviceFormArray.length === 0) {
+      this.previewUrls = [];
+      this.formattedPrices = [];
+      this.isLoading = [];
+      this.saved = [];
+    }
+
     const newForm = this.fb.group({
       name: ['', Validators.required],
       description: [''],
@@ -321,6 +331,7 @@ export class ServiceRegistrationPage implements OnInit {
       active: [true]
     });
 
+    // Adiciona no início do array
     this.serviceFormArray.unshift(newForm);
     this.previewUrls.unshift(null);
     this.formattedPrices.unshift('');

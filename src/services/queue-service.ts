@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, delay, from, map, Observable, of } from 'rxjs';
+import { catchError, delay, from, map, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import QRCode from 'qrcode';
 import { QueueResponse } from 'src/models/responses/queue-response';
@@ -8,6 +8,7 @@ import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { CustomerInQueueForEmployeeResponse } from 'src/models/responses/customer-in-queue-for-employee-response';
 import { CustomerInQueueCardResponse } from 'src/models/responses/customer-in-queue-card-response';
 import { CustomerInQueueCardDetailResponse } from 'src/models/responses/customer-in-queue-card-detail-response';
+import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 
 
 @Injectable({
@@ -24,6 +25,37 @@ export class QueueService {
   ehMinhaVez: boolean = true;
 
   constructor(private http: HttpClient) { }
+
+
+  addCustomerToQueue(command: AddCustomerToQueueRequest): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/queue`, command).pipe(
+      catchError(error => {
+        console.error('Erro ao adicionar cliente à fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  startCustomerService(customerId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/queue/start-service/${customerId}`);
+  }
+
+  notifyTimeCustomerWasCalledInTheQueue(customerId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/queue/notify-customer/${customerId}`);
+  }
+
+  notifyTimeCustomerServiceWasCompleted(customerId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/queue/finish-customer/${customerId}`);
+  }
+
+  removeMissingCustomer(customerId: number, removeReason: string): Observable<any> {
+    const command = {
+      customerId: customerId,
+      removeReason: removeReason
+    };
+  
+    return this.http.put(`${this.apiUrl}/queue/remove`, command);
+  }
 
   getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueResponse> {
     return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
@@ -53,7 +85,6 @@ export class QueueService {
     posicao: number;
     ehMinhaVez: boolean;
   }> {
-    // Mock de ida a backend para obter a posição do cliente na fila
     const pessoasNaFila = [
       { avatar: 'person-circle' },
       { avatar: 'person-circle' },
@@ -62,9 +93,7 @@ export class QueueService {
       { avatar: 'person-circle' },
     ];
 
-    // Simulando que o usuário está na 3ª posição (índice 2)
     const posicaoUsuario: number = 3;
-
     const ehMinhaVez = posicaoUsuario === 1;
 
     return of({
@@ -90,15 +119,15 @@ export class QueueService {
     );
   }
 
-  getCustomerInQueueCard(customerId: number) : Observable<CustomerInQueueCardResponse> {
+  getCustomerInQueueCard(customerId: number): Observable<CustomerInQueueCardResponse> {
     return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${customerId}/card`);
   }
 
-  getCustomerInQueueCardDetails(customerId: number, queueId: number) : Observable<CustomerInQueueCardDetailResponse> {
+  getCustomerInQueueCardDetails(customerId: number, queueId: number): Observable<CustomerInQueueCardDetailResponse> {
     return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);
   }
 
-  exitQueue(custeomerId: number, queueId: number) :  Observable<any>{
-      return of({ success: true });
+  exitQueue(custeomerId: number, queueId: number): Observable<any> {
+    return of({ success: true });
   }
 }
