@@ -18,14 +18,8 @@ export class QueueService {
   private apiUrl = environment.apiUrl;
 
   qrCodeImage: string = '';
-  empresaId: number = 123;
-  filaId: number = 456;
-  clienteId: number = 789;
-  horaChamada: string = '14:00';
-  ehMinhaVez: boolean = true;
 
   constructor(private http: HttpClient) { }
-
 
   addCustomerToQueue(command: AddCustomerToQueueRequest): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/queue`, command).pipe(
@@ -45,7 +39,7 @@ export class QueueService {
   }
 
   notifyTimeCustomerServiceWasCompleted(customerId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/queue/finish-customer/${customerId}`);
+    return this.http.get(`${this.apiUrl}/queue/finish-service/${customerId}`);
   }
 
   removeMissingCustomer(customerId: number, removeReason: string): Observable<any> {
@@ -104,7 +98,7 @@ export class QueueService {
   }
 
   gerarQrCode(): Observable<{ qrCode: string }> {
-    const qrData = `empresaId=${this.empresaId}&filaId=${this.filaId}&clienteId=${this.clienteId}`;
+    const qrData = `empresaId=${2}&filaId=${123}&clienteId=${123}`;
 
     return from(
       QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H' })
@@ -119,8 +113,8 @@ export class QueueService {
     );
   }
 
-  getCustomerInQueueCard(customerId: number): Observable<CustomerInQueueCardResponse> {
-    return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${customerId}/card`);
+  getCustomerInQueueCard(userId: number): Observable<CustomerInQueueCardResponse> {
+    return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${userId}/card`);
   }
 
   getCustomerInQueueCardDetails(customerId: number, queueId: number): Observable<CustomerInQueueCardDetailResponse> {

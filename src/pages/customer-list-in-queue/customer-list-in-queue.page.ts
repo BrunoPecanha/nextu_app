@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController, NavController, ToastController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
+import { StoreModel } from 'src/models/store-model';
+import { UserModel } from 'src/models/user-model';
 import { QueueService } from 'src/services/queue-service';
 import { SignalRService } from 'src/services/seignalr-service';
 import { SessionService } from 'src/services/session.service';
@@ -13,10 +15,9 @@ import { SessionService } from 'src/services/session.service';
 export class CustomerListInQueuePage implements OnInit {
 
   clients: CustomerInQueueForEmployeeModel[] | null = null;
-  store: any;
-  employee: any;
+  store: StoreModel | null = null;
+  employee: UserModel | null = null;
   currentDate = new Date();
-  calledTime = new Date();
 
   constructor(private navCtrl: NavController,
     private queueService: QueueService,
@@ -28,25 +29,25 @@ export class CustomerListInQueuePage implements OnInit {
     this.loadAllCustomersInQueueByEmployeeAndStoreId();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     this.startSignalRConnection();
   }
 
   async startSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-  
+
       this.store = this.sessionService.getStore();
-  
+
       if (this.store) {
         this.signalRService.joinGroup(`company-${this.store.id}`);
       }
-      
+
       this.signalRService.onUpdateQueue(() => {
         console.log('Atualização recebida via SignalR!');
-        this.loadAllCustomersInQueueByEmployeeAndStoreId(); 
+        this.loadAllCustomersInQueueByEmployeeAndStoreId();
       });
-  
+
     } catch (error) {
       console.error('Erro ao iniciar conexão SignalR:', error);
     }
@@ -113,20 +114,20 @@ export class CustomerListInQueuePage implements OnInit {
           text: 'Sim',
           handler: async (data) => {
             const reason = data.reason || 'Removido pelo funcionário';
-            
-            try {              
+
+            try {
               await this.queueService.removeMissingCustomer(client.id, reason)
                 .toPromise();
-                            
+
               this.loadAllCustomersInQueueByEmployeeAndStoreId();
-                            
+
               const toast = await this.toastController.create({
                 message: 'Cliente removido com sucesso',
                 duration: 2000,
                 position: 'top'
               });
               await toast.present();
-              
+
             } catch (error) {
               console.error('Erro ao remover cliente:', error);
               const toast = await this.toastController.create({
@@ -143,7 +144,7 @@ export class CustomerListInQueuePage implements OnInit {
         }
       ]
     });
-  
+
     await alert.present();
   }
 
@@ -151,35 +152,33 @@ export class CustomerListInQueuePage implements OnInit {
     this.navCtrl.navigateForward('/customer-service');
   }
 
-  startQRCodeScan(cliente: any) {
-    if (cliente.inService) {
-      console.log('Cliente já está em atendimento');
-      this.navCtrl.navigateForward('/customer-service');
+  startQRCodeScan(customer: CustomerInQueueForEmployeeModel) {
+    if (customer.inService) {
+      this.navCtrl.navigateForward(`/customer-service/${customer.id}`);
       return;
     }
-  
+
     console.log('Simulando leitura de QR Code...');
-  
-    this.queueService.startCustomerService(cliente.id).subscribe({
+
+    this.queueService.startCustomerService(customer.id).subscribe({
       next: (response) => {
         console.log('Atendimento iniciado com sucesso', response);
-        this.navCtrl.navigateForward('/customer-service');
+        this.navCtrl.navigateForward(`/customer-service/${customer.id}`);
       },
       error: (err) => {
         console.error('Erro ao iniciar atendimento:', err);
-        // Aqui você pode exibir um toast ou alerta para o usuário
       }
     });
-  }  
+  }
 
-  callCustomer(cliente: any) {  
+  callCustomer(cliente: any) {
     this.queueService.notifyTimeCustomerWasCalledInTheQueue(cliente.id).subscribe({
-      next: (response) => {        
+      next: (response) => {
         cliente.timeCalledInQueue = response.data
         console.log('Cliente notificado com sucesso', response);
       },
       error: (err) => {
-        console.error('Erro ao notificar o cliente:', err);        
+        console.error('Erro ao notificar o cliente:', err);
       }
     });
   }

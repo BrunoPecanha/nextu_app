@@ -1,5 +1,5 @@
 export interface CustomerInQueueForEmployeeModel {
-  id?: number;
+  id: number;
   payment: string;
   paymentIcon: string;
   name: string;

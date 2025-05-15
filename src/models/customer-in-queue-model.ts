@@ -1,5 +1,5 @@
 export interface CustomerInQueueModel {
-    id?: number;
+    id: number;
     name: string;
     services: string;
     timeGotInQueue: string;
