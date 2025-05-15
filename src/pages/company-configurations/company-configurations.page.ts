@@ -57,6 +57,7 @@ export class CompanyConfigurationsPage {
           this.weekDays.map(day => this.createHorarioForm(day))
         ),
         openAutomatic: [false],
+        attendSimultaneously: [false],
         acceptOtherQueues: [false],
         answerOutOfOrder: [false],
         answerScheduledTime: [false],

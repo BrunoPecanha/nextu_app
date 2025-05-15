@@ -116,10 +116,12 @@ export class QueuePage implements OnInit {
     }));
   }
 
-  public loadCustomersInQueueCard(): void {
+  public loadCustomersInQueueCard(): void {    
     this.customerCards = [];
 
-    this.queueService.getCustomerInQueueCard(3).subscribe({
+    let userId = this.sessionService.getUser().id;
+
+    this.queueService.getCustomerInQueueCard(userId).subscribe({
       next: (response) => {
         this.customerCards = response.data || [];
       },
@@ -135,8 +137,8 @@ export class QueuePage implements OnInit {
       next: (response) => {
         this.cardDetailsMap.set(card.queueId, response.data);
         this.expandedStates.set(card.queueId, true);
-
-        if (response.data.position === 1) {
+        
+        if (response.data.position === 0) {
           this.generateQrCode();
         }
       },

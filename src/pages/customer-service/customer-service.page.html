@@ -22,34 +22,35 @@
       <div class="avatar-wrapper">
         <ion-icon name="person-circle-outline" class="cliente-icon"></ion-icon>
       </div>
-      <h1>{{ cliente.nome }}</h1>
+      <h1>{{ customer.name }}</h1>
 
       <div class="servicos-container">
-        <div *ngFor="let servico of cliente.servicos" class="servico-item">
+        <div *ngFor="let service of customer?.services" class="servico-item">
           <div class="servico-info">
             <ion-icon name="cut-outline" class="info-icon"></ion-icon>
-            <span class="servico-nome">{{ servico.nome }}</span>
+            <span class="servico-nome">{{ service.name }}</span>
           </div>
           <div class="servico-detalhes">
-            <span class="servico-quantidade">x{{ servico.quantidade }}</span>
-            <span class="servico-valor">{{ servico.valor | currency:'BRL' }}</span>
+            <span class="servico-quantidade">x{{ service.quantity }}</span>
+            <span class="servico-valor">{{ service.total | currency:'BRL' }}</span>
           </div>
         </div>
       </div>
 
       <div class="total-container">
         <span>Total:</span>
-        <span class="total-valor">{{ calcularTotal() | currency:'BRL' }}</span>
+        <span class="total-valor">{{ customer.total | currency:'BRL' }}</span>
       </div>
 
       <div class="info-bloco">
-        <ion-icon name="card-outline" class="info-icon"></ion-icon>
-        <p>{{ cliente.pagamento }}</p>
+        <ion-icon [name]="customer.paymentIcon" class="info-icon"></ion-icon>
+        <p>{{ customer.paymentMethod }}</p>
       </div>
 
       <div class="info-bloco">
         <ion-icon name="information-circle-outline" class="info-icon"></ion-icon>
-        <small>{{ cliente.observacao }}</small>
+        <small *ngIf="customer?.notes">{{ customer.notes }}</small>
+        <small *ngIf="!customer?.notes">Não há observações</small>
       </div>
     </div>
   </div>

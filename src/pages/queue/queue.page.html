@@ -40,7 +40,7 @@
             <div class="info-principal">
               <div class="posicao-fila">
                 <h6 class="titulo-principal">
-                  {{ card.position === 1 ? 'É a sua vez!' : 'Você é o ' +
+                  {{ card.position === 0 ? 'É a sua vez!' : 'Você é o ' +
                   card.position + 'º na fila' }}
                 </h6>
               </div>
@@ -117,7 +117,7 @@
             Tempo estimado: {{ formatEstimatedTime(detalhes.timeToWait) }}
           </div>
 
-          <div *ngIf="card.position === 1" class="qr-section">
+          <div *ngIf="card.position === 0" class="qr-section">
             <ion-note class="nota-qr">Chamado às {{ horaChamada }}</ion-note>
             <ion-spinner
               *ngIf="!qrCodeBase64"
