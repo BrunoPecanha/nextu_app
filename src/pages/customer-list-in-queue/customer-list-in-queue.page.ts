@@ -70,7 +70,6 @@ export class CustomerListInQueuePage implements OnInit {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
         next: (response) => {
           this.clients = response.data;
-          console.log('Clientes na fila:', this.clients);
         },
         error: (err) => {
           console.error('Erro ao carregar estabelecimentos:', err);

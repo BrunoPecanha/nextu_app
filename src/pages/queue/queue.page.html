@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-      [defaultHref]="fallbackRoute"
+        [defaultHref]="fallbackRoute"
         text=""
         icon="arrow-back-outline"
       ></ion-back-button>
@@ -25,8 +25,8 @@
       <ion-card
         *ngFor="let card of customerCards"
         class="card-retratil"
-        [class.expandido]="isCardExpanded(card)"
-        [class.minha-vez]="card.position === 1"
+        [class.expandido]="currentlyExpandedCardId === card.queueId"
+        [class.minha-vez]="card.position === 0"
       >
         <div class="card-topo" (click)="toggleCardDetails(card)">
           <div class="logo-info">
@@ -58,29 +58,29 @@
                   {{ card.payment }}
                 </span>
               </div>
-              <div *ngIf="!isCardExpanded(card)" 
+              <div
+                *ngIf="!isCardExpanded(card)"
                 class="tempo-estimado-recolhido"
-                [ngClass]="getTimeColor(card.timeToWait)">
-             <span>Tempo estimado: {{ formatEstimatedTime(card.timeToWait) }}</span>
-           </div>
+                [ngClass]="getTimeColor(card.timeToWait)"
+              >
+                <span
+                  >Tempo estimado: {{ formatEstimatedTime(card.timeToWait)
+                  }}</span
+                >
+              </div>
             </div>
           </div>
 
-          <div class="controles-direita">
-            <!-- <div
-              *ngIf="!isCardExpanded(card) && card.position > 0"
-              class="tempo-indicador"
-              [ngClass]="getTimeColor(card.timeToWait)"
-            ></div> -->
+          <div class="controles-direita">            
             <div
               *ngIf="!isCardExpanded(card) && card.position === 0"
               class="vez-cliente-indicador"
             >
-            <ion-icon name="notifications" color="warning"></ion-icon>
-          </div>
+              <ion-icon name="notifications" color="warning"></ion-icon>
+            </div>
             <div class="botao-toggle">
               <ion-icon
-                [name]="isCardExpanded(card) ? 'chevron-up-outline' : 'chevron-down-outline'"
+                [name]="currentlyExpandedCardId === card.queueId ? 'chevron-up-outline' : 'chevron-down-outline'"
               ></ion-icon>
             </div>
           </div>
@@ -88,7 +88,7 @@
 
         <div
           class="card-conteudo"
-          *ngIf="isCardExpanded(card) && getCardDetails(card) as detalhes"
+          *ngIf="currentlyExpandedCardId === card.queueId && getCardDetails(card) as detalhes"
         >
           <div *ngIf="card.position > 1" class="fila-info">
             <h6 class="saudacao">E aí, tudo bem?</h6>
@@ -121,15 +121,25 @@
           </div>
 
           <div
-            *ngIf="card.position > 0"
-            class="estimado"
+            *ngIf="card.position > 0 && !isTimeZero(detalhes.timeToWait)"
+            class="tempo-estimado-recolhido"
             [ngClass]="getTimeColor(detalhes.timeToWait)"
           >
             Tempo estimado: {{ formatEstimatedTime(detalhes.timeToWait) }}
           </div>
 
+          <div
+            *ngIf="card.position === 1 && isTimeZero(detalhes.timeToWait)"
+            class="estimado"
+            [ngClass]="getTimeColor(detalhes.timeToWait)"
+          >
+            Vá para a loja, você é o próximo a ser atendido!
+          </div>
+
           <div *ngIf="card.position === 0" class="qr-section">
-            <ion-note *ngIf="detalhes.timeCalledInQueue" class="nota-qr">Chamado às {{ detalhes.timeCalledInQueue }}</ion-note>
+            <ion-note *ngIf="detalhes.timeCalledInQueue" class="nota-qr"
+              >Chamado às {{ detalhes.timeCalledInQueue }}</ion-note
+            >
             <ion-spinner
               *ngIf="!qrCodeBase64"
               name="dots"
