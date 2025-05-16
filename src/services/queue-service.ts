@@ -97,11 +97,10 @@ export class QueueService {
     }).pipe(delay(1000));
   }
 
-  gerarQrCode(): Observable<{ qrCode: string }> {
-    const qrData = `empresaId=${2}&filaId=${123}&clienteId=${123}`;
+  gerarQrCode(token: string): Observable<{ qrCode: string }> {
 
     return from(
-      QRCode.toDataURL(qrData, { errorCorrectionLevel: 'H' })
+      QRCode.toDataURL(token, { errorCorrectionLevel: 'H' })
         .then((url: string) => {
           this.qrCodeImage = url;
           return { qrCode: url };

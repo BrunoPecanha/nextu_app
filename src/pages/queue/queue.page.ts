@@ -17,10 +17,8 @@ export class QueuePage implements OnInit {
   fallbackRoute = '/select-company';
   store: any;
   currentDate = new Date();
-  horaChamada = '10:00';
   qrCodeBase64: string | null = null;
   tolerance = 5;
-  customer: any;
 
   private cardDetailsMap = new Map<number, CustomerInQueueCardDetailModel>();
   private expandedStates = new Map<number, boolean>();
@@ -42,18 +40,18 @@ export class QueuePage implements OnInit {
   async startSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-
+  
       this.store = this.sessionService.getStore();
-
+  
       if (this.store) {
         this.signalRService.joinGroup(`company-${this.store.id}`);
       }
-
+  
       this.signalRService.onUpdateQueue(() => {
         console.log('Atualização recebida via SignalR!');
-        this.forceReload();
+        this.refreshQueues();
       });
-
+  
     } catch (error) {
       console.error('Erro ao iniciar conexão SignalR:', error);
     }
@@ -68,21 +66,41 @@ export class QueuePage implements OnInit {
     this.forceReload();
   }
 
-  private forceReload(): void {
+  private forceReload(): void {    
+    const expandedQueueIds = Array.from(this.expandedStates.entries())
+      .filter(([_, isExpanded]) => isExpanded)
+      .map(([queueId]) => queueId);
+  
     this.customerCards = [];
     this.cardDetailsMap.clear();
+    
     this.expandedStates.clear();
-
+  
     this.loadCustomersInQueueCard();
+  
+    setTimeout(() => {
+      expandedQueueIds.forEach(queueId => {
+        const card = this.customerCards.find(c => c.queueId === queueId);
+        if (card) {
+          this.loadCustomerInQueueCardDetails(card.id, queueId);
+        }
+      });
+    }, 300);
   }
 
   public toggleCardDetails(card: CustomerInQueueCardModel): void {
+    this.expandedStates.forEach((value, key) => {
+      if (key !== card.queueId) {
+        this.expandedStates.set(key, false);
+      }
+    });
+
     const isExpanded = this.isCardExpanded(card);
 
-    if (!isExpanded && !this.cardDetailsMap.has(card.queueId)) {
-      this.loadCustomerInQueueCardDetails(card);
+    if (!isExpanded) {
+      this.loadCustomerInQueueCardDetails(card.id, card.queueId);
     } else {
-      this.expandedStates.set(card.queueId, !isExpanded);
+      this.expandedStates.set(card.queueId, false);
     }
   }
 
@@ -94,21 +112,54 @@ export class QueuePage implements OnInit {
     return this.cardDetailsMap.get(card.queueId);
   }
 
-  public getTempoColor(timeToWait: number | undefined): string {
+  private convertTimeStringToMinutes(timeString: string): number {
+    const parts = timeString.split(':');
+    if (parts.length < 3) return 0;
+
+    const hours = parseInt(parts[0], 10);
+    const minutes = parseInt(parts[1], 10);
+    const seconds = parseFloat(parts[2]);
+
+    return hours * 60 + minutes + seconds / 60;
+  }
+
+  public getTimeColor(timeToWait: number | string | undefined): string {
     if (!timeToWait) return '';
-    if (timeToWait > 45) return 'vermelho';
-    if (timeToWait > 15) return 'amarelo';
+
+    let minutes: number;
+    if (typeof timeToWait === 'string') {
+      minutes = this.convertTimeStringToMinutes(timeToWait);
+    } else {
+      minutes = timeToWait;
+    }
+
+    if (minutes > 45) return 'vermelho';
+    if (minutes > 15) return 'amarelo';
     return 'verde';
   }
 
-  public formatEstimatedTime(timeToWait: number | undefined): string {
+  public formatEstimatedTime(timeToWait: number | string | undefined): string {
     if (!timeToWait) return 'Calculando...';
-    if (timeToWait > 45) {
-      return `${Math.floor(timeToWait / 60)} hora(s)`;
-    }
-    return `${timeToWait} minutos`;
-  }
 
+    if (typeof timeToWait === 'string') {
+      const minutes = this.convertTimeStringToMinutes(timeToWait);
+
+      if (minutes > 45) {
+        const hours = minutes / 60;
+        return `${Math.floor(hours)} hora(s) e ${Math.round(minutes % 60)} minuto(s)`;
+      }
+      return `${Math.round(minutes)} min`;
+    }
+
+    if (typeof timeToWait === 'number') {
+      if (timeToWait > 45) {
+        return `${Math.floor(timeToWait / 60)} hora(s) e ${Math.round(timeToWait % 60)} minuto(s)`;
+      }
+      return `${timeToWait} min`;
+    }
+
+    return 'Formato não reconhecido';
+  }
   public generateQueuePeople(total: number): any[] {
     return Array.from({ length: total }, (_, idx) => ({
       id: idx + 1,
@@ -116,7 +167,29 @@ export class QueuePage implements OnInit {
     }));
   }
 
-  public loadCustomersInQueueCard(): void {    
+  public refreshQueues(): void {    
+    if (this.customerCards.length === 0) {
+      this.loadCustomersInQueueCard();
+      return;
+    }
+     
+    const currentlyExpanded = Array.from(this.expandedStates.entries())
+      .filter(([_, isExpanded]) => isExpanded)
+      .map(([queueId]) => queueId);
+  
+    this.loadCustomersInQueueCard();
+      
+    setTimeout(() => {
+      currentlyExpanded.forEach(queueId => {
+        const card = this.customerCards.find(c => c.queueId === queueId);
+        if (card) {
+          this.loadCustomerInQueueCardDetails(card.id, card.queueId);
+        }
+      });
+    }, 300);
+  }
+
+  public loadCustomersInQueueCard(): void {
     this.customerCards = [];
 
     let userId = this.sessionService.getUser().id;
@@ -132,14 +205,14 @@ export class QueuePage implements OnInit {
     });
   }
 
-  private loadCustomerInQueueCardDetails(card: CustomerInQueueCardModel): void {
-    this.queueService.getCustomerInQueueCardDetails(card.id, card.queueId).subscribe({
+  private loadCustomerInQueueCardDetails(id: number, queueId: number): void {
+    this.queueService.getCustomerInQueueCardDetails(id, queueId).subscribe({
       next: (response) => {
-        this.cardDetailsMap.set(card.queueId, response.data);
-        this.expandedStates.set(card.queueId, true);
-        
+        this.cardDetailsMap.set(queueId, response.data);
+        this.expandedStates.set(queueId, true);
+  
         if (response.data.position === 0) {
-          this.generateQrCode();
+          this.generateQrCode(response.data.token);
         }
       },
       error: (err) => {
@@ -148,8 +221,8 @@ export class QueuePage implements OnInit {
     });
   }
 
-  private generateQrCode(): void {
-    this.queueService.gerarQrCode().subscribe({
+  private generateQrCode(token: string): void {
+    this.queueService.gerarQrCode(token).subscribe({
       next: (res) => {
         this.qrCodeBase64 = res.qrCode;
       },

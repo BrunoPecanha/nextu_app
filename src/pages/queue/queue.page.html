@@ -12,7 +12,7 @@
       <span class="header-date">{{ currentDate | date:'dd/MM/yyyy' }}</span>
     </ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="loadCustomersInQueueCard()">
+      <ion-button (click)="refreshQueues()">
         <ion-icon name="refresh-outline" class="refresh-icon"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -40,7 +40,7 @@
             <div class="info-principal">
               <div class="posicao-fila">
                 <h6 class="titulo-principal">
-                  {{ card.position === 0 ? 'É a sua vez!' : 'Você é o ' +
+                  {{ card.position === 0 ? 'Sua vez !' : 'Você é o ' +
                   card.position + 'º na fila' }}
                 </h6>
               </div>
@@ -58,15 +58,26 @@
                   {{ card.payment }}
                 </span>
               </div>
+              <div *ngIf="!isCardExpanded(card)" 
+                class="tempo-estimado-recolhido"
+                [ngClass]="getTimeColor(card.timeToWait)">
+             <span>Tempo estimado: {{ formatEstimatedTime(card.timeToWait) }}</span>
+           </div>
             </div>
           </div>
 
           <div class="controles-direita">
-            <div
-              *ngIf="!isCardExpanded(card)"
+            <!-- <div
+              *ngIf="!isCardExpanded(card) && card.position > 0"
               class="tempo-indicador"
-              [ngClass]="getTempoColor(card.timeToWait)"
-            ></div>
+              [ngClass]="getTimeColor(card.timeToWait)"
+            ></div> -->
+            <div
+              *ngIf="!isCardExpanded(card) && card.position === 0"
+              class="vez-cliente-indicador"
+            >
+            <ion-icon name="notifications" color="warning"></ion-icon>
+          </div>
             <div class="botao-toggle">
               <ion-icon
                 [name]="isCardExpanded(card) ? 'chevron-up-outline' : 'chevron-down-outline'"
@@ -86,7 +97,7 @@
             </p>
           </div>
 
-          <div *ngIf="card.position > 1" class="fila-visual">
+          <div *ngIf="card.position > 0" class="fila-visual">
             <div
               class="fila-scroll-container"
               [ngClass]="{ scroll: detalhes.totalPeopleInQueue > 5 }"
@@ -110,15 +121,15 @@
           </div>
 
           <div
-            *ngIf="card.position > 1"
+            *ngIf="card.position > 0"
             class="estimado"
-            [ngClass]="getTempoColor(detalhes.timeToWait)"
+            [ngClass]="getTimeColor(detalhes.timeToWait)"
           >
             Tempo estimado: {{ formatEstimatedTime(detalhes.timeToWait) }}
           </div>
 
           <div *ngIf="card.position === 0" class="qr-section">
-            <ion-note class="nota-qr">Chamado às {{ horaChamada }}</ion-note>
+            <ion-note *ngIf="detalhes.timeCalledInQueue" class="nota-qr">Chamado às {{ detalhes.timeCalledInQueue }}</ion-note>
             <ion-spinner
               *ngIf="!qrCodeBase64"
               name="dots"
