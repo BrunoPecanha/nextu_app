@@ -73,10 +73,7 @@
             <span
               >Estimado de espera: {{ queue.averageWaitingTime | slice:0:5 ||
               '--' }} min</span
-            >
-            <small class="tempo-estimado-observacao"
-              >O tempo é estimado, pode ser que demore menos ou mais</small
-            >
+            >           
             <div
               class="barra-progresso-wrapper"
               [attr.title]="getStatusFilaTexto(queue.customersWaiting)"

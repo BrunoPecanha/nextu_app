@@ -165,7 +165,7 @@ export class QueuePage implements OnInit {
   }
 
   public generateQueuePeople(total: number): any[] {
-    return Array.from({ length: total }, (_, idx) => ({
+    return Array.from({ length: total > 1 ? total : 1  }, (_, idx) => ({
       id: idx + 1,
       avatar: 'person-circle-outline'
     }));
@@ -197,12 +197,13 @@ export class QueuePage implements OnInit {
 
   public loadCustomersInQueueCard(): void {
     this.customerCards = [];
-
+    
     let userId = this.sessionService.getUser().id;
 
     this.queueService.getCustomerInQueueCard(userId).subscribe({
       next: (response) => {
         this.customerCards = response.data || [];
+        console.log('Filas carregadas:', this.customerCards); 
       },
       error: (err) => {
         console.error('Erro ao carregar filas:', err);
