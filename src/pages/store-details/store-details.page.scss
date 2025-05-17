@@ -1,4 +1,3 @@
-/* Estilos gerais da página */
 .loja-banner {
   position: relative;
   height: 200px;
@@ -92,7 +91,6 @@ ion-label {
   max-height: calc(100vh - 120px);
 }
 
-/* Estilos do modal centralizado */
 .centered-modal {
   --backdrop-opacity: 0.4;
   
@@ -150,7 +148,7 @@ ion-label {
   overflow-y: auto;
 }
 
-/* Estilos do conteúdo do modal */
+
 .info-section {
   padding: 8px;
 }
@@ -337,8 +335,10 @@ ion-content::part(scroll) {
   }
 }
 
-
 .page-content {
-  width: 100%;
-  height: 100%;
+  padding-bottom: 50px;
+
+  @media (max-height: 600px) {
+    padding-bottom: 100px;
+  }
 }
