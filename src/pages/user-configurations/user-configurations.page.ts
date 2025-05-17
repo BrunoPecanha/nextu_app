@@ -94,7 +94,6 @@ export class UserConfigurationsPage {
     setTimeout(() => {
       this.enviando = false;
       this.enviado = true;
-      console.log('Dados enviados:', this.cadastroForm.value);
     }, 2000);
 
     setTimeout(() => {

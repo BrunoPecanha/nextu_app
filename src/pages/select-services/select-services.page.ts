@@ -4,8 +4,10 @@ import { AlertController } from '@ionic/angular';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 import { AddQueueServiceRequest } from 'src/models/requests/add-queue-service-request';
 import { ServiceModel } from 'src/models/service-model';
+import { UserModel } from 'src/models/user-model';
 import { QueueService } from 'src/services/queue-service';
 import { ServiceService } from 'src/services/services-service';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-select-services',
@@ -24,14 +26,17 @@ export class SelectServicesPage {
   formaPagamento = '1';
   selectedServices: ServiceModel[] = [];
   serviceOptions: ServiceModel[] = [];
+  user: UserModel = {} as UserModel;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private alertController: AlertController,
     private serviceService: ServiceService,
-    private queueService: QueueService
+    private queueService: QueueService,
+    private sessionService: SessionService
   ) {
+    this.user = this.sessionService.getUser();
   }
 
   ngOnInit() {
@@ -158,8 +163,7 @@ export class SelectServicesPage {
     await alert.present();
   }
 
-
-  addCustomerToQueue() {    
+  addCustomerToQueue() {
     const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
       serviceId: service.id,
       quantity: service.quantity
@@ -170,7 +174,7 @@ export class SelectServicesPage {
       notes: this.observacao,
       paymentMethod: this.formaPagamento,
       queueId: this.queueId,
-      userId: 3
+      userId: this.user.id
     };
 
     this.queueService.addCustomerToQueue(command).subscribe({

@@ -50,7 +50,6 @@ export class SignalRService {
   public onUpdateQueue(callback: (data: any) => void): void {
     if (!this.hubConnection) return;
 
-    // Agora estamos ouvindo o evento correto "UpdateQueue"
     this.hubConnection.on('UpdateQueue', (data: any) => {
       console.log('Evento UpdateQueue recebido via SignalR!', data);
       callback(data);

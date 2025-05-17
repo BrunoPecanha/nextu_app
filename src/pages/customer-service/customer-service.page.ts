@@ -33,7 +33,6 @@ export class CustomerServicePage implements OnInit {
     this.clienteService.loadCustomerInfo(this.customerId).subscribe({
       next: (response) => {
         this.customer = response.data;
-        console.log('Detalhes do cliente:', this.customer);
       },
       error: (err) => {
         console.error('Erro ao carregar detalhes:', err);

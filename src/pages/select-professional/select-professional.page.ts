@@ -41,7 +41,7 @@ export class SelectProfessionalPage implements OnInit {
     });
   }
 
-  entrarNaFila(fila: ProfessionalModel) {
+  getInTheQueue(fila: ProfessionalModel) {
     this.router.navigate(['/select-services'], {
       queryParams: { queueId: fila.queueId, storeId: this.storeId },
     });
@@ -65,9 +65,9 @@ export class SelectProfessionalPage implements OnInit {
   }
 
   getCorProgresso(qtdPessoas: number): string {
-    if (qtdPessoas <= 3) return '#4caf50'; // verde
-    if (qtdPessoas <= 7) return '#ff9800'; // laranja
-    return '#f44336'; // vermelho
+    if (qtdPessoas <= 3) return '#4caf50';
+    if (qtdPessoas <= 7) return '#ff9800';
+    return '#f44336';
   }
 
   getStatusFilaTexto(qtdPessoas: number): string {

@@ -125,6 +125,18 @@
   animation: piscar 2s infinite ease-in-out;
 }
 
+.vez-cliente-indicador {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  animation: piscar 2s infinite ease-in-out;
+}
+
+
+
+
 .tempo-indicador.verde {
   background-color: #4caf50;
 }
@@ -807,4 +819,44 @@ ion-content::part(scroll) {
     color: #666;
     font-size: 14px;
   }
+}
+
+.tempo-estimado-recolhido {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  
+  span {
+    display: flex;
+    align-items: center;
+  }
+  
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+    animation: piscar 2s infinite ease-in-out; /* Movido para aqui */
+  }
+  
+  &.verde::before {
+    background-color: #4caf50;
+  }
+  
+  &.amarelo::before {
+    background-color: #ff9800;
+  }
+  
+  &.vermelho::before {
+    background-color: #f44336;
+  }
+}
+
+@keyframes piscar {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }

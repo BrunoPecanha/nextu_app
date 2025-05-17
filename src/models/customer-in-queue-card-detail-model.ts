@@ -11,4 +11,7 @@ export interface CustomerInQueueCardDetailModel {
   timeToWait: number;
   queueId: number;
   attendantsName: string;
+  token: string;
+  timeCalledInQueue: string;
+  estimatedWaitingTime: string;
 }
