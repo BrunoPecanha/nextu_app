@@ -317,7 +317,7 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   color: white;
 }
 
-/* Estilo para o cabeçalho do card com nome e sino */
+
 .header-card {
   display: flex;
   justify-content: space-between;
@@ -325,11 +325,11 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   width: 100%;
 }
 
-/* Estilo do botão de chamada */
+
 .call-button {
   --padding-start: 0;
   --padding-end: 0;
-  --color: #ffc409; /* Amarelo dourado para destacar */
+  --color: #ffc409; 
 }
 
 .call-button ion-icon {
@@ -337,14 +337,13 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   animation: pulse 2s infinite;
 }
 
-/* Animação opcional para chamar atenção */
+
 @keyframes pulse {
   0% { transform: scale(1); }
   50% { transform: scale(1.2); }
   100% { transform: scale(1); }
 }
 
-/* Estilo para o cabeçalho do cliente */
 .client-header {
   display: flex;
   justify-content: space-between;
@@ -353,12 +352,12 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   margin-bottom: 8px;
 }
 
-/* Estilo do botão de chamada */
+
 .call-button {
   --padding-start: 0;
   --padding-end: 0;
   margin: 0;
-  --color: #ffc409; /* Amarelo para destaque */
+  --color: #ffc409; 
 }
 
 .call-button ion-icon {
@@ -371,7 +370,6 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   color: #ffab00;
 }
 
-/* Efeito de "badge" opcional para clientes prioritários */
 .priority-badge {
   position: absolute;
   top: 8px;
@@ -383,26 +381,26 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   border-radius: 12px;
 }
 
-/* Estilo para o cabeçalho do cliente */
+
 .client-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
   margin-bottom: 8px;
-  position: relative; /* Para posicionamento absoluto do sino */
+  position: relative;
 }
 
 .name-wrapper {
   flex-grow: 1;
   text-align: center;
-  padding: 0 40px; /* Espaço para o sino */
+  padding: 0 40px; 
 }
 
 .client-header h3 {
-  margin: 0 auto; /* Centraliza o texto */
-  max-width: calc(100% - 50px); /* Garante que não sobreponha o sino */
-  word-break: break-word; /* Quebra de linha quando necessário */
+  margin: 0 auto; 
+  max-width: calc(100% - 50px);
+  word-break: break-word; 
 }
 
 .call-button {
@@ -421,7 +419,6 @@ ion-toolbar ion-button[slot="end"] ion-icon {
   font-size: 1.5rem;
 }
 
-/* Estilo para o horário de chamada */
 .called-time {
   display: flex;
   align-items: center;

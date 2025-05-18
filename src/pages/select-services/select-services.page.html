@@ -101,7 +101,7 @@
   <ion-item class="notes-item">
     <ion-label position="floating">Observações</ion-label>
     <ion-textarea
-      [(ngModel)]="observacao"
+      [(ngModel)]="notes"
       name="observacao"
       rows="3"
       maxlength="33"
@@ -116,7 +116,7 @@
     </ion-card-header>
     <ion-card-content>
       <ion-segment
-        [(ngModel)]="formaPagamento"
+        [(ngModel)]="paymentMethod"
         name="formaPagamento"
         value="1"
         class="payment-segment"

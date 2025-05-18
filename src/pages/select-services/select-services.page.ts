@@ -3,8 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 import { AddQueueServiceRequest } from 'src/models/requests/add-queue-service-request';
+import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
 import { ServiceModel } from 'src/models/service-model';
 import { UserModel } from 'src/models/user-model';
+import { CustomerService } from 'src/services/customer-service';
 import { QueueService } from 'src/services/queue-service';
 import { ServiceService } from 'src/services/services-service';
 import { SessionService } from 'src/services/session.service';
@@ -22,11 +24,12 @@ export class SelectServicesPage {
   totalPrice = 0;
   totalTimeString = '';
   totalPriceString = '';
-  observacao = '';
-  formaPagamento = '1';
+  notes = '';
+  paymentMethod = '1';
   selectedServices: ServiceModel[] = [];
   serviceOptions: ServiceModel[] = [];
   user: UserModel = {} as UserModel;
+  customerId: number | null = null;
 
   constructor(
     private router: Router,
@@ -34,6 +37,7 @@ export class SelectServicesPage {
     private alertController: AlertController,
     private serviceService: ServiceService,
     private queueService: QueueService,
+    private customerService: CustomerService,
     private sessionService: SessionService
   ) {
     this.user = this.sessionService.getUser();
@@ -48,6 +52,48 @@ export class SelectServicesPage {
     this.route.queryParams.subscribe(params => {
       this.queueId = params['queueId'];
       this.storeId = params['storeId'];
+      this.customerId = params['customerId'] ? Number(params['customerId']) : null;
+
+      if (this.customerId) {
+        this.loadSelectedServicesByCustomer(this.customerId);
+      }
+    });
+  }
+
+  loadSelectedServicesByCustomer(customerId: number) {
+    this.customerService.loadCustomerInfo(customerId).subscribe({
+      next: (response) => {
+        const services = response.data.services || [];
+
+        this.paymentMethod = response.data.paymentMethodId || '1';
+        this.notes = response.data.notes || '';
+
+        this.serviceService.loadServiceById(this.storeId).subscribe({
+          next: (serviceResponse) => {
+            this.serviceOptions = serviceResponse.data;
+
+            this.selectedServices = services
+              .map((s: any) => {
+                const fullService = this.serviceOptions.find(opt => opt.id === s.id);
+
+                if (!fullService) {
+                  console.warn(`Serviço com nome "${s.name}" não encontrado nas opções disponíveis.`);
+                  return null;
+                }
+
+                return {
+                  ...fullService,
+                  quantity: s.quantity
+                } as ServiceModel;
+              })
+              .filter((s): s is ServiceModel => s !== null);
+
+            this.updateTotals();
+          },
+          error: (err) => console.error('Erro ao carregar serviços disponíveis:', err)
+        });
+      },
+      error: (err) => console.error('Erro ao carregar informações do cliente:', err)
     });
   }
 
@@ -171,8 +217,8 @@ export class SelectServicesPage {
 
     const command: AddCustomerToQueueRequest = {
       selectedServices: servicesToSend,
-      notes: this.observacao,
-      paymentMethod: this.formaPagamento,
+      notes: this.notes,
+      paymentMethod: this.paymentMethod,
       queueId: this.queueId,
       userId: this.user.id
     };
@@ -187,13 +233,39 @@ export class SelectServicesPage {
     });
   }
 
+  updateCustomerToQueue() {
+    const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
+      serviceId: service.id,
+      quantity: service.quantity
+    }));
 
-  proceedToQueue() {
-    this.addCustomerToQueue();
+
+    const command: UpdateCustomerToQueueRequest = {
+      selectedServices: servicesToSend,
+      notes: this.notes,
+      paymentMethod: Number(this.paymentMethod),
+      id: this.customerId || 0
+    };
+
+    this.queueService.updateCustomerToQueue(command).subscribe({
+      next: (response) => {
+        console.log('Cliente adicionado com sucesso:', response);
+      },
+      error: (error) => {
+        console.error('Erro ao adicionar cliente:', error);
+      }
+    });
+  }
+
+  proceedToQueue() {    
+    if (this.customerId)
+      this.updateCustomerToQueue();
+    else
+      this.addCustomerToQueue();
 
     this.router.navigate(['/queue'], {
       queryParams: {
-        userId: 2
+        userId: this.user.id,
       }
     });
   }

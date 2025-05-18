@@ -17,7 +17,7 @@
   .logo {
     width: 50px;
     height: 40px;
-    margin-left: 6.5rem;
+    margin-left: -0.5rem;
   }
   
   .app-title {
@@ -30,7 +30,8 @@
     display: flex;
     align-items: center;
     padding: 1rem;
-    background-color: #ffffff;
+    background-color: #3b95f0;
+    color: white;
     border-bottom: 1px solid #e0e0e0;
   }
   
@@ -49,7 +50,7 @@
   
   .queue-status {
     font-size: 0.8rem;
-    color: #888;
+    color: white;
   }
   
   ion-item {
@@ -80,7 +81,7 @@
   }
   
   .footer-logo img {
-    width: 60px;
+    width: 100px;
     height: auto;
     opacity: 0.7;
   }
