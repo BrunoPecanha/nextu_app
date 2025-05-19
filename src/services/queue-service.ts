@@ -9,6 +9,7 @@ import { CustomerInQueueForEmployeeResponse } from 'src/models/responses/custome
 import { CustomerInQueueCardResponse } from 'src/models/responses/customer-in-queue-card-response';
 import { CustomerInQueueCardDetailResponse } from 'src/models/responses/customer-in-queue-card-detail-response';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
+import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
 
 
 @Injectable({
@@ -25,6 +26,15 @@ export class QueueService {
     return this.http.post<any>(`${this.apiUrl}/queue`, command).pipe(
       catchError(error => {
         console.error('Erro ao adicionar cliente à fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  updateCustomerToQueue(command: UpdateCustomerToQueueRequest): Observable<any> {
+    return this.http.put<UpdateCustomerToQueueRequest>(`${this.apiUrl}/customer`, command).pipe(
+      catchError(error => {
+        console.error('Erro ao editar pedido de cliente na fila:', error);
         return throwError(() => error);
       })
     );

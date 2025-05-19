@@ -8,5 +8,6 @@ export interface CustomerInQueueCardModel {
   timeToWait: number;
   logoPath: string;
   queueId: number;
+  storeId: number;
   estimatedWaitingTime: string;
 }

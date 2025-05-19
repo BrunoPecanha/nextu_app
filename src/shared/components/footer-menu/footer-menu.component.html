@@ -1,20 +1,21 @@
 <ion-footer class="menu-fixed-bottom">
   <div class="content-menu-border">
     <div class="footer-item">
-      <ion-icon name="home-outline" (click)="navegarParaHome()"></ion-icon>
+      <ion-icon name="home-outline" aria-label="Início" (click)="navegarParaHome()"></ion-icon>
       <ion-label>INÍCIO</ion-label>
     </div>
 
-    <div class="footer-item">
-      <ion-icon name="pricetags-outline"></ion-icon>
+    <div class="footer-item" >
+      <ion-icon name="pricetags-outline" aria-label="Promoções"></ion-icon>
       <ion-label>PROMOÇÕES</ion-label>
     </div> 
 
-    <div></div> 
+    <div class="placeholder"></div> <!-- reserva para o botão central -->
 
     <div class="footer-item notification-wrapper">
       <ion-icon
         name="notifications-outline"
+        aria-label="Notificações"
         (click)="navegarParaNotificacoes()"
       ></ion-icon>
       <span
@@ -27,14 +28,14 @@
     </div>
 
     <div class="footer-item">
-      <ion-icon name="menu-outline" (click)="abrirMenu()"></ion-icon>
+      <ion-icon name="menu-outline" aria-label="Menu" (click)="abrirMenu()"></ion-icon>
       <ion-label>MENUS</ion-label>
     </div>
   </div>
- 
+
   <div class="go-fila-central" (click)="navegarParaFila()">
     <div class="fila-button">
-      <ion-icon name="people-outline"></ion-icon>
+      <ion-icon name="people-outline" aria-label="Filas"></ion-icon>
     </div>
     <ion-label>FILAS</ion-label>
   </div>

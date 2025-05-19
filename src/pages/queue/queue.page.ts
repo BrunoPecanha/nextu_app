@@ -23,7 +23,6 @@ export class QueuePage implements OnInit {
 
   private cardDetailsMap = new Map<number, CustomerInQueueCardDetailModel>();
 
-
   constructor(
     private alertController: AlertController,
     public router: Router,
@@ -41,18 +40,18 @@ export class QueuePage implements OnInit {
   async startSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-  
+
       this.store = this.sessionService.getStore();
-  
+
       if (this.store) {
         this.signalRService.joinGroup(`company-${this.store.id}`);
       }
-  
+
       this.signalRService.onUpdateQueue(() => {
         console.log('Atualização recebida via SignalR!');
         this.refreshQueues();
       });
-  
+
     } catch (error) {
       console.error('Erro ao iniciar conexão SignalR:', error);
     }
@@ -67,15 +66,15 @@ export class QueuePage implements OnInit {
     this.forceReload();
   }
 
-  private forceReload(): void {        
+  private forceReload(): void {
     const previouslyExpanded = this.currentlyExpandedCardId;
-       
+
     this.customerCards = [];
     this.currentlyExpandedCardId = null;
     this.cardDetailsMap.clear();
-    this.qrCodeBase64 = null;    
+    this.qrCodeBase64 = null;
 
-    this.loadCustomersInQueueCard();   
+    this.loadCustomersInQueueCard();
 
     setTimeout(() => {
       if (previouslyExpanded !== null) {
@@ -97,15 +96,13 @@ export class QueuePage implements OnInit {
       this.currentlyExpandedCardId = null;
       this.cardDetailsMap.clear();
       this.qrCodeBase64 = null;
-  
+
       setTimeout(() => {
         this.currentlyExpandedCardId = card.queueId;
         this.loadCustomerInQueueCardDetails(card.id, card.queueId);
       });
     }
   }
-  
-  
 
   public isCardExpanded(card: CustomerInQueueCardModel): boolean {
     return this.currentlyExpandedCardId === card.queueId;
@@ -143,7 +140,7 @@ export class QueuePage implements OnInit {
 
   public formatEstimatedTime(timeToWait: number | string | undefined): string {
     if (!timeToWait) return 'Calculando...';
-    
+
     if (typeof timeToWait === 'string') {
       const minutes = this.convertTimeStringToMinutes(timeToWait);
 
@@ -165,25 +162,25 @@ export class QueuePage implements OnInit {
   }
 
   public generateQueuePeople(total: number): any[] {
-    return Array.from({ length: total > 1 ? total : 1  }, (_, idx) => ({
+    return Array.from({ length: total > 1 ? total : 1 }, (_, idx) => ({
       id: idx + 1,
       avatar: 'person-circle-outline'
     }));
   }
 
-  public refreshQueues(): void {    
+  public refreshQueues(): void {
     if (this.customerCards.length === 0) {
       this.loadCustomersInQueueCard();
       return;
     }
-    
+
     const previouslyExpanded = this.currentlyExpandedCardId;
     this.currentlyExpandedCardId = null;
     this.cardDetailsMap.clear();
     this.qrCodeBase64 = null;
-    
+
     this.loadCustomersInQueueCard();
-      
+
     setTimeout(() => {
       if (previouslyExpanded !== null) {
         const card = this.customerCards.find(c => c.queueId === previouslyExpanded);
@@ -197,13 +194,13 @@ export class QueuePage implements OnInit {
 
   public loadCustomersInQueueCard(): void {
     this.customerCards = [];
-    
+
     let userId = this.sessionService.getUser().id;
 
     this.queueService.getCustomerInQueueCard(userId).subscribe({
       next: (response) => {
         this.customerCards = response.data || [];
-        console.log('Filas carregadas:', this.customerCards); 
+        console.log('Filas carregadas:', this.customerCards);
       },
       error: (err) => {
         console.error('Erro ao carregar filas:', err);
@@ -212,27 +209,30 @@ export class QueuePage implements OnInit {
     });
   }
 
- private loadCustomerInQueueCardDetails(id: number, queueId: number): void {
-  if (this.currentlyExpandedCardId !== queueId) return;
+  private loadCustomerInQueueCardDetails(id: number, queueId: number): void {
+    if (this.currentlyExpandedCardId !== queueId) return;
 
-  this.queueService.getCustomerInQueueCardDetails(id, queueId).subscribe({
-    next: (response) => {
-      if (this.currentlyExpandedCardId === queueId) {
-        this.cardDetailsMap.set(queueId, response.data);
-        
-        if (response.data.position === 0) {
-          this.generateQrCode(response.data.token);
+    this.queueService.getCustomerInQueueCardDetails(id, queueId).subscribe({
+      next: (response) => {
+        if (this.currentlyExpandedCardId === queueId) {
+          this.cardDetailsMap.set(queueId, response.data);
+
+          
+      console.log('Detalhe card:', response.data);
+
+          if (response.data.position === 0) {
+            this.generateQrCode(response.data.token);
+          }
+        }
+      },
+      error: (err) => {
+        console.error('Erro ao carregar detalhes:', err);
+        if (this.currentlyExpandedCardId === queueId) {
+          this.currentlyExpandedCardId = null;
         }
       }
-    },
-    error: (err) => {
-      console.error('Erro ao carregar detalhes:', err);
-      if (this.currentlyExpandedCardId === queueId) {
-        this.currentlyExpandedCardId = null;
-      }
-    }
-  });
-}
+    });
+  }
 
   private generateQrCode(token: string): void {
     this.queueService.gerarQrCode(token).subscribe({
@@ -272,7 +272,7 @@ export class QueuePage implements OnInit {
   }
 
   isTimeZero(time: number | string | null | undefined): boolean {
-    if (!time) return false;  
+    if (!time) return false;
     return time === '00:00:00';
   }
 
@@ -290,11 +290,11 @@ export class QueuePage implements OnInit {
     const details = this.getCardDetails(card);
     if (!details) return;
 
-    this.router.navigate(['/edit-services'], {
-      state: {
-        services: details.services,
-        payment: details.payment,
-        queueId: card.queueId
+    this.router.navigate(['/select-services'], {
+      queryParams: {
+        queueId: card.queueId,
+        storeId: card.storeId,
+        customerId: card.id
       }
     });
   }

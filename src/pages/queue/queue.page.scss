@@ -791,7 +791,7 @@ ion-content::part(scroll) {
   --background: #f5f5f5;
   padding-bottom: 80px;
   
-  // Adicione isso para centralizar o empty state
+
   display: flex;
   flex-direction: column;
   
@@ -840,7 +840,7 @@ ion-content::part(scroll) {
     height: 12px;
     border-radius: 50%;
     margin-right: 6px;
-    animation: piscar 2s infinite ease-in-out; /* Movido para aqui */
+    animation: piscar 2s infinite ease-in-out; 
   }
   
   &.verde::before {
@@ -859,4 +859,10 @@ ion-content::part(scroll) {
 @keyframes piscar {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
+}
+
+.quantidade-servico {
+  font-size: 0.8em;
+  color: var(--ion-color-medium);
+  margin-left: 4px;
 }

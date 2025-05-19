@@ -15,7 +15,6 @@
   text-align: center;
 }
 
-
 .footer-item {
   display: flex;
   flex-direction: column;
@@ -23,22 +22,31 @@
   font-size: 12px;
   color: #555;
   text-align: center;
+  cursor: pointer;
 
   ion-icon {
     font-size: 24px;
     color: #3880ff;
     margin-bottom: 2px;
+    padding: 8px; // aumenta a área de toque
   }
 
   ion-label {
     margin: 0;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: 500;
+  }
+
+  &.active ion-icon,
+  &.active ion-label {
+    color: #005eff;
+    font-weight: bold;
   }
 }
 
 .go-fila-central {
   position: absolute;
-  top: -30px;
+  top: -32px;
   left: 50%;
   transform: translateX(-50%);
   display: flex;
@@ -52,6 +60,10 @@
     font-weight: bold;
     color: #3880ff;
   }
+
+  &:hover .fila-button {
+    transform: scale(1.1);
+  }
 }
 
 .fila-button {
@@ -63,31 +75,11 @@
   justify-content: center;
   align-items: center;
   box-shadow: 0 6px 12px rgba(56, 128, 255, 0.4);
+  transition: transform 0.2s ease;
 
   ion-icon {
     color: white;
     font-size: 30px;
-  }
-}
-
-.footer-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: 12px;
-  color: #555;
-  text-align: center;
-
-  ion-icon {
-    font-size: 24px;
-    color: #3880ff;
-    margin-bottom: 2px;
-  }
-
-  ion-label,
-  small {
-    margin: 0;
-    font-size: 11px;
   }
 }
 
@@ -112,4 +104,8 @@
     line-height: 1;
     z-index: 5;
   }
+}
+
+.placeholder {
+  height: 1px;
 }
