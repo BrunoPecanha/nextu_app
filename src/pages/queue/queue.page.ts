@@ -200,7 +200,6 @@ export class QueuePage implements OnInit {
     this.queueService.getCustomerInQueueCard(userId).subscribe({
       next: (response) => {
         this.customerCards = response.data || [];
-        console.log('Filas carregadas:', this.customerCards);
       },
       error: (err) => {
         console.error('Erro ao carregar filas:', err);
@@ -216,9 +215,6 @@ export class QueuePage implements OnInit {
       next: (response) => {
         if (this.currentlyExpandedCardId === queueId) {
           this.cardDetailsMap.set(queueId, response.data);
-
-          
-      console.log('Detalhe card:', response.data);
 
           if (response.data.position === 0) {
             this.generateQrCode(response.data.token);
@@ -276,6 +272,17 @@ export class QueuePage implements OnInit {
     return time === '00:00:00';
   }
 
+  getIonicIcon(unicodeIcon: string): string {
+    const iconMap: { [key: string]: string } = {
+      '\\u{2702}': 'cut-outline',
+      '\\u{2705}': 'checkmark-circle-outline',
+      '\\u{1F4C8}': 'stats-chart-outline',
+      '\\u{1F4C9}': 'stats-chart-outline',
+      '\\u{1F4C6}': 'calendar-outline'     
+    };
+    return iconMap[unicodeIcon] || 'construct-outline'; 
+  }
+
   private async showToast(message: string, color: string = 'success'): Promise<void> {
     const toast = await this.toastController.create({
       message: message,
@@ -309,7 +316,7 @@ export class QueuePage implements OnInit {
           role: 'cancel'
         }
       ]
-    });
+    });  
 
     await alert.present();
 

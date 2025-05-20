@@ -71,7 +71,7 @@
             </div>
           </div>
 
-          <div class="controles-direita">            
+          <div class="controles-direita">
             <div
               *ngIf="!isCardExpanded(card) && card.position === 0"
               class="vez-cliente-indicador"
@@ -164,21 +164,27 @@
               <ion-label class="subtitulo">Serviços Selecionados</ion-label>
             </ion-item-divider>
             <ion-list lines="none" class="lista-servicos">
-              <ion-item *ngFor="let servico of detalhes.services" class="item-servico">
+              <ion-item
+                *ngFor="let servico of detalhes.services"
+                class="item-servico"
+              >
                 <ion-icon
-                  [name]="servico.icon || 'construct-outline'"
+                  [name]="getIonicIcon(servico.icon)"
                   slot="start"
                   class="icon-servico"
-                ></ion-icon>
+                >
+                </ion-icon>
                 <ion-label class="nome-servico">
-                  {{ servico.name }} 
-                  <span *ngIf="servico.quantity > 1" class="quantidade-servico">(x{{ servico.quantity }})</span>
+                  {{ servico.name }}
+                  <span *ngIf="servico.quantity > 1" class="quantidade-servico"
+                    >(x{{ servico.quantity }})</span
+                  >
                 </ion-label>
                 <ion-note slot="end" class="preco-servico">
-                  {{ servico.price * servico.quantity | currency:'BRL' }}
+                  {{ servico.price | currency:'BRL' }}
                 </ion-note>
               </ion-item>
-            
+
               <ion-item class="item-total">
                 <ion-icon
                   name="cash-outline"
