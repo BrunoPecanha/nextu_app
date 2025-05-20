@@ -74,7 +74,7 @@ export class SelectServicesPage {
 
             this.selectedServices = services
               .map((s: any) => {
-                const fullService = this.serviceOptions.find(opt => opt.id === s.id);
+                const fullService = this.serviceOptions.find(opt => opt.name === s.name);
 
                 if (!fullService) {
                   console.warn(`Serviço com nome "${s.name}" não encontrado nas opções disponíveis.`);
