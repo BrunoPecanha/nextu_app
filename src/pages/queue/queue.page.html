@@ -175,7 +175,7 @@
                   <span *ngIf="servico.quantity > 1" class="quantidade-servico">(x{{ servico.quantity }})</span>
                 </ion-label>
                 <ion-note slot="end" class="preco-servico">
-                  {{ servico.price * servico.quantity | currency:'BRL' }}
+                  {{ servico.price | currency:'BRL' }}
                 </ion-note>
               </ion-item>
             
