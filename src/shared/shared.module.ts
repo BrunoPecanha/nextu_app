@@ -5,12 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
+import { UnicodeToCharPipe } from 'src/pipes/unicode-to-char.pipe';
 
 
 @NgModule({
   declarations: [
     FooterMenuComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    UnicodeToCharPipe
   ],
   imports: [
     CommonModule,
@@ -19,7 +21,8 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
   ],
   exports: [
     FooterMenuComponent,
-    SideMenuComponent
+    SideMenuComponent,
+    UnicodeToCharPipe
   ]
 })
 export class SharedModule {}
