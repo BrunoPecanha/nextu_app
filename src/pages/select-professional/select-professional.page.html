@@ -1,20 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/select-company"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>SELECIONE A FILA</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="abrirLojaDetalhada()">
-        <ion-icon slot="icon-only" name="storefront-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="SELECIONE A FILA"
+  [showStartButton]="true"
+  startIconName="arrow-back"
+  (onEndClick)="abrirLojaDetalhada()"
+  endIconName="storefront-outline"
+  [showEndButton]="true"
+></app-custom-header>
 
 <div class="header-loja-dinamico">
   <div class="banner-loja" *ngIf="store?.storeLogoPath">

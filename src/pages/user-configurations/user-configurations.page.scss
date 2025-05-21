@@ -1,328 +1,234 @@
-/* ============================== */
-/* GERAL */
-/* ============================== */
-
-ion-content::part(scroll) {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-  }
-  
-  ion-item {
-    --background: transparent;
-    --padding-start: 8px;
-    --inner-padding-end: 8px;
-    --min-height: 60px;
-    border-radius: 12px;
-    margin-bottom: 12px;
-    background: #ffffff;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
-  }
-  
-  ion-label {
-    font-size: 15px;
-    color: #333;
-  }
-  
-  ion-input, ion-select {
-    font-size: 15px;
-  }
-  
-  ion-toggle {
-    margin-left: auto;
-  }
-  
-  /* ============================== */
-  /* HEADER E TÍTULO */
-  /* ============================== */
-  
+/* Estilos modernizados - SCSS */
+ion-header {
   ion-toolbar {
+    --background: #4361ee;
+    --color: white;
+    --border-width: 0;
     --min-height: 64px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 12px;
-    background-color: #001e61;
-    color: #fff;
   }
-  
+
   ion-title {
-    flex: 1;
-    color: #000000;
-    text-align: center;
-    font-size: 20px;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 1.1rem;
   }
-  
-  /* ============================== */
-  /* BOTÃO CADASTRO */
-  /* ============================== */
-  
-  .btn-cadastro {
-    margin-top: 20px;
-    background-color: #001e61;
-    color: #ffffff;
-    border-radius: 12px;
-    height: 52px;
-    font-weight: bold;
-    font-size: 16px;
-    letter-spacing: 1px;
-    box-shadow: 0 4px 12px rgba(0, 30, 97, 0.4);
+
+  ion-menu-button {
+    --color: white;
   }
-  
-  /* ============================== */
-  /* LOGO UPLOAD */
-  /* ============================== */
-  
-  .logo-wrapper {
-    text-align: center;
-    margin: 0px 0;
-  
-    .logo-container {
-      width: 140px;
-      height: 140px;
-      margin: 0 auto;
-      border-radius: 50%;
-      background-color: #f9f9f9;
-      overflow: hidden;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      border: 2px dashed #ccc;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
-      &:hover {
-        border-color: #001e61;
-        background: #eef1f8;
-        transform: scale(1.02);
-      }
-  
-      .upload-icon {
-        font-size: 42px;
-        color: #666;
-      }
-  
-      .logo-preview {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 50%;
-      }
-    }
-  
-    .logo-msg {
-      margin-top: 10px;
-      font-size: 13px;
-      color: #777;
-    }
-  }
-  
-  /* ============================== */
-  /* HORÁRIO DE ATENDIMENTO */
-  /* ============================== */
-  
-  .horario-box {
-    margin-top: 24px;
-  
-    .label-titulo {
-      font-weight: bold;
-      font-size: 16px;
-      color: #001e61;
-      margin-bottom: 10px;
-      display: block;
-    }
-  
-    .horario-scroll {
-      max-height: 320px;
-      overflow-y: auto;
-      background: #f7f9fc;
-      border-radius: 12px;
-      padding: 14px;
-      box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.05);
-    }
-  
-    ion-grid {
-      padding: 0;
-    }
-  
-    ion-row {
-      padding: 8px 0;
-      border-bottom: 1px solid #eaeaea;
-  
-      &:last-child {
-        border-bottom: none;
-      }
-    }
-  
-    ion-label {
-      font-size: 14px;
-      color: #555;
-    }
-  }
-  
-  /* ============================== */
-  /* SUCESSO CADASTRO */
-  /* ============================== */
-  
-  .sucesso-msg {
-    text-align: center;
-    color: #2dd36f;
-    margin-top: 20px;
-    font-weight: bold;
-    font-size: 16px;
+}
+
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5rem 0 2rem;
+
+  .avatar-upload {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: #f5f5f5;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
-    animation: fadeIn 0.5s ease-in-out;
-  }
-  
-  .check-icon {
-    font-size: 24px;
-    color: #2dd36f;
-  }
-  
-  .check-icon-big {
-    font-size: 28px;
-    color: #2dd36f;
-    animation: pulse 0.8s ease-in-out;
-  }
-  
-  /* ============================== */
-  /* ANIMAÇÕES */
-  /* ============================== */
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease;
+
+    &:active {
       transform: scale(0.95);
     }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  
-  @keyframes pulse {
-    0% {
-      transform: scale(0.9);
-    }
-    50% {
-      transform: scale(1.1);
-    }
-    100% {
-      transform: scale(1);
-    }
-  }
-  
-  .wallpaper-wrapper {
-    text-align: center;
-    margin: 24px 0;
-  
-    .wallpaper-container {
-      position: relative;
+
+    .avatar-image {
       width: 100%;
-      max-width: 320px;
-      height: 180px;
-      margin: 0 auto;
-      background-color: #f9f9f9;
-      border: 2px dashed #ccc;
-      border-radius: 16px;
-      overflow: hidden;
-      cursor: pointer;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-placeholder {
+      width: 100%;
+      height: 100%;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  
-      &:hover {
-        border-color: #001e61;
-        background-color: #eef1f8;
-        transform: scale(1.02);
+      background: #e9ecef;
+
+      .placeholder-icon {
+        font-size: 3rem;
+        color: #adb5bd;
       }
-  
-      .wallpaper-preview {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-  
-      .upload-icon {
-        font-size: 48px;
-        color: #888;
-        position: absolute;
-        z-index: 2;
-        pointer-events: none;
-        opacity: 0.6;
-      }
-  
-      .overlay {
-        position: absolute;
-        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .upload-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 0.5rem;
+      display: flex;
+      justify-content: center;
+
+      .camera-icon {
         color: white;
-        width: 100%;
-        height: 100%;
-        display: none;
-        align-items: center;
-        justify-content: center;
-        font-weight: bold;
-        font-size: 16px;
-        z-index: 2;
-      }
-  
-      &:hover .overlay {
-        display: flex;
+        font-size: 1.2rem;
       }
     }
-  
-    .wallpaper-msg {
-      margin-top: 12px;
-      font-size: 14px;
-      color: #666;
+  }
+
+  .upload-hint {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #6c757d;
+  }
+}
+
+.form-section {
+  background: transparent;
+  margin-bottom: 1.5rem;
+
+  .form-item {
+    --background: #f8f9fa;
+    --border-radius: 12px;
+    --padding-start: 1rem;
+    --padding-end: 1rem;
+    --min-height: 56px;
+    margin-bottom: 1rem;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      --background: #e9ecef;
+      box-shadow: 0 0 0 2px rgba(67, 97, 238, 0.2);
+    }
+
+    ion-label {
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    ion-input {
+      --padding-top: 16px;
+      font-size: 1rem;
     }
   }
-  
-  /* Botão para remover papel de parede */
-  .remove-wallpaper-btn {
-    margin-top: 12px;
-    background: #ff3b30;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  
-    &:hover {
-      background: #e3322a;
+
+  .toggle-item {
+    --background: transparent;
+    --padding-start: 0;
+    --inner-padding-end: 0;
+    --min-height: 48px;
+    margin-top: 1.5rem;
+
+    ion-toggle {
+      --background: #e9ecef;
+      --background-checked: #4361ee;
+      --handle-background: white;
+      --handle-background-checked: white;
+      padding-right: 0.5rem;
+    }
+
+    ion-label {
+      white-space: normal;
+      font-size: 0.95rem;
+      color: #495057;
     }
   }
-  
-  ion-item.item-with-toggle ion-label {
-    flex: 1;
-    white-space: normal;
-    margin-right: 5%;
+}
+
+.wallpaper-section {
+  margin: 2rem 0;
+
+  .section-title {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    color: #495057;
+    font-weight: 500;
   }
-  
-  .item-with-toggle {
+
+  .wallpaper-upload {
+    position: relative;
+    width: 100%;
+    height: 180px;
+    border-radius: 16px;
+    background: #f5f5f5;
     display: flex;
     align-items: center;
-    justify-content: end;
-  
-    ion-label {
-      flex: 1;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      margin-right: 12px;
+    justify-content: center;
+    cursor: pointer;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 2px dashed #dee2e6;
+    transition: all 0.2s ease;
+
+    &:active {
+      transform: scale(0.98);
     }
-  
-    ion-toggle {
-      flex-shrink: 0;
-      margin-right: -60%;
+
+    &:hover {
+      border-color: #4361ee;
+    }
+
+    .wallpaper-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .wallpaper-placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+
+      .placeholder-icon {
+        font-size: 2.5rem;
+        color: #adb5bd;
+      }
+
+      span {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
     }
   }
+
+  .remove-button {
+    margin-top: 0.5rem;
+    --padding-start: 0;
+    --padding-end: 0;
+    font-size: 0.85rem;
+  }
+}
+
+.save-button {
+  --background: #4361ee;
+  --background-activated: #3a56d4;
+  --background-hover: #3a56d4;
+  --color: white;
+  --padding-top: 1rem;
+  --padding-bottom: 1rem;
+  margin: 2rem 0 1rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+
+  &:active {
+    transform: scale(0.98);
+  }
+
+  .spinner {
+    color: white;
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.success-message {
+  animation: fadeIn 0.3s ease-out;
+}

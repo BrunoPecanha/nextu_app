@@ -16,7 +16,7 @@ import { SharedModule } from 'src/shared/shared.module';
     IonicModule,
     ReactiveFormsModule,
     SharedModule,
-    CompanyConfigurationsPageRoutingModule
+    CompanyConfigurationsPageRoutingModule    
   ],
   declarations: [CompanyConfigurationsPage]
 })

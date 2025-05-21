@@ -1,16 +1,10 @@
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-back-button
-      defaultHref="/queue-admin"
-      text=""
-      icon="arrow-back-outline"
-    ></ion-back-button>
-  </ion-buttons>
-  <ion-title>DETALHES DA FILA</ion-title>
-  <ion-buttons slot="end">
-    <ion-button></ion-button>    
-  </ion-buttons>
-</ion-toolbar>
+<app-custom-header
+  title="DETALHES DA FILA"
+  [showStartButton]="true"
+  startIconName="arrow-back"
+  routerLink="/queue-admin"
+  [showEndButton]="false"
+></app-custom-header>
 
 <ion-content>
   <div class="details-header">

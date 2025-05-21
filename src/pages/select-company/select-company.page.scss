@@ -473,3 +473,21 @@ ion-content::part(scroll) {
   scrollbar-width: none; 
   -ms-overflow-style: none; 
 }
+
+.custom-searchbar {
+  padding: 0 16px;
+  margin-top: 4px;
+}
+
+.quick-filters {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  overflow-x: auto;
+}
+
+ion-chip {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  border-radius: 16px;
+}

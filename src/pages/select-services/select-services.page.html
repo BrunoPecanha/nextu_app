@@ -1,17 +1,14 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/select-professional"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>SELEÇÃO DE SERVIÇOS</ion-title>
-    <ion-buttons slot="end"> 
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="SELECIONE OS SERVIÇOS"
+  [showStartButton]="true"
+  (onStartClick)="getBack()"
+  RouterLink="/select-professional"
+  [endDisabled]="selectedServices.length === 0"
+  startIconName="close-outline"
+  [showEndButton]="true"
+  endIconName="checkmark-done"  
+  (onEndClick)="confirmSelection()"
+></app-custom-header>
 
 <ion-content class="ion-padding">  
   <ion-card class="service-card">
@@ -55,7 +52,6 @@
                 >
               </p>
             </ion-label>
-
             <ion-icon
               name="add-circle-outline"
               color="primary"
@@ -67,9 +63,9 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card *ngIf="selectedServices.length > 0" class="selected-card">
+  <ion-card class="selected-card">
     <ion-card-header>
-      <ion-card-title class="card-title">Serviços Selecionados</ion-card-title>
+      <ion-card-title class="card-title">SERVIÇOS SELECIONADOS</ion-card-title>
     </ion-card-header>
     <ion-card-content>
       <div class="selected-chips">
@@ -153,17 +149,4 @@
       </ion-list>
     </ion-card-content>
   </ion-card>
-
-  <div class="action-button">
-    <ion-button
-      expand="block"
-      size="large"
-      color="primary"
-      (click)="confirmSelection()"
-      [disabled]="selectedServices.length === 0"
-    >
-      <ion-icon name="log-in-outline" slot="start"></ion-icon>
-      Confirmar Serviços
-    </ion-button>
-  </div>
 </ion-content>

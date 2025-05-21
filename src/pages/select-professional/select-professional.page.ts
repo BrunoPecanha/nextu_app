@@ -49,12 +49,12 @@ export class SelectProfessionalPage implements OnInit {
 
   toggleLike(queue: ProfessionalModel, event: Event) {
     event.stopPropagation();
-    // event.preventDefault();
-    // queue.liked = !queue.liked;
-    // console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
+     event.preventDefault();
+     queue.liked = !queue.liked;
+     console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
   }
 
-  abrirLojaDetalhada() {
+  abrirLojaDetalhada() {    
     this.router.navigate(['/store-details', this.storeId]);
   }
 

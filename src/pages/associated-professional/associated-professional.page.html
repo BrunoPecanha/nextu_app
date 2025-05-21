@@ -1,10 +1,9 @@
-<ion-toolbar>
-  <ion-buttons slot="start">
-    <ion-menu-button></ion-menu-button>
-  </ion-buttons>
-  <ion-title *ngIf="userRole === 'owner'">GERENC. COLABORADOR</ion-title>
-  <ion-title *ngIf="userRole === 'professional'">CONVITES RECEBIDOS</ion-title>
-</ion-toolbar>
+<app-custom-header
+  [title]="userRole === 'owner' ? 'GERENC. COLABORADOR' : 'CONVITES RECEBIDOS'"
+  [showStartButton]="true"
+  startIconName="arrow-back-outline"
+></app-custom-header>
+
 
 <ion-content class="ion-padding"> 
   <ng-container *ngIf="userRole === 'owner'">

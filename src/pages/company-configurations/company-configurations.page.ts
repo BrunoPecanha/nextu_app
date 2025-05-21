@@ -346,11 +346,11 @@ export class CompanyConfigurationsPage {
     this.cadastroForm.get('cnpj')?.setValue(valor, { emitEvent: false });
   }
 
-  enviar(): void {
+  save(): void {
     this.successMessage = null;
     this.errorMessage = null;
     this.saved = false;
-    debugger
+    
     const cnpjControl = this.cadastroForm.get('cnpj');
     if (cnpjControl && cnpjControl.value) {
       const cnpjLimpo = cnpjControl.value.replace(/[\.\/\-]/g, '');

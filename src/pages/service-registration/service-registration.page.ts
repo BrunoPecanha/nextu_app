@@ -1,5 +1,6 @@
 import { Component, OnInit, ChangeDetectorRef, ElementRef, QueryList, ViewChildren } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { NavController } from '@ionic/angular';
 import { ServiceCategoryResponse } from 'src/models/responses/service-category-response';
 import { ServiceResponse } from 'src/models/responses/service-response';
 import { ServiceCategoryModel } from 'src/models/service-category-model';
@@ -30,7 +31,7 @@ export class ServiceRegistrationPage implements OnInit {
 
   services: ServiceModel[] = [];
 
-  constructor(private fb: FormBuilder, public session: SessionService, private cdRef: ChangeDetectorRef, private categoryService: ServiceCategoryService, private service: ServiceService) {
+  constructor(private fb: FormBuilder, public session: SessionService, private cdRef: ChangeDetectorRef, private categoryService: ServiceCategoryService, private service: ServiceService, private navCtrl: NavController) {
   }
 
   ngOnInit() {
@@ -310,7 +311,6 @@ export class ServiceRegistrationPage implements OnInit {
       return;
     }
 
-    // Inicializa os arrays se estiverem vazios
     if (this.serviceFormArray.length === 0) {
       this.previewUrls = [];
       this.formattedPrices = [];
@@ -331,7 +331,6 @@ export class ServiceRegistrationPage implements OnInit {
       active: [true]
     });
 
-    // Adiciona no início do array
     this.serviceFormArray.unshift(newForm);
     this.previewUrls.unshift(null);
     this.formattedPrices.unshift('');
@@ -409,5 +408,9 @@ export class ServiceRegistrationPage implements OnInit {
 
   trackByFn(index: number, item: any): any {
     return item.id || index;
+  }
+
+  getBack() {    
+    this.navCtrl.back();
   }
 }

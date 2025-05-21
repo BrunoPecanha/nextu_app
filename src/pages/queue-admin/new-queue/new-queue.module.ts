@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { NewQueuePageRoutingModule } from './new-queue-routing.module';
 
 import { NewQueuePage } from './new-queue.page';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { NewQueuePage } from './new-queue.page';
     FormsModule,
     IonicModule,
     NewQueuePageRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule 
   ],
   declarations: [NewQueuePage]
 })

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { CategoryModel } from 'src/models/category-model';
 import { StoreModel } from 'src/models/store-model';
 import { SelectCompanyService } from 'src/services/select-company-service';
@@ -10,7 +11,7 @@ import { SelectCompanyService } from 'src/services/select-company-service';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private router: Router, private service: SelectCompanyService) { }
+  constructor(private router: Router, private service: SelectCompanyService, private navCtrl: NavController) { }
 
   searching = false;
   categories: CategoryModel[] = [];
@@ -18,6 +19,7 @@ export class SelectCompanyPage implements OnInit {
   searchQuery = '';
   showRecentCards = false;
   selectedCategoryId: number | null = null;
+  selectedFilter: 'minorQueue' | 'favorites' | 'recent' | null = null;
   slideOpts = {
     slidesPerView: 1,
     pagination: true,
@@ -47,10 +49,9 @@ export class SelectCompanyPage implements OnInit {
     });
   }
 
-  loadStores() {    
+  loadStores() {
     this.service.loadStores().subscribe({
       next: (response) => {
-        console.log('Lojas:', response.data);
         this.companies = response.data.map(store => ({
           ...store,
           isNew: store.createdAt ? this.checkIfNew(store.createdAt) : false,
@@ -77,7 +78,7 @@ export class SelectCompanyPage implements OnInit {
   }
 
   get filteredCards() {
-    
+
     const query = this.searchQuery.toLowerCase();
     return this.companies.filter(card =>
       card.name.toLowerCase().includes(query)
@@ -127,12 +128,18 @@ export class SelectCompanyPage implements OnInit {
           isNew: this.checkIfNew(store.createdAt),
           liked: store.liked || false,
           minorQueue: store.minorQueue || false
-        } as StoreModel));        
+        } as StoreModel));
       },
       error: (err) => {
         console.error('Erro ao filtrar:', err);
       }
     });
+  }
+
+ 
+
+  getBack() {    
+    this.navCtrl.back();
   }
 
   scrollLeft() {
@@ -146,6 +153,37 @@ export class SelectCompanyPage implements OnInit {
     const container = document.querySelector('.categories-scroll');
     if (container) {
       container.scrollBy({ left: 100, behavior: 'smooth' });
+    }
+  }
+
+  applyFilter(filter: 'minorQueue' | 'favorites' | 'recent') {
+    if (this.selectedFilter === filter) {
+      this.selectedFilter = null;
+      this.loadStores(); // Remove filtro
+      return;
+    }
+
+    this.selectedFilter = filter;
+
+    switch (filter) {
+      case 'minorQueue':
+        // this.service.loadStoresByMinorQueue().subscribe({
+        //   next: (res) => (this.companies = res.data),
+        //   error: (err) => console.error(err),
+        // });
+        break;
+      case 'favorites':
+        // this.service.loadFavoriteStores().subscribe({
+        //   next: (res) => (this.companies = res.data),
+        //   error: (err) => console.error(err),
+        // });
+        break;
+      case 'recent':
+        // this.service.loadRecentStores().subscribe({
+        //   next: (res) => (this.companies = res.data),
+        //   error: (err) => console.error(err),
+        // });
+        break;
     }
   }
 }

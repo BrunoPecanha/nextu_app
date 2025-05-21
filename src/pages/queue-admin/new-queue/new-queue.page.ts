@@ -101,7 +101,7 @@ export class NewQueuePage implements OnInit {
       currentCount: 0
     };
 
-    // Aqui você pode implementar a lógica para salvar no seu serviço
+    // implementar a lógica para salvar no  serviço
     // Exemplo: this.queueService.saveQueue(queueData, this.isEditing);
     
     await this.showToast(
@@ -126,7 +126,6 @@ export class NewQueuePage implements OnInit {
     await toast.present();
   }
 
-  // Helper para formatar a exibição de horários
   formatTime(timeString: string): string {
     if (!timeString) return '';
     const date = new Date(timeString);

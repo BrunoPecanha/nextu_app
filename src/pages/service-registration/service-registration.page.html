@@ -1,20 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/select-company"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>MANUT. SERVIÇOS</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="adicionarNovoServico()">
-        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="MANUT. SERVIÇOS"
+  [showStartButton]="true"
+  (onStartClick)="getBack()"
+  RouterLink="/select-professional"
+  startIconName="close-outline"
+  [showEndButton]="true"
+  endIconName="add"  
+  (onEndClick)="adicionarNovoServico()"
+></app-custom-header>
 
 <ion-content>  
   <div *ngIf="isInitialLoading" class="loading-container">

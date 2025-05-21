@@ -1,16 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>GERENCIAR FILAS</ion-title>
-    <ion-buttons slot="end">
-      <ion-button fill="clear" (click)="openAddQueuePage()" class="add-button">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="GERENCIAR FILAS"
+  [showStartButton]="true"
+  startIconName="arrow-back"
+  [showEndButton]="true"
+  endIconName="add"
+  (onEndClick)="openAddQueuePage()"
+></app-custom-header>
 
 <ion-content class="ion-padding">
-  
   <div class="filters-section">
     <ion-segment value="today" (ionChange)="filterChanged($event)">
       <ion-segment-button value="today">
@@ -27,7 +24,10 @@
     <div class="custom-filter" *ngIf="activeFilter === 'custom'">
       <ion-item lines="none">
         <ion-label position="stacked">Data inicial</ion-label>
-        <ion-datetime presentation="date" [(ngModel)]="startDate"></ion-datetime>
+        <ion-datetime
+          presentation="date"
+          [(ngModel)]="startDate"
+        ></ion-datetime>
       </ion-item>
       <ion-item lines="none">
         <ion-label position="stacked">Data final</ion-label>
@@ -39,34 +39,52 @@
     </div>
   </div>
 
-
   <div class="queues-list">
     <div class="empty-state" *ngIf="filteredQueues.length === 0">
       <ion-icon name="list-outline"></ion-icon>
       <h3>Nenhuma fila encontrada</h3>
-      <p *ngIf="activeFilter !== 'today'">Nenhuma fila foi criada para o período selecionado</p>
-      <ion-button fill="outline" (click)="openAddQueuePage()" *ngIf="activeFilter === 'today'">
+      <p *ngIf="activeFilter !== 'today'">
+        Nenhuma fila foi criada para o período selecionado
+      </p>
+      <ion-button
+        fill="outline"
+        (click)="openAddQueuePage()"
+        *ngIf="activeFilter === 'today'"
+      >
         Criar fila para hoje
       </ion-button>
     </div>
 
     <ion-list lines="none">
       <ion-item-sliding *ngFor="let queue of filteredQueues">
-        <ion-item [class.active-queue]="queue.status === 'Aberta' && queue.date === today" 
-                  (click)="viewQueueDetails(queue)">
+        <ion-item
+          [class.active-queue]="queue.status === 'Aberta' && queue.date === today"
+          (click)="viewQueueDetails(queue)"
+        >
           <ion-avatar slot="start">
             <ion-icon [name]="getQueueIcon(queue.name)"></ion-icon>
           </ion-avatar>
-          
+
           <ion-label>
             <h2>{{ queue.name }}</h2>
-            <p>{{ queue.date | date: 'dd/MM/yyyy' }} • {{ queue.currentCount }} pessoa(s)</p>
+            <p>
+              {{ queue.date | date: 'dd/MM/yyyy' }} • {{ queue.currentCount }}
+              pessoa(s)
+            </p>
           </ion-label>
-          
-          <ion-badge slot="end" color="success" *ngIf="queue.status === 'Aberta' && queue.date === today">
+
+          <ion-badge
+            slot="end"
+            color="success"
+            *ngIf="queue.status === 'Aberta' && queue.date === today"
+          >
             ABERTA
           </ion-badge>
-          <ion-badge slot="end" color="medium" *ngIf="queue.status !== 'Aberta' || queue.date !== today">
+          <ion-badge
+            slot="end"
+            color="medium"
+            *ngIf="queue.status !== 'Aberta' || queue.date !== today"
+          >
             FECHADA
           </ion-badge>
         </ion-item>
