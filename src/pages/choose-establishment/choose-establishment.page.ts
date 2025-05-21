@@ -16,8 +16,7 @@ export class ChooseEstablishmentPage implements OnInit {
   selectedHeaderImage: string = '';
   selectedLogo: string =  '';
   user: UserModel | any;
-  establishments: StoreListResponse | any;
-  
+  establishments: StoreListResponse | any;  
 
   constructor(private router: Router, private storeService: StoresService,
     private session: SessionService,

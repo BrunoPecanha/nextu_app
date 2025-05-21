@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 import { AddQueueServiceRequest } from 'src/models/requests/add-queue-service-request';
 import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
@@ -38,7 +38,8 @@ export class SelectServicesPage {
     private serviceService: ServiceService,
     private queueService: QueueService,
     private customerService: CustomerService,
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private navCtrl: NavController,
   ) {
     this.user = this.sessionService.getUser();
   }
@@ -58,6 +59,10 @@ export class SelectServicesPage {
         this.loadSelectedServicesByCustomer(this.customerId);
       }
     });
+  }
+
+  getBack() {    
+    this.navCtrl.back();
   }
 
   loadSelectedServicesByCustomer(customerId: number) {

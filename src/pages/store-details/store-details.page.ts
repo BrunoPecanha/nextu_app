@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {  ActivatedRoute } from '@angular/router';
+import { NavController } from '@ionic/angular';
 import { ServiceModel } from 'src/models/service-model';
 import { StoreModel } from 'src/models/store-model';
 import { ServiceService } from 'src/services/services-service';
@@ -20,7 +21,8 @@ export class StoreDetailsPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private storeService: StoresService,
-    private serviceService: ServiceService
+    private serviceService: ServiceService,
+    private navCtrl: NavController
   ) { }
 
   ngOnInit() {
@@ -74,6 +76,9 @@ export class StoreDetailsPage implements OnInit {
     });
   }
 
+  getBack() {    
+    this.navCtrl.back();
+  }
 
   getStore(id: number) {
     this.storeService.getStoreById(id).subscribe({

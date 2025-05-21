@@ -1,26 +1,26 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>CONFIGURAÇÕES</ion-title>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="PERFIL USUÁRIO"
+  [showStartButton]="true"
+  startIconName="close-outline"
+  onStartClick="goBack()"
+  routerLink="/queue-admin"
+  [showEndButton]="true"
+  endIconName="checkmark-done"
+></app-custom-header>
 
 <ion-content class="ion-padding" [formGroup]="cadastroForm">
-  <div class="logo-wrapper">
-    <div class="logo-container" (click)="selecionarImagem()">
-      <img
-        *ngIf="imagemPreview"
-        [src]="imagemPreview"
-        alt="Logo Preview"
-        class="logo-preview"
-      />
-      <ion-icon
-        *ngIf="!imagemPreview"
-        name="cloud-upload-outline"
-        class="upload-icon"
-      ></ion-icon>
+  <div class="profile-section">
+    <div class="avatar-upload" (click)="selecionarImagem()">
+      @if (imagemPreview) {
+      <img [src]="imagemPreview" alt="Foto de perfil" class="avatar-image" />
+      } @else {
+      <div class="avatar-placeholder">
+        <ion-icon name="person-outline" class="placeholder-icon"></ion-icon>
+      </div>
+      }
+      <div class="upload-overlay">
+        <ion-icon name="camera-outline" class="camera-icon"></ion-icon>
+      </div>
       <input
         type="file"
         hidden
@@ -29,11 +29,11 @@
         (change)="onImagemSelecionada($event)"
       />
     </div>
-    <div class="logo-msg">Clique para enviar foto</div>
+    <ion-note class="upload-hint">Toque para alterar sua foto</ion-note>
   </div>
 
-  <ion-list lines="none">
-    <ion-item>
+  <ion-list lines="none" class="form-section">
+    <ion-item fill="solid" class="form-item">
       <ion-label position="floating">CPF</ion-label>
       <ion-input
         type="text"
@@ -43,52 +43,55 @@
       ></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">NOME</ion-label>
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Nome completo</ion-label>
       <ion-input formControlName="nome"></ion-input>
     </ion-item>
 
-    <ion-item>
-      <ion-label position="floating">ENDEREÇO</ion-label>
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Endereço</ion-label>
       <ion-input formControlName="endereco"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Senha</ion-label>
+      <ion-input
+        type="password"
+        formControlName="senha"
+        [clearOnEdit]="false"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Subtítulo</ion-label>
+      <ion-input formControlName="subtitle"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Serviços prestados</ion-label>
+      <ion-input formControlName="servicesProvided"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="toggle-item">
+      <ion-toggle
+        formControlName="aceitarMensagemOutrosUsuarios"
+        slot="end"
+      ></ion-toggle>
+      <ion-label>Não aceitar mensagens de outros usuários</ion-label>
     </ion-item>
   </ion-list>
 
-  <ion-item>
-    <ion-label position="floating">SENHA</ion-label>
-    <ion-input formControlName="senha"></ion-input>
-  </ion-item>
-
-  <ion-item>
-    <ion-label position="floating">SUBTÍTULO</ion-label>
-    <ion-input formControlName="subtitle"></ion-input>
-  </ion-item>
-
-
-  <ion-item>
-    <ion-label position="floating">SERVIÇOS PRESTADOS</ion-label>
-    <ion-input formControlName="servicesProvided"></ion-input>
-  </ion-item>
-
-  <ion-item class="item-with-toggle">
-    <ion-label>Não aceitar mensagens de outros usuários</ion-label>
-    <ion-toggle formControlName="aceitarMensagemOutrosUsuarios"></ion-toggle>
-  </ion-item>
-
-  <div class="wallpaper-wrapper">
-    <div class="wallpaper-container" (click)="selecionarWallpaper()">
-      <img
-        *ngIf="wallpaperPreview"
-        [src]="wallpaperPreview"
-        alt="Wallpaper Preview"
-        class="wallpaper-preview"
-      />
-      <ion-icon
-        *ngIf="!wallpaperPreview"
-        name="image-outline"
-        class="upload-icon"
-      ></ion-icon>
-      <div class="overlay">Clique para alterar</div>
+  <div class="wallpaper-section">
+    <ion-label class="section-title">Papel de parede do perfil</ion-label>
+    <div class="wallpaper-upload" (click)="selecionarWallpaper()">
+      @if (wallpaperPreview) {
+      <img [src]="wallpaperPreview" alt="Wallpaper" class="wallpaper-image" />
+      } @else {
+      <div class="wallpaper-placeholder">
+        <ion-icon name="image-outline" class="placeholder-icon"></ion-icon>
+        <span>Selecionar imagem</span>
+      </div>
+      }
       <input
         type="file"
         hidden
@@ -97,32 +100,32 @@
         (change)="onWallpaperSelecionado($event)"
       />
     </div>
-    <div class="wallpaper-msg">
-      Clique para enviar o papel de parede para seu perfil
-    </div>
 
-    <button
-      *ngIf="wallpaperPreview"
-      class="remove-wallpaper-btn"
+    @if (wallpaperPreview) {
+    <ion-button
+      fill="clear"
+      color="danger"
+      size="small"
       (click)="removerWallpaper()"
+      class="remove-button"
     >
-      Remover Papel de Parede
-    </button>
+      <ion-icon slot="start" name="trash-outline"></ion-icon>
+      Remover
+    </ion-button>
+    }
   </div>
 
-  <ion-button
+  <!-- <ion-button
     expand="block"
-    color="primary"
-    class="btn-cadastro"
-    [disabled]="enviando || enviado"
+    shape="round"
+    class="save-button"
+    [disabled]="enviando || enviado || cadastroForm.invalid"
     (click)="enviar()"
   >
-    <ion-spinner *ngIf="enviando" name="crescent"></ion-spinner>
-    <span *ngIf="!enviando && !enviado">SALVAR</span>
-    <ion-icon
-      *ngIf="enviado"
-      name="checkmark-circle"
-      class="check-icon"
-    ></ion-icon>
-  </ion-button>
+    @if (enviando) {
+    <ion-spinner name="crescent" class="spinner"></ion-spinner>
+    } @else if (enviado) {
+    <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+    Salvo com sucesso! } @else { Salvar configurações }
+  </ion-button> -->
 </ion-content>

@@ -1,15 +1,10 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-    </ion-buttons>
-    <ion-title>SELECIONE O PERFIL</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="SELECIONE O PERFIL"
+  [showStartButton]="false"
+  startIconName="arrow-back"
+  routerLink="/queue-admin"
+  [showEndButton]="false"
+></app-custom-header>
 
 <ion-content>
   <div class="container">

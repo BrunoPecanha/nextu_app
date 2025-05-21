@@ -20,7 +20,7 @@ export class CustomerServicePage implements OnInit {
     private route: ActivatedRoute,
     private clienteService: CustomerService,
     private queueService: QueueService,
-    private toastController: ToastController 
+    private toastController: ToastController
   ) {
     this.customerId = Number(this.route.snapshot.paramMap.get('id'));
   }
@@ -40,6 +40,10 @@ export class CustomerServicePage implements OnInit {
     });
   }
 
+  getBack() {
+    this.navCtrl.back();
+  }
+
   async confirmarFinalizacao() {
     const alert = await this.alertController.create({
       header: 'Confirmação',
@@ -57,12 +61,12 @@ export class CustomerServicePage implements OnInit {
         },
       ],
     });
-  
+
     await alert.present();
   }
-  
+
   private async finalizarAtendimento() {
-    try {     
+    try {
       this.queueService.notifyTimeCustomerServiceWasCompleted(this.customerId).subscribe({
         next: async () => {
           await this.mostrarToast('Serviço finalizado com sucesso!', 'success');
@@ -72,13 +76,13 @@ export class CustomerServicePage implements OnInit {
           await this.mostrarToast('Erro ao finalizar serviço', 'danger');
         }
       });
-  
+
     } catch (error) {
       console.error('Erro ao finalizar atendimento:', error);
       await this.mostrarToast('Erro inesperado ao finalizar serviço', 'danger');
     }
   }
-  
+
   private async mostrarToast(mensagem: string, cor: string = 'primary') {
     const toast = await this.toastController.create({
       message: mensagem,

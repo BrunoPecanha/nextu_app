@@ -1,20 +1,12 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/customer-list-in-queue"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>ATENDENDO</ion-title>
-    <ion-buttons slot="end">
-      <ion-button>
-        <ion-icon></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  [title]="'ATENDENDO'"
+  [showStartButton]="true"
+  [showEndButton]="false"
+  [startIconName]="'arrow-back-outline'"
+  [endIconName]="'refresh-outline'"
+  (onStartClick)="getBack()"
+>
+</app-custom-header>
 
 <ion-content fullscreen class="ion-padding">
   <div class="atendimento-container">

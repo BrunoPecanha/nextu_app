@@ -18,6 +18,7 @@ export class CustomerListInQueuePage implements OnInit {
   store: StoreModel | null = null;
   employee: UserModel | null = null;
   currentDate = new Date();
+  isLoading: boolean = false;
 
   constructor(private navCtrl: NavController,
     private queueService: QueueService,
@@ -63,6 +64,7 @@ export class CustomerListInQueuePage implements OnInit {
   }
 
   loadAllCustomersInQueueByEmployeeAndStoreId() {
+    this.isLoading = true;
     this.store = this.sessionService.getStore();
     this.employee = this.sessionService.getUser();
 
@@ -70,6 +72,9 @@ export class CustomerListInQueuePage implements OnInit {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
         next: (response) => {
           this.clients = response.data;
+        },
+        complete: () => {
+          this.isLoading = false;
         },
         error: (err) => {
           console.error('Erro ao carregar estabelecimentos:', err);

@@ -35,8 +35,7 @@ export class QueueAdminPage implements OnInit {
     return this.queues.filter(queue => {
       const matchesSearch = queue.name.toLowerCase().includes(this.searchQuery.toLowerCase());
       const matchesDate = this.filterDate ? queue.date === this.filterDate : true;
-
-      // Filtro adicional para o segment button
+  
       if (this.activeFilter === 'today') {
         return matchesSearch && queue.date === this.today;
       } else if (this.activeFilter === 'custom' && this.startDate && this.endDate) {
@@ -85,7 +84,6 @@ export class QueueAdminPage implements OnInit {
   }
 
   applyCustomFilter() {
-
   }
 
   openAddQueuePage() {
@@ -104,7 +102,6 @@ export class QueueAdminPage implements OnInit {
       }
     });
   }
-
 
   editQueue(queue: any) {
     this.router.navigate(['/edit-queue', { id: queue.name }]);

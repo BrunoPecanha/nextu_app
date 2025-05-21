@@ -1,20 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/select-professional"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>LOJA</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="openInfoModal()">
-        <ion-icon name="information-circle-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="LOJA"
+  [showStartButton]="true"
+  (onStartClick)="getBack()"
+  RouterLink="/select-professional"
+  startIconName="close-outline"
+  [showEndButton]="true"
+  endIconName="information-circle-outline"  
+  (onEndClick)="openInfoModal()"
+></app-custom-header>
 
 <ion-content fullscreen class="loja-container">
   <div *ngIf="isLoading" class="loading-spinner">

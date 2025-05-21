@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Observable, of } from 'rxjs';
 import { NotificationService } from 'src/services/notification.service';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-footer-menu',
@@ -10,31 +12,64 @@ import { NotificationService } from 'src/services/notification.service';
 })
 export class FooterMenuComponent implements OnInit {
   notificationsCount$ = this.notificationService.notificacoesNaoLidas$;
+  profile = 0;
 
-  constructor(private notificationService: NotificationService, private navController: NavController) {
+  constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService) {
+    this.profile = this.sesseionService.getProfile();
   }
+
 
   ngOnInit() {
     this.notificationService.atualizarContadorNaoLidas();
   }
-  
-   navegarParaHome() {
-    this.navController.navigateForward('/select-company');
+
+  async goToHome() {    
+    try {
+      if (this.profile === 0) {
+        this.router.navigate(['/select-company'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+      }
+      else
+        this.router.navigate(['/customer-list-in-queue'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+    } catch (error) {
+      console.error('Navigation error:', error);
+      this.router.navigate(['/role-registration'], { replaceUrl: true });
+    }
   }
 
-  navegarParaFila() {
-    this.navController.navigateForward('/queue');
+  async goToQueue() {    
+    try {
+      if (this.profile === 0) {
+        this.router.navigate(['/queue'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+      }
+      else
+        this.router.navigate(['/customer-list-in-queue'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+    } catch (error) {
+      console.error('Navigation error:', error);
+      this.router.navigate(['/role-registration'], { replaceUrl: true });
+    }
   }
 
-  navegarParaNotificacoes() {
+  goToNotifications() {
     this.navController.navigateForward('/notification');
   }
 
-  marcarComoLida(id: number, usuarioId: number): Observable<any> {    
+  marcarAsRead(id: number, usuarioId: number): Observable<any> {
     return of(null);
   }
 
-  abrirMenu() {
+  openMenu() {
     const menu = document.querySelector('ion-menu');
     menu?.open();
   }

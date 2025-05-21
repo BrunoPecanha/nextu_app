@@ -1,23 +1,15 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        [defaultHref]="fallbackRoute"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>
-      FILAS DE ESPERA
-      <span class="header-date">{{ currentDate | date:'dd/MM/yyyy' }}</span>
-    </ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="refreshQueues()">
-        <ion-icon name="refresh-outline" class="refresh-icon"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  [title]="' FILAS DE ESPERA'"
+  [subtitle]="(currentDate | date:'dd/MM/yyyy') || ''"
+  [showStartButton]="true"
+  [startIconName]="'arrow-back-outline'"
+  [showEndButton]="true"
+  [routeLink]="fallbackRoute"
+  [endIconName]="'refresh-outline'"
+  (onEndClick)="refreshQueues()"
+>
+</app-custom-header>
+
 
 <ion-content class="fila-content">
   <ng-container *ngIf="customerCards !== null; else loading">

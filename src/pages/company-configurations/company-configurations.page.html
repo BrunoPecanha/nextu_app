@@ -1,24 +1,13 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        [defaultHref]="fallbackRoute"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>CONFIGURAÇÕES</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="enviar()" [disabled]="sending">
-        <ion-icon
-          slot="icon-only"
-          [name]="saved ? 'checkmark-done' : 'save'"
-        ></ion-icon>       
-        <ion-spinner *ngIf="sending" name="crescent"></ion-spinner>
-      </ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  title="CONFIGURAÇÕES"
+  [showStartButton]="true"
+  (onStartClick)="getBack()"
+  startIconName="close-outline"
+  [showEndButton]="true"
+  endIconName="checkmark-done"
+  [endLoading]="sending"
+  (onEndClick)="save()"
+></app-custom-header>
 
 <ion-content class="modern-content" [formGroup]="cadastroForm">
   <div class="form-container">    

@@ -5,8 +5,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import { UserConfigurationsPageRoutingModule } from './user-configurations-routing.module';
-
 import { UserConfigurationsPage } from './user-configurations.page';
+import { SharedModule } from 'src/shared/shared.module';
+
+
 
 @NgModule({
   imports: [
@@ -14,7 +16,8 @@ import { UserConfigurationsPage } from './user-configurations.page';
     FormsModule,
     IonicModule,
     ReactiveFormsModule,
-    UserConfigurationsPageRoutingModule
+    UserConfigurationsPageRoutingModule,
+    SharedModule
   ],
   declarations: [UserConfigurationsPage]
 })

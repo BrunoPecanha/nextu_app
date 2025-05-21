@@ -1,18 +1,11 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button
-        defaultHref="/select-company"
-        text=""
-        icon="arrow-back-outline"
-      ></ion-back-button>
-    </ion-buttons>
-    <ion-title>NOTIFICAÇÕES</ion-title>
-    <ion-buttons slot="end">
-      
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
+<app-custom-header
+  [title]="'NOTIFICAÇÕES'"
+  [showStartButton]="true"
+  [startIconName]="'arrow-back-outline'"
+  [endIconName]="'refresh-outline'"
+  [showEndButton]="false"
+>
+</app-custom-header>
 
 <ion-content class="ion-padding">
   <ion-list>

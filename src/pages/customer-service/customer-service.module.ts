@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { CustomerServicePageRoutingModule } from './customer-service-routing.module';
 
 import { CustomerServicePage } from './customer-service.page';
+import { SharedModule } from 'src/shared/shared.module';
 
 @NgModule({
   imports: [
@@ -14,6 +15,7 @@ import { CustomerServicePage } from './customer-service.page';
     FormsModule,
     IonicModule,
     CustomerServicePageRoutingModule,
+    SharedModule
     
   ],
   declarations: [CustomerServicePage]
