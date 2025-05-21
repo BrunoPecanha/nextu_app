@@ -8,34 +8,42 @@ import { OpeningHoursRequest } from "src/models/requests/opening-hours-request";
 import { StoreRequest } from "src/models/requests/store-request";
 import { StoreDetailResponse } from "src/models/responses/store-detail-response";
 import { StoreProfessionalsResponse } from "src/models/responses/store-professionals-response";
-import { StoreResponse } from "src/models/responses/store-response";
+import { StoreListResponse } from "src/models/responses/store-list-response";
 
 @Injectable({
   providedIn: 'root'
 })
-export class StoreService {
+export class StoresService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
-  getStoresByOwner(id: number): Observable<StoreResponse> {
-    return this.http.get<StoreResponse>(`${this.apiUrl}/store/owner/${id}`);
+  getStoresByOwner(id: number): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/owner/${id}`);
   }
 
   getStoreById(id: number): Observable<StoreDetailResponse> {
     return this.http.get<StoreDetailResponse>(`${this.apiUrl}/store/${id}`);
   }
 
-  loadEmployeeStores(id: number): Observable<StoreResponse> {
-    return this.http.get<StoreResponse>(`${this.apiUrl}/store/employee/${id}`);
+  loadEmployeeStores(id: number): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/employee/${id}`);
   }
 
   loadStoreAndProfessionals(id: number): Observable<StoreProfessionalsResponse> {
     return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/professionals/${id}`);
   }
 
-  createStore(storeData: StoreRequest): Observable<StoreResponse> {
-    return this.http.post<StoreResponse>(`${this.apiUrl}/store`, storeData).pipe(
+  updateStore(id: number, data: any): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/store/${id}`, data);
+  }
+
+  deleteStore(id: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/store/${id}`);
+  }
+
+  createStore(storeData: StoreRequest): Observable<StoreListResponse> {
+    return this.http.post<StoreListResponse>(`${this.apiUrl}/store`, storeData).pipe(
       catchError(error => {
         console.error('Erro ao criar loja:', error);
         throw error;
@@ -44,8 +52,8 @@ export class StoreService {
   }
 
   prepareStoreData(cadastroForm: FormGroup): StoreRequest {
-    const formValue = cadastroForm.value;
-
+    const formValue = cadastroForm.value;    
+  
     return {
       ownerId: formValue.ownerId,
       cnpj: formValue.cnpj,
@@ -63,9 +71,15 @@ export class StoreService {
       whatsAppNotice: formValue.whatsAppNotice || false,
       logoPath: formValue.logoPath || '',
       wallPaperPath: formValue.wallPaperPath || '',
-      categoryId: formValue.category,
+      categoryId: formValue.categoryId,
       openingHours: this.getOpeningHoursRequest(cadastroForm),
-      highLights: this.getHighLightsRequest(cadastroForm)
+      highLights: this.getHighLightsRequest(cadastroForm),
+      attendSimultaneously: formValue.attendSimultaneously || false,
+      phoneNumber: formValue.phoneNumber || '',
+      instagram: formValue.instagram || '',
+      facebook: formValue.facebook || '',
+      youtube: formValue.youtube || '',
+      website: formValue.website || ''
     };
   }
 

@@ -3,7 +3,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environment";
 import { CategoryResponse } from "src/models/responses/category-response";
-import { StoreResponse } from "src/models/responses/store-response";
+import { StoreListResponse } from "src/models/responses/store-list-response";
+
 
 
 @Injectable({
@@ -16,13 +17,17 @@ export class SelectCompanyService {
 
   loadCategories(): Observable<CategoryResponse> {
     return this.http.get<CategoryResponse>(`${this.apiUrl}/category/all`);
-  }  
+  }
 
-  loadStoresByCategoryId(id: number): Observable<StoreResponse> {
-    return this.http.get<StoreResponse>(`${this.apiUrl}/store/${id}/stores`);
-  } 
+  loadStoresByCategoryId(id: number): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/${id}/stores`);
+  }
 
-  loadStores(): Observable<StoreResponse> {
-    return this.http.get<StoreResponse>(`${this.apiUrl}/store/all`);
+  loadStores(): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/all`);
+  }
+
+  loadStoreById(id: number): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/all`);
   } 
 }

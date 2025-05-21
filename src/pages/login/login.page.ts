@@ -3,9 +3,8 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
-import { StoreService } from 'src/services/store-service';
 import { SessionService } from 'src/services/session.service';
-import { StoreResponse } from 'src/models/responses/store-response';
+import { StoreListResponse } from 'src/models/responses/store-list-response';
 
 
 @Component({
@@ -17,7 +16,7 @@ export class LoginPage {
   email: string = '';
   password: string = '';
   isLoading: boolean = false;
-  userStores: StoreResponse | null = null;
+  userStores: StoreListResponse | null = null;
 
   constructor(
     private router: Router,

@@ -78,8 +78,7 @@ export class SelectCompanyPage implements OnInit {
   get filteredCards() {
     const query = this.searchQuery.toLowerCase();
     return this.companies.filter(card =>
-      card.name.toLowerCase().includes(query) ||
-      (card.category && card.category.toLowerCase().includes(query))
+      card.name.toLowerCase().includes(query)
     );
   }
 

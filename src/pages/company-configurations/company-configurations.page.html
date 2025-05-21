@@ -2,7 +2,7 @@
   <ion-toolbar>
     <ion-buttons slot="start">
       <ion-back-button
-      [defaultHref]="fallbackRoute"
+        [defaultHref]="fallbackRoute"
         text=""
         icon="arrow-back-outline"
       ></ion-back-button>
@@ -14,6 +14,10 @@
           slot="icon-only"
           [name]="saved ? 'checkmark-done' : 'save'"
         ></ion-icon>
+        <ion-label *ngIf="!sending"
+          >{{ store ? 'Atualizar' : 'Salvar' }}</ion-label
+        >
+        <ion-spinner *ngIf="sending" name="crescent"></ion-spinner>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -111,7 +115,7 @@
               <ion-item>
                 <ion-label position="floating">Categoria</ion-label>
                 <ion-select
-                  formControlName="category"
+                  formControlName="categoryId"
                   interface="action-sheet"
                   placeholder="Selecione a categoria"
                 >
@@ -141,7 +145,7 @@
                 <ion-label position="floating">Telefone</ion-label>
                 <ion-input
                   type="tel"
-                  formControlName="phone"
+                  formControlName="phoneNumber"
                   maxlength="15"
                   (ionInput)="formatarTelefone($event)"
                   placeholder="(99) 99999-9999"

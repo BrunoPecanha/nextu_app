@@ -21,4 +21,10 @@ export interface StoreRequest {
   categoryId: number;
   openingHours: OpeningHoursRequest[];
   highLights: HighLightRequest[];
+  attendSimultaneously: boolean;
+  phoneNumber: string;
+  instagram: string;
+  facebook: string;
+  youtube: string;
+  website: string;
 }
