@@ -81,7 +81,12 @@ const routes: Routes = [
   {
     path: 'notification',
     loadChildren: () => import('../pages/notification/notification.module').then( m => m.NotificationPageModule)
+  },
+  {
+    path: 'new-queue',
+    loadChildren: () => import('../pages/queue-admin/new-queue/new-queue.module').then( m => m.NewQueuePageModule)
   }
+
 
 ];
 

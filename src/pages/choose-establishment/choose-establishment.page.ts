@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { StoreResponse } from 'src/models/responses/store-response';
+import { StoreListResponse } from 'src/models/responses/store-list-response';
 import { StoreModel } from 'src/models/store-model';
 import { UserModel } from 'src/models/user-model';
 import { QueueService } from 'src/services/queue-service';
 import { SessionService } from 'src/services/session.service';
-import { StoreService } from 'src/services/store-service';
+import { StoresService } from 'src/services/stores-service';
 
 @Component({
   selector: 'app-choose-establishment',
@@ -13,12 +13,13 @@ import { StoreService } from 'src/services/store-service';
   styleUrls: ['./choose-establishment.page.scss'],
 })
 export class ChooseEstablishmentPage implements OnInit {
-  selectedHeaderImage: string = 'assets/images/utils/default-logo.jpg';
-  selectedLogo: string = 'assets/images/utils/default-logo.png';
+  selectedHeaderImage: string = '';
+  selectedLogo: string =  '';
   user: UserModel | any;
-  establishments: StoreResponse | any;
+  establishments: StoreListResponse | any;
+  
 
-  constructor(private router: Router, private storeService: StoreService,
+  constructor(private router: Router, private storeService: StoresService,
     private session: SessionService,
     private queueService: QueueService) {
   }
@@ -45,8 +46,8 @@ export class ChooseEstablishmentPage implements OnInit {
   }
 
   selecionarEmpresa(est: StoreModel) {    
-    this.selectedHeaderImage = est.logoPath ?? this.selectedHeaderImage;
-    this.selectedLogo = est.logoPath ?? this.selectedLogo;
+    this.selectedHeaderImage = est.logoPath ?? '';
+    this.selectedLogo = est.logoPath ?? '';
   }
 
   acessarEmpresa(event: Event, selectedStore: StoreModel) {

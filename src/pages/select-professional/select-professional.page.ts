@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
-import { StoreService } from 'src/services/store-service';
+import { StoresService } from 'src/services/stores-service';
 
 @Component({
   selector: 'app-select-professional',
@@ -16,7 +16,7 @@ export class SelectProfessionalPage implements OnInit {
   bannerLoaded = false;
   logoLoaded = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: StoreService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private service: StoresService) { }
 
   ngOnInit() {
     this.getSelectedStoreId();

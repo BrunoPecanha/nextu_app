@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {  ActivatedRoute } from '@angular/router';
 import { ServiceModel } from 'src/models/service-model';
 import { StoreModel } from 'src/models/store-model';
 import { ServiceService } from 'src/services/services-service';
-import { StoreService } from 'src/services/store-service';
+import { StoresService } from 'src/services/stores-service';
 
 @Component({
   selector: 'app-store-details',
@@ -18,9 +18,8 @@ export class StoreDetailsPage implements OnInit {
   isLoading: boolean = true; 
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
-    private storeService: StoreService,
+    private storeService: StoresService,
     private serviceService: ServiceService
   ) { }
 

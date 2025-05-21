@@ -18,12 +18,28 @@
 
 <ion-content class="establishment-content">
   <div class="header-background-modern">
-    <ion-img [src]="selectedHeaderImage" class="header-img"></ion-img>
+    <ng-container *ngIf="selectedHeaderImage; else defaultHeader">
+      <ion-img [src]="selectedHeaderImage" class="header-img"></ion-img>
+    </ng-container>
+    <ng-template #defaultHeader>
+      <div class="default-header">
+        <div class="default-header-icon">
+          <ion-icon name="business"></ion-icon>
+        </div>
+      </div>
+    </ng-template>
     <div class="header-overlay"></div>
   </div>
-
+  
   <div class="logo-wrapper">
-    <ion-img [src]="selectedLogo"></ion-img>
+    <ng-container *ngIf="selectedLogo; else defaultLogo">
+      <ion-img [src]="selectedLogo"></ion-img>
+    </ng-container>
+    <ng-template #defaultLogo>
+      <div class="default-logo">
+        <ion-icon name="business"></ion-icon>
+      </div>
+    </ng-template>
   </div>
 
   <ion-card class="card-retratil">

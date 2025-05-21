@@ -8,7 +8,7 @@ import { UserModel } from "./user-model";
 export interface StoreModel extends To {
   id: number;
   cnpj: string;
-  phone: string;
+  phoneNumber : string;
   name: string;
   address: string;
   number: string;
@@ -16,6 +16,7 @@ export interface StoreModel extends To {
   votes: number;
   minorQueue: number;
   city: string;
+  categoryId: number;
   category: string;
   state: string;
   openAutomatic: boolean;
@@ -38,6 +39,7 @@ export interface StoreModel extends To {
   instagram: string;
   facebook: string; 
   youtube: string;
-  site: string;
+  webSite: string;
   whatsapp: string;
+  attendSimultaneously: boolean; 
 }

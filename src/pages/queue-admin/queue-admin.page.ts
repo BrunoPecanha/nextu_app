@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-queue-admin',
   templateUrl: './queue-admin.page.html',
@@ -11,6 +12,9 @@ export class QueueAdminPage implements OnInit {
   searchQuery = '';
   filterDate: string = '';
   calendarOpen = false;
+  activeFilter: 'today' | 'all' | 'custom' = 'today';
+  startDate: string = '';
+  endDate: string = '';
 
   queues = [
     { name: 'Fila de Lavagem', date: '2025-04-22', status: 'Fechada', currentCount: 5 },
@@ -31,6 +35,14 @@ export class QueueAdminPage implements OnInit {
     return this.queues.filter(queue => {
       const matchesSearch = queue.name.toLowerCase().includes(this.searchQuery.toLowerCase());
       const matchesDate = this.filterDate ? queue.date === this.filterDate : true;
+
+      // Filtro adicional para o segment button
+      if (this.activeFilter === 'today') {
+        return matchesSearch && queue.date === this.today;
+      } else if (this.activeFilter === 'custom' && this.startDate && this.endDate) {
+        return matchesSearch && queue.date >= this.startDate && queue.date <= this.endDate;
+      }
+
       return matchesSearch && matchesDate;
     });
   }
@@ -47,22 +59,16 @@ export class QueueAdminPage implements OnInit {
     return 'list-outline';
   }
 
-  // No arquivo queue-admin.page.ts
   clearDateFilter() {
-    this.filterDate = ''; // Remove o filtro definindo como string vazia
+    this.filterDate = '';
   }
 
   openCalendar() {
-    console.info('Abrindo calendário...');
     this.calendarOpen = true;
   }
 
   closeCalendar() {
     this.calendarOpen = false;
-  }
-
-  toggleCalendar() {
-    this.calendarOpen = !this.calendarOpen;
   }
 
   onDateChange(event: any) {
@@ -73,46 +79,50 @@ export class QueueAdminPage implements OnInit {
     this.closeCalendar();
   }
 
-  onSearch(event: any) {
-    this.searchQuery = event.detail.value;
+  filterChanged(event: any) {
+    this.activeFilter = event.detail.value;
+    this.filterDate = '';
   }
 
-  async openQueue() {
-    const alert = await this.alertController.create({
-      header: 'ABRIR NOVA FILA',
-      inputs: [
-        {
-          name: 'queueName',
-          type: 'text',
-          placeholder: 'Nome da fila',
-          value: ''
+  applyCustomFilter() {
+
+  }
+
+  openAddQueuePage() {
+    this.router.navigate(['/new-queue'], {
+      state: {
+        queue: {
+          name: 'Nova Fila Exemplo',
+          date: new Date().toISOString().split('T')[0],
+          openingTime: new Date().toISOString(),
+          closingTime: new Date().toISOString(),
+          type: 'normal',
+          isRecurring: false,
+          recurringDays: [],
+          recurringEndDate: ''
         }
-      ],
+      }
+    });
+  }
+
+
+  editQueue(queue: any) {
+    this.router.navigate(['/edit-queue', { id: queue.name }]);
+  }
+
+  async deleteQueue(queue: any) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar exclusão',
+      message: `Deseja realmente excluir a fila "${queue.name}"?`,
       buttons: [
         {
           text: 'Cancelar',
           role: 'cancel'
         },
         {
-          text: 'Confirmar',
-          handler: async (data) => {
-            const queueName = data.queueName.trim();
-            if (queueName) {
-              const newQueue = {
-                name: queueName,
-                date: this.today,
-                status: 'Aberta',
-                currentCount: 0
-              };
-              this.queues.unshift(newQueue);
-            } else {
-              const errorAlert = await this.alertController.create({
-                header: 'Erro',
-                message: 'Nome da fila é obrigatório!',
-                buttons: ['OK']
-              });
-              await errorAlert.present();
-            }
+          text: 'Excluir',
+          handler: () => {
+            this.queues = this.queues.filter(q => q !== queue);
           }
         }
       ]

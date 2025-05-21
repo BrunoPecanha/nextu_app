@@ -22,12 +22,25 @@
   </div>
   <div *ngIf="!isLoading" class="page-content">
     <div class="loja-banner">
-      <img [src]="store.wallPaperPath" class="img-banner" />
+      <ng-container *ngIf="store.wallPaperPath; else noBanner">
+        <img [src]="store.wallPaperPath" class="img-banner" />
+      </ng-container>
+      <ng-template #noBanner>
+        <div class="img-banner empty-banner"></div>
+      </ng-template>
+
       <div class="logo-wrapper">
-        <img [src]="store.logoPath" class="logo-loja" />
+        <ng-container *ngIf="store.logoPath; else defaultLogo">
+          <img [src]="store.logoPath" class="logo-loja" />
+        </ng-container>
+        <ng-template #defaultLogo>
+          <div class="default-logo">
+            <ion-icon name="business"></ion-icon>
+          </div>
+        </ng-template>
       </div>
     </div>
-
+    
     <div class="loja-info">
       <h2 class="nome-loja">{{ store.name }}</h2>
       <p class="descricao-loja">{{ store.storeSubtitle }}</p>
@@ -41,14 +54,21 @@
     <ion-list class="servicos-lista">
       <ion-item *ngFor="let service of services">
         <ion-avatar slot="start">
-          <img [src]="service.imgPath" />
+          <ng-container *ngIf="service.imgPath; else defaultIcon">
+            <img [src]="service.imgPath" />
+          </ng-container>
+          <ng-template #defaultIcon>
+            <div class="avatar-fallback">
+              <ion-icon name="construct-outline"></ion-icon>
+            </div>
+          </ng-template>
         </ion-avatar>
         <ion-label>
           <h3>{{ service.name }}</h3>
           <p>{{ service.description }}</p>
         </ion-label>
         <ion-note slot="end" color="primary">
-          R$ {{ service.price | number:'1.2-2' }}
+          R$ {{ service.price | number: '1.2-2' }}
         </ion-note>
       </ion-item>
     </ion-list>
@@ -103,7 +123,7 @@
           ></ion-icon>
           <ion-label class="info-text">
             <h3>Contato</h3>
-            <p>{{ store.phone || 'Telefone não informado' }}</p>
+            <p>{{ store.phoneNumber || 'Telefone não informado' }}</p>
           </ion-label>
         </ion-item>
 
