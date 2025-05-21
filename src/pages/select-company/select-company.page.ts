@@ -50,6 +50,7 @@ export class SelectCompanyPage implements OnInit {
   loadStores() {    
     this.service.loadStores().subscribe({
       next: (response) => {
+        console.log('Lojas:', response.data);
         this.companies = response.data.map(store => ({
           ...store,
           isNew: store.createdAt ? this.checkIfNew(store.createdAt) : false,
@@ -76,6 +77,7 @@ export class SelectCompanyPage implements OnInit {
   }
 
   get filteredCards() {
+    
     const query = this.searchQuery.toLowerCase();
     return this.companies.filter(card =>
       card.name.toLowerCase().includes(query)
@@ -119,11 +121,13 @@ export class SelectCompanyPage implements OnInit {
     this.selectedCategoryId = idCategory;
     this.service.loadStoresByCategoryId(idCategory).subscribe({
       next: (response) => {
+        console.log('Lojas filtradas:', response.data);
         this.companies = response.data.map(store => ({
           ...store,
           isNew: this.checkIfNew(store.createdAt),
-          liked: store.liked || false
-        }));
+          liked: store.liked || false,
+          minorQueue: store.minorQueue || false
+        } as StoreModel));        
       },
       error: (err) => {
         console.error('Erro ao filtrar:', err);

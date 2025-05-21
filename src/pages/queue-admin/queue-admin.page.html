@@ -1,115 +1,87 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-menu-button></ion-menu-button>
-    </ion-buttons>
-    <ion-title>GERENC. FILAS</ion-title>
-
+    <ion-title>GERENCIAR FILAS</ion-title>
     <ion-buttons slot="end">
-      <ion-button
-        fill="clear"
-        (click)="openQueue()"
-        [disabled]="hasTodayOpenQueue"
-        class="add-button"
-      >
-        <ion-icon name="add-circle-outline" slot="icon-only"></ion-icon>
+      <ion-button fill="clear" (click)="openAddQueuePage()" class="add-button">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <div class="filters">
-    <div class="filter-buttons">
-      <ion-button
-        expand="block"
-        shape="round"
-        size="large"
-        fill="solid"
-        class="date-filter-button"
-        (click)="openCalendar()"
-        [disabled]="hasTodayOpenQueue"
-      >
-        <ion-icon name="calendar-outline" slot="start"></ion-icon>
-        <ion-label>FILTRAR POR DATA</ion-label>
-      </ion-button>
+<ion-content class="ion-padding">
+  
+  <div class="filters-section">
+    <ion-segment value="today" (ionChange)="filterChanged($event)">
+      <ion-segment-button value="today">
+        <ion-label>Hoje</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="all">
+        <ion-label>Todas</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="custom">
+        <ion-label>Personalizado</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-      <ion-button
-        *ngIf="filterDate"
-        expand="block"
-        shape="round"
-        size="large"
-        fill="outline"
-        color="medium"
-        (click)="clearDateFilter()"
-      >
-        <ion-icon slot="start" name="close-circle-outline"></ion-icon>
-        <ion-text>REMOVER FILTRO</ion-text>
+    <div class="custom-filter" *ngIf="activeFilter === 'custom'">
+      <ion-item lines="none">
+        <ion-label position="stacked">Data inicial</ion-label>
+        <ion-datetime presentation="date" [(ngModel)]="startDate"></ion-datetime>
+      </ion-item>
+      <ion-item lines="none">
+        <ion-label position="stacked">Data final</ion-label>
+        <ion-datetime presentation="date" [(ngModel)]="endDate"></ion-datetime>
+      </ion-item>
+      <ion-button expand="block" shape="round" (click)="applyCustomFilter()">
+        Aplicar filtro
       </ion-button>
     </div>
   </div>
 
-  <div class="queue-list">
-    <ion-card
-      *ngFor="let queue of filteredQueues"
-      [class.today-open]="queue.status === 'Aberta' && queue.date === today"
-    >
-      <ion-card-header>
-        <ion-card-title class="card-title-with-icon">
-          <ion-icon
-            [name]="getQueueIcon(queue.name)"
-            slot="start"
-            style="margin-right: 6px"
-          >
-          </ion-icon>
-          {{ queue.name }}
-        </ion-card-title>
-        <ion-badge
-          *ngIf="queue.status === 'Aberta' && queue.date === today"
-          color="success"
-          style="margin-left: 8px; margin-top: 4px"
-        >
-          ABERTA HOJE
-        </ion-badge>
-        <ion-card-subtitle>
-          {{ queue.date | date: 'dd/MM/yyyy' }}
-        </ion-card-subtitle>
-      </ion-card-header>
 
-      <ion-card-content>
-        <p>{{ queue.status }}</p>
-        <p>
-          <ion-icon name="people-outline"></ion-icon>
-          {{ queue.currentCount }} pessoa(s) na fila
-        </p>
-        <ion-button
-          expand="block"
-          fill="outline"
-          (click)="viewQueueDetails(queue)"
-        >
-          <ion-icon name="information-circle-outline" slot="start"></ion-icon>
-          VER DETALHES
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
+  <div class="queues-list">
+    <div class="empty-state" *ngIf="filteredQueues.length === 0">
+      <ion-icon name="list-outline"></ion-icon>
+      <h3>Nenhuma fila encontrada</h3>
+      <p *ngIf="activeFilter !== 'today'">Nenhuma fila foi criada para o período selecionado</p>
+      <ion-button fill="outline" (click)="openAddQueuePage()" *ngIf="activeFilter === 'today'">
+        Criar fila para hoje
+      </ion-button>
+    </div>
+
+    <ion-list lines="none">
+      <ion-item-sliding *ngFor="let queue of filteredQueues">
+        <ion-item [class.active-queue]="queue.status === 'Aberta' && queue.date === today" 
+                  (click)="viewQueueDetails(queue)">
+          <ion-avatar slot="start">
+            <ion-icon [name]="getQueueIcon(queue.name)"></ion-icon>
+          </ion-avatar>
+          
+          <ion-label>
+            <h2>{{ queue.name }}</h2>
+            <p>{{ queue.date | date: 'dd/MM/yyyy' }} • {{ queue.currentCount }} pessoa(s)</p>
+          </ion-label>
+          
+          <ion-badge slot="end" color="success" *ngIf="queue.status === 'Aberta' && queue.date === today">
+            ABERTA
+          </ion-badge>
+          <ion-badge slot="end" color="medium" *ngIf="queue.status !== 'Aberta' || queue.date !== today">
+            FECHADA
+          </ion-badge>
+        </ion-item>
+
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="deleteQueue(queue)">
+            <ion-icon slot="icon-only" name="trash"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="tertiary" (click)="editQueue(queue)">
+            <ion-icon slot="icon-only" name="create"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
   </div>
 </ion-content>
-
-<ion-modal
-  [isOpen]="calendarOpen"
-  (didDismiss)="closeCalendar()"
-  cssClass="custom-calendar-modal"
->
-  <ng-template>
-    <div class="calendar-wrapper">
-      <ion-datetime
-        class="centered-datetime"
-        presentation="date"
-        (ionChange)="onDateChange($event)"
-      >
-      </ion-datetime>
-    </div>
-  </ng-template>
-</ion-modal>
 
 <app-footer-menu></app-footer-menu>

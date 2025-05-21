@@ -1,0 +1,74 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button fill="clear" (click)="cancel()">
+        <ion-icon name="close"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>{{ isEditing ? 'Editar Fila' : 'Nova Fila' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button fill="clear" (click)="save()" [disabled]="!form.valid">
+        <ion-icon name="checkmark"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-label position="floating">Nome da Fila</ion-label>
+      <ion-input formControlName="name" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-label position="stacked">Data</ion-label>
+      <ion-datetime presentation="date" formControlName="date"></ion-datetime>
+    </ion-item>
+
+    <div class="time-range">
+      <ion-item fill="solid" class="ion-margin-bottom">
+        <ion-label position="stacked">Horário de Abertura</ion-label>
+        <ion-datetime presentation="time" formControlName="openingTime"></ion-datetime>
+      </ion-item>
+
+      <ion-item fill="solid" class="ion-margin-bottom">
+        <ion-label position="stacked">Horário de Fechamento</ion-label>
+        <ion-datetime presentation="time" formControlName="closingTime"></ion-datetime>
+      </ion-item>
+    </div>
+
+    <ion-item fill="solid" class="ion-margin-bottom">
+      <ion-label position="stacked">Tipo de Fila</ion-label>
+      <ion-select formControlName="type" interface="popover">
+        <ion-select-option value="normal">Normal</ion-select-option>
+        <ion-select-option value="priority">Prioritária</ion-select-option>
+        <ion-select-option value="express">Expressa</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item fill="solid" class="ion-margin-bottom" lines="none">
+      <ion-toggle formControlName="isRecurring">Fila recorrente</ion-toggle>
+    </ion-item>
+
+    <div class="recurring-options" *ngIf="form?.get('isRecurring')?.value">
+      <ion-item fill="solid" class="ion-margin-bottom">
+        <ion-label position="stacked">Dias da semana</ion-label>
+        <ion-select formControlName="recurringDays" multiple interface="popover">
+          <ion-select-option value="1">Segunda</ion-select-option>
+          <ion-select-option value="2">Terça</ion-select-option>
+          <ion-select-option value="3">Quarta</ion-select-option>
+          <ion-select-option value="4">Quinta</ion-select-option>
+          <ion-select-option value="5">Sexta</ion-select-option>
+          <ion-select-option value="6">Sábado</ion-select-option>
+          <ion-select-option value="0">Domingo</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item fill="solid" class="ion-margin-bottom">
+        <ion-label position="stacked">Período de recorrência</ion-label>
+        <ion-datetime presentation="date" formControlName="recurringEndDate"></ion-datetime>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>

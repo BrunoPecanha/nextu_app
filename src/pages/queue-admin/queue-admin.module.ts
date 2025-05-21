@@ -15,8 +15,8 @@ import { SharedModule } from 'src/shared/shared.module';
     FormsModule,
     SharedModule,
     IonicModule,
-    QueueAdminPageRoutingModule
+    QueueAdminPageRoutingModule    
   ],
-  declarations: [QueueAdminPage]
+  declarations: [QueueAdminPage, ]
 })
 export class QueueAdminPageModule {}

@@ -13,35 +13,39 @@
         <ion-icon
           slot="icon-only"
           [name]="saved ? 'checkmark-done' : 'save'"
-        ></ion-icon>
-        <ion-label *ngIf="!sending"
-          >{{ store ? 'Atualizar' : 'Salvar' }}</ion-label
-        >
+        ></ion-icon>       
         <ion-spinner *ngIf="sending" name="crescent"></ion-spinner>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" [formGroup]="cadastroForm">
-  <div class="form-container">
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Imagens da Loja</ion-card-title>
+<ion-content class="modern-content" [formGroup]="cadastroForm">
+  <div class="form-container">    
+    <ion-card class="modern-card image-section">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="images-outline" class="section-icon"></ion-icon>
+          Imagens da Loja
+        </ion-card-title>
       </ion-card-header>
-      <ion-card-content>
-        <div class="upload-section">
-          <div class="logo-wrapper">
-            <div class="logo-container" (click)="selecionarImagem()">
+
+      <ion-card-content class="image-content">
+        <div class="upload-grid">
+          <ion-card-subtitle class="section-subtitle">
+            Logo
+            </ion-card-subtitle>
+          <div class="upload-item logo-upload">
+            <div class="upload-container" (click)="selecionarImagem()">
               <img
                 *ngIf="imagemPreview"
                 [src]="imagemPreview"
                 alt="Logo Preview"
-                class="logo-preview"
+                class="upload-preview"
               />
-              <div class="upload-placeholder" *ngIf="!imagemPreview">
-                <ion-icon name="camera-outline"></ion-icon>
-                <span>Adicionar logo</span>
+              <div class="upload-overlay" *ngIf="!imagemPreview">
+                <ion-icon name="camera" class="upload-icon"></ion-icon>
+                <span class="upload-text">Adicionar logo</span>
               </div>
               <input
                 type="file"
@@ -51,19 +55,23 @@
                 (change)="onImagemSelecionada($event)"
               />
             </div>
+            <div class="upload-hint">Recomendado: 500x500px</div>
           </div>
 
-          <div class="wallpaper-wrapper">
-            <div class="wallpaper-container" (click)="selecionarWallpaper()">
+          <ion-card-subtitle class="section-subtitle">
+            Papel de Parede
+            </ion-card-subtitle>
+          <div class="upload-item banner-upload">
+            <div class="upload-container" (click)="selecionarWallpaper()">
               <img
                 *ngIf="wallpaperPreview"
                 [src]="wallpaperPreview"
                 alt="Wallpaper Preview"
-                class="wallpaper-preview"
+                class="upload-preview"
               />
-              <div class="upload-placeholder" *ngIf="!wallpaperPreview">
-                <ion-icon name="image-outline"></ion-icon>
-                <span>Adicionar banner</span>
+              <div class="upload-overlay" *ngIf="!wallpaperPreview">
+                <ion-icon name="image" class="upload-icon"></ion-icon>
+                <span class="upload-text">Adicionar banner</span>
               </div>
               <input
                 type="file"
@@ -73,51 +81,57 @@
                 (change)="onWallpaperSelecionado($event)"
               />
             </div>
+            <div class="upload-hint">Recomendado: 1200x400px</div>
           </div>
         </div>
       </ion-card-content>
     </ion-card>
 
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Informações Básicas</ion-card-title>
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="information-circle-outline" class="section-icon"></ion-icon>
+          Informações Básicas
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-grid>
+        <ion-grid class="form-grid">
           <ion-row>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">CNPJ</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">CNPJ</ion-label>
                 <ion-input
                   type="text"
                   formControlName="cnpj"
                   maxlength="18"
                   (ionInput)="formatarCNPJ($event)"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Nome da Empresa</ion-label>
-                <ion-input formControlName="name"></ion-input>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Nome da Empresa</ion-label>
+                <ion-input formControlName="name" class="input-field"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Subtítulo da Loja</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Subtítulo da Loja</ion-label>
                 <ion-input
                   formControlName="storeSubtitle"
                   placeholder="Ex: Especialista em cortes masculinos"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Categoria</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Categoria</ion-label>
                 <ion-select
                   formControlName="categoryId"
                   interface="action-sheet"
-                  placeholder="Selecione a categoria"
+                  class="input-field"
                 >
                   <ion-select-option
                     *ngFor="let category of categories"
@@ -126,66 +140,75 @@
                     {{ category.name }}
                   </ion-select-option>
                 </ion-select>
+                <ion-icon name="chevron-down-outline" slot="end" class="select-icon"></ion-icon>
               </ion-item>
             </ion-col>
           </ion-row>
         </ion-grid>
       </ion-card-content>
     </ion-card>
-
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Contato e Redes Sociais</ion-card-title>
+    
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="share-social-outline" class="section-icon"></ion-icon>
+          Contato e Redes Sociais
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-grid>
+        <ion-grid class="form-grid">
           <ion-row>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Telefone</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Telefone</ion-label>
                 <ion-input
                   type="tel"
                   formControlName="phoneNumber"
                   maxlength="15"
                   (ionInput)="formatarTelefone($event)"
                   placeholder="(99) 99999-9999"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Site</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Site</ion-label>
                 <ion-input
                   formControlName="website"
                   type="url"
                   placeholder="https://"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Facebook</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-icon name="logo-facebook" slot="start" class="social-icon"></ion-icon>
                 <ion-input
                   formControlName="facebook"
                   placeholder="facebook.com/seuuser"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Instagram</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-icon name="logo-instagram" slot="start" class="social-icon"></ion-icon>
                 <ion-input
                   formControlName="instagram"
                   placeholder="@seuuser"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Youtube</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-icon name="logo-youtube" slot="start" class="social-icon"></ion-icon>
                 <ion-input
                   formControlName="youtube"
                   placeholder="@seuuser"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
@@ -194,35 +217,39 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Endereço</ion-card-title>
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="location-outline" class="section-icon"></ion-icon>
+          Endereço
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <ion-grid>
+        <ion-grid class="form-grid">
           <ion-row>
             <ion-col size="12">
-              <ion-item>
-                <ion-label position="floating">Endereço</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Endereço</ion-label>
                 <ion-input
                   formControlName="address"
                   placeholder="Rua, número, complemento"
+                  class="input-field"
                 ></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Cidade</ion-label>
-                <ion-input formControlName="city"></ion-input>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Cidade</ion-label>
+                <ion-input formControlName="city" class="input-field"></ion-input>
               </ion-item>
             </ion-col>
             <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label position="floating">Estado</ion-label>
+              <ion-item class="modern-input" lines="none">
+                <ion-label position="stacked" class="input-label">Estado</ion-label>
                 <ion-select
                   formControlName="state"
                   interface="action-sheet"
-                  placeholder="Selecione seu estado"
+                  class="input-field"
                 >
                   <ion-select-option
                     *ngFor="let state of states"
@@ -231,6 +258,7 @@
                     {{ state.id }} ({{ state.name }})
                   </ion-select-option>
                 </ion-select>
+                <ion-icon name="chevron-down-outline" slot="end" class="select-icon"></ion-icon>
               </ion-item>
             </ion-col>
           </ion-row>
@@ -238,188 +266,223 @@
       </ion-card-content>
     </ion-card>
 
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Horários de Atendimento</ion-card-title>
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="time-outline" class="section-icon"></ion-icon>
+          Horários de Atendimento
+        </ion-card-title>
       </ion-card-header>
       <ion-card-content>
-        <div class="horario-box">
-          <div class="horario-scroll">
-            <ion-grid>
-              <ion-row
-                *ngFor="let weekday of weekDays; let i = index"
-                [formGroup]="getHorarioFormGroup(i)"
-                class="ion-align-items-center"
+        <div class="schedule-container">
+          <ion-list class="schedule-list">
+            <ion-item 
+              *ngFor="let weekday of weekDays; let i = index" 
+              [formGroup]="getHorarioFormGroup(i)"
+              class="schedule-item"
+              lines="none"
+            >
+              <ion-label class="day-label">{{ weekday }}</ion-label>
+              
+              <ion-toggle 
+                formControlName="activated" 
+                class="schedule-toggle"
+                slot="end"
+              ></ion-toggle>
+              
+              <div 
+                class="time-inputs" 
+                *ngIf="getHorarioFormGroup(i).get('activated')?.value"
               >
-                <ion-col size="4">
-                  <ion-label>{{ weekday }}</ion-label>
-                  <input
-                    type="hidden"
-                    formControlName="weekday"
-                    [value]="weekday"
-                  />
-                </ion-col>
-                <ion-col size="2">
-                  <ion-toggle formControlName="activated"></ion-toggle>
-                </ion-col>
-                <ion-col
-                  size="6"
-                  *ngIf="getHorarioFormGroup(i).get('activated')?.value"
-                >
-                  <ion-item>
-                    <ion-label position="stacked">Início</ion-label>
-                    <ion-input
-                      type="time"
-                      formControlName="start"
-                      required
-                    ></ion-input>
-                  </ion-item>
-                  <ion-item>
-                    <ion-label position="stacked">Fim</ion-label>
-                    <ion-input
-                      type="time"
-                      formControlName="end"
-                      required
-                    ></ion-input>
-                  </ion-item>
-                </ion-col>
-              </ion-row>
-            </ion-grid>
-          </div>
-        </div>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Configurações da Loja</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-grid>
-          <ion-row>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Aceitar pessoas em outras filas</ion-label>
-                <ion-toggle
-                  formControlName="acceptOtherQueues"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Atender fora de ordem</ion-label>
-                <ion-toggle
-                  formControlName="answerOutOfOrder"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Atender com hora marcada</ion-label>
-                <ion-toggle
-                  formControlName="answerScheduledTime"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Enviar aviso por WhatsApp</ion-label>
-                <ion-toggle
-                  formControlName="whatsAppNotice"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Abrir fila automaticamente</ion-label>
-                <ion-toggle
-                  formControlName="openAutomatic"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Atender simultaneamente</ion-label>
-                <ion-toggle
-                  formControlName="attendSimultaneously"
-                  slot="end"
-                ></ion-toggle>
-              </ion-item>
-            </ion-col>
-            <ion-col size="12" size-md="6">
-              <ion-item>
-                <ion-label>Remover cliente chamado da fila após:</ion-label>
-                <ion-input
-                  type="number"
-                  formControlName="timeRemoval"
-                  placeholder="Minutos"
-                  class="time-input"
-                ></ion-input>
-              </ion-item>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-card-content>
-    </ion-card>
-
-    <ion-card class="form-section full-width">
-      <ion-card-header>
-        <ion-card-title>Destaques da Loja</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <div formArrayName="highLights">
-          <div
-            *ngFor="let highlight of highLights.controls; let i = index"
-            [formGroupName]="i"
-            class="icone-frase-item"
-          >
-            <ion-item>
-              <ion-select
-                formControlName="icon"
-                placeholder="Escolher ícone"
-                interface="action-sheet"
-              >
-                <ion-select-option value="flame">🔥 Fogo</ion-select-option>
-                <ion-select-option value="cut">✂️ Tesoura</ion-select-option>
-                <ion-select-option value="chair">🪑 Cadeira</ion-select-option>
-                <ion-select-option value="star">⭐ Estrela</ion-select-option>
-                <ion-select-option value="heart">❤️ Coração</ion-select-option>
-                <ion-select-option value="thumbs-up">👍 Like</ion-select-option>
-              </ion-select>
-
-              <ion-input
-                formControlName="phrase"
-                placeholder="Frase relacionada"
-              ></ion-input>
-
-              <ion-button
-                color="danger"
-                fill="clear"
-                (click)="removerIconeFrase(i)"
-              >
-                <ion-icon name="trash"></ion-icon>
-              </ion-button>
+                <ion-item class="time-input" lines="none">
+                  <ion-input
+                    type="time"
+                    formControlName="start"
+                    required
+                    class="time-field"
+                  ></ion-input>
+                </ion-item>
+                <span class="time-separator">às</span>
+                <ion-item class="time-input" lines="none">
+                  <ion-input
+                    type="time"
+                    formControlName="end"
+                    required
+                    class="time-field"
+                  ></ion-input>
+                </ion-item>
+              </div>
             </ion-item>
-          </div>
+          </ion-list>
         </div>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="settings-outline" class="section-icon"></ion-icon>
+          Configurações da Loja
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list class="settings-list">
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="people-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Aceitar pessoas em outras filas</ion-label>
+            <ion-toggle
+              formControlName="acceptOtherQueues"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="shuffle-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Atender fora de ordem</ion-label>
+            <ion-toggle
+              formControlName="answerOutOfOrder"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="calendar-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Atender com hora marcada</ion-label>
+            <ion-toggle
+              formControlName="answerScheduledTime"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="logo-whatsapp" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Enviar aviso por WhatsApp</ion-label>
+            <ion-toggle
+              formControlName="whatsAppNotice"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="play-circle-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Abrir fila automaticamente</ion-label>
+            <ion-toggle
+              formControlName="openAutomatic"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="git-merge-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Atender simultaneamente</ion-label>
+            <ion-toggle
+              formControlName="attendSimultaneously"
+              class="setting-toggle"
+            ></ion-toggle>
+          </ion-item>
+          
+          <ion-item class="setting-item" lines="none">
+            <ion-icon name="timer-outline" slot="start" class="setting-icon"></ion-icon>
+            <ion-label class="setting-label">Remover cliente chamado da fila após (minutos)</ion-label>
+            <ion-input
+              type="number"
+              formControlName="timeRemoval"
+              placeholder="0"
+              class="time-input"
+            ></ion-input>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="modern-card">
+      <ion-card-header class="section-header">
+        <ion-card-title class="section-title">
+          <ion-icon name="star-outline" class="section-icon"></ion-icon>
+          Destaques da Loja
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list class="highlights-list" formArrayName="highLights">
+          <ion-item 
+            *ngFor="let highlight of highLights.controls; let i = index" 
+            [formGroupName]="i"
+            class="highlight-item"
+            lines="none"
+          >
+            <ion-select
+              formControlName="icon"
+              interface="action-sheet"
+              class="icon-select"
+            >
+              <ion-select-option value="flame">
+                <ion-icon name="flame" slot="start"></ion-icon> Fogo
+              </ion-select-option>
+              <ion-select-option value="cut">
+                <ion-icon name="cut" slot="start"></ion-icon> Tesoura
+              </ion-select-option>
+              <ion-select-option value="chair">
+                <ion-icon name="chair" slot="start"></ion-icon> Cadeira
+              </ion-select-option>
+              <ion-select-option value="star">
+                <ion-icon name="star" slot="start"></ion-icon> Estrela
+              </ion-select-option>
+              <ion-select-option value="heart">
+                <ion-icon name="heart" slot="start"></ion-icon> Coração
+              </ion-select-option>
+              <ion-select-option value="thumbs-up">
+                <ion-icon name="thumbs-up" slot="start"></ion-icon> Like
+              </ion-select-option>
+            </ion-select>
+
+            <ion-input
+              formControlName="phrase"
+              placeholder="Frase relacionada"
+              class="highlight-input"
+            ></ion-input>
+
+            <ion-button
+              fill="clear"
+              class="remove-button"
+              (click)="removerIconeFrase(i)"
+            >
+              <ion-icon name="trash-outline" class="remove-icon"></ion-icon>
+            </ion-button>
+          </ion-item>
+        </ion-list>
 
         <ion-button
           expand="block"
           fill="outline"
           (click)="adicionarIconeFrase()"
-          class="add-button"
+          class="add-highlight-button"
         >
-          <ion-icon name="add" slot="start"></ion-icon>
+          <ion-icon name="add-outline" slot="start"></ion-icon>
           Adicionar Destaque
         </ion-button>
       </ion-card-content>
     </ion-card>
   </div>
 </ion-content>
+
+<ion-toast
+  [isOpen]="successMessage !== null"
+  message="{{successMessage}}"
+  duration="3000"
+  position="top"
+  color="success"
+  (didDismiss)="successMessage = null"
+  class="feedback-toast"
+></ion-toast>
+
+<ion-toast
+  [isOpen]="errorMessage !== null"
+  message="{{errorMessage}}"
+  duration="4000"
+  position="top"
+  color="danger"
+  (didDismiss)="errorMessage = null"
+  class="feedback-toast"
+></ion-toast>
 
 <app-footer-menu></app-footer-menu>

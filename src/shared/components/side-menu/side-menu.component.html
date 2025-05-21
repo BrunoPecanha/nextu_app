@@ -81,12 +81,18 @@
     *ngIf="profile > 0"
     (click)="navigateTo('/choose-establishment')"
   >
+  <ng-container *ngIf="companyLogoPath; else defaultLogo">
     <img
-      *ngIf="profile > 0"
       [src]="companyLogoPath"
       alt="Logo da empresa"
       class="company-logo"
     />
+  </ng-container>
+  <ng-template #defaultLogo>
+    <div class="default-logo">
+      <ion-icon name="business" size="large"></ion-icon>
+    </div>
+  </ng-template>
     <div class="company-message">
       <div class="company-name">{{ companyName }}</div>
       <div class="company-logged">Você está logado na empresa</div>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {  ActivatedRoute } from '@angular/router';
 import { ServiceModel } from 'src/models/service-model';
 import { StoreModel } from 'src/models/store-model';
 import { ServiceService } from 'src/services/services-service';
@@ -18,7 +18,6 @@ export class StoreDetailsPage implements OnInit {
   isLoading: boolean = true; 
 
   constructor(
-    private router: Router,
     private route: ActivatedRoute,
     private storeService: StoresService,
     private serviceService: ServiceService

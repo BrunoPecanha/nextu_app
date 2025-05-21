@@ -17,6 +17,7 @@ export interface StoreModel extends To {
   minorQueue: number;
   city: string;
   categoryId: number;
+  category: string;
   state: string;
   openAutomatic: boolean;
   storeSubtitle: string;

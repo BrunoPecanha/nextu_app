@@ -1,0 +1,101 @@
+ion-content {
+  --background: #f8f9fa;
+}
+
+form {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+ion-item {
+  --background: #ffffff;
+  --border-radius: 12px;
+  --padding-start: 16px;
+  --padding-end: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  
+  &[fill="solid"] {
+    --background: #ffffff;
+  }
+}
+
+.time-range {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  
+  ion-item {
+    margin-bottom: 0;
+  }
+}
+
+.recurring-options {
+  background: #f1f3f5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 8px;
+  animation: fadeIn 0.3s ease-out;
+}
+
+ion-toggle {
+  --background: #e9ecef;
+  --background-checked: var(--ion-color-primary);
+  --handle-background: #ffffff;
+  --handle-background-checked: #ffffff;
+  padding: 12px 0;
+}
+
+ion-datetime {
+  padding: 8px 0;
+}
+
+ion-select {
+  width: 100%;
+}
+
+/* Validação visual */
+ion-item.ion-invalid {
+  --highlight-color-focused: var(--ion-color-danger);
+}
+
+ion-item.ion-valid {
+  --highlight-color-focused: var(--ion-color-success);
+}
+
+/* Responsividade */
+@media (max-width: 576px) {
+  .time-range {
+    grid-template-columns: 1fr;
+  }
+  
+  ion-datetime {
+    font-size: 14px;
+  }
+}
+
+/* Animações */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Estilo para o ícone de fechar no header */
+ion-toolbar ion-button[fill="clear"] {
+  --color: var(--ion-color-medium);
+}
+
+/* Estilo para o ícone de confirmar no header */
+ion-toolbar ion-button[fill="clear"][disabled] {
+  --color: var(--ion-color-medium-shade);
+}
+
+ion-toolbar ion-button[fill="clear"]:not([disabled]) {
+  --color: var(--ion-color-primary);
+}
+
+@media (max-width: 576px) {
+  .time-range {
+    grid-template-columns: 1fr;
+  }
+}
