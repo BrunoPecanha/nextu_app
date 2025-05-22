@@ -11,4 +11,8 @@ export interface QueueModel {
     timeGotInQueue: string;
     employeeId: string;
     services: string[];
+    date: Date;
+    currentCount: number;
+    responsibleId: string;
+    responsibleName: string;
 }

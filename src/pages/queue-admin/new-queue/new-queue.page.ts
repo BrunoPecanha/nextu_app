@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ModalController, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 
 
 
@@ -19,7 +19,6 @@ export class NewQueuePage implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private modalCtrl: ModalController,
     private router: Router,
     private toastCtrl: ToastController
   ) {
@@ -57,7 +56,6 @@ export class NewQueuePage implements OnInit {
       recurringEndDate: ['']
     });
   }
-
 
   patchFormWithQueueData() {
     if (this.queueToEdit) {

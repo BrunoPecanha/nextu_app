@@ -8,7 +8,7 @@ import { UserModel } from "./user-model";
 export interface StoreModel extends To {
   id: number;
   cnpj: string;
-  phoneNumber : string;
+  phoneNumber: string;
   name: string;
   address: string;
   number: string;
@@ -24,10 +24,10 @@ export interface StoreModel extends To {
   acceptOtherQueues: boolean;
   answerOutOfOrder: boolean;
   answerScheduledTime: boolean;
-  timeRemoval?: number; 
+  timeRemoval?: number;
   whatsAppNotice: boolean;
   logoPath?: string;
-  wallPaperPath?: string; 
+  wallPaperPath?: string;
   openingHours?: OpeningHoursModel[];
   highLights: HighLightModel[];
   ownerId: number;
@@ -37,9 +37,10 @@ export interface StoreModel extends To {
   createdAt?: Date | any;
   isNew?: boolean
   instagram: string;
-  facebook: string; 
+  facebook: string;
   youtube: string;
   webSite: string;
   whatsapp: string;
-  attendSimultaneously: boolean; 
+  attendSimultaneously: boolean;
+  isVerified: boolean;
 }

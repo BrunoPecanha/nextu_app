@@ -23,13 +23,23 @@
       class="logo-loja shimmer"
     />
     <div *ngIf="!logoLoaded" class="shimmer-placeholder logo-placeholder"></div>
-    <h2 class="nome-loja">{{ store?.name || "King's Sons - Barbershop" }}</h2>
+
+    <h2 class="nome-loja">
+      {{ store?.name || "King's Sons - Barbershop" }}
+      <ion-icon
+        *ngIf="store?.isVerified"
+        name="checkmark-circle"
+        class="verified-icon"
+        color="primary">
+      </ion-icon>
+    </h2>
+
     <p class="descricao-loja">
-      {{ store?.subtitle || 'Cortes na régua, química e aquele trato na régua.'
-      }}
+      {{ store?.subtitle || 'Cortes na régua, química e aquele trato na régua.' }}
     </p>
   </div>
 </div>
+
 
 <ion-content class="scroll-area">
   <div

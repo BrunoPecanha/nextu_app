@@ -296,3 +296,10 @@ ion-content::part(scroll) {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+.verified-icon {
+  font-size: 16px;
+  vertical-align: auto;
+  margin-left: 4px;
+  color: var(--ion-color-primary);
+}

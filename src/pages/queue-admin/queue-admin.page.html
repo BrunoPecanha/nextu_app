@@ -33,6 +33,22 @@
         <ion-label position="stacked">Data final</ion-label>
         <ion-datetime presentation="date" [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
+      <ion-item lines="none" class="responsible-filter">
+        <ion-label>Responsável</ion-label>
+        <ion-select
+          [(ngModel)]="selectedResponsible"
+          (ionChange)="filterByResponsible()"
+          interface="popover"
+          placeholder="Todos"
+          cancelText="Cancelar"
+          okText="OK"
+        >
+          <ion-select-option value="">Todos</ion-select-option>
+          <ion-select-option *ngFor="let responsible of responsibles" [value]="responsible.id">
+            {{ responsible.nome }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
       <ion-button expand="block" shape="round" (click)="applyCustomFilter()">
         Aplicar filtro
       </ion-button>
@@ -58,13 +74,13 @@
     <ion-list lines="none">
       <ion-item-sliding *ngFor="let queue of filteredQueues">
         <ion-item
-          [class.active-queue]="queue.status === 'Aberta' && queue.date === today"
+          [class.active-queue]="isQueueOpen(queue)"
           (click)="viewQueueDetails(queue)"
         >
           <ion-avatar slot="start">
             <ion-icon [name]="getQueueIcon(queue.name)"></ion-icon>
           </ion-avatar>
-
+    
           <ion-label>
             <h2>{{ queue.name }}</h2>
             <p>
@@ -72,23 +88,15 @@
               pessoa(s)
             </p>
           </ion-label>
-
-          <ion-badge
-            slot="end"
-            color="success"
-            *ngIf="queue.status === 'Aberta' && queue.date === today"
-          >
+    
+          <ion-badge slot="end" color="success" *ngIf="isQueueOpen(queue)">
             ABERTA
           </ion-badge>
-          <ion-badge
-            slot="end"
-            color="medium"
-            *ngIf="queue.status !== 'Aberta' || queue.date !== today"
-          >
+          <ion-badge slot="end" color="medium" *ngIf="!isQueueOpen(queue)">
             FECHADA
           </ion-badge>
         </ion-item>
-
+    
         <ion-item-options side="end">
           <ion-item-option color="danger" (click)="deleteQueue(queue)">
             <ion-icon slot="icon-only" name="trash"></ion-icon>

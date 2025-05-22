@@ -1,4 +1,3 @@
-/* Tela Principal */
 ion-content {
   --background: #f8f9fa;
 }
@@ -113,7 +112,6 @@ ion-segment {
   }
 }
 
-/* Tela de Adição/Edição */
 .time-range {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -143,8 +141,6 @@ ion-content::part(scroll) {
   -ms-overflow-style: none;
 }
 
-
-/* Componentes globais */
 ion-button {
   --border-radius: 8px;
   font-weight: 500;
@@ -160,4 +156,20 @@ ion-toolbar {
 ion-title {
   font-weight: 600;
   font-size: 18px;
+}
+
+.responsible-filter {
+  margin-top: 16px;
+  --background: #f8f9fa;
+  --border-radius: 8px;
+  
+  ion-select {
+    width: 100%;
+    justify-content: flex-end;
+    
+    &::part(placeholder),
+    &::part(text) {
+      flex: 0 1 auto;
+    }
+  }
 }

@@ -5,4 +5,5 @@ export interface StoreProfessionalModel {
   name: string;
   subtitle: string;
   professionals: ProfessionalModel[]
+  isVerified: boolean;
 }

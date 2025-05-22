@@ -67,6 +67,7 @@
 </div>
 
 <ion-content class="modern-content">  
+
   <div *ngIf="!companies?.length" class="loading-container">
     <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
     <p class="loading-text">Carregando estabelecimentos...</p>
@@ -89,7 +90,7 @@
             </div>
           </ng-template>
         </div>
-                
+
         <div class="new-badge" *ngIf="card.isNew">NOVO</div>
         
         <ion-button fill="clear" class="like-button" (click)="toggleLike(card, $event)">
@@ -101,13 +102,21 @@
       </div>
 
       <ion-card-content class="card-content">
-        <h2 class="company-name">{{ card.name }}</h2>
+        <h2 class="company-name">
+          {{ card.name }}
+          <ion-icon 
+            *ngIf="card.isVerified" 
+            name="checkmark-circle" 
+            class="verified-icon" 
+            color="primary">
+          </ion-icon>
+        </h2>
         <p class="company-category">{{ card.category }}</p>
         
         <div class="company-stats">
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
-            <span>Fila menor: {{ card.minorQueue}}</span>
+            <span>Fila menor: {{ card.minorQueue }}</span>
           </div>
           
           <div class="rating-badge">
@@ -120,5 +129,6 @@
     </ion-card>
   </div>
 </ion-content>
+
 
 <app-footer-menu></app-footer-menu>

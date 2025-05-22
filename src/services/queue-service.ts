@@ -10,6 +10,7 @@ import { CustomerInQueueCardResponse } from 'src/models/responses/customer-in-qu
 import { CustomerInQueueCardDetailResponse } from 'src/models/responses/customer-in-queue-card-detail-response';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
+import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
 
 
 @Injectable({
@@ -71,6 +72,32 @@ export class QueueService {
 
   getAvailableQueues(storeId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
+  }
+
+  
+  loadAllTodayQueue(storeId: number, startDate: Date | null, endDate: Date | null): Observable<QueueResponse> {
+    const today = new Date();
+    let _startDate: Date;
+    let _endDate: Date;
+
+    if (startDate && endDate) {
+      _startDate = new Date(startDate.setHours(0, 0, 0, 0)); 
+      _endDate = new Date(endDate.setHours(23, 59, 59, 999)); 
+    }
+    else {
+      _startDate = new Date(today.setHours(0, 0, 0, 0));
+      _endDate = new Date(today.setHours(23, 59, 59, 999));
+    }
+  
+    const filter: QueueFilterRequest = {
+      startDate: _startDate,
+      endDate: _endDate
+    };
+  
+    return this.http.post<QueueResponse>(
+      `${this.apiUrl}/queue/${storeId}/filter`,
+      filter
+    );
   }
 
   hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
