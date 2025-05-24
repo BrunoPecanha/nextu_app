@@ -158,7 +158,7 @@ export class SelectCompanyPage implements OnInit {
   applyFilter(filter: 'minorQueue' | 'favorites' | 'recent') {
     if (this.selectedFilter === filter) {
       this.selectedFilter = null;
-      this.loadStores(); // Remove filtro
+      this.loadStores();
       return;
     }
 

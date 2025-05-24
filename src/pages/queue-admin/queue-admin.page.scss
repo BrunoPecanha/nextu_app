@@ -87,6 +87,7 @@ ion-segment {
     font-weight: 500;
     font-size: 12px;
     padding: 6px 8px;
+    margin-right: 15px;
   }
 }
 
@@ -172,4 +173,112 @@ ion-title {
       flex: 0 1 auto;
     }
   }
+}
+
+.filter-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.status-filter {
+  margin-top: 16px;
+  --background: #f8f9fa;
+  --border-radius: 8px;
+  
+  ion-select {
+    width: 100%;
+    justify-content: flex-end;
+    
+    &::part(placeholder),
+    &::part(text) {
+      flex: 0 1 auto;
+    }
+  }
+}
+
+.small-badge {
+  font-size: 0.6rem;
+  padding: 1px 3px;
+  border-radius: 6px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  margin-right: -20px;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+ion-item {
+  --inner-padding-end: 12px;
+}
+
+ion-item.active-queue {
+  background-color: var(--ion-color-light);
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.small-badge {
+  font-size: 12px;
+  padding: 6px 8px;
+}
+
+.status-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+ion-badge.small-badge {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  --padding-top: 4px;
+  --padding-bottom: 4px;
+  font-size: 12px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+ion-toast {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  --min-width: 240px;
+  --max-width: 320px;
+  --background: var(--ion-color-light);
+  --color: var(--ion-color-dark);
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+}
+
+ion-toast.toast-success {
+  --background: var(--ion-color-success);
+  --color: white;
+}
+
+ion-toast.toast-warning {
+  --background: var(--ion-color-warning);
+  --color: black;
+}
+
+ion-toast.toast-danger {
+  --background: var(--ion-color-danger);
+  --color: white;
 }

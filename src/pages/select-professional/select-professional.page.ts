@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
+import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
 import { StoresService } from 'src/services/stores-service';
@@ -12,11 +14,12 @@ import { StoresService } from 'src/services/stores-service';
 export class SelectProfessionalPage implements OnInit {
   store: StoreProfessionalModel | null = null;
   storeId: number = 0;
+  StatusQueueEnum = StatusQueueEnum;
 
   bannerLoaded = false;
   logoLoaded = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: StoresService) { }
+  constructor(private router: Router, private route: ActivatedRoute, private service: StoresService, private alertController: AlertController) { }
 
   ngOnInit() {
     this.getSelectedStoreId();
@@ -41,6 +44,20 @@ export class SelectProfessionalPage implements OnInit {
     });
   }
 
+  getStatusClass(status: StatusQueueEnum): string {
+    switch (status) {
+      case StatusQueueEnum.open:
+        return 'open';
+      case StatusQueueEnum.paused:
+        return 'paused';
+      case StatusQueueEnum.closed:
+        return 'closed';
+      default:
+        return '';
+    }
+  }
+
+
   getInTheQueue(fila: ProfessionalModel) {
     this.router.navigate(['/select-services'], {
       queryParams: { queueId: fila.queueId, storeId: this.storeId },
@@ -49,14 +66,29 @@ export class SelectProfessionalPage implements OnInit {
 
   toggleLike(queue: ProfessionalModel, event: Event) {
     event.stopPropagation();
-     event.preventDefault();
-     queue.liked = !queue.liked;
-     console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
+    event.preventDefault();
+    queue.liked = !queue.liked;
+    console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
   }
 
-  abrirLojaDetalhada() {    
+  abrirLojaDetalhada() {
     this.router.navigate(['/store-details', this.storeId]);
   }
+
+  async openPauseReason(queue: ProfessionalModel, event: Event) {
+    event.stopPropagation();
+
+    const motivo = queue.pauseReason || 'A fila está temporariamente pausada. Tente novamente mais tarde.';
+
+    const alert = await this.alertController.create({
+      header: 'Fila Pausada',
+      message: 'Motivo: ' + motivo,
+      buttons: ['OK']
+    });
+
+    await alert.present();
+  }
+
 
   getProgressoFila(qtdPessoas: number): number {
     const maxPessoas = 10;
