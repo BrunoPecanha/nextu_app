@@ -14,6 +14,7 @@ import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
 import { QueueResponse } from 'src/models/responses/queue-response';
 import { QueueCreateRequest } from 'src/models/requests/queue-create-request';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
+import { QueueReportResponse } from 'src/models/responses/queue-report-response';
 
 
 @Injectable({
@@ -69,7 +70,6 @@ export class QueueService {
       })
     );
   }
-
 
   updateCustomerToQueue(command: UpdateCustomerToQueueRequest): Observable<any> {
     return this.http.put<UpdateCustomerToQueueRequest>(`${this.apiUrl}/customer`, command).pipe(
@@ -172,6 +172,10 @@ export class QueueService {
   getCustomerInQueueCard(userId: number): Observable<CustomerInQueueCardResponse> {
     return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${userId}/card`);
   }
+
+  getQueueReport(idQueue: number): Observable<QueueReportResponse> {
+    return this.http.get<QueueReportResponse>(`${this.apiUrl}/queue/${idQueue}/report`);
+  }  
 
   getCustomerInQueueCardDetails(customerId: number, queueId: number): Observable<CustomerInQueueCardDetailResponse> {
     return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);

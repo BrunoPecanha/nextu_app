@@ -78,12 +78,12 @@ export class SelectProfessionalPage implements OnInit {
   async openPauseReason(queue: ProfessionalModel, event: Event) {
     event.stopPropagation();
 
-    const motivo = queue.pauseReason || 'A fila está temporariamente pausada. Tente novamente mais tarde.';
+    const motivo = queue.pauseReason || 'A fila está temporariamente pausada.';
 
     const alert = await this.alertController.create({
-      header: 'Fila Pausada',
+      header: 'Em Pausada',
       message: 'Motivo: ' + motivo,
-      buttons: ['OK']
+      buttons: ['Entendi']
     });
 
     await alert.present();

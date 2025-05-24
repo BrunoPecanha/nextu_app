@@ -189,12 +189,15 @@ export class QueueAdminPage implements OnInit {
   async pauseQueue(queue: QueueModel) {
     const alert = await this.alertController.create({
       header: 'Pausar Fila',
-      subHeader: `Informe o motivo para pausar a fila "${queue.name}"`,
+      subHeader: `Informe o motivo para pausar a fila "${queue.name}" (máx. 40 caracteres)`,
       inputs: [
         {
           name: 'pauseReason',
           type: 'text',
-          placeholder: 'Motivo da pausa'
+          placeholder: 'Motivo da pausa',
+          attributes: {
+            maxlength: 40
+          }
         }
       ],
       buttons: [
@@ -205,14 +208,21 @@ export class QueueAdminPage implements OnInit {
         {
           text: 'Confirmar',
           handler: (data) => {
-            if (!data.pauseReason?.trim()) {
+            const reason = data.pauseReason?.trim();
+
+            if (!reason) {
               this.toast.show('Motivo é obrigatório.', 'warning');
+              return false;
+            }
+
+            if (reason.length > 40) {
+              this.toast.show('Motivo deve ter no máximo 40 caracteres.', 'warning');
               return false;
             }
 
             const request: QueuePauseRequest = {
               id: queue.id,
-              pauseReason: data.pauseReason.trim()
+              pauseReason: reason
             };
 
             this.queueService.pauseQueue(request).subscribe({
@@ -377,10 +387,7 @@ export class QueueAdminPage implements OnInit {
   }
 
   viewQueueDetails(queue: QueueModel) {
-    const route = this.isQueueOpen(queue)
-      ? '/customer-list-in-queue'
-      : '/queue-details';
-    this.router.navigate([route, queue.id]);
+    this.router.navigate(['/queue-details', queue.id]);
   }
 
   filterChanged() {
