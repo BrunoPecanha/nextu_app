@@ -1,8 +1,8 @@
 import { QueueModel } from "../queue-model";
 
-export interface QueueResponse {
+export interface QueueListResponse {
   valid: boolean;
-  data: QueueModel;
+  data: QueueModel[];
   message: string;
 }
   

@@ -1,4 +1,4 @@
-/* ========== ESTRUTURA PRINCIPAL ========== */
+
 ion-header {
   position: sticky;
   top: 0;
@@ -26,7 +26,7 @@ ion-content::part(scroll) {
   -ms-overflow-style: none;
 }
 
-/* ========== CARREGAMENTO E SEM REGISTROS ========== */
+
 .loading-container, .no-records-container {
   display: flex;
   flex-direction: column;
@@ -63,7 +63,6 @@ ion-content::part(scroll) {
   padding: 16px;
 }
 
-/* ========== CARDS DE SERVIÇO ========== */
 .service-card {
   border-radius: 12px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -126,7 +125,6 @@ ion-content::part(scroll) {
   }
 }
 
-/* ========== ITENS DE SERVIÇO ========== */
 .service-item {
   --padding-start: 16px;
   --inner-padding-end: 16px;
@@ -217,7 +215,7 @@ ion-content::part(scroll) {
   font-size: 0.8rem;
 }
 
-/* ========== CONTEÚDO EXPANDIDO ========== */
+
 .expanded-content {
   --inner-border-width: 0;
   --padding-start: 0;
@@ -241,7 +239,7 @@ ion-content::part(scroll) {
   }
 }
 
-/* ========== FORMULÁRIO E INPUTS ========== */
+
 ion-item {
   --padding-start: 16px;
   --inner-padding-end: 16px;
@@ -262,7 +260,7 @@ ion-item {
   }
 }
 
-/* Estilos para inputs, textareas e selects */
+
 ion-input, ion-textarea, ion-select {
   --padding-start: 12px;
   --padding-end: 12px;
@@ -282,7 +280,7 @@ ion-select {
   --padding-end: 16px;
 }
 
-/* Alinhamento dos labels */
+
 ion-label[position="floating"] {
   margin-left: 4px;
   color: var(--ion-color-medium);
@@ -290,7 +288,7 @@ ion-label[position="floating"] {
   transform-origin: left center;
 }
 
-/* Campo de duração personalizado */
+
 .duration-item {
   .time-fields {
     display: flex;
@@ -316,7 +314,7 @@ ion-label[position="floating"] {
   }
 }
 
-/* ========== UPLOAD DE IMAGEM ========== */
+
 .image-upload-container {
   width: 100%;
   margin-top: 16px;
@@ -369,7 +367,7 @@ ion-label[position="floating"] {
   }
 }
 
-/* ========== COMPONENTES GERAIS ========== */
+
 ion-icon {
   font-size: 20px;
   color: #888;
@@ -417,7 +415,7 @@ ion-button {
   margin-bottom: 16px;
 }
 
-/* Área de ações do serviço */
+
 .service-actions {
   display: flex;
   align-items: center;
@@ -433,7 +431,7 @@ ion-button {
   }
 }
 
-/* Ícone de manutenção */
+
 .maintenance-icon {
   position: relative;
   display: flex;
@@ -497,7 +495,7 @@ ion-button {
   }
 }
 
-/* Efeito quando expandido */
+
 .service-item.expanded {
   .maintenance-icon {
     background: rgba(var(--ion-color-primary-rgb), 0.2);
@@ -508,7 +506,7 @@ ion-button {
   }
 }
 
-/* Estilos para o botão de salvar */
+
 .save-button-content {
   display: flex;
   align-items: center;
@@ -585,7 +583,7 @@ ion-item-option {
   to { opacity: 1; transform: scale(1); }
 }
 
-/* Responsividade */
+
 @media (min-width: 768px) {
   ion-grid {
     padding: 0 24px;
@@ -600,23 +598,23 @@ ion-item-option {
   }
 }
 
-/* Alinha o placeholder à direita */
+
 .category-select {
   ion-select {
     &::part(placeholder) {
       display: flex;
       justify-content: flex-end;
       width: 100%;
-      color: var(--ion-color-medium); /* Muda a cor do placeholder */
-      opacity: 1; /* Garante que fique visível */
+      color: var(--ion-color-medium); 
+      opacity: 1; 
     }
 
     &::part(text) {
-      text-align: right; /* Alinha o texto selecionado à direita */
+      text-align: right; 
     }
 
     &::part(icon) {
-      margin-left: 8px; /* Espaço entre texto e ícone */
+      margin-left: 8px; 
     }
   }
 }

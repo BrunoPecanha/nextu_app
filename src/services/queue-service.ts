@@ -3,13 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { catchError, delay, from, map, Observable, of, throwError } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import QRCode from 'qrcode';
-import { QueueResponse } from 'src/models/responses/queue-response';
+import { QueueListResponse } from 'src/models/responses/queue-list-response';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { CustomerInQueueForEmployeeResponse } from 'src/models/responses/customer-in-queue-for-employee-response';
 import { CustomerInQueueCardResponse } from 'src/models/responses/customer-in-queue-card-response';
 import { CustomerInQueueCardDetailResponse } from 'src/models/responses/customer-in-queue-card-detail-response';
 import { AddCustomerToQueueRequest } from 'src/models/requests/add-customer-to-queue-request';
 import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
+import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
+import { QueueResponse } from 'src/models/responses/queue-response';
+import { QueueCreateRequest } from 'src/models/requests/queue-create-request';
+import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
+import { QueueReportResponse } from 'src/models/responses/queue-report-response';
 
 
 @Injectable({
@@ -23,9 +28,44 @@ export class QueueService {
   constructor(private http: HttpClient) { }
 
   addCustomerToQueue(command: AddCustomerToQueueRequest): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/queue`, command).pipe(
+    return this.http.post<any>(`${this.apiUrl}/queue/addCustomer`, command).pipe(
       catchError(error => {
         console.error('Erro ao adicionar cliente à fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  createQueue(command: QueueCreateRequest): Observable<QueueResponse> {    
+    return this.http.post<QueueResponse>(`${this.apiUrl}/queue`, command).pipe(
+      catchError(error => {
+        console.error('Erro ao criar a fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+  
+  closeQueue(queueId: number): Observable<any> {  
+    return this.http.delete(`${this.apiUrl}/queue/${queueId}/close`);
+  }
+
+  deleteQueue(queueId: number): Observable<any> {  
+    return this.http.delete(`${this.apiUrl}/queue/${queueId}`);
+  }
+  
+  pauseQueue(command: QueuePauseRequest): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/queue/pause`, command).pipe(
+      catchError(error => {
+        console.error('Falha ao pausa a fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  updateQueue(queueId: number, command: QueueCreateRequest): Observable<QueueResponse> {
+    return this.http.put<QueueResponse>(`${this.apiUrl}/queue`, command).pipe(
+      catchError(error => {
+        console.error('Erro ao alterar a fila:', error);
         return throwError(() => error);
       })
     );
@@ -61,8 +101,8 @@ export class QueueService {
     return this.http.put(`${this.apiUrl}/queue/remove`, command);
   }
 
-  getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueResponse> {
-    return this.http.get<QueueResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
+  getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueListResponse> {
+    return this.http.get<QueueListResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
   }
 
   getAllCustomersInQueueByEmployeeAndStoreId(storeId: number, employeeId: number): Observable<CustomerInQueueForEmployeeResponse> {
@@ -72,10 +112,17 @@ export class QueueService {
   getAvailableQueues(storeId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
   }
+  
+  loadAllTodayQueue(storeId: number, filter: QueueFilterRequest): Observable<QueueListResponse> {
+    return this.http.post<QueueListResponse>(
+      `${this.apiUrl}/queue/${storeId}/filter`,
+      filter
+    );
+  }
 
   hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
     return this.getOpenedQueueByEmployeeId(employeeId).pipe(
-      map((response: QueueResponse) => {
+      map((response: QueueListResponse) => {
         return response.valid &&
           response.data?.length > 0 &&
           response.data[0].status === StatusQueueEnum.open;
@@ -125,6 +172,10 @@ export class QueueService {
   getCustomerInQueueCard(userId: number): Observable<CustomerInQueueCardResponse> {
     return this.http.get<CustomerInQueueCardResponse>(`${this.apiUrl}/queue/${userId}/card`);
   }
+
+  getQueueReport(idQueue: number): Observable<QueueReportResponse> {
+    return this.http.get<QueueReportResponse>(`${this.apiUrl}/queue/${idQueue}/report`);
+  }  
 
   getCustomerInQueueCardDetails(customerId: number, queueId: number): Observable<CustomerInQueueCardDetailResponse> {
     return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);

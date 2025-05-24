@@ -9,6 +9,7 @@ import { StoreRequest } from "src/models/requests/store-request";
 import { StoreDetailResponse } from "src/models/responses/store-detail-response";
 import { StoreProfessionalsResponse } from "src/models/responses/store-professionals-response";
 import { StoreListResponse } from "src/models/responses/store-list-response";
+import { ProfessionalResponse } from "src/models/responses/professional-response";
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,11 @@ export class StoresService {
   }
 
   loadStoreAndProfessionals(id: number): Observable<StoreProfessionalsResponse> {
-    return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/professionals/${id}`);
+    return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/${id}/queue/professionals`);
+  }
+
+  loadProfessionals(storeId: number): Observable<ProfessionalResponse> {
+    return this.http.get<ProfessionalResponse>(`${this.apiUrl}/store/${storeId}/professionals`);
   }
 
   updateStore(id: number, data: any): Observable<any> {

@@ -1,7 +1,7 @@
 import { StatusQueueEnum } from "./enums/status-queue.enum";
 
 export interface QueueModel {
-    id: string;                 
+    id: number;                 
     storeId: string;  
     name: string;
     description: string;
@@ -11,4 +11,10 @@ export interface QueueModel {
     timeGotInQueue: string;
     employeeId: string;
     services: string[];
+    date: Date;
+    currentCount: number;
+    responsibleId: number;
+    responsibleName: string;
+    queueDescription: string;
+    totalCount: number;
 }

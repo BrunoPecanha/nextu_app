@@ -1,7 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-
+import { QueueService } from 'src/services/queue-service';
+import { StoreModel } from 'src/models/store-model';
+import { SessionService } from 'src/services/session.service';
+import { QueueModel } from 'src/models/queue-model';
+import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
+import { StoresService } from 'src/services/stores-service';
+import { ProfessionalResponse } from 'src/models/responses/professional-response';
+import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
+import { ToastService } from 'src/services/toast.service';
+import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 
 @Component({
   selector: 'app-queue-admin',
@@ -9,57 +18,402 @@ import { Router } from '@angular/router';
   styleUrls: ['./queue-admin.page.scss'],
 })
 export class QueueAdminPage implements OnInit {
+  public _statusQueueEnum = StatusQueueEnum;
+
   searchQuery = '';
-  filterDate: string = '';
-  calendarOpen = false;
+  filterDate = '';
   activeFilter: 'today' | 'all' | 'custom' = 'today';
-  startDate: string = '';
-  endDate: string = '';
+  startDate = '';
+  endDate = '';
+  selectedResponsible: number | null = null;
+  selectedStatus: number | null = null;
 
-  queues = [
-    { name: 'Fila de Lavagem', date: '2025-04-22', status: 'Fechada', currentCount: 5 },
-    { name: 'Fila de Corte', date: '2025-04-21', status: 'Fechada', currentCount: 3 },
-    { name: 'Fila de Manicure', date: '2025-04-20', status: 'Fechada', currentCount: 2 }
-  ];
+  store: StoreModel = {} as StoreModel;
+  queues: QueueModel[] = [];
+  originalQueues: QueueModel[] = [];
+  responsibles: { id: string; nome: string }[] = [];
+  _filteredQueues: QueueModel[] = [];
 
-  today = new Date().toISOString().split('T')[0];
+  calendarOpen = false;
+  today = this.getHourFroBrazilianTimeZone();
 
   constructor(
     private alertController: AlertController,
-    private router: Router
-  ) { }
+    private router: Router,
+    private queueService: QueueService,
+    private sessionService: SessionService,
+    private storeService: StoresService,
+    private toast: ToastService,
+  ) {
+    this.store = this.sessionService.getStore();
+  }
 
-  ngOnInit() { }
+  ionViewWillEnter() {
+    this.loadQueuesWithCurrentFilters();
+  }
 
-  get filteredQueues() {
-    return this.queues.filter(queue => {
-      const matchesSearch = queue.name.toLowerCase().includes(this.searchQuery.toLowerCase());
-      const matchesDate = this.filterDate ? queue.date === this.filterDate : true;
-  
-      if (this.activeFilter === 'today') {
-        return matchesSearch && queue.date === this.today;
-      } else if (this.activeFilter === 'custom' && this.startDate && this.endDate) {
-        return matchesSearch && queue.date >= this.startDate && queue.date <= this.endDate;
-      }
+  ngOnInit() {
+    this.loadInitialData();
+  }
 
-      return matchesSearch && matchesDate;
+  private loadInitialData() {
+    this.loadProfessionals();
+    this.loadQueuesWithCurrentFilters();
+  }
+
+  private loadProfessionals() {
+    this.storeService.loadProfessionals(Number(this.store.id)).subscribe({
+      next: (response: ProfessionalResponse) => {
+        if (response.valid && response.data) {
+          this.responsibles = Array.isArray(response.data)
+            ? response.data.map(prof => ({
+              id: prof.id.toString(),
+              nome: prof.name
+            }))
+            : [{
+              id: response.data.id.toString(),
+              nome: response.data.name
+            }];
+        }
+      },
+      error: (err) => console.error('Erro ao carregar profissionais:', err)
     });
   }
 
-  get hasTodayOpenQueue(): boolean {
-    return this.queues.some(q => q.date === this.today && q.status === 'Aberta');
+  private loadQueuesWithCurrentFilters() {
+    let _startDate: Date | null = null;
+    let _endDate: Date | null = null;
+
+    if (this.activeFilter === 'custom' && this.startDate && this.endDate) {
+      _startDate = new Date(this.startDate);
+      _startDate.setHours(0, 0, 0, 0);
+
+      _endDate = new Date(this.endDate);
+      _endDate.setHours(23, 59, 59, 999);
+    } else if (this.activeFilter === 'today') {
+      const today = new Date();
+      _startDate = new Date(today);
+      _startDate.setHours(0, 0, 0, 0);
+      _endDate = new Date(today);
+      _endDate.setHours(23, 59, 59, 999);
+    } else if (this.activeFilter === 'all') {
+      _startDate = null;
+      _endDate = null;
+    }
+
+    const filter: QueueFilterRequest = {
+      startDate: _startDate,
+      endDate: _endDate,
+      queueStatus: this.selectedStatus ?? undefined,
+      responsibleId: this.selectedResponsible ?? undefined
+    };
+
+    this.queueService.loadAllTodayQueue(this.store.id, filter).subscribe({
+      next: (response) => {
+        this.queues = response.data || [];
+        this.originalQueues = [...this.queues];
+        this.applyLocalFilters();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar filas:', err);
+        this.queues = [];
+        this.originalQueues = [];
+      }
+    });
+  }
+
+  get filteredQueues(): QueueModel[] {
+    if (!this.queues?.length) return [];
+
+    let filtered = [...this.queues];
+
+    if (this.searchQuery) {
+      const searchTerm = this.searchQuery.toLowerCase();
+      filtered = filtered.filter(queue =>
+        queue.name.toLowerCase().includes(searchTerm) ||
+        (queue.description && queue.description.toLowerCase().includes(searchTerm))
+      );
+    }
+
+    return filtered;
+  }
+
+  private hasCustomFilterValues(): boolean {
+    return !!this.startDate || !!this.endDate ||
+      this.selectedResponsible !== null ||
+      this.selectedStatus !== null;
+  }
+
+  applyLocalFilters() {
+    if (!this.originalQueues?.length) {
+      this.queues = [];
+      return;
+    }
+
+    let filtered = [...this.originalQueues];
+
+    if (this.searchQuery) {
+      filtered = filtered.filter(queue =>
+        queue.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    }
+
+    this.queues = filtered;
+  }
+
+  applyCustomFilters() {
+    if (this.activeFilter === 'custom') {
+      if (!this.hasCustomFilterValues()) {
+        this.toast.show('Selecione pelo menos a data inicial e final.', 'danger');
+        return;
+      }
+
+      if (!this.startDate || !this.endDate) {
+        this.toast.show('Selecione as datas inicial e final.', 'danger');
+        return;
+      }
+
+      this.loadQueuesWithCurrentFilters();
+    }
+  }
+
+  clearFilters() {
+    this.selectedStatus = null;
+    this.selectedResponsible = null;
+    this.startDate = '';
+    this.endDate = '';
+    this.activeFilter = 'today';
+    this.loadQueuesWithCurrentFilters();
+  }
+
+  async pauseQueue(queue: QueueModel) {
+    const alert = await this.alertController.create({
+      header: 'Pausar Fila',
+      subHeader: `Informe o motivo para pausar a fila "${queue.name}" (máx. 40 caracteres)`,
+      inputs: [
+        {
+          name: 'pauseReason',
+          type: 'text',
+          placeholder: 'Motivo da pausa',
+          attributes: {
+            maxlength: 40
+          }
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Confirmar',
+          handler: (data) => {
+            const reason = data.pauseReason?.trim();
+
+            if (!reason) {
+              this.toast.show('Motivo é obrigatório.', 'warning');
+              return false;
+            }
+
+            if (reason.length > 40) {
+              this.toast.show('Motivo deve ter no máximo 40 caracteres.', 'warning');
+              return false;
+            }
+
+            const request: QueuePauseRequest = {
+              id: queue.id,
+              pauseReason: reason
+            };
+
+            this.queueService.pauseQueue(request).subscribe({
+              next: () => {
+                this.loadQueuesWithCurrentFilters();
+                this.toast.show(`Fila "${queue.name}" pausada com sucesso.`, 'warning');
+              },
+              error: (err) => {
+                console.error('Erro ao pausar fila:', err);
+                this.toast.show(`Erro ao pausar a fila "${queue.name}".`, 'danger');
+              }
+            });
+            return true;
+          }
+        }
+      ]
+    });
+
+    await alert.present();
+  }
+
+  async unpauseQueue(queue: QueueModel) {
+    const request: QueuePauseRequest = {
+      id: queue.id,
+      pauseReason: ""
+    };
+
+    this.queueService.pauseQueue(request).subscribe({
+      next: () => {
+        this.loadQueuesWithCurrentFilters();
+        this.toast.show(`Fila "${queue.name}" despausada com sucesso.`, 'success');
+      },
+      error: (err) => {
+        console.error('Erro ao despausar fila:', err);
+        this.toast.show(`Erro ao despausar a fila "${queue.name}".`, 'danger');
+      }
+    });
+  }
+
+  async closeQueue(queue: QueueModel) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar fechamento',
+      message: `Deseja fechar a fila "${queue.name}"?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Fechar',
+          handler: () => {
+            this.queueService.closeQueue(queue.id).subscribe({
+              next: () => {
+                this.loadQueuesWithCurrentFilters();
+                this.toast.show(`Fila "${queue.name}" fechada com sucesso.`, 'success');
+              },
+              error: () => {
+                this.toast.show(`Erro ao fechar a fila "${queue.name}".`, 'danger');
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteQueue(queue: QueueModel) {
+    const alert = await this.alertController.create({
+      header: 'Confirmar exclusão',
+      message: `Deseja excluir a fila "${queue.name}"?`,
+      buttons: [
+        { text: 'Cancelar', role: 'cancel' },
+        {
+          text: 'Excluir',
+          handler: () => {
+            this.queueService.deleteQueue(queue.id).subscribe({
+              next: () => {
+                this.loadQueuesWithCurrentFilters();
+                this.toast.show(`Fila "${queue.name}" excluída com sucesso.`, 'success');
+              },
+              error: (err) => {
+                console.error('Erro ao excluir fila:', err);
+                this.toast.show(`Erro ao excluir a fila "${queue.name}".`, 'danger');
+              }
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  onQueueClick(queue: any) {
+    this.router.navigate(['/queue-details', queue.id]);
+  }
+
+  hasActiveFilters(): boolean {
+    return this.activeFilter !== 'today' ||
+      this.selectedResponsible !== null ||
+      this.selectedStatus !== null ||
+      !!this.searchQuery;
+  }
+
+  private getHourFroBrazilianTimeZone(): string {
+    return new Date().toISOString();
+  }
+
+  isQueueOpen(queue: QueueModel): boolean {
+    return queue.status === this._statusQueueEnum.open;
   }
 
   getQueueIcon(queueName: string): string {
     const name = queueName.toLowerCase();
-    if (name.includes('lavagem')) return 'water-outline';
-    if (name.includes('corte')) return 'cut-outline';
-    if (name.includes('manicure')) return 'hand-left-outline';
+    if (name.includes('clínico')) return 'medkit-outline';
+    if (name.includes('pediatria')) return 'happy-outline';
+    if (name.includes('cardio')) return 'heart-outline';
+    if (name.includes('ortopedia')) return 'body-outline';
+    if (name.includes('dermato')) return 'sparkles-outline';
     return 'list-outline';
   }
 
-  clearDateFilter() {
-    this.filterDate = '';
+  getQueueLabel(queue: QueueModel): string {
+    switch (queue.status) {
+      case this._statusQueueEnum.open:
+        return 'ABERTA';
+      case this._statusQueueEnum.closed:
+        return 'FECHADA';
+      case this._statusQueueEnum.paused:
+        return 'PAUSADA';
+      default:
+        return 'INDEFINIDA';
+    }
+  }
+
+  getQueueColor(queue: QueueModel): string {
+    switch (queue.status) {
+      case this._statusQueueEnum.open:
+        return 'success';
+      case this._statusQueueEnum.closed:
+        return 'medium';
+      case this._statusQueueEnum.paused:
+        return 'warning';
+      default:
+        return 'dark';
+    }
+  }
+
+  openAddQueuePage() {
+    this.router.navigate(['/new-queue'], {
+      state: {
+        queue: {
+          name: 'Nova Fila',
+          date: this.today,
+          responsibleId: this.selectedResponsible || 1
+        }
+      }
+    });
+  }
+
+  editQueue(queue: QueueModel) {
+    this.router.navigate(['/edit-queue', queue.id], {
+      state: { queue }
+    });
+  }
+
+  viewQueueDetails(queue: QueueModel) {
+    this.router.navigate(['/queue-details', queue.id]);
+  }
+
+  filterChanged() {
+    if (this.activeFilter === 'custom') {
+      this.queues = [];
+      this.originalQueues = [];
+    } else {
+      this.loadQueuesWithCurrentFilters();
+    }
+  }
+
+  onResponsibleChange() {
+    if (this.activeFilter !== 'custom') {
+      this.loadQueuesWithCurrentFilters();
+    }
+  }
+
+  onStatusChange() {
+    if (this.activeFilter !== 'custom') {
+      this.loadQueuesWithCurrentFilters();
+    }
+  }
+
+  onDateChange(event: any) {
+    this.filterDate = event.detail.value?.split('T')[0] || '';
+    this.closeCalendar();
   }
 
   openCalendar() {
@@ -70,69 +424,7 @@ export class QueueAdminPage implements OnInit {
     this.calendarOpen = false;
   }
 
-  onDateChange(event: any) {
-    const selected = event.detail.value;
-    if (selected) {
-      this.filterDate = selected.split('T')[0];
-    }
-    this.closeCalendar();
-  }
-
-  filterChanged(event: any) {
-    this.activeFilter = event.detail.value;
+  clearDateFilter() {
     this.filterDate = '';
-  }
-
-  applyCustomFilter() {
-  }
-
-  openAddQueuePage() {
-    this.router.navigate(['/new-queue'], {
-      state: {
-        queue: {
-          name: 'Nova Fila Exemplo',
-          date: new Date().toISOString().split('T')[0],
-          openingTime: new Date().toISOString(),
-          closingTime: new Date().toISOString(),
-          type: 'normal',
-          isRecurring: false,
-          recurringDays: [],
-          recurringEndDate: ''
-        }
-      }
-    });
-  }
-
-  editQueue(queue: any) {
-    this.router.navigate(['/edit-queue', { id: queue.name }]);
-  }
-
-  async deleteQueue(queue: any) {
-    const alert = await this.alertController.create({
-      header: 'Confirmar exclusão',
-      message: `Deseja realmente excluir a fila "${queue.name}"?`,
-      buttons: [
-        {
-          text: 'Cancelar',
-          role: 'cancel'
-        },
-        {
-          text: 'Excluir',
-          handler: () => {
-            this.queues = this.queues.filter(q => q !== queue);
-          }
-        }
-      ]
-    });
-
-    await alert.present();
-  }
-
-  viewQueueDetails(queue: any) {
-    if (queue.date === this.today && queue.status === 'Aberta') {
-      this.router.navigate(['/customer-list-in-queue']);
-    } else {
-      this.router.navigate(['/queue-details']);
-    }
   }
 }

@@ -30,7 +30,6 @@ export class UserConfigurationsPage {
       subtitle: [''],
       servicesProvided: [''],
       aceitarMensagemOutrosUsuarios: [false],
-      // Adicione outros campos conforme necessário
     });
   }
 

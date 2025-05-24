@@ -9,7 +9,7 @@
 
 <ion-content class="ion-padding">
   <div class="filters-section">
-    <ion-segment value="today" (ionChange)="filterChanged($event)">
+    <ion-segment [(ngModel)]="activeFilter" (ionChange)="filterChanged()">
       <ion-segment-button value="today">
         <ion-label>Hoje</ion-label>
       </ion-segment-button>
@@ -33,14 +33,61 @@
         <ion-label position="stacked">Data final</ion-label>
         <ion-datetime presentation="date" [(ngModel)]="endDate"></ion-datetime>
       </ion-item>
-      <ion-button expand="block" shape="round" (click)="applyCustomFilter()">
+
+      <ion-item lines="none" class="status-filter">
+        <ion-label>Status</ion-label>
+        <ion-select
+          [(ngModel)]="selectedStatus"
+          (ionChange)="onStatusChange()"
+          interface="popover"
+          placeholder="Todos"
+        >
+          <ion-select-option [value]="null">Todos</ion-select-option>
+          <ion-select-option [value]="0">Aberta</ion-select-option>
+          <ion-select-option [value]="1">Fechada</ion-select-option>
+          <ion-select-option [value]="2">Pausada</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item lines="none" class="responsible-filter">
+        <ion-label>Responsável</ion-label>
+        <ion-select
+          [(ngModel)]="selectedResponsible"
+          interface="popover"
+          placeholder="Todos"
+        >
+          <ion-select-option [value]="null">Todos</ion-select-option>
+          <ion-select-option
+            *ngFor="let responsible of responsibles"
+            [value]="responsible.id"
+          >
+            {{ responsible.nome }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-button expand="block" shape="round" (click)="applyCustomFilters()">
         Aplicar filtro
+      </ion-button>
+
+      <ion-button
+        fill="clear"
+        color="medium"
+        expand="block"
+        (click)="clearFilters()"
+        *ngIf="hasActiveFilters()"
+      >
+        <ion-icon name="close-circle" slot="start"></ion-icon>
+        Limpar filtros
       </ion-button>
     </div>
   </div>
 
   <div class="queues-list">
-    <div class="empty-state" *ngIf="filteredQueues.length === 0">
+    <div
+      class="empty-state"
+      *ngIf="queues.length === 0 && filteredQueues.length === 0"
+    >
       <ion-icon name="list-outline"></ion-icon>
       <h3>Nenhuma fila encontrada</h3>
       <p *ngIf="activeFilter !== 'today'">
@@ -58,8 +105,10 @@
     <ion-list lines="none">
       <ion-item-sliding *ngFor="let queue of filteredQueues">
         <ion-item
-          [class.active-queue]="queue.status === 'Aberta' && queue.date === today"
+          button
+          detail="false"
           (click)="viewQueueDetails(queue)"
+          [class.active-queue]="isQueueOpen(queue)"
         >
           <ion-avatar slot="start">
             <ion-icon [name]="getQueueIcon(queue.name)"></ion-icon>
@@ -68,35 +117,56 @@
           <ion-label>
             <h2>{{ queue.name }}</h2>
             <p>
-              {{ queue.date | date: 'dd/MM/yyyy' }} • {{ queue.currentCount }}
+              {{ queue.date | date: 'dd/MM/yyyy' }} • {{ queue.totalCount }}
               pessoa(s)
             </p>
           </ion-label>
 
-          <ion-badge
-            slot="end"
-            color="success"
-            *ngIf="queue.status === 'Aberta' && queue.date === today"
-          >
-            ABERTA
-          </ion-badge>
-          <ion-badge
-            slot="end"
-            color="medium"
-            *ngIf="queue.status !== 'Aberta' || queue.date !== today"
-          >
-            FECHADA
-          </ion-badge>
+          <div slot="end" class="status-container">
+            <ion-badge [color]="getQueueColor(queue)" class="small-badge">
+              {{ getQueueLabel(queue) }}
+            </ion-badge>
+
+            <ion-button
+              *ngIf="queue.totalCount === 0"
+              fill="clear"
+              color="danger"
+              (click)="deleteQueue(queue); $event.stopPropagation()"
+            >
+              <ion-icon name="trash" slot="icon-only"></ion-icon>
+            </ion-button>
+          </div>
         </ion-item>
 
         <ion-item-options side="end">
-          <ion-item-option color="danger" (click)="deleteQueue(queue)">
-            <ion-icon slot="icon-only" name="trash"></ion-icon>
-          </ion-item-option>
-          <ion-item-option color="tertiary" (click)="editQueue(queue)">
-            <ion-icon slot="icon-only" name="create"></ion-icon>
-          </ion-item-option>
+          <ng-container *ngIf="queue.status === _statusQueueEnum.open || queue.status === _statusQueueEnum.paused; else closedActions">
+            
+            <ion-item-option 
+              color="warning"
+              (click)="queue.status === _statusQueueEnum.open ? pauseQueue(queue) : unpauseQueue(queue)">
+              <ion-icon 
+                slot="icon-only" 
+                [name]="queue.status === _statusQueueEnum.open ? 'pause' : 'play'">
+              </ion-icon>
+            </ion-item-option>
+<!--         
+            <ion-item-option color="tertiary" (click)="editQueue(queue)">
+              <ion-icon slot="icon-only" name="create"></ion-icon>
+            </ion-item-option> -->
+        
+            <ion-item-option color="danger" (click)="closeQueue(queue)">
+              <ion-icon slot="icon-only" name="close"></ion-icon>
+            </ion-item-option>
+        
+          </ng-container>
+        
+          <ng-template #closedActions>
+            <ion-item-option color="tertiary" (click)="viewQueueDetails(queue)">
+              <ion-icon slot="icon-only" name="eye"></ion-icon>
+            </ion-item-option>
+          </ng-template>
         </ion-item-options>
+        
       </ion-item-sliding>
     </ion-list>
   </div>

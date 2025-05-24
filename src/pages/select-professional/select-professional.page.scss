@@ -296,3 +296,263 @@ ion-content::part(scroll) {
   0% { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }
+
+.verified-icon {
+  font-size: 16px;
+  vertical-align: auto;
+  margin-left: 4px;
+  color: var(--ion-color-primary);
+}
+
+.fila-card {
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  margin-bottom: 12px;
+  position: relative;
+  cursor: pointer;
+  background: white;
+}
+
+.fila-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.16);
+  transform: translateY(-2px);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.like-icon {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 5;
+  background: white;
+  border-radius: 50%;
+  padding: 6px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+ion-card-header {
+  padding: 40px 16px 4px;
+}
+
+.nome-profissional {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #333;
+}
+
+.nome-fila {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #555;
+  margin: 2px 0;
+}
+
+.subtitulo {
+  font-size: 0.8rem;
+  color: #888;
+  margin: 2px 0 0;
+}
+
+ion-card-content {
+  padding: 8px 16px 12px;
+}
+
+.infos-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  gap: 8px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8rem;
+  color: #444;
+}
+
+ion-icon {
+  font-size: 16px;
+}
+
+.barra-progresso-wrapper {
+  width: 100%;
+  height: 6px;
+  background-color: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra-progresso {
+  height: 100%;
+  transition: width 0.4s ease-in-out, background-color 0.3s;
+}
+
+.status-badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding: 4px 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 10;
+}
+
+.status-badge.active {
+  background-color: #e6f9e7;
+  color: #2e7d32;
+}
+
+.status-badge.paused {
+  background-color: #fff3e0;
+  color: #ef6c00;
+  margin-left: 5px;
+}
+
+.status-badge ion-icon {
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.fila-card {
+  border-radius: 12px;
+  margin: 0 16px 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  overflow: hidden;
+}
+
+.fila-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+  position: relative;
+  padding: 16px 16px 8px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-bottom: 1px solid #eee;
+}
+
+.professional-info {
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+
+.nome-profissional {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2c3e50;
+}
+
+.nome-fila {
+  font-size: 0.9rem;
+  color: #7f8c8d;
+  margin: 4px 0 0;
+}
+
+.subtitulo {
+  font-size: 0.85rem;
+  color: #555;
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.queue-progress-container {
+  margin: 12px 0;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 6px;
+}
+
+.barra-progresso-wrapper {
+  height: 8px;
+  border-radius: 4px;
+  background-color: #ecf0f1;
+}
+
+.barra-progresso {
+  height: 100%;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.additional-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+ion-chip {
+  --background: #f1f3f4;
+  --color: #34495e;
+  font-size: 0.75rem;
+  height: 24px;
+}
+
+ion-chip ion-icon {
+  font-size: 14px;
+}
+
+
+.status-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  background-color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.status-badge.active {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+
+.status-badge.paused {
+  background-color: #fff3e0;
+  color: #e65100;
+}
+
+
+.like-icon {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  z-index: 2;
+}
+
+.like-icon ion-icon {
+  font-size: 18px;
+}

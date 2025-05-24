@@ -14,7 +14,7 @@ ion-item {
   --padding-end: 16px;
   margin-bottom: 16px;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  
+
   &[fill="solid"] {
     --background: #ffffff;
   }
@@ -24,7 +24,7 @@ ion-item {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-  
+
   ion-item {
     margin-bottom: 0;
   }
@@ -54,7 +54,6 @@ ion-select {
   width: 100%;
 }
 
-/* Validação visual */
 ion-item.ion-invalid {
   --highlight-color-focused: var(--ion-color-danger);
 }
@@ -63,29 +62,31 @@ ion-item.ion-valid {
   --highlight-color-focused: var(--ion-color-success);
 }
 
-/* Responsividade */
 @media (max-width: 576px) {
   .time-range {
     grid-template-columns: 1fr;
   }
-  
+
   ion-datetime {
     font-size: 14px;
   }
 }
 
-/* Animações */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* Estilo para o ícone de fechar no header */
 ion-toolbar ion-button[fill="clear"] {
   --color: var(--ion-color-medium);
 }
 
-/* Estilo para o ícone de confirmar no header */
 ion-toolbar ion-button[fill="clear"][disabled] {
   --color: var(--ion-color-medium-shade);
 }
@@ -98,4 +99,25 @@ ion-toolbar ion-button[fill="clear"]:not([disabled]) {
   .time-range {
     grid-template-columns: 1fr;
   }
+}
+
+.time-range-container {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.time-range-container .time-input {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+
+.time-range-container ion-datetime {
+  width: 100%;
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

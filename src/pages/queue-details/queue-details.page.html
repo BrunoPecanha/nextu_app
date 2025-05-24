@@ -18,12 +18,12 @@
   
       <div class="resumo-item">
         <ion-icon name="cash-outline"></ion-icon>
-        <span>DINHEIRO: <strong>R$ {{ totalDinheiro }}</strong></span>
+        <span>DINHEIRO: <strong>R$ {{ totalCash }}</strong></span>
       </div>
   
       <div class="resumo-item">
         <ion-icon name="card-outline"></ion-icon>
-        <span>CARTÃO: <strong>R$ {{ totalCartao }}</strong></span>
+        <span>CARTÃO: <strong>R$ {{ totalCard }}</strong></span>
       </div>
   
       <div class="resumo-item">
@@ -39,13 +39,14 @@
   </div>
 
   <ion-list>
-    <ion-item *ngFor="let client of attendedClients">
+    <ion-item *ngFor="let client of this.report?.data">
       <ion-icon name="person-circle-outline" slot="start"></ion-icon>
       <ion-label>
         <h3>{{ client.name }}</h3>
         <p><strong>Início:</strong> {{ client.startTime | date:'HH:mm' }}</p>
         <p><strong>Fim:</strong> {{ client.endTime | date:'HH:mm' }}</p>
         <p><strong>Pagamento:</strong> {{ client.paymentMethod }}</p>
+        <p><strong>Valor:</strong> {{ client.amount }}</p>
         <p><strong>Tempo Total:</strong> {{ client.totalTime }} min</p>
       </ion-label>
     </ion-item>

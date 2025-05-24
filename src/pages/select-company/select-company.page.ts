@@ -122,7 +122,6 @@ export class SelectCompanyPage implements OnInit {
     this.selectedCategoryId = idCategory;
     this.service.loadStoresByCategoryId(idCategory).subscribe({
       next: (response) => {
-        console.log('Lojas filtradas:', response.data);
         this.companies = response.data.map(store => ({
           ...store,
           isNew: this.checkIfNew(store.createdAt),
@@ -159,7 +158,7 @@ export class SelectCompanyPage implements OnInit {
   applyFilter(filter: 'minorQueue' | 'favorites' | 'recent') {
     if (this.selectedFilter === filter) {
       this.selectedFilter = null;
-      this.loadStores(); // Remove filtro
+      this.loadStores();
       return;
     }
 

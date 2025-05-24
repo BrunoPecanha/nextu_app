@@ -1,99 +1,68 @@
 import { Component, OnInit } from '@angular/core';
-
+import { ActivatedRoute } from '@angular/router';
+import { PaymentMethodEnum } from 'src/models/enums/payment-method';
+import { QueueReportResponse } from 'src/models/responses/queue-report-response';
+import { QueueService } from 'src/services/queue-service';
 @Component({
   selector: 'app-queue-details',
   templateUrl: './queue-details.page.html',
   styleUrls: ['./queue-details.page.scss'],
 })
-export class QueueDetailsPage implements OnInit {  
-  
+export class QueueDetailsPage implements OnInit {
+
+  payment = PaymentMethodEnum;
+  queueId!: number;
   totalAttendedClients: number = 0;
   totalPix: number = 0;
-  totalCartao: number = 0;  
-  totalDinheiro: number = 0;
+  totalCard: number = 0;
+  totalCash: number = 0;
   total: number = 0;
-  selectedDate: Date = new Date();
-  attendedClients = [
-    {
-      name: 'João da Silva',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Pix',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Bruno Peçanha',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Pix',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Heitor Borges',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Pix',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Alexandre Barros',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Cartao',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Marvin Daniel',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Pix',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Léo Silva',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 10 * 60000),
-      paymentMethod: 'Pix',
-      amount: 30,
-      totalTime: 20
-    },
-    {
-      name: 'Maria Oliveira',
-      startTime: new Date(),
-      endTime: new Date(new Date().getTime() + 15 * 60000),
-      paymentMethod: 'Dinheiro',
-      amount: 30,
-      totalTime: 30
-    },
-  ];
+  selectedDate = '';
+  report: QueueReportResponse | null = null;
 
-  
+  constructor(private route: ActivatedRoute, private queueService: QueueService) {
+  }
+
   ngOnInit() {
-    this.getTotalAttendedClients();
-    this.getTotalAmmount();
+    this.queueId = Number(this.route.snapshot.paramMap.get('id')!);
+    this.loadReport();
+  }
+
+  loadReport() {
+    if (!this.queueId) {
+      return;
+    }
+
+    this.queueService.getQueueReport(this.queueId).subscribe({
+      next: (response) => {
+        this.report = response;
+        this.selectedDate = new Date(this.report.data[0].queueDate).toISOString().split("T")[0];
+        this.getTotalAttendedClients();
+        this.getTotalAmmount();
+      },
+      error: (err) => {
+        console.error('Erro ao carregar filas disponíveis:', err);
+      }
+    });
   }
 
   getTotalAttendedClients(): void {
-    this.totalAttendedClients =  this.attendedClients.length;
+    if (this.report) {
+      this.totalAttendedClients = this.report.data.length;
+    }
   }
 
-  getTotalAmmount(): void {    
-    this.attendedClients.forEach(client => {
-      if (client.paymentMethod === 'Pix') {
+  getTotalAmmount(): void {
+    this.report?.data.forEach(client => {
+      if (client.paymentMethod === this.payment.pix) {
         this.totalPix += client.amount;
-      } else if (client.paymentMethod === 'Cartao') {
-        this.totalCartao += client.amount;    
-      } else if (client.paymentMethod === 'Dinheiro') {
-        this.totalDinheiro += client.amount;
+      } else if (client.paymentMethod === this.payment.card) {
+        this.totalCard += client.amount;
+      } else if (client.paymentMethod === this.payment.cash) {
+        this.totalCash += client.amount;
       }
     });
 
-    this.total = this.totalPix + this.totalCartao + this.totalDinheiro;
+    this.total = this.totalPix + this.totalCard + this.totalCash;
   }
 }
-

@@ -59,7 +59,7 @@ const routes: Routes = [
     loadChildren: () => import('../pages/queue-admin/queue-admin.module').then( m => m.QueueAdminPageModule)
   },
   {
-    path: 'queue-details',
+    path: 'queue-details/:id',
     loadChildren: () => import('../pages/queue-details/queue-details.module').then( m => m.QueueDetailsPageModule)
   },
   {
