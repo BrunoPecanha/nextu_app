@@ -2,8 +2,7 @@
   title="PERFIL USUÁRIO"
   [showStartButton]="true"
   startIconName="close-outline"
-  onStartClick="goBack()"
-  routerLink="/queue-admin"
+  (onStartClick)="getBack()"
   [showEndButton]="true"
   endIconName="checkmark-done"
 ></app-custom-header>
@@ -114,18 +113,6 @@
     </ion-button>
     }
   </div>
-
-  <!-- <ion-button
-    expand="block"
-    shape="round"
-    class="save-button"
-    [disabled]="enviando || enviado || cadastroForm.invalid"
-    (click)="enviar()"
-  >
-    @if (enviando) {
-    <ion-spinner name="crescent" class="spinner"></ion-spinner>
-    } @else if (enviado) {
-    <ion-icon name="checkmark-circle" slot="start"></ion-icon>
-    Salvo com sucesso! } @else { Salvar configurações }
-  </ion-button> -->
 </ion-content>
+
+<app-footer-menu></app-footer-menu>

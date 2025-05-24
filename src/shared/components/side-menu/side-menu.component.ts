@@ -20,6 +20,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     private sessionService: SessionService
   ) { }
 
+  userFromSession: any;
   userName: string = '';
   profile: number = -1;
   queues: number = 0;
@@ -64,12 +65,12 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  loadUserInformations() {
-    
-    const userFromSession = this.sessionService.getUser();
+  loadUserInformations() {    
+    this.userFromSession = this.sessionService.getUser();
     const companyFromSession = this.sessionService.getStore();
-    if (userFromSession) {
-      this.userName = `${userFromSession.name} ${userFromSession.lastName}`;
+    
+    if (this.userFromSession) {
+      this.userName = `${this.userFromSession.name} ${this.userFromSession.lastName}`;
 
     }
     if (companyFromSession) {

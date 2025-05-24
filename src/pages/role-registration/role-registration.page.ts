@@ -18,11 +18,11 @@ export class RoleRegistrationPage implements OnInit {
   ngOnInit() {
   }
 
-  ionViewWillEnter() {    
+  ionViewWillEnter() {
     this.user = this.sessionService.getUser();
   }
-
-  redirect(rota: string, profile: number) {    
+  
+  redirect(rota: string, profile: number) {
     if (profile >= 0)
       this.sessionService.setProfile(profile)
     this.router.navigate([rota]);

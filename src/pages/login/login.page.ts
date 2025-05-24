@@ -5,6 +5,7 @@ import { firstValueFrom } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 import { SessionService } from 'src/services/session.service';
 import { StoreListResponse } from 'src/models/responses/store-list-response';
+import { UserModel } from 'src/models/user-model';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class LoginPage {
           this.sessionService.setToken(token);
           this.sessionService.setUser(user);
 
-          this.router.navigate(['/role-registration']);
+          this.skipeProfileSelection(user);
+
         }
       }
       catch (error) {
@@ -63,6 +65,13 @@ export class LoginPage {
     } else {
       await this.showAlert('Email e senha são obrigatórios.');
     }
+  }
+
+  skipeProfileSelection(user: UserModel) {
+    if (user.profile == 0)
+      this.router.navigate(['/select-company']);
+    else
+      this.router.navigate(['/role-registration']);
   }
 
   private async showAlert(message: string) {
