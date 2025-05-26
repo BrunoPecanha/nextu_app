@@ -124,9 +124,6 @@ export class NewQueuePage implements OnInit {
     };
 
     try {
-
-
-      // if (!this.isEditing && !this.queueToEdit) {
       this.queueService.createQueue(queueRequest).subscribe({
         next: async () => {
           await this.showToast('Fila criada com sucesso!', 'success');
@@ -137,28 +134,13 @@ export class NewQueuePage implements OnInit {
           await this.showToast('Erro ao salvar fila. Tente novamente.', 'danger');
         }
       });
-      //}
-      //else {
-      //  this.queueService.updateCustomerToQueue(queueRequest).subscribe({
-      //     next: async () => {
-      //       await this.showToast('Fila criada com sucesso!', 'success');
-      //       this.router.navigate(['/queue-admin']);
-      //     },
-      //      error: async (error) => {
-      //       console.error(error);
-      //      await this.showToast('Erro ao salvar fila. Tente novamente.', 'danger');
-      //     }
-      //    });
-      //}
-      //}
 
     } catch (error) {
       console.error(error);
       await this.showToast('Erro ao salvar fila. Tente novamente.', 'danger');
     }
   }
-
-
+  
   cancel() {
     this.router.navigate(['/queue-admin']);
   }

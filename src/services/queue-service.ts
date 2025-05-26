@@ -15,6 +15,7 @@ import { QueueResponse } from 'src/models/responses/queue-response';
 import { QueueCreateRequest } from 'src/models/requests/queue-create-request';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 import { QueueReportResponse } from 'src/models/responses/queue-report-response';
+import { QueueModel } from 'src/models/queue-model';
 
 
 @Injectable({
@@ -36,7 +37,7 @@ export class QueueService {
     );
   }
 
-  createQueue(command: QueueCreateRequest): Observable<QueueResponse> {    
+  createQueue(command: QueueCreateRequest): Observable<QueueResponse> {
     return this.http.post<QueueResponse>(`${this.apiUrl}/queue`, command).pipe(
       catchError(error => {
         console.error('Erro ao criar a fila:', error);
@@ -44,17 +45,17 @@ export class QueueService {
       })
     );
   }
-  
-  closeQueue(queueId: number): Observable<any> {  
+
+  closeQueue(queueId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/queue/${queueId}/close`);
   }
 
-  deleteQueue(queueId: number): Observable<any> {  
+  deleteQueue(queueId: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/queue/${queueId}`);
   }
-  
-  pauseQueue(command: QueuePauseRequest): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/queue/pause`, command).pipe(
+
+  pauseQueue(command: QueuePauseRequest): Observable<QueueResponse> {
+    return this.http.put<QueueResponse>(`${this.apiUrl}/queue/pause`, command).pipe(
       catchError(error => {
         console.error('Falha ao pausa a fila:', error);
         return throwError(() => error);
@@ -97,11 +98,11 @@ export class QueueService {
       customerId: customerId,
       removeReason: removeReason
     };
-  
+
     return this.http.put(`${this.apiUrl}/queue/remove`, command);
   }
 
-  getOpenedQueueByEmployeeId(employeeId: number): Observable<QueueListResponse> {
+  getOpenedQueueListByEmployeeId(employeeId: number): Observable<QueueListResponse> {
     return this.http.get<QueueListResponse>(`${this.apiUrl}/queue/${employeeId}/employee`);
   }
 
@@ -112,7 +113,7 @@ export class QueueService {
   getAvailableQueues(storeId: string): Observable<any> {
     return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
   }
-  
+
   loadAllTodayQueue(storeId: number, filter: QueueFilterRequest): Observable<QueueListResponse> {
     return this.http.post<QueueListResponse>(
       `${this.apiUrl}/queue/${storeId}/filter`,
@@ -121,7 +122,7 @@ export class QueueService {
   }
 
   hasOpenQueueForEmployeeToday(employeeId: number): Observable<boolean> {
-    return this.getOpenedQueueByEmployeeId(employeeId).pipe(
+    return this.getOpenedQueueListByEmployeeId(employeeId).pipe(
       map((response: QueueListResponse) => {
         return response.valid &&
           response.data?.length > 0 &&
@@ -175,13 +176,13 @@ export class QueueService {
 
   getQueueReport(idQueue: number): Observable<QueueReportResponse> {
     return this.http.get<QueueReportResponse>(`${this.apiUrl}/queue/${idQueue}/report`);
-  }  
+  }
 
   getCustomerInQueueCardDetails(customerId: number, queueId: number): Observable<CustomerInQueueCardDetailResponse> {
     return this.http.get<CustomerInQueueCardDetailResponse>(`${this.apiUrl}/queue/${customerId}/${queueId}/card/details`);
   }
 
-  exitQueue(custeomerId: number, queueId: number): Observable<any> {    
+  exitQueue(custeomerId: number, queueId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/queue/${custeomerId}/${queueId}/exit`);
   }
 }

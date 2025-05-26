@@ -1,4 +1,4 @@
 export interface QueuePauseRequest {
-  id: number;
+  id?: number;
   pauseReason: string;
 }

@@ -10,4 +10,5 @@ export interface CustomerInQueueCardModel {
   queueId: number;
   storeId: number;
   estimatedWaitingTime: string;
+  isPaused: boolean;
 }

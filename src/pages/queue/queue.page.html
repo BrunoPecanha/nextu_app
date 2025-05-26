@@ -34,6 +34,11 @@
                 <h6 class="titulo-principal">
                   {{ card.position === 0 ? 'Sua vez!' : 'Você é o ' +
                   card.position + 'º na fila' }}
+                  <ion-icon 
+                  [name]="card.isPaused ? 'pause-circle-outline' : 'play-circle-outline'" 
+                  [color]="card.isPaused ? 'danger' : 'success'"
+                  class="status-icon"
+                ></ion-icon>
                 </h6>
               </div>
               <div class="info-secundaria">

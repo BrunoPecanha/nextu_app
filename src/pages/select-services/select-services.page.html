@@ -6,12 +6,12 @@
   [endDisabled]="selectedServices.length === 0"
   startIconName="close-outline"
   [showEndButton]="true"
-  endIconName="checkmark-done"  
+  endIconName="checkmark"  
   (onEndClick)="confirmSelection()"
 ></app-custom-header>
 
 <ion-content class="services-content">
-  <!-- Card de Serviços Disponíveis -->
+
   <div class="services-section">
     <h2 class="section-title">SERVIÇOS DISPONÍVEIS</h2>
     <div class="services-list">
@@ -40,7 +40,6 @@
     </div>
   </div>
 
-  <!-- Seção de Serviços Selecionados -->
   <div class="selected-section" *ngIf="selectedServices.length > 0">
     <h2 class="section-title">SEUS SERVIÇOS</h2>
     
@@ -66,7 +65,6 @@
     </div>
   </div>
 
-  <!-- Seção de Observações -->
   <div class="notes-section">
     <ion-item lines="none" class="notes-input">
       <ion-label position="stacked">Observações</ion-label>
@@ -79,7 +77,6 @@
     </ion-item>
   </div>
 
-  <!-- Seção de Pagamento -->
   <div class="payment-section">
     <h2 class="section-title">FORMA DE PAGAMENTO</h2>
     <div class="payment-options">
@@ -100,7 +97,6 @@
     </div>
   </div>
 
-  <!-- Resumo -->
   <div class="summary-section">
     <div class="summary-item">
       <span>Tempo Total:</span>

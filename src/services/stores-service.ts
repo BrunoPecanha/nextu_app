@@ -35,6 +35,11 @@ export class StoresService {
     return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/${id}/queue/professionals`);
   }
 
+   loadAllStoresUserIsInByUserId(id: number): Observable<StoreListResponse> {
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/${id}/customer/stores`);
+  }
+
+
   loadProfessionals(storeId: number): Observable<ProfessionalResponse> {
     return this.http.get<ProfessionalResponse>(`${this.apiUrl}/store/${storeId}/professionals`);
   }

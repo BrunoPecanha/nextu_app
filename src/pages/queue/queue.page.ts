@@ -3,9 +3,11 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { CustomerInQueueCardDetailModel } from 'src/models/customer-in-queue-card-detail-model';
 import { CustomerInQueueCardModel } from 'src/models/customer-in-queue-card-model';
+import { StoreModel } from 'src/models/store-model';
 import { QueueService } from 'src/services/queue-service';
 import { SignalRService } from 'src/services/seignalr-service';
 import { SessionService } from 'src/services/session.service';
+import { StoresService } from 'src/services/stores-service';
 
 @Component({
   selector: 'app-queue',
@@ -15,7 +17,7 @@ import { SessionService } from 'src/services/session.service';
 export class QueuePage implements OnInit {
   customerCards: CustomerInQueueCardModel[] | [] = [];
   fallbackRoute = '/select-company';
-  store: any;
+  stores: StoreModel[] = [];
   currentDate = new Date();
   qrCodeBase64: string | null = null;
   tolerance = 5;
@@ -27,6 +29,7 @@ export class QueuePage implements OnInit {
     private alertController: AlertController,
     public router: Router,
     private queueService: QueueService,
+    private storeService: StoresService,
     private sessionService: SessionService,
     private toastController: ToastController,
     private signalRService: SignalRService
@@ -40,25 +43,48 @@ export class QueuePage implements OnInit {
   async startSignalRConnection() {
     try {
       await this.signalRService.startConnection();
+      const user = this.sessionService.getUser();
 
-      this.store = this.sessionService.getStore();
+      if (!user?.id) throw new Error('Usuário inválido');
+      
+      const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
+      const stores = response?.data || [];
 
-      if (this.store) {
-        this.signalRService.joinGroup(`company-${this.store.id}`);
+      const groupNames = stores
+        .filter(store => !!store?.id)
+        .map(store => store.id.toString());
+      
+      if (groupNames.length > 0) {
+        await this.signalRService.joinMultipleGroups(groupNames);
+        console.log('Cliente conectado aos grupos:', groupNames);
       }
 
-      this.signalRService.onUpdateQueue(() => {
-        console.log('Atualização recebida via SignalR!');
-        this.refreshQueues();
+      this.signalRService.onUpdateQueue((data) => {
+        console.log('Atualização recebida no cliente', data);
+        this.refreshQueues(); 
       });
 
     } catch (error) {
-      console.error('Erro ao iniciar conexão SignalR:', error);
+      console.error('Erro SignalR (cliente):', error);
+      setTimeout(() => this.startSignalRConnection(), 5000);
     }
   }
 
+  async rejoinGroups(): Promise<void> {
+  const user = this.sessionService.getUser();
+  const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
+  const stores = response?.data || [];
+
+  const groupNames = stores
+    .filter(store => !!store?.id)
+    .map(store => `company-${store.id}`);
+
+  await this.signalRService.joinMultipleGroups(groupNames);
+}
+
+
   ngOnDestroy() {
-    this.signalRService.offNewPersonInQueue();
+    this.signalRService.offUpdateQueue();
     this.signalRService.stopConnection();
   }
 
@@ -278,9 +304,9 @@ export class QueuePage implements OnInit {
       '\\u{2705}': 'checkmark-circle-outline',
       '\\u{1F4C8}': 'stats-chart-outline',
       '\\u{1F4C9}': 'stats-chart-outline',
-      '\\u{1F4C6}': 'calendar-outline'     
+      '\\u{1F4C6}': 'calendar-outline'
     };
-    return iconMap[unicodeIcon] || 'construct-outline'; 
+    return iconMap[unicodeIcon] || 'construct-outline';
   }
 
   private async showToast(message: string, color: string = 'success'): Promise<void> {
@@ -316,7 +342,7 @@ export class QueuePage implements OnInit {
           role: 'cancel'
         }
       ]
-    });  
+    });
 
     await alert.present();
 

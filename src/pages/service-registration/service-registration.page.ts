@@ -255,9 +255,7 @@ export class ServiceRegistrationPage implements OnInit {
       if (imageFile) {
         formData.append('imageFile', imageFile);
       }
-
-      console.log('Serviço criado com sucesso:', formData);
-
+      
       this.service.createService(formData).subscribe({
         next: (response) => {
           console.log('Serviço criado com sucesso:', response);

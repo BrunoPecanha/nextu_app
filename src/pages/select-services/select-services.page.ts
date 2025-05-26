@@ -10,6 +10,7 @@ import { CustomerService } from 'src/services/customer-service';
 import { QueueService } from 'src/services/queue-service';
 import { ServiceService } from 'src/services/services-service';
 import { SessionService } from 'src/services/session.service';
+import { SignalRService } from 'src/services/seignalr-service';
 
 @Component({
   selector: 'app-select-services',
@@ -40,6 +41,7 @@ export class SelectServicesPage {
     private customerService: CustomerService,
     private sessionService: SessionService,
     private navCtrl: NavController,
+    private signalRService: SignalRService
   ) {
     this.user = this.sessionService.getUser();
   }
@@ -61,7 +63,7 @@ export class SelectServicesPage {
     });
   }
 
-  getBack() {    
+  getBack() {
     this.navCtrl.back();
   }
 
@@ -238,6 +240,28 @@ export class SelectServicesPage {
     });
   }
 
+  private async initSignalRConnection() {
+    try {
+      await this.signalRService.startConnection();
+
+      const store = this.sessionService.getStore();
+      if (!store) throw new Error('Loja não encontrada');
+
+      const groupName = store.id.toString();
+
+      await this.signalRService.joinGroup(groupName);
+
+      this.signalRService.offUpdateQueue();
+      this.signalRService.onUpdateQueue((data) => {
+        console.log('Atualização recebida na loja', data);
+      });
+
+    } catch (error) {
+      console.error('Erro SignalR (loja):', error);
+      setTimeout(() => this.initSignalRConnection(), 5000);
+    }
+  }
+
   updateCustomerToQueue() {
     const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
       serviceId: service.id,
@@ -262,7 +286,7 @@ export class SelectServicesPage {
     });
   }
 
-  proceedToQueue() {    
+  proceedToQueue() {
     if (this.customerId)
       this.updateCustomerToQueue();
     else
