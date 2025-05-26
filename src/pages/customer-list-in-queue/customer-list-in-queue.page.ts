@@ -131,7 +131,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     });
   }
 
-
   pauseQueue() {
     const request: QueuePauseRequest = {
       id: this.queue?.id,
@@ -155,7 +154,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
       }
     });
   }
-
 
   private getQueueForEmployee() {
     if (!this.storeId) return;

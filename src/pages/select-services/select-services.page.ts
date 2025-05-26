@@ -243,8 +243,9 @@ export class SelectServicesPage {
   private async initSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-
+            
       const store = this.sessionService.getStore();
+      debugger
       if (!store) throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
@@ -287,10 +288,14 @@ export class SelectServicesPage {
   }
 
   proceedToQueue() {
-    if (this.customerId)
+    if (this.customerId) {
       this.updateCustomerToQueue();
-    else
+      this.initSignalRConnection();
+    }
+    else {
       this.addCustomerToQueue();
+      this.initSignalRConnection();
+    }
 
     this.router.navigate(['/queue'], {
       queryParams: {
