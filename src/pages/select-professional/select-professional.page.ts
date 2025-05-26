@@ -4,6 +4,8 @@ import { AlertController } from '@ionic/angular';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
+import { SignalRService } from 'src/services/seignalr-service';
+import { SessionService } from 'src/services/session.service';
 import { StoresService } from 'src/services/stores-service';
 
 @Component({
@@ -15,22 +17,26 @@ export class SelectProfessionalPage implements OnInit {
   store: StoreProfessionalModel | null = null;
   storeId: number = 0;
   StatusQueueEnum = StatusQueueEnum;
-
+  signalRGroup: string = '';
   bannerLoaded = false;
   logoLoaded = false;
 
-  constructor(private router: Router, private route: ActivatedRoute, private service: StoresService, private alertController: AlertController) { }
+  constructor(private router: Router, private route: ActivatedRoute, private service: StoresService, private alertController: AlertController,
+    private signalRService: SignalRService, private sessionService: SessionService
+  ) { }
 
   ngOnInit() {
     this.getSelectedStoreId();
-    this.resetImageStates()
+    this.resetImageStates();    
     this.loadStoreAndProfessionals(this.storeId);
+    this.initSignalRConnection();    
   }
 
   loadStoreAndProfessionals(storeId: number) {
     this.service.loadStoreAndProfessionals(storeId).subscribe({
-      next: (response) => {
+      next: (response) => {        
         this.store = response.data;
+        this.sessionService.setStore(this.store);
       },
       error: (err) => {
         console.error('Erro ao carregar filas disponíveis:', err);
@@ -42,6 +48,8 @@ export class SelectProfessionalPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.storeId = params['storeId'];
     });
+
+
   }
 
   getStatusClass(status: StatusQueueEnum): string {
@@ -58,6 +66,37 @@ export class SelectProfessionalPage implements OnInit {
   }
 
 
+  ngOnDestroy() {
+    this.cleanupSignalR();
+  }
+
+  private async initSignalRConnection() {
+    try {
+      await this.signalRService.startConnection();
+
+      this.signalRGroup = this.storeId.toString();      
+
+      await this.signalRService.joinGroup(this.signalRGroup);
+
+      this.signalRService.offUpdateQueue();
+      this.signalRService.onUpdateQueue((data) => {
+        console.log('Atualização recebida na loja', data);
+        this.loadStoreAndProfessionals(this.storeId);
+      });
+
+    } catch (error) {
+      console.error('Erro SignalR (loja):', error);
+      setTimeout(() => this.initSignalRConnection(), 5000);
+    }
+  }
+
+  private cleanupSignalR() {
+    this.signalRService.offUpdateQueue();
+    if (this.signalRGroup) {
+      this.signalRService.leaveGroup(this.signalRGroup);
+    }
+  }
+
   getInTheQueue(fila: ProfessionalModel) {
     this.router.navigate(['/select-services'], {
       queryParams: { queueId: fila.queueId, storeId: this.storeId },
@@ -71,7 +110,7 @@ export class SelectProfessionalPage implements OnInit {
     console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
   }
 
-  abrirLojaDetalhada() {
+  openStoreDetails() {
     this.router.navigate(['/store-details', this.storeId]);
   }
 

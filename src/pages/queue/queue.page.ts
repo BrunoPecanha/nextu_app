@@ -36,7 +36,10 @@ export class QueuePage implements OnInit {
   ) {
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+  }
+
+  ionViewWillEnter() {
     this.startSignalRConnection();
   }
 

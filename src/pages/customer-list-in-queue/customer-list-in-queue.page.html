@@ -70,6 +70,9 @@
           Remover
         </ion-button>
         <ion-button
+         *ngIf="!isPaused"
+           class="start-service-button"
+           fill="solid"
           size="small"
            (click)="startQRCodeScan(client)"
           [color]="client.inService ? 'warning' : 'primary'"
