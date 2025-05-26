@@ -49,6 +49,7 @@ export class SelectServicesPage {
   ngOnInit() {
     this.getProfessionalAndStore();
     this.loadAvailablesServices();
+   
   }
 
    ngOnDestroy() {

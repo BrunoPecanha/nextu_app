@@ -56,12 +56,7 @@ export class QueueAdminPage implements OnInit {
 
   ngOnInit() {
     this.loadInitialData();
-  }
-
-   ngOnDestroy() {
-    this.signalRService.offUpdateQueue();
-    this.signalRService.stopConnection();
-  }
+  }   
 
   private loadInitialData() {
     this.loadProfessionals();
