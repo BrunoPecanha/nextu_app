@@ -36,7 +36,7 @@ export class QueuePage implements OnInit {
   ) {
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
   ionViewWillEnter() {
@@ -49,14 +49,14 @@ export class QueuePage implements OnInit {
       const user = this.sessionService.getUser();
 
       if (!user?.id) throw new Error('Usuário inválido');
-      
+
       const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
       const stores = response?.data || [];
 
       const groupNames = stores
         .filter(store => !!store?.id)
         .map(store => store.id.toString());
-      
+
       if (groupNames.length > 0) {
         await this.signalRService.joinMultipleGroups(groupNames);
         console.log('Cliente conectado aos grupos:', groupNames);
@@ -64,7 +64,7 @@ export class QueuePage implements OnInit {
 
       this.signalRService.onUpdateQueue((data) => {
         console.log('Atualização recebida no cliente', data);
-        this.refreshQueues(); 
+        this.refreshQueues();
       });
 
     } catch (error) {
@@ -74,25 +74,22 @@ export class QueuePage implements OnInit {
   }
 
   async rejoinGroups(): Promise<void> {
-  const user = this.sessionService.getUser();
-  const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
-  const stores = response?.data || [];
+    const user = this.sessionService.getUser();
+    const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
+    const stores = response?.data || [];
 
-  const groupNames = stores
-    .filter(store => !!store?.id)
-    .map(store => `company-${store.id}`);
+    const groupNames = stores
+      .filter(store => !!store?.id)
+      .map(store => `company-${store.id}`);
 
-  await this.signalRService.joinMultipleGroups(groupNames);
-}
-
-
-  ngOnDestroy() {
-    this.signalRService.offUpdateQueue();
-    this.signalRService.stopConnection();
+    await this.signalRService.joinMultipleGroups(groupNames);
   }
+
+
 
   ionViewDidEnter() {
     this.forceReload();
+    this.startSignalRConnection();
   }
 
   private forceReload(): void {

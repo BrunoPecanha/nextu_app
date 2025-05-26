@@ -28,8 +28,12 @@ export class SelectProfessionalPage implements OnInit {
   ngOnInit() {
     this.getSelectedStoreId();
     this.resetImageStates();    
-    this.loadStoreAndProfessionals(this.storeId);
-    this.initSignalRConnection();    
+    this.loadStoreAndProfessionals(this.storeId); 
+  }
+
+  
+  ionViewWillEnter() {
+    this.initSignalRConnection();
   }
 
   loadStoreAndProfessionals(storeId: number) {

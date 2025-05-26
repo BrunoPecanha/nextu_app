@@ -49,6 +49,7 @@ export class SelectServicesPage {
   ngOnInit() {
     this.getProfessionalAndStore();
     this.loadAvailablesServices();
+   
   }
 
   getProfessionalAndStore() {
@@ -245,7 +246,7 @@ export class SelectServicesPage {
       await this.signalRService.startConnection();
             
       const store = this.sessionService.getStore();
-      debugger
+      
       if (!store) throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
@@ -286,6 +287,8 @@ export class SelectServicesPage {
       }
     });
   }
+
+  
 
   proceedToQueue() {
     if (this.customerId) {
