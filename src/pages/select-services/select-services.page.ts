@@ -52,11 +52,6 @@ export class SelectServicesPage {
    
   }
 
-   ngOnDestroy() {
-    this.signalRService.offUpdateQueue();
-    this.signalRService.stopConnection();
-  }
-
   getProfessionalAndStore() {
     this.route.queryParams.subscribe(params => {
       this.queueId = params['queueId'];

@@ -15,7 +15,7 @@ export class FooterMenuComponent implements OnInit {
   profile = 0;
 
   constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService) {
-    this.profile = this.sesseionService.getUser().profile;
+    this.profile = this.sesseionService.getProfile();
   }
   
   ngOnInit() {
@@ -42,6 +42,7 @@ export class FooterMenuComponent implements OnInit {
   }
 
   async goToQueue() {
+    debugger
     try {
       if (this.profile === 0) {
         this.router.navigate(['/queue'], {

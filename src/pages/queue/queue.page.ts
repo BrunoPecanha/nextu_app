@@ -89,6 +89,7 @@ export class QueuePage implements OnInit {
 
   ionViewDidEnter() {
     this.forceReload();
+    this.startSignalRConnection();
   }
 
   private forceReload(): void {

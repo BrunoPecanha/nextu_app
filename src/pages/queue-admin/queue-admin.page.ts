@@ -12,6 +12,7 @@ import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
 import { ToastService } from 'src/services/toast.service';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 import { SignalRService } from 'src/services/seignalr-service';
+import { QueueCloseRequest } from 'src/models/requests/queue-close-request';
 
 @Component({
   selector: 'app-queue-admin',
@@ -56,7 +57,7 @@ export class QueueAdminPage implements OnInit {
 
   ngOnInit() {
     this.loadInitialData();
-  }   
+  }
 
   private loadInitialData() {
     this.loadProfessionals();
@@ -66,9 +67,9 @@ export class QueueAdminPage implements OnInit {
   private async initSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-            
+
       const store = this.sessionService.getStore();
-      
+
       if (!store) throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
@@ -296,20 +297,70 @@ export class QueueAdminPage implements OnInit {
         {
           text: 'Fechar',
           handler: () => {
-            this.queueService.closeQueue(queue.id).subscribe({
-              next: () => {
-                this.loadQueuesWithCurrentFilters();
-                this.toast.show(`Fila "${queue.name}" fechada com sucesso.`, 'success');
+            this.queueService.existCustuomerInQueueWaiting(queue.id).subscribe({
+              next: async (hasCustomers) => {
+                if (hasCustomers) {
+                  const confirmAlert = await this.alertController.create({
+                    header: 'Clientes na fila',
+                    message: `Ainda há clientes aguardando na fila "${queue.name}". Informe o motivo para fechar mesmo assim:`,
+                    inputs: [
+                      {
+                        name: 'clauseReason',
+                        type: 'textarea',
+                        placeholder: 'Digite o motivo do fechamento',
+                      }
+                    ],
+                    buttons: [
+                      { text: 'Cancelar', role: 'cancel' },
+                      {
+                        text: 'Fechar mesmo assim',
+                        handler: (data) => {
+                          const reason = data.clauseReason?.trim();
+                          if (!reason) {
+                            this.toast.show('É necessário informar um motivo para fechar a fila.', 'warning');
+                            return false; 
+                          }
+                          const command: QueueCloseRequest = {
+                            id: queue.id,
+                            closeReason: reason,
+                          };
+                          this.proceedToCloseQueue(queue, command);
+                          return true; 
+                        }
+                      }
+                    ]
+                  });
+                  await confirmAlert.present();
+                } else {
+                  const command: QueueCloseRequest = {
+                    id: queue.id,
+                    closeReason: '', 
+                  };
+                  this.proceedToCloseQueue(queue, command);
+                }
               },
               error: () => {
-                this.toast.show(`Erro ao fechar a fila "${queue.name}".`, 'danger');
+                this.toast.show(`Erro ao verificar clientes na fila "${queue.name}".`, 'danger');
               }
             });
           }
         }
       ]
     });
+
     await alert.present();
+  }
+
+  private proceedToCloseQueue(queue: QueueModel, command: QueueCloseRequest) {
+    this.queueService.closeQueue(command).subscribe({
+      next: () => {
+        this.loadQueuesWithCurrentFilters();
+        this.toast.show(`Fila "${queue.name}" fechada com sucesso.`, 'success');
+      },
+      error: () => {
+        this.toast.show(`Erro ao fechar a fila "${queue.name}".`, 'danger');
+      }
+    });
   }
 
   async deleteQueue(queue: QueueModel) {

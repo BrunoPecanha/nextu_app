@@ -15,7 +15,7 @@ import { QueueResponse } from 'src/models/responses/queue-response';
 import { QueueCreateRequest } from 'src/models/requests/queue-create-request';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 import { QueueReportResponse } from 'src/models/responses/queue-report-response';
-import { QueueModel } from 'src/models/queue-model';
+import { QueueCloseRequest } from 'src/models/requests/queue-close-request';
 
 
 @Injectable({
@@ -46,8 +46,17 @@ export class QueueService {
     );
   }
 
-  closeQueue(queueId: number): Observable<any> {
-    return this.http.delete(`${this.apiUrl}/queue/${queueId}/close`);
+  closeQueue(command: QueueCloseRequest): Observable<any> {
+    return this.http.put<any>(`${this.apiUrl}/queue/close`, command).pipe(
+      catchError(error => {
+        console.error('Erro ao encerrar a fila:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  existCustuomerInQueueWaiting(queueId: number): Observable<boolean> {
+    return this.http.get<boolean>(`${this.apiUrl}/queue/${queueId}/waiting`);
   }
 
   deleteQueue(queueId: number): Observable<any> {
