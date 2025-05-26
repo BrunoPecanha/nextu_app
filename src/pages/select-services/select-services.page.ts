@@ -51,6 +51,11 @@ export class SelectServicesPage {
     this.loadAvailablesServices();
   }
 
+   ngOnDestroy() {
+    this.signalRService.offUpdateQueue();
+    this.signalRService.stopConnection();
+  }
+
   getProfessionalAndStore() {
     this.route.queryParams.subscribe(params => {
       this.queueId = params['queueId'];
@@ -245,7 +250,7 @@ export class SelectServicesPage {
       await this.signalRService.startConnection();
             
       const store = this.sessionService.getStore();
-      debugger
+      
       if (!store) throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
@@ -286,6 +291,8 @@ export class SelectServicesPage {
       }
     });
   }
+
+  
 
   proceedToQueue() {
     if (this.customerId) {

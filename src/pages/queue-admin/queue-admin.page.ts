@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Signal } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { QueueService } from 'src/services/queue-service';
@@ -11,6 +11,7 @@ import { ProfessionalResponse } from 'src/models/responses/professional-response
 import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
 import { ToastService } from 'src/services/toast.service';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
+import { SignalRService } from 'src/services/seignalr-service';
 
 @Component({
   selector: 'app-queue-admin',
@@ -44,6 +45,7 @@ export class QueueAdminPage implements OnInit {
     private sessionService: SessionService,
     private storeService: StoresService,
     private toast: ToastService,
+    private signalRService: SignalRService
   ) {
     this.store = this.sessionService.getStore();
   }
@@ -56,9 +58,37 @@ export class QueueAdminPage implements OnInit {
     this.loadInitialData();
   }
 
+   ngOnDestroy() {
+    this.signalRService.offUpdateQueue();
+    this.signalRService.stopConnection();
+  }
+
   private loadInitialData() {
     this.loadProfessionals();
     this.loadQueuesWithCurrentFilters();
+  }
+
+  private async initSignalRConnection() {
+    try {
+      await this.signalRService.startConnection();
+            
+      const store = this.sessionService.getStore();
+      
+      if (!store) throw new Error('Loja não encontrada');
+
+      const groupName = store.id.toString();
+
+      await this.signalRService.joinGroup(groupName);
+
+      this.signalRService.offUpdateQueue();
+      this.signalRService.onUpdateQueue((data) => {
+        console.log('Atualização recebida na loja', data);
+      });
+
+    } catch (error) {
+      console.error('Erro SignalR (loja):', error);
+      setTimeout(() => this.initSignalRConnection(), 5000);
+    }
   }
 
   private loadProfessionals() {
