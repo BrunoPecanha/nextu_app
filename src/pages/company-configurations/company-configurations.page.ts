@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { CategoryModel } from 'src/models/category-model';
 import { CategoryResponse } from 'src/models/responses/category-response';
 import { StoreModel } from 'src/models/store-model';
+import { UserModel } from 'src/models/user-model';
 import { CategoryService } from 'src/services/category-service';
 import { SessionService } from 'src/services/session.service';
 import { StatesService } from 'src/services/states.service';
@@ -38,6 +39,7 @@ export class CompanyConfigurationsPage {
   saved = false;
   fallbackRoute = '/role-registration';
   store: StoreModel | null = null;
+  user: UserModel | null = null;
 
   private subscriptions: Subscription[] = [];
 
@@ -56,11 +58,19 @@ export class CompanyConfigurationsPage {
     this.loadCategories();
   }
 
-  ngOnInit() {
-    this.store = this.sessionService.getStore();
-    if (this.store) {
-      this.loadStoreData(this.store.id);
-    }
+  ngOnInit() {    
+  }
+
+  ionViewWillEnter() {
+    this.user = this.sessionService.getUser();
+
+    if (this.user?.profile === 2) {
+      this.store = this.sessionService.getStore();
+   
+      if (this.store) {
+        this.loadStoreData(this.store.id);
+      }
+    }   
   };
 
   ngOnDestroy() {

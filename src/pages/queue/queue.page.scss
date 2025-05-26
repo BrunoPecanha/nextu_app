@@ -866,3 +866,9 @@ ion-content::part(scroll) {
   color: var(--ion-color-medium);
   margin-left: 4px;
 }
+
+.status-icon {
+  margin-left: 6px;
+  font-size: 16px;
+  vertical-align: middle;
+}

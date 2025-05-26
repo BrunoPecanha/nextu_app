@@ -36,6 +36,19 @@ import { SessionService } from 'src/services/session.service';
         </ion-title>
 
         <ion-buttons slot="end">
+          <!-- Novo botão de pause/play -->
+          <ion-button 
+            *ngIf="showPausePlayButton"
+            fill="clear" 
+            (click)="onPausePlayClick.emit()"
+            [class]="isPaused ? 'play-button' : 'pause-button'"
+          >
+            <ion-icon 
+              [name]="isPaused ? 'play' : 'pause'"
+              slot="icon-only"
+            ></ion-icon>
+          </ion-button>
+          
           <ion-button 
             *ngIf="showEndButton"
             fill="clear" 
@@ -69,6 +82,16 @@ import { SessionService } from 'src/services/session.service';
       --color: var(--ion-color-primary);
       padding-right: 10px;
       --color-disabled: var(--ion-color-primary-shade);
+    }
+
+    .pause-button {
+      --color: var(--ion-color-warning);
+      padding-right: 10px;
+    }
+
+    .play-button {
+      --color: var(--ion-color-success);
+      padding-right: 10px;
     }
 
     ion-toolbar {
@@ -114,6 +137,10 @@ export class CustomHeaderComponent {
   @Input() endDisabled: boolean = false;
   @Input() endLoading: boolean = false;
   @Output() onEndClick = new EventEmitter<void>();
+
+  @Input() showPausePlayButton: boolean = false;
+  @Input() isPaused: boolean = false;
+  @Output() onPausePlayClick = new EventEmitter<void>();
 
   @Input() routeLink: string = '';
 

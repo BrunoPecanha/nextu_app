@@ -44,8 +44,8 @@
     class="filas-wrapper"
     *ngIf="store?.professionals?.length; else semFilas"
   >
-  <ion-card class="fila-card" *ngFor="let queue of store?.professionals" (click)="queue.status === StatusQueueEnum.paused ? null : getInTheQueue(queue)">
-    <!-- Banner superior com informações essenciais -->
+  <ion-card class="fila-card" *ngFor="let queue of store?.professionals" (click)="getInTheQueue(queue)">
+    
     <div class="card-header">
       <div class="status-badge" [ngClass]="getStatusClass(queue.status)">
         <ion-icon [name]="queue.status === StatusQueueEnum.paused ? 'pause-circle' : 'checkmark-circle'"></ion-icon>
@@ -65,11 +65,11 @@
       </div>
     </div>
   
-    <!-- Conteúdo principal do card -->
+
     <ion-card-content>
       <p class="subtitulo">{{ queue.subtitle || 'Serviço disponível' }}</p>
       
-      <!-- Barra de progresso mais destacada -->
+
       <div class="queue-progress-container">
         <div class="progress-info">
           <span>{{ queue.customersWaiting || 0 }} pessoas na fila</span>
@@ -82,7 +82,7 @@
         </div>
       </div>
       
-      <!-- Informações adicionais em formato de chips -->
+
       <div class="additional-info">
         <ion-chip *ngIf="queue.servicesProvided" class="service-chip">
           <ion-icon name="construct-outline"></ion-icon>

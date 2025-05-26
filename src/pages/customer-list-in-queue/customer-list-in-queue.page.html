@@ -6,6 +6,9 @@
   [showEndButton]="true"
   [endIconName]="'refresh-outline'"
   [endLoading]="isLoading"
+  [showPausePlayButton]="true"
+  (onPausePlayClick)="pauseQueue()"
+  [isPaused]="isPaused" 
   (onEndClick)="loadAllCustomersInQueueByEmployeeAndStoreId()"
 >
 </app-custom-header>
@@ -68,7 +71,7 @@
         </ion-button>
         <ion-button
           size="small"
-          (click)="startQRCodeScan(client)"
+           (click)="startQRCodeScan(client)"
           [color]="client.inService ? 'warning' : 'primary'"
         >
           <ion-icon

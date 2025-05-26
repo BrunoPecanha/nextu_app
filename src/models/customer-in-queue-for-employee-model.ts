@@ -8,4 +8,5 @@ export interface CustomerInQueueForEmployeeModel {
   timeGotInQueue: string;
   inService: boolean;
   timeCalledInQueue: Date;
+  isPaused: boolean;
 }
