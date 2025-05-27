@@ -41,8 +41,7 @@ export class FooterMenuComponent implements OnInit {
     }
   }
 
-  async goToQueue() {
-    debugger
+  async goToQueue() {    
     try {
       if (this.profile === 0) {
         this.router.navigate(['/queue'], {

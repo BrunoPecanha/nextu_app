@@ -14,9 +14,9 @@ import { StoresService } from 'src/services/stores-service';
 })
 export class ChooseEstablishmentPage implements OnInit {
   selectedHeaderImage: string = '';
-  selectedLogo: string =  '';
+  selectedLogo: string = '';
   user: UserModel | any;
-  establishments: StoreListResponse | any;  
+  establishments: StoreListResponse | any;
 
   constructor(private router: Router, private storeService: StoresService,
     private session: SessionService,
@@ -29,9 +29,10 @@ export class ChooseEstablishmentPage implements OnInit {
 
   loadEstablishments() {
     this.user = this.session.getUser();
+    const profileSelected = this.session.getProfile();
 
-    if (this.user) {
-      this.storeService.loadEmployeeStores(this.user.id).subscribe({
+    if (this.user && profileSelected) {
+      this.storeService.loadEmployeeStores(this.user.id, profileSelected).subscribe({
         next: (response) => {
           this.establishments = response.data;
         },
@@ -40,11 +41,12 @@ export class ChooseEstablishmentPage implements OnInit {
         }
       });
     } else {
-      console.error('Usuário não encontrado.');
+      console.error('Usuário ou perfil não encontrado.');
     }
   }
 
-  selecionarEmpresa(est: StoreModel) {    
+
+  selecionarEmpresa(est: StoreModel) {
     this.selectedHeaderImage = est.logoPath ?? '';
     this.selectedLogo = est.logoPath ?? '';
   }
@@ -54,7 +56,7 @@ export class ChooseEstablishmentPage implements OnInit {
 
     this.session.setStore(selectedStore);
 
-    this.queueService.hasOpenQueueForEmployeeToday(this.user?.id).subscribe((isQueueOpenToday: boolean) => {      
+    this.queueService.hasOpenQueueForEmployeeToday(this.user?.id).subscribe((isQueueOpenToday: boolean) => {
       if (isQueueOpenToday) {
         this.router.navigate(['/customer-list-in-queue']);
       } else {

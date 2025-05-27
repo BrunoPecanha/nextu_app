@@ -1,64 +1,116 @@
-import { Component } from '@angular/core';
-import { AlertController } from '@ionic/angular';
-
-interface Professional {
-  name: string;
-  cpf: string;
-}
-
-interface Invite {
-  id: number;
-  establishmentName: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { AlertController, LoadingController } from '@ionic/angular';
+import { EmployeeStoreSendInviteRequest } from 'src/models/requests/employee-store-send-invite-request';
+import { EmployeeStoreRespondInviteRequest } from 'src/models/requests/employee-store-respond-invite-request';
+import { EmployeeStoreItemModel } from 'src/models/employee-store-item-model';
+import { EmployeeStoreService } from 'src/services/employee-store.service';
+import { SessionService } from 'src/services/session.service';
+import { UserModel } from 'src/models/user-model';
+import { StoreModel } from 'src/models/store-model';
 
 @Component({
   selector: 'app-associated-professional',
   templateUrl: './associated-professional.page.html',
   styleUrls: ['./associated-professional.page.scss']
 })
-export class AssociatedProfessionalPage {
-  userRole: 'owner' | 'professional' = 'owner';
+export class AssociatedProfessionalPage implements OnInit {
+  userRole: number | null = null;
+  user: UserModel = {} as UserModel;
+  store: StoreModel = {} as StoreModel;
 
-  professionals: Professional[] = [
-    { name: 'João da Silva', cpf: '123.456.789-00' },
-    { name: 'Maria Souza', cpf: '987.654.321-00' }
-  ];
+  professionals: EmployeeStoreItemModel[] = [];
+  sentInvites: EmployeeStoreItemModel[] = [];
+  pendingInvites: EmployeeStoreItemModel[] = [];
+  associatedEstablishments: EmployeeStoreItemModel[] = [];
 
-  pendingInvites: Invite[] = [
-    { id: 1, establishmentName: 'Barbearia do Zé' },
-    { id: 2, establishmentName: 'Estética Bella' }
-  ];
+  constructor(
+    private alertController: AlertController,
+    private loadingController: LoadingController,
+    private employeeStoreService: EmployeeStoreService,
+    private sessionService: SessionService
+  ) { }
 
-  sentInvites: Invite[] = [
-    { id: 3, establishmentName: 'Convite enviado para João' },
-    { id: 4, establishmentName: 'Convite enviado para Maria' }
-  ];
+  async ngOnInit() {
+    this.userRole = await this.sessionService.getProfile();
+    this.user = await this.sessionService.getUser();
 
-  cpfInput: string = '';
+    if (this.userRole === 2) {
+      this.store = await this.sessionService.getStore();
+    }
 
-  constructor(private alertController: AlertController) { }
+    this.loadData();
+  }
 
-  async presentAlert(message: string) {
+  loadData() {
+    if (this.userRole === 2) {
+      this.loadStoreInvites();
+    } else {
+      this.loadEmployeeInvites();
+    }
+  }
+
+  loadStoreInvites() {
+    this.employeeStoreService.loadPendingAndAcceptedInvitesByStore(this.user.id).subscribe({
+      next: (response) => {
+        if (response.valid) {
+          this.processStoreInvites(response.data.employeeStoreAssociations);
+        } else {
+          this.presentAlert(response.message, 'Erro ao carregar convites');
+        }
+      },
+      error: (error) => {
+        this.presentAlert('Erro ao carregar convites do estabelecimento', 'Erro');
+      }
+    });
+  }
+
+  loadEmployeeInvites() {
+    this.employeeStoreService.loadPendingAndAcceptedInvitesByUser(this.user.id).subscribe({
+      next: (response) => {
+        if (response.valid) {
+          this.processEmployeeInvites(response.data.employeeStoreAssociations);
+        } else {
+          this.presentAlert(response.message, 'Erro ao carregar convites');
+        }
+      },
+      error: (error) => {
+        this.presentAlert('Erro ao carregar seus convites', 'Erro');
+      }
+    });
+  }
+
+  processStoreInvites(invites: EmployeeStoreItemModel[]) {
+    this.professionals = invites.filter(i => !i.inviteIsPending);
+    this.sentInvites = invites.filter(i => i.inviteIsPending);
+  }
+
+  processEmployeeInvites(invites: EmployeeStoreItemModel[]) {
+    this.associatedEstablishments = invites.filter(i => !i.inviteIsPending);
+    this.pendingInvites = invites.filter(i => i.inviteIsPending);
+  }
+
+  async presentAlert(message: string, header: string = 'Aviso') {
     const alert = await this.alertController.create({
-      header: 'Aviso',
-      message: message,
+      header,
+      message,
       buttons: ['OK']
     });
     await alert.present();
   }
 
-  enviarConvite(): void {
-    const cpf = this.cpfInput.trim();
-    if (!cpf) return;
-
-    this.presentAlert(`Convite enviado para CPF ${cpf}`);
-    this.cpfInput = '';
+  async presentLoading(message: string = 'Processando...'): Promise<HTMLIonLoadingElement> {
+    const loading = await this.loadingController.create({ message });
+    await loading.present();
+    return loading;
   }
 
-  async confirmarRemocaoProfissional(index: number) {
+  async confirmarRemocaoProfissional(employeeId: number) {
+    const professional = this.professionals.find(p => p.employeeId === employeeId);
+    if (!professional) return;
+
     const alert = await this.alertController.create({
       header: 'Remover Funcionário',
-      message: 'Tem certeza que deseja remover este profissional?',
+      message: `Tem certeza que deseja remover ${professional.employeeName}?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -68,7 +120,7 @@ export class AssociatedProfessionalPage {
           text: 'Remover',
           role: 'destructive',
           handler: () => {
-            this.removerProfissional(index);
+            this.removerProfissional(employeeId, professional.storeId);
           }
         }
       ]
@@ -76,16 +128,39 @@ export class AssociatedProfessionalPage {
     await alert.present();
   }
 
-  removerProfissional(index: number): void {
-    const prof = this.professionals[index];
-    this.professionals.splice(index, 1);
-    this.presentAlert(`${prof.name} foi removido do estabelecimento.`);
+  async removerProfissional(employeeId: number, storeId: number): Promise<void> {
+    const loading = await this.presentLoading('Removendo colaborador...');
+
+    const request: EmployeeStoreRespondInviteRequest = {
+      userId: employeeId,
+      storeId: storeId,
+      answer: false
+    };
+
+    this.employeeStoreService.respondInvite(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert(`Colaborador removido do estabelecimento.`, 'Removido com Sucesso');
+          this.loadStoreInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao remover colaborador');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao remover colaborador', 'Erro');
+      }
+    });
   }
 
-  async confirmarCancelamentoConvite(index: number) {
+  async confirmarCancelamentoConvite(employeeId: number) {
+    const invite = this.sentInvites.find(i => i.employeeId === employeeId);
+    if (!invite) return;
+
     const alert = await this.alertController.create({
       header: 'Cancelar Convite',
-      message: 'Deseja cancelar este convite?',
+      message: `Deseja cancelar o convite para ${invite.employeeName}?`,
       buttons: [
         {
           text: 'Não',
@@ -95,7 +170,7 @@ export class AssociatedProfessionalPage {
           text: 'Sim, cancelar',
           role: 'destructive',
           handler: () => {
-            this.cancelarConvite(index);
+            this.cancelarConvite(employeeId, invite.storeId);
           }
         }
       ]
@@ -103,25 +178,266 @@ export class AssociatedProfessionalPage {
     await alert.present();
   }
 
-  cancelarConvite(index: number): void {
-    const convite = this.sentInvites[index];
-    this.sentInvites.splice(index, 1);
-    this.presentAlert(`Convite para "${convite.establishmentName}" cancelado.`);
+  async cancelarConvite(employeeId: number, storeId: number): Promise<void> {
+    const loading = await this.presentLoading('Cancelando convite...');
+
+    const request: EmployeeStoreRespondInviteRequest = {
+      userId: employeeId,
+      storeId: storeId,
+      answer: false
+    };
+
+    this.employeeStoreService.respondInvite(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert('Convite cancelado com sucesso.', 'Convite Cancelado');
+          this.loadStoreInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao cancelar convite');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao cancelar convite', 'Erro');
+      }
+    });
   }
 
-  aceitarConvite(id: number): void {
-    const convite = this.pendingInvites.find(c => c.id === id);
-    if (!convite) return;
+  async enviarConvite(cpf: string) {
+    const cpfNumerico = cpf.replace(/\D/g, '');
 
-    this.pendingInvites = this.pendingInvites.filter(c => c.id !== id);
-    this.presentAlert(`Você aceitou o convite de ${convite.establishmentName}`);
+    if (!cpfNumerico) {
+      this.presentAlert('Por favor, informe o CPF do profissional.', 'CPF Inválido');
+      return;
+    }
+
+    if (!this.isCpfValido(cpfNumerico)) {
+      this.presentAlert('Por favor, informe um CPF válido com 11 dígitos.', 'CPF Inválido');
+      return;
+    }
+
+    const loading = await this.presentLoading('Enviando convite...');
+
+    const request: EmployeeStoreSendInviteRequest = {
+      storeId: this.store.id,
+      cpf: cpfNumerico
+    };
+
+    this.employeeStoreService.sendInviteToEmployee(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert(`Convite enviado para CPF ${this.formatarCPF(cpfNumerico)}`, 'Convite Enviado');
+          this.loadStoreInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao enviar convite');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao enviar convite', 'Erro');
+      }
+    });
   }
 
-  recusarConvite(id: number): void {
-    const convite = this.pendingInvites.find(c => c.id === id);
-    if (!convite) return;
+  async aceitarConvite(storeId: number) {
+    const invite = this.pendingInvites.find(i => i.storeId === storeId);
+    if (!invite) return;
 
-    this.pendingInvites = this.pendingInvites.filter(c => c.id !== id);
-    this.presentAlert(`Você recusou o convite de ${convite.establishmentName}`);
+    const alert = await this.alertController.create({
+      header: 'Aceitar Convite',
+      message: `Deseja aceitar o convite de ${invite.storeName}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Aceitar',
+          handler: () => {
+            this.processarAceiteConvite(storeId);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async processarAceiteConvite(storeId: number): Promise<void> {
+    const loading = await this.presentLoading('Processando aceite...');
+
+    const request: EmployeeStoreRespondInviteRequest = {
+      userId: this.user.id,
+      storeId: storeId,
+      answer: true
+    };
+
+    this.employeeStoreService.respondInvite(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert(`Você agora está associado ao estabelecimento!`, 'Associação Confirmada');
+          this.loadEmployeeInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao aceitar convite');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao aceitar convite', 'Erro');
+      }
+    });
+  }
+
+  async recusarConvite(storeId: number) {
+    const invite = this.pendingInvites.find(i => i.storeId === storeId);
+    if (!invite) return;
+
+    const alert = await this.alertController.create({
+      header: 'Recusar Convite',
+      message: `Deseja recusar o convite de ${invite.storeName}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Recusar',
+          role: 'destructive',
+          handler: () => {
+            this.processarRecusaConvite(storeId);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async processarRecusaConvite(storeId: number): Promise<void> {
+    const loading = await this.presentLoading('Processando recusa...');
+
+    const request: EmployeeStoreRespondInviteRequest = {
+      userId: this.user.id,
+      storeId: storeId,
+      answer: false
+    };
+
+    this.employeeStoreService.respondInvite(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert(`Convite recusado`, 'Resposta a Convite');
+          this.loadEmployeeInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao recusar convite');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao recusar convite', 'Erro');
+      }
+    });
+  }
+
+  async confirmarSaidaEstabelecimento(storeId: number) {
+    const establishment = this.associatedEstablishments.find(e => e.storeId === storeId);
+    if (!establishment) return;
+
+    const alert = await this.alertController.create({
+      header: 'Sair do Estabelecimento',
+      message: `Deseja realmente sair de ${establishment.storeName}?`,
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Sair',
+          role: 'destructive',
+          handler: () => {
+            this.sairDoEstabelecimento(storeId);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async sairDoEstabelecimento(storeId: number): Promise<void> {
+    const loading = await this.presentLoading('Processando saída...');
+
+    const request: EmployeeStoreRespondInviteRequest = {
+      userId: this.user.id,
+      storeId: storeId,
+      answer: false
+    };
+
+    this.employeeStoreService.respondInvite(request).subscribe({
+      next: (response) => {
+        loading.dismiss();
+        if (response.valid) {
+          this.presentAlert(`Você não está mais associado ao estabelecimento`, 'Associação Encerrada');
+          this.loadEmployeeInvites();
+        } else {
+          this.presentAlert(response.message, 'Erro ao sair do estabelecimento');
+        }
+      },
+      error: (error) => {
+        loading.dismiss();
+        this.presentAlert('Erro ao sair do estabelecimento', 'Erro');
+      }
+    });
+  }
+
+  isCpfValido(cpf: string): boolean {
+    return /^\d{11}$/.test(cpf) && !/(\d)\1{10}/.test(cpf);
+  }
+
+  formatarCPF(cpf: string): string {
+    cpf = cpf.replace(/\D/g, '');
+    return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+  }
+
+  async openInviteModal() {
+    const alert = await this.alertController.create({
+      header: 'Enviar Convite',
+      subHeader: 'Informe o CPF do profissional',
+      inputs: [
+        {
+          name: 'cpf',
+          type: 'text',
+          placeholder: 'Só números',
+          attributes: {
+            maxlength: 14
+          },
+          handler: (input) => {
+            input.value = this.formatarCPF(input.value);
+            return input;
+          }
+        }
+      ],
+      buttons: [
+        {
+          text: 'Cancelar',
+          role: 'cancel'
+        },
+        {
+          text: 'Enviar',
+          handler: (data) => {
+            const cpfLimpo = data.cpf.replace(/\D/g, '');
+            if (cpfLimpo.length === 11 && this.isCpfValido(cpfLimpo)) {
+              this.enviarConvite(cpfLimpo);
+              return true;
+            } else {
+              this.presentAlert('Por favor, informe um CPF válido com 11 dígitos.', 'CPF Inválido');
+              return false;
+            }
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }

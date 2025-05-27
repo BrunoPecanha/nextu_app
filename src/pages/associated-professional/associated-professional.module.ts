@@ -8,6 +8,7 @@ import { AssociatedProfessionalPageRoutingModule } from './associated-profession
 import { AssociatedProfessionalPage } from './associated-professional.page';
 import { SharedModule } from 'src/shared/shared.module';
 
+
 @NgModule({
   imports: [
     CommonModule,
@@ -16,6 +17,6 @@ import { SharedModule } from 'src/shared/shared.module';
     AssociatedProfessionalPageRoutingModule,
     SharedModule
   ],
-  declarations: [AssociatedProfessionalPage]
+  declarations: [AssociatedProfessionalPage],
 })
-export class AssociatedProfessionalPageModule {}
+export class AssociatedProfessionalPageModule { }
