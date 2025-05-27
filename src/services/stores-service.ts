@@ -1,4 +1,4 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { FormArray, FormGroup } from "@angular/forms";
 import { Observable } from "rxjs";
@@ -27,9 +27,13 @@ export class StoresService {
     return this.http.get<StoreDetailResponse>(`${this.apiUrl}/store/${id}`);
   }
 
-  loadEmployeeStores(id: number): Observable<StoreListResponse> {
-    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/employee/${id}`);
-  }
+  loadEmployeeStores(id: number, profileId: number): Observable<StoreListResponse> {
+  const params = new HttpParams()
+    .set('id', id.toString())
+    .set('profile', profileId.toString());
+
+  return this.http.get<StoreListResponse>(`${this.apiUrl}/store/employee`, { params });
+}
 
   loadStoreAndProfessionals(id: number): Observable<StoreProfessionalsResponse> {
     return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/${id}/queue/professionals`);

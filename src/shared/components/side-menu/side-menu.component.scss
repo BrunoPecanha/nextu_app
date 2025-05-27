@@ -167,3 +167,24 @@
     color: #3b95f0;
   } 
   
+  .profile-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  margin-top: 4px;
+  color: white;
+
+  &.client-badge {
+    background-color: #4CAF50; 
+  }
+
+  &.professional-badge {
+    background-color: #f32121; 
+  }
+
+  &.owner-badge {
+    background-color: #9C27B0; 
+  }
+}
