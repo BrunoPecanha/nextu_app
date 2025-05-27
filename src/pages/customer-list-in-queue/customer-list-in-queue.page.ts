@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, NavController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
@@ -21,7 +21,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   isLoading: boolean = false;
   isPaused: boolean = false;
   queue: QueueModel | null = null;
-  store: StoreModel | null = null;
+  store: StoreModel = {} as StoreModel;
   employee: StoreModel | null = null;
 
   private storeId: number;
@@ -36,7 +36,8 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     private toast: ToastService,
     private signalRService: SignalRService
   ) {
-    this.storeId = this.sessionService.getStore()?.id;
+    this.store = this.sessionService.getStore();
+    this.storeId = this.store.id;
     this.employeeId = this.sessionService.getUser()?.id;
     this.signalRGroup = this.storeId.toString();
   }
@@ -48,6 +49,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.getQueueForEmployee();
+    this.store = this.sessionService.getStore();
   }
 
   ngOnDestroy() {
@@ -57,9 +59,10 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   private async initSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-
       const store = this.sessionService.getStore();
-      if (!store) throw new Error('Loja não encontrada');
+
+      if (!store)
+        throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
       this.signalRGroup = groupName;
@@ -88,9 +91,12 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   private loadInitialData() {
     this.loadQueueData();
     this.getQueueForEmployee();
+
   }
 
   private loadQueueData() {
+    this.store = this.sessionService.getStore();
+
     if (!this.storeId || !this.employeeId) return;
 
     this.isLoading = true;
@@ -111,6 +117,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
         }
       });
   }
+
 
   startQRCodeScan(customer: CustomerInQueueForEmployeeModel) {
     if (customer.inService) {
