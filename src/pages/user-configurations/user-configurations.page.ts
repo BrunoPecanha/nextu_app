@@ -36,7 +36,7 @@ export class UserConfigurationsPage {
       ddd: ['', [Validators.required, Validators.minLength(2)]],
       phone: ['', [Validators.required, Validators.minLength(9)]],
       city: [''],
-      state: [''],
+      stateId: [''],
       servicesProvided: [''],
       aceptMesageFromOtherUsers: [false],
       acceptAwaysMinorQueue: [false],
@@ -142,28 +142,23 @@ export class UserConfigurationsPage {
 
     this.enviando = true;
 
-    // Cria um FormData para enviar os dados
     const formData = new FormData();
 
-    // Adiciona todos os campos do formulário
     Object.keys(this.cadastroForm.controls).forEach(key => {
       const control = this.cadastroForm.get(key);
-      if (control && key !== 'deleteAccount') { // Exclui o campo deleteAccount se não for relevante
+      if (control && key !== 'deleteAccount') {
         formData.append(key, control.value);
       }
     });
 
-    // Adiciona a imagem se existir
     if (this.selectedImageFile) {
       formData.append('profileImage', this.selectedImageFile, this.selectedImageFile.name);
     }
 
     try {
-      if (this.cadastroForm.get('deleteAccount')?.value) {
-        // Lógica para deletar a conta
+      if (this.cadastroForm.get('deleteAccount')?.value) {        
         await this.deleteAccount(formData);
-      } else {
-        // Lógica normal de atualização
+      } else {        
         await this.updateProfile(formData);
       }
     } catch (error) {
@@ -174,11 +169,9 @@ export class UserConfigurationsPage {
     }
   }
 
-  private async deleteAccount(formData: FormData) {
-    // Adicione a flag de deleteAccount ao FormData
+  private async deleteAccount(formData: FormData) {  
     formData.append('deleteAccount', 'true');
 
-    // Substitua pela sua chamada API real para deletar conta
     const response = await fetch('SUA_URL_API_DELETE_ACCOUNT', {
       method: 'POST',
       body: formData
@@ -213,12 +206,10 @@ export class UserConfigurationsPage {
   }
 
 
-  private async updateProfile(formData: FormData) {
-    // Substitua pela sua chamada API real
+  private async updateProfile(formData: FormData) {    
     const response = await fetch('SUA_URL_API_AQUI', {
       method: 'POST',
-      body: formData
-      // Headers não são necessários - o browser irá definir o Content-Type como multipart/form-data
+      body: formData    
     });
 
     if (response.ok) {
