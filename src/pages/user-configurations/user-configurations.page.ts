@@ -86,7 +86,7 @@ export class UserConfigurationsPage {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
-      this.selectedImageFile = file; // Armazena o arquivo original
+      this.selectedImageFile = file;
       this.createImagePreview(file, 'imagemPreview');
     }
   }
@@ -204,7 +204,6 @@ export class UserConfigurationsPage {
     });
     await toast.present();
   }
-
 
   private async updateProfile(formData: FormData) {    
     const response = await fetch('SUA_URL_API_AQUI', {
