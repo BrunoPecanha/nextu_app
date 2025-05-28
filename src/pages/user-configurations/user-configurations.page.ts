@@ -1,6 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController, ToastController } from '@ionic/angular';
 
 @Component({
   selector: 'app-user-configurations',
@@ -10,38 +10,41 @@ import { NavController, ToastController } from '@ionic/angular';
 export class UserConfigurationsPage {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
   @ViewChild('wallpaperInput') wallpaperInput!: ElementRef<HTMLInputElement>;
-  
+
   cadastroForm: FormGroup;
   imagemPreview: string | null = null;
   wallpaperPreview: string | null = null;
   enviando = false;
   enviado = false;
+  selectedImageFile: File | null = null;
 
   constructor(
     private fb: FormBuilder,
     private toastCtrl: ToastController,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private alertCtrl: AlertController
   ) {
     this.cadastroForm = this.fb.group({
       cpf: ['', [Validators.required, Validators.minLength(11)]],
       name: ['', [Validators.required]],
+      lastName: [''],
       address: [''],
       number: [''],
-      password: ['', [Validators.minLength(6)]],
+      password: [''],
       subtitle: [''],
-      email: [''],
-      ddd: [''],
-      phone: [''],
+      email: ['', [Validators.required, Validators.email]],
+      ddd: ['', [Validators.required, Validators.minLength(2)]],
+      phone: ['', [Validators.required, Validators.minLength(9)]],
       city: [''],
       state: [''],
-      lastName: [''],
       servicesProvided: [''],
       aceptMesageFromOtherUsers: [false],
-      lookForMinorQueue: [false]
+      acceptAwaysMinorQueue: [false],
+      deleteAccount: [false]
     });
   }
 
-    brazilianStates = [
+  brazilianStates = [
     { acronym: 'AC', name: 'Acre' },
     { acronym: 'AL', name: 'Alagoas' },
     { acronym: 'AP', name: 'Amapá' },
@@ -83,6 +86,7 @@ export class UserConfigurationsPage {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
+      this.selectedImageFile = file; // Armazena o arquivo original
       this.createImagePreview(file, 'imagemPreview');
     }
   }
@@ -110,7 +114,7 @@ export class UserConfigurationsPage {
 
   formatarCPF(event: any) {
     let value = event.target.value.replace(/\D/g, '');
-    
+
     if (value.length > 3) {
       value = value.substring(0, 3) + '.' + value.substring(3);
     }
@@ -120,7 +124,7 @@ export class UserConfigurationsPage {
     if (value.length > 11) {
       value = value.substring(0, 11) + '-' + value.substring(11);
     }
-    
+
     this.cadastroForm.get('cpf')?.setValue(value, { emitEvent: false });
   }
 
@@ -137,16 +141,133 @@ export class UserConfigurationsPage {
     }
 
     this.enviando = true;
-    
-    setTimeout(() => {
+
+    // Cria um FormData para enviar os dados
+    const formData = new FormData();
+
+    // Adiciona todos os campos do formulário
+    Object.keys(this.cadastroForm.controls).forEach(key => {
+      const control = this.cadastroForm.get(key);
+      if (control && key !== 'deleteAccount') { // Exclui o campo deleteAccount se não for relevante
+        formData.append(key, control.value);
+      }
+    });
+
+    // Adiciona a imagem se existir
+    if (this.selectedImageFile) {
+      formData.append('profileImage', this.selectedImageFile, this.selectedImageFile.name);
+    }
+
+    try {
+      if (this.cadastroForm.get('deleteAccount')?.value) {
+        // Lógica para deletar a conta
+        await this.deleteAccount(formData);
+      } else {
+        // Lógica normal de atualização
+        await this.updateProfile(formData);
+      }
+    } catch (error) {
+      console.error('Erro ao enviar dados:', error);
+      this.showErrorToast('Erro ao enviar dados. Tente novamente.');
+    } finally {
       this.enviando = false;
-      this.enviado = true;
-      
-      setTimeout(() => this.enviado = false, 2000);
-    }, 1500);
+    }
   }
 
-  getBack() {    
+  private async deleteAccount(formData: FormData) {
+    // Adicione a flag de deleteAccount ao FormData
+    formData.append('deleteAccount', 'true');
+
+    // Substitua pela sua chamada API real para deletar conta
+    const response = await fetch('SUA_URL_API_DELETE_ACCOUNT', {
+      method: 'POST',
+      body: formData
+    });
+
+    if (response.ok) {
+      this.logout();
+      this.showSuccessToast('Sua conta foi deletada com sucesso');
+    } else {
+      throw new Error('Falha ao deletar conta');
+    }
+  }
+
+  private async showSuccessToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      color: 'success',
+      position: 'top'
+    });
+    await toast.present();
+  }
+
+  private async showErrorToast(message: string) {
+    const toast = await this.toastCtrl.create({
+      message: message,
+      duration: 3000,
+      color: 'danger',
+      position: 'top'
+    });
+    await toast.present();
+  }
+
+
+  private async updateProfile(formData: FormData) {
+    // Substitua pela sua chamada API real
+    const response = await fetch('SUA_URL_API_AQUI', {
+      method: 'POST',
+      body: formData
+      // Headers não são necessários - o browser irá definir o Content-Type como multipart/form-data
+    });
+
+    if (response.ok) {
+      this.enviado = true;
+      this.showSuccessToast('Perfil atualizado com sucesso!');
+      setTimeout(() => this.enviado = false, 2000);
+    } else {
+      throw new Error('Falha ao atualizar perfil');
+    }
+  }
+
+  getBack() {
     this.navCtrl.back();
+  }
+
+  async onDeleteAccountToggle(event: any) {
+    if (event.detail.checked) {
+      const alert = await this.alertCtrl.create({
+        header: 'Confirmar exclusão',
+        message: 'Esta ação é irreversível e você perderá todos os dados associados à sua conta. Tem certeza que deseja continuar?',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+              this.cadastroForm.get('deleteAccount')?.setValue(false);
+            }
+          },
+          {
+            text: 'Confirmar',
+            handler: () => {
+              return true;
+            }
+          }
+        ]
+      });
+
+      await alert.present();
+    }
+  }
+
+  logout() {
+    this.navCtrl.navigateRoot('/splash');
+
+    this.toastCtrl.create({
+      message: 'Sua conta foi deletada com sucesso',
+      duration: 3000,
+      color: 'success',
+      position: 'top'
+    }).then(toast => toast.present());
   }
 }
