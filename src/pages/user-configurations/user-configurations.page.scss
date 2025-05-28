@@ -223,10 +223,15 @@ ion-header {
   }
 }
 
-
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .success-message {
@@ -248,4 +253,14 @@ ion-content {
 
 .number {
   flex: 2;
+}
+
+.delete-account-item {
+  margin-top: 20px;
+  --background: rgba(var(--ion-color-danger-rgb), 0.1);
+
+  ion-label.delete-label {
+    color: var(--ion-color-danger);
+    font-weight: bold;
+  }
 }

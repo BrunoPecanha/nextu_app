@@ -4,6 +4,7 @@
   startIconName="close-outline"
   (onStartClick)="getBack()"
   [showEndButton]="true"
+  (onEndClick)="enviar()"
   endIconName="checkmark"
 ></app-custom-header>
 
@@ -35,7 +36,7 @@
     <ion-note class="upload-hint">Toque para alterar sua foto</ion-note>
   </div>
 
-  <ion-list lines="none" class="form-section">
+  <ion-list lines="none" disabled="true" class="form-section">
     <ion-item fill="solid" class="form-item">
       <ion-label position="floating">CPF</ion-label>
       <ion-input
@@ -122,7 +123,10 @@
     </ion-item>
 
     <ion-item fill="solid" class="toggle-item">
-      <ion-toggle formControlName="lookForMinorQueue" slot="end"></ion-toggle>
+      <ion-toggle
+        formControlName="acceptAwaysMinorQueue"
+        slot="end"
+      ></ion-toggle>
       <ion-label
         >Aceitar sempre a menor fila ao entrar no estabelecimento</ion-label
       >
@@ -163,6 +167,14 @@
     </ion-button>
     }
   </div>
+  <ion-item fill="solid" class="toggle-item delete-account-item">
+    <ion-toggle
+      formControlName="deleteAccount"
+      (ionChange)="onDeleteAccountToggle($event)"
+      slot="end"
+    ></ion-toggle>
+    <ion-label class="delete-label">Deletar minha conta</ion-label>
+  </ion-item>
 </ion-content>
 
 <app-footer-menu></app-footer-menu>
