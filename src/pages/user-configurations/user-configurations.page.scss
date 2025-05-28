@@ -236,3 +236,16 @@ ion-header {
 ion-content {
   padding-bottom: calc(var(--footer-height, 70px));
 }
+
+.row {
+  display: flex;
+  gap: 10px;
+}
+
+.address {
+  flex: 4;
+}
+
+.number {
+  flex: 2;
+}

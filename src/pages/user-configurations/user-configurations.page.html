@@ -78,6 +78,25 @@
       </ion-item>
     </div>
 
+    <div class="row">
+      <ion-item fill="solid" class="form-item address" lines="none">
+        <ion-label position="floating">Cidade</ion-label>
+        <ion-input formControlName="city"></ion-input>
+        <!-- Corrigi o formControlName para "city" -->
+      </ion-item>
+      <ion-item fill="solid" class="form-item number" lines="none">
+        <ion-label position="floating">Estado</ion-label>
+        <ion-select formControlName="state" interface="action-sheet">
+          <ion-select-option
+            *ngFor="let estado of brazilianStates"
+            [value]="estado.acronym"
+          >
+            {{estado.acronym}}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
+    </div>
+
     <ion-item fill="solid" class="form-item">
       <ion-label position="floating">E-mail</ion-label>
       <ion-input formControlName="email" [clearOnEdit]="false"></ion-input>
@@ -103,16 +122,10 @@
     </ion-item>
 
     <ion-item fill="solid" class="toggle-item">
-      <ion-toggle
-        formControlName="aceptMesageFromOtherUsers"
-        slot="end"
-      ></ion-toggle>
-      <ion-label>Não aceitar mensagens de outros usuários</ion-label>
-    </ion-item>
-
-    <ion-item fill="solid" class="toggle-item">
       <ion-toggle formControlName="lookForMinorQueue" slot="end"></ion-toggle>
-      <ion-label>Procurar sempre a menor fila</ion-label>
+      <ion-label
+        >Aceitar sempre a menor fila ao entrar no estabelecimento</ion-label
+      >
     </ion-item>
   </ion-list>
 
