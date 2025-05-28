@@ -7,7 +7,11 @@
   endIconName="checkmark"
 ></app-custom-header>
 
-<ion-content [fullscreen]="false" class="ion-padding" [formGroup]="cadastroForm">
+<ion-content
+  [fullscreen]="false"
+  class="ion-padding"
+  [formGroup]="cadastroForm"
+>
   <div class="profile-section">
     <div class="avatar-upload" (click)="selecionarImagem()">
       @if (imagemPreview) {
@@ -52,17 +56,31 @@
       <ion-input formControlName="lastName"></ion-input>
     </ion-item>
 
-    <ion-item fill="solid" class="form-item">
-      <ion-label position="floating">Endereço</ion-label>
-      <ion-input formControlName="address"></ion-input>
-    </ion-item>
+    <div class="row">
+      <ion-item fill="solid" class="form-item number" lines="none">
+        <ion-label position="floating">DDD</ion-label>
+        <ion-input formControlName="ddd"></ion-input>
+      </ion-item>
+      <ion-item fill="solid" class="form-item address" lines="none">
+        <ion-label position="floating">Celular</ion-label>
+        <ion-input formControlName="phone"></ion-input>
+      </ion-item>
+    </div>
+
+    <div class="row">
+      <ion-item fill="solid" class="form-item address" lines="none">
+        <ion-label position="floating">Endereço</ion-label>
+        <ion-input formControlName="address"></ion-input>
+      </ion-item>
+      <ion-item fill="solid" class="form-item number" lines="none">
+        <ion-label position="floating">Número</ion-label>
+        <ion-input formControlName="number"></ion-input>
+      </ion-item>
+    </div>
 
     <ion-item fill="solid" class="form-item">
       <ion-label position="floating">E-mail</ion-label>
-      <ion-input
-        formControlName="email"
-        [clearOnEdit]="false"
-      ></ion-input>
+      <ion-input formControlName="email" [clearOnEdit]="false"></ion-input>
     </ion-item>
 
     <ion-item fill="solid" class="form-item">
@@ -98,7 +116,8 @@
     </ion-item>
   </ion-list>
 
-  <div class="wallpaper-section">
+  <!-- Para o futuro, será inserido o papel de parede, mas só quando tiver a tela de mostrar os dados do cliente -->
+  <div class="wallpaper-section" *ngIf="false">
     <ion-label class="section-title">Papel de parede do perfil</ion-label>
     <div class="wallpaper-upload" (click)="selecionarWallpaper()">
       @if (wallpaperPreview) {

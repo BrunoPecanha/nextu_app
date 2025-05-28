@@ -15,6 +15,7 @@ export class CreateAccountPage {
   cpf: string = '';
   email: string = '';
   phone: string = '';
+  ddd: string = '';
   password: string = '';
   confirmPassword: string = '';
   termsAccepted: boolean = false;
@@ -23,26 +24,39 @@ export class CreateAccountPage {
 
   formatPhone(event: any) {
     let value = event.target.value.replace(/\D/g, '');
-    if (value.length > 2) {
-      value = value.substring(0, 11);
 
-      if (value.length > 2) {
-        value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
-      }
-      if (value.length > 10) {
-        value = `${value.substring(0, 5)} ${value.substring(5, 9)}-${value.substring(9)}`;
-      } else if (value.length > 5) {
-        value = `${value.substring(0, 5)} ${value.substring(5)}`;
-      }
+    value = value.substring(0, 11);
+
+    this.ddd = value.substring(0, 2);
+    this.phone = value.substring(2);
+
+    let formatted = '';
+
+    if (this.ddd) {
+      formatted += `(${this.ddd}) `;
     }
 
-    this.phone = value;
-    event.target.value = value;
+    if (this.phone.length > 0) {
+      formatted += this.phone.charAt(0); 
+    }
+
+    if (this.phone.length > 1) {
+      formatted += this.phone.substring(1, 5); 
+    }
+    if (this.phone.length > 5) {
+      formatted += `-${this.phone.substring(5, 9)}`; 
+    }
+
+    console.log(this.ddd);
+    console.log(this.phone);
+    
+
+    event.target.value = formatted;
   }
 
   formatCPF(event: any) {
     let value = event.target.value.replace(/\D/g, '');
-    
+
     if (value.length > 11) {
       value = value.substring(0, 11);
     }
@@ -111,7 +125,7 @@ export class CreateAccountPage {
       });
       await alert.present();
       return;
-    }    
+    }
 
     if (!this.validateCPF(this.cpf)) {
       const alert = await this.alertController.create({
