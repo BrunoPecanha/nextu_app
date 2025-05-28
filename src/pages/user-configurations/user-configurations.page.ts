@@ -24,12 +24,18 @@ export class UserConfigurationsPage {
   ) {
     this.cadastroForm = this.fb.group({
       cpf: ['', [Validators.required, Validators.minLength(11)]],
-      nome: ['', [Validators.required]],
-      endereco: [''],
-      senha: ['', [Validators.minLength(6)]],
+      name: ['', [Validators.required]],
+      address: [''],
+      number: [''],
+      password: ['', [Validators.minLength(6)]],
       subtitle: [''],
+      email: [''],
+      ddd: [''],
+      phone: [''],
+      lastName: [''],
       servicesProvided: [''],
-      aceitarMensagemOutrosUsuarios: [false],
+      aceptMesageFromOtherUsers: [false],
+      lookForMinorQueue: [false]
     });
   }
 
