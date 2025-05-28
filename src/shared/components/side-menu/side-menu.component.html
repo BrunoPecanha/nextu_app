@@ -25,8 +25,7 @@
         }}
       </div>
       <div class="queue-status" *ngIf="profile === 0">
-        <span *ngIf="queues > 0">Aguardando em {{ queues }} fila(s)</span>
-        <span *ngIf="queues === 0">Nenhuma atividade no momento</span>
+        <span *ngIf="queues > 0">Aguardando em {{ queues }} fila(s)</span>    
       </div>
       <div class="queue-status" *ngIf="profile === 1">
         <span *ngIf="customersWaiting > 0"
@@ -40,7 +39,6 @@
         <span *ngIf="queues > 0"
           >{{ queues }} fila(s) aberta(s) com colaborador(es)</span
         >
-        <span *ngIf="queues === 0">Nenhuma fila ativa no momento</span>
       </div>
       <div class="queue-status" *ngIf="userFromSession?.profile === 0">
         <span *ngIf="queues > 0">Você está em {{ queues }} filas</span>
