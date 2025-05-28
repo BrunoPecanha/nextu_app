@@ -22,7 +22,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   userFromSession: any;
   userName: string = '';
-  profile: number = -1;
+  profile: number = 0;
   queues: number = 0;
   customersWaiting: number = 0;
   companyName: string = '';

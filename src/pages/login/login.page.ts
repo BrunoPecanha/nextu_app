@@ -68,8 +68,11 @@ export class LoginPage {
   }
 
   skipeProfileSelection(user: UserModel) {
-    if (user.profile == 0)
+    if (user.profile == 0) {
+      this.sessionService.setProfile(user.profile)
       this.router.navigate(['/select-company']);
+    }
+     
     else
       this.router.navigate(['/role-registration']);
   }
