@@ -1,20 +1,39 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from 'src/models/user-model';
 import { environment } from 'src/environments/environment';
 import { UserRequest } from 'src/models/requests/user-request';
 import { Observable } from 'rxjs';
+import { UserResponse } from 'src/models/responses/user-response';
 
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-    private apiUrl = environment.apiUrl;
+  private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   createUser(user: UserRequest): Observable<UserModel> {
-    return this.http.post<UserModel>(`${this.apiUrl}/user`, user);    
-  } 
+    return this.http.post<UserModel>(`${this.apiUrl}/user`, user);
+  }
+
+  getUserById(id: number): Observable<UserResponse> {
+    return this.http.get<UserResponse>(`${this.apiUrl}/user/${id}`);
+  }
+
+  updateUser(data: any): Observable<UserResponse> {
+    let options = {};
+
+    if (!(data instanceof FormData)) {
+      options = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json'
+        })
+      };
+    }
+
+    return this.http.put<UserResponse>(`${this.apiUrl}/user`, data, options);
+  }
 }
