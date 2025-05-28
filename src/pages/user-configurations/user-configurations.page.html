@@ -7,7 +7,7 @@
   endIconName="checkmark"
 ></app-custom-header>
 
-<ion-content class="ion-padding" [formGroup]="cadastroForm">
+<ion-content [fullscreen]="false" class="ion-padding" [formGroup]="cadastroForm">
   <div class="profile-section">
     <div class="avatar-upload" (click)="selecionarImagem()">
       @if (imagemPreview) {
@@ -43,20 +43,33 @@
     </ion-item>
 
     <ion-item fill="solid" class="form-item">
-      <ion-label position="floating">Nome completo</ion-label>
-      <ion-input formControlName="nome"></ion-input>
+      <ion-label position="floating">Nome</ion-label>
+      <ion-input formControlName="name"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">Sobrenome</ion-label>
+      <ion-input formControlName="lastName"></ion-input>
     </ion-item>
 
     <ion-item fill="solid" class="form-item">
       <ion-label position="floating">Endereço</ion-label>
-      <ion-input formControlName="endereco"></ion-input>
+      <ion-input formControlName="address"></ion-input>
+    </ion-item>
+
+    <ion-item fill="solid" class="form-item">
+      <ion-label position="floating">E-mail</ion-label>
+      <ion-input
+        formControlName="email"
+        [clearOnEdit]="false"
+      ></ion-input>
     </ion-item>
 
     <ion-item fill="solid" class="form-item">
       <ion-label position="floating">Senha</ion-label>
       <ion-input
         type="password"
-        formControlName="senha"
+        formControlName="password"
         [clearOnEdit]="false"
       ></ion-input>
     </ion-item>
@@ -73,10 +86,15 @@
 
     <ion-item fill="solid" class="toggle-item">
       <ion-toggle
-        formControlName="aceitarMensagemOutrosUsuarios"
+        formControlName="aceptMesageFromOtherUsers"
         slot="end"
       ></ion-toggle>
       <ion-label>Não aceitar mensagens de outros usuários</ion-label>
+    </ion-item>
+
+    <ion-item fill="solid" class="toggle-item">
+      <ion-toggle formControlName="lookForMinorQueue" slot="end"></ion-toggle>
+      <ion-label>Procurar sempre a menor fila</ion-label>
     </ion-item>
   </ion-list>
 
