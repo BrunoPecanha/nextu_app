@@ -4,7 +4,7 @@
   startIconName="close-outline"
   (onStartClick)="getBack()"
   [showEndButton]="true"
-  (onEndClick)="enviar()"
+  (onEndClick)="save()"
   endIconName="checkmark"
 ></app-custom-header>
 
@@ -14,7 +14,7 @@
   [formGroup]="cadastroForm"
 >
   <div class="profile-section">
-    <div class="avatar-upload" (click)="selecionarImagem()">
+    <div class="avatar-upload" (click)="selectImage()">
       @if (imagemPreview) {
       <img [src]="imagemPreview" alt="Foto de perfil" class="avatar-image" />
       } @else {
@@ -30,20 +30,20 @@
         hidden
         accept="image/*"
         #fileInput
-        (change)="onImagemSelecionada($event)"
+        (change)="onImagemSelected($event)"
       />
     </div>
     <ion-note class="upload-hint">Toque para alterar sua foto</ion-note>
   </div>
 
-  <ion-list lines="none" disabled="true" class="form-section">
-    <ion-item fill="solid" class="form-item">
+  <ion-list lines="none" class="form-section">
+    <ion-item fill="solid"  disabled="true" class="form-item">
       <ion-label position="floating">CPF</ion-label>
       <ion-input
         type="text"
         formControlName="cpf"
         maxlength="14"
-        (ionInput)="formatarCPF($event)"
+        (ionInput)="formatCPF($event)"
       ></ion-input>
     </ion-item>
 
@@ -83,11 +83,11 @@
       <ion-item fill="solid" class="form-item address" lines="none">
         <ion-label position="floating">Cidade</ion-label>
         <ion-input formControlName="city"></ion-input>
-        <!-- Corrigi o formControlName para "city" -->
+        
       </ion-item>
       <ion-item fill="solid" class="form-item number" lines="none">
         <ion-label position="floating">Estado</ion-label>
-        <ion-select formControlName="state" interface="action-sheet">
+        <ion-select formControlName="stateId" interface="action-sheet">
           <ion-select-option
             *ngFor="let estado of brazilianStates"
             [value]="estado.acronym"
@@ -136,7 +136,7 @@
   <!-- Para o futuro, será inserido o papel de parede, mas só quando tiver a tela de mostrar os dados do cliente -->
   <div class="wallpaper-section" *ngIf="false">
     <ion-label class="section-title">Papel de parede do perfil</ion-label>
-    <div class="wallpaper-upload" (click)="selecionarWallpaper()">
+    <div class="wallpaper-upload" (click)="selectWallpaper()">
       @if (wallpaperPreview) {
       <img [src]="wallpaperPreview" alt="Wallpaper" class="wallpaper-image" />
       } @else {
@@ -150,7 +150,7 @@
         hidden
         accept="image/*"
         #wallpaperInput
-        (change)="onWallpaperSelecionado($event)"
+        (change)="onWallpaperSelected($event)"
       />
     </div>
 

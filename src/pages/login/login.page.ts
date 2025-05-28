@@ -49,6 +49,7 @@ export class LoginPage {
         if (response && response.valid && response.data?.token && response.data?.user) {
           const { token, user } = response.data;
 
+          debugger
           this.sessionService.setToken(token);
           this.sessionService.setUser(user);
 
