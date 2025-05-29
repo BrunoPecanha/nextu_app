@@ -4,6 +4,7 @@ import { SessionService } from 'src/services/session.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { UserService } from 'src/services/user-service';
 
 @Component({
   selector: 'app-side-menu',
@@ -17,8 +18,11 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     private alertController: AlertController,
     private router: Router,
     private menuCtrl: MenuController,
-    private sessionService: SessionService
-  ) { }
+    private sessionService: SessionService,
+    private userService: UserService
+  ) {
+    this.loadUserInformations();
+  }
 
   userFromSession: any;
   userName: string = '';
@@ -29,11 +33,15 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   companyLogoPath: string = '';
 
   ngOnInit(): void {
-    this.loadUserInformations();
 
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
+      this.loadUserInformations();
+    });
+
+
+    this.userService.profileUpdated$.subscribe(() => {
       this.loadUserInformations();
     });
   }
@@ -65,10 +73,10 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     await alert.present();
   }
 
-  loadUserInformations() {    
+  loadUserInformations() {
     this.userFromSession = this.sessionService.getUser();
     const companyFromSession = this.sessionService.getStore();
-    
+
     if (this.userFromSession) {
       this.userName = `${this.userFromSession.name} ${this.userFromSession.lastName}`;
 
@@ -76,7 +84,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     if (companyFromSession) {
       this.companyName = companyFromSession?.name || 'Empresa não identificada';
       this.companyLogoPath = companyFromSession?.logoPath || '';
-    }    
+    }
 
     this.profile = this.sessionService.getProfile();
   }
