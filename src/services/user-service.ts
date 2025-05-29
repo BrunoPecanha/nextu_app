@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { UserModel } from 'src/models/user-model';
 import { environment } from 'src/environments/environment';
 import { UserRequest } from 'src/models/requests/user-request';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { UserResponse } from 'src/models/responses/user-response';
 
 
@@ -13,7 +13,12 @@ import { UserResponse } from 'src/models/responses/user-response';
 export class UserService {
   private apiUrl = environment.apiUrl;
 
-  constructor(private http: HttpClient) { }
+  private profileUpdated = new Subject<void>();
+  profileUpdated$ = this.profileUpdated.asObservable();
+
+  constructor(private http: HttpClient) {
+
+  }
 
   createUser(user: UserRequest): Observable<UserModel> {
     return this.http.post<UserModel>(`${this.apiUrl}/user`, user);
@@ -21,6 +26,10 @@ export class UserService {
 
   getUserById(id: number): Observable<UserResponse> {
     return this.http.get<UserResponse>(`${this.apiUrl}/user/${id}`);
+  }
+
+  notifyProfileUpdate() {
+    this.profileUpdated.next();
   }
 
   updateUser(data: any): Observable<UserResponse> {
