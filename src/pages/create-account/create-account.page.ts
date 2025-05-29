@@ -46,12 +46,9 @@ export class CreateAccountPage {
     if (this.phone.length > 5) {
       formatted += `-${this.phone.substring(5, 9)}`; 
     }
-
-    console.log(this.ddd);
-    console.log(this.phone);
     
-
-    event.target.value = formatted;
+    this.phone = this.ddd + this.phone;
+    event.target.value = formatted
   }
 
   formatCPF(event: any) {

@@ -83,7 +83,7 @@ export class UserConfigurationsPage {
     { acronym: 'TO', name: 'Tocantins' }
   ];
 
-  private fillForm() {
+  private fillForm() {    
     this.cadastroForm.patchValue({
       cpf: this.user.cpf,
       name: this.user.name,
@@ -242,11 +242,16 @@ export class UserConfigurationsPage {
   }
 
   private buildFormData(userData: any, imageFile?: File | null): FormData {
-    const formData = new FormData();
+    const formData = new FormData();    
 
     if (imageFile) {
+      formData.append('RemoveProfileImage', 'false');
       formData.append('ProfileImage', imageFile, imageFile.name);
     }
+    else if (!imageFile && this.imagemPreview)
+      formData.append('RemoveProfileImage', 'false');
+    else
+      formData.append('RemoveProfileImage', 'true');
 
     Object.keys(userData).forEach(key => {
       if (userData[key] !== null && userData[key] !== undefined) {
