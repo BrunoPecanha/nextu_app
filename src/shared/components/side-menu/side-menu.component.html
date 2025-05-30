@@ -1,7 +1,7 @@
 <div class="menu-content">
   <div class="user-info">
   <ion-avatar>
-  @if (userFromSession.imageUrl) {
+  @if (userFromSession && userFromSession.imageUrl) {
     <img [src]="userFromSession.imageUrl" alt="Avatar do usuário" />
   } @else {
     <ion-icon name="person-circle-outline"></ion-icon>
@@ -9,7 +9,7 @@
 </ion-avatar>
     <div style="margin-left: 20px">    
       <div class="user-name">{{ userName }}</div>
-      <!-- Badge de perfil -->
+      
       <div
         class="profile-badge"
         [ngClass]="{

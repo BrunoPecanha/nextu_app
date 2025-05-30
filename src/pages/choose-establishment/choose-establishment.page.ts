@@ -13,8 +13,8 @@ import { StoresService } from 'src/services/stores-service';
   styleUrls: ['./choose-establishment.page.scss'],
 })
 export class ChooseEstablishmentPage implements OnInit {
-  selectedHeaderImage: string = '';
-  selectedLogo: string = '';
+  selectedHeaderImage: any = '';
+  selectedLogo: any = '';
   user: UserModel | any;
   establishments: StoreListResponse | any;
 

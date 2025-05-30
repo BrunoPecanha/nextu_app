@@ -27,12 +27,12 @@
           <div class="upload-item logo-upload">
             <div class="upload-container" (click)="selecionarImagem()">
               <img
-                *ngIf="imagemPreview"
-                [src]="imagemPreview"
+                *ngIf="logoOreview"
+                [src]="logoOreview"
                 alt="Logo Preview"
                 class="upload-preview"
               />
-              <div class="upload-overlay" *ngIf="!imagemPreview">
+              <div class="upload-overlay" *ngIf="!logoOreview">
                 <ion-icon name="camera" class="upload-icon"></ion-icon>
                 <span class="upload-text">Adicionar logo</span>
               </div>
