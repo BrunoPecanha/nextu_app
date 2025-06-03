@@ -368,3 +368,33 @@ ion-item {
 ion-button {
   --border-radius: 12px;
 }
+
+.service-avatar {
+  --size: 56px; // Tamanho padrão do avatar
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-color: var(--ion-color-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    ion-icon {
+      font-size: 24px;
+      color: var(--ion-color-medium);
+    }
+  }
+}

@@ -22,7 +22,6 @@ export class ServiceRegistrationPage implements OnInit {
   noRecordsFound = false;
   isSaving = false;
 
-  // Formulário atual
   serviceForm!: FormGroup;
   showForm = false;
   editingService: ServiceModel | null = null;
@@ -158,28 +157,22 @@ export class ServiceRegistrationPage implements OnInit {
   formatPrice(event: any) {
     let value = event.target.value;
 
-    // Remove tudo que não for número ou vírgula
     value = value.replace(/[^0-9,]/g, '');
 
-    // Se tiver mais de uma vírgula, mantém só a primeira
     const parts = value.split(',');
     if (parts.length > 2) {
       value = parts[0] + ',' + parts[1];
     }
 
-    // Limitar para duas casas decimais se houver vírgula
     if (parts.length === 2) {
       parts[1] = parts[1].substring(0, 2);
       value = parts.join(',');
     }
 
-    // Atualiza o campo
     this.serviceForm.patchValue({
       price: value
     }, { emitEvent: false });
   }
-
-
 
   closeForm() {
     this.showForm = false;
@@ -188,8 +181,7 @@ export class ServiceRegistrationPage implements OnInit {
     this.editingService = null;
   }
 
-
-  async saveService() {
+  async saveService() {    
     if (this.serviceForm.invalid) {
       this.markFormGroupTouched(this.serviceForm);
       return;
@@ -199,8 +191,8 @@ export class ServiceRegistrationPage implements OnInit {
     const form = this.serviceForm.value;
     const duration = `${form.durationHours.toString().padStart(2, '0')}:${form.durationMinutes.toString().padStart(2, '0')}:00`;
 
-   const priceStr = form.price.replace(',', '.'); // Garante ponto decimal
-    
+    const priceStr = form.price.replace(',', '.');
+
 
     const payload = {
       id: form.id,
@@ -247,7 +239,10 @@ export class ServiceRegistrationPage implements OnInit {
   buildFormData(serviceData: any, imageFile: File | null): FormData {
     const formData = new FormData();
     Object.keys(serviceData).forEach(key => formData.append(key, serviceData[key]));
-    if (imageFile) formData.append('imageFile', imageFile);
+
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
     return formData;
   }
 
@@ -299,6 +294,7 @@ export class ServiceRegistrationPage implements OnInit {
   }
 
   onImageSelected(event: Event) {
+    
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
@@ -312,7 +308,7 @@ export class ServiceRegistrationPage implements OnInit {
     }
   }
 
-  removeImage() {
+  removeImage() {    
     this.serviceForm.patchValue({ image: null });
     this.previewUrl = null;
   }

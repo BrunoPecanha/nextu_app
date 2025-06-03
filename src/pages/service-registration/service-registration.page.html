@@ -37,10 +37,17 @@
     <ion-card *ngFor="let service of filteredServices" class="service-card">
       <ion-card-header>
         <ion-item lines="none">
-          <ion-avatar slot="start">
-            <img *ngIf="service.imgPath" [src]="service.imgPath" alt="Imagem" />
-            <ion-icon *ngIf="!service.imgPath" name="image-outline"></ion-icon>
+          <ion-avatar slot="start" class="service-avatar">
+            <ng-container *ngIf="service.imgPath; else fallbackIcon">
+              <img [src]="service.imgPath" alt="Imagem do serviço" />
+            </ng-container>
+            <ng-template #fallbackIcon>
+              <div class="avatar-placeholder">
+                <ion-icon name="cube-outline"></ion-icon>
+              </div>
+            </ng-template>
           </ion-avatar>
+
           <ion-label>
             <h2>{{ service.name }}</h2>
             <p>{{ service.description || 'Sem descrição' }}</p>
@@ -57,11 +64,13 @@
               >
             </div>
           </ion-label>
+
           <ion-toggle
             slot="end"
             [checked]="service.activated"
             (ionChange)="toggleActive(service)"
-          ></ion-toggle>
+          >
+          </ion-toggle>
         </ion-item>
       </ion-card-header>
 
@@ -113,7 +122,7 @@
             <ion-label position="floating">Descrição</ion-label>
             <ion-textarea formControlName="description"></ion-textarea>
           </ion-item>
-          
+
           <ion-item>
             <ion-label position="floating">Preço</ion-label>
             <ion-input
