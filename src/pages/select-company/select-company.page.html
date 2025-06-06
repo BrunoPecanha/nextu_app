@@ -19,36 +19,36 @@
   class="custom-searchbar"
 ></ion-searchbar>
 
+<div class="quick-filters-wrapper">
+  <div class="quick-filters">
+    <ion-chip
+      [outline]="selectedFilter !== 'minorQueue'"
+      (click)="applyFilter('minorQueue')"
+      [color]="selectedFilter === 'minorQueue' ? 'primary' : 'medium'"
+    >
+      <ion-icon name="hourglass-outline"></ion-icon>
+      <ion-label>Menor fila</ion-label>
+    </ion-chip>
 
-<div class="quick-filters">
-  <ion-chip
-    [outline]="selectedFilter !== 'minorQueue'"
-    (click)="applyFilter('minorQueue')"
-    [color]="selectedFilter === 'minorQueue' ? 'primary' : 'medium'"
-  >
-    <ion-icon name="hourglass-outline"></ion-icon>
-    <ion-label>Menor fila</ion-label>
-  </ion-chip>
+    <ion-chip
+      [outline]="selectedFilter !== 'favorites'"
+      (click)="applyFilter('favorites')"
+      [color]="selectedFilter === 'favorites' ? 'primary' : 'medium'"
+    >
+      <ion-icon name="heart-outline"></ion-icon>
+      <ion-label>Favoritos</ion-label>
+    </ion-chip>
 
-  <ion-chip
-    [outline]="selectedFilter !== 'favorites'"
-    (click)="applyFilter('favorites')"
-    [color]="selectedFilter === 'favorites' ? 'primary' : 'medium'"
-  >
-    <ion-icon name="heart-outline"></ion-icon>
-    <ion-label>Favoritos</ion-label>
-  </ion-chip>
-
-  <ion-chip
-    [outline]="selectedFilter !== 'recent'"
-    (click)="applyFilter('recent')"
-    [color]="selectedFilter === 'recent' ? 'primary' : 'medium'"
-  >
-    <ion-icon name="sparkles-outline"></ion-icon>
-    <ion-label>Recentes</ion-label>
-  </ion-chip>
+    <ion-chip
+      [outline]="selectedFilter !== 'recent'"
+      (click)="applyFilter('recent')"
+      [color]="selectedFilter === 'recent' ? 'primary' : 'medium'"
+    >
+      <ion-icon name="sparkles-outline"></ion-icon>
+      <ion-label>Recentes</ion-label>
+    </ion-chip>
+  </div>
 </div>
-
 
 <div class="categories-container" *ngIf="categories?.length">
   <div class="categories-scroll">
@@ -66,23 +66,26 @@
   </div>
 </div>
 
-<ion-content class="modern-content">  
-
+<ion-content class="modern-content">
   <div *ngIf="!companies?.length" class="loading-container">
     <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
     <p class="loading-text">Carregando estabelecimentos...</p>
   </div>
-    
+
   <div class="companies-grid">
     <ion-card
       *ngFor="let card of filteredCards"
       class="company-card"
-      (click)="selectCard(card)">
-      
+      (click)="selectCard(card)"
+    >
       <div class="card-header">
         <div class="logo-wrapper">
           <ng-container *ngIf="card.logoPath; else defaultLogo">
-            <img [src]="card.logoPath" alt="{{ card.name }}" class="company-logo" />
+            <img
+              [src]="card.logoPath"
+              alt="{{ card.name }}"
+              class="company-logo"
+            />
           </ng-container>
           <ng-template #defaultLogo>
             <div class="default-logo">
@@ -92,11 +95,16 @@
         </div>
 
         <div class="new-badge" *ngIf="card.isNew">NOVO</div>
-        
-        <ion-button fill="clear" class="like-button" (click)="toggleLike(card, $event)">
-          <ion-icon 
-            [name]="card.liked ? 'heart' : 'heart-outline'" 
-            [color]="card.liked ? 'danger' : 'medium'">
+
+        <ion-button
+          fill="clear"
+          class="like-button"
+          (click)="toggleLike(card, $event)"
+        >
+          <ion-icon
+            [name]="card.liked ? 'heart' : 'heart-outline'"
+            [color]="card.liked ? 'danger' : 'medium'"
+          >
           </ion-icon>
         </ion-button>
       </div>
@@ -104,21 +112,22 @@
       <ion-card-content class="card-content">
         <h2 class="company-name">
           {{ card.name }}
-          <ion-icon 
-            *ngIf="card.isVerified" 
-            name="checkmark-circle" 
-            class="verified-icon" 
-            color="primary">
+          <ion-icon
+            *ngIf="card.isVerified"
+            name="checkmark-circle"
+            class="verified-icon"
+            color="primary"
+          >
           </ion-icon>
         </h2>
         <p class="company-category">{{ card.category }}</p>
-        
+
         <div class="company-stats">
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
             <span>Fila menor: {{ card.minorQueue }}</span>
           </div>
-          
+
           <div class="rating-badge">
             <ion-icon name="star" class="star-icon"></ion-icon>
             <span>{{ card.rating || '0' }}</span>
@@ -129,6 +138,5 @@
     </ion-card>
   </div>
 </ion-content>
-
 
 <app-footer-menu></app-footer-menu>

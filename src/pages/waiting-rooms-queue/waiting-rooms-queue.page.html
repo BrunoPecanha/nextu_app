@@ -1,0 +1,64 @@
+<app-custom-header
+  [title]="'MINHAS FILAS'"
+  [showStartButton]="true"
+  [startIconName]="'arrow-back-outline'"
+  [showEndButton]="true"
+  [endIconName]="'calendar-outline'"
+  (onEndClick)="openFilterModal()"
+></app-custom-header>
+
+<ion-content class="ion-padding queues-page">
+  <div class="active-filter" *ngIf="filterDate">
+    <ion-chip (click)="clearFilter()">
+      <ion-label>{{ filterDate | date:'dd/MM/yyyy' }}</ion-label>
+      <ion-icon name="close"></ion-icon>
+    </ion-chip>
+  </div>
+
+  <div class="queues-list">
+    <ion-card *ngFor="let queue of filteredQueues" (click)="openChat(queue)">
+      <ion-card-content>
+        <div class="card-header">
+          <ion-icon [name]="getQueueIcon(queue.type)" class="queue-icon"></ion-icon>
+          <div class="info">
+            <h2>{{ queue.businessName }}</h2>
+            <p>{{ queue.date | date:'dd/MM/yyyy • HH:mm' }}</p>
+          </div>
+          <ion-badge [color]="queue.status === 'active' ? 'success' : 'warning'">
+            {{ queue.status === 'active' ? 'Ativa' : 'Pausada' }}
+          </ion-badge>
+        </div>
+
+        <div class="card-body">
+          <div class="position">Posição: {{ queue.position }}/{{ queue.total }}</div>
+
+          <div class="last-message" *ngIf="queue.lastMessage">
+            <p><strong>{{ queue.lastMessage.user }}:</strong> {{ queue.lastMessage.text }}</p>
+            <span>{{ queue.lastMessage.time | date:'HH:mm' }}</span>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="empty-state" *ngIf="filteredQueues.length === 0">
+      <ion-icon name="list-outline"></ion-icon>
+      <h3>Nenhuma fila encontrada</h3>
+      <p *ngIf="filterDate">Nenhuma fila para a data selecionada</p>
+    </div>
+  </div>
+</ion-content>
+
+<ion-modal [isOpen]="filterModalOpen" (didDismiss)="closeFilterModal()">
+  <ng-template>
+    <div class="filter-modal">
+      <ion-datetime
+        presentation="date"
+        [(ngModel)]="selectedDate"
+        [max]="today"
+      ></ion-datetime>
+      <ion-button expand="block" (click)="applyFilter()">Aplicar Filtro</ion-button>
+    </div>
+  </ng-template>
+</ion-modal>
+
+<app-footer-menu></app-footer-menu>

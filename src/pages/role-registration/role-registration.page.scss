@@ -1,6 +1,6 @@
 ion-content {
-  overflow-x: hidden;
-  height: 100vh;
+  --padding-bottom: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -9,176 +9,140 @@ ion-content {
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 0;
 }
 
 .cards-function {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
-  flex: 1;
-  justify-content: center;
-}
-
-.box {
-  max-width: 90%;
-  margin: 0 auto;
-  height: calc((100vh - 150px) / 3); 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* Tablets */
-@media (min-width: 600px) {
-  .box {
-    flex: 1 1 calc(50% - 2rem);
-  }
-}
-
-/* Telas grandes */
-@media (min-width: 900px) {
-  .box {
-    flex: 1 1 calc(33.333% - 2rem);
-  }
-}
-
-.card-inner {
-  background-color: rgba(255, 255, 255, 0.85);
-  border-radius: 15px;
-  margin: 1.5rem; 
-  padding: 3rem 1rem 1rem; 
-  position: relative;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 0.1rem;
+  padding: 0.1rem;
 }
 
 .card-wrapper {
-  min-height: 220px; 
-  min-width: 90%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex: 1 1 45%;
+  min-width: 260px;
+  max-width: 400px;
 }
 
+.card-wrapper:hover {
+  transform: scale(1.02);
+}
+
+.card-inner {
+  background-color: rgba(255, 255, 255, 0.95);
+  border-radius: 15px;
+  margin: 2rem 1rem 1rem;
+  padding: 1.5rem 0.75rem 0rem;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+}
 
 .circle-icon {
-  width: 80px;
-  height: 80px;
+  width: 70px;
+  height: 70px;
   background-color: var(--ion-color-primary);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   position: absolute;
-  top: -15px;
+  top: -20px;
   left: 50%;
   transform: translateX(-50%);
 }
 
 .circle-icon ion-icon {
-  font-size: 48px;
-  color: #FFFFFF;
+  font-size: 40px;
+  color: #fff;
 }
 
 .card-title {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 700;
-  font-size: 1.5rem;
+  font-size: 1.4rem;
   text-align: center;
   color: #292829;
-  margin-top: 1.5rem; 
+  margin-top: 1.2rem;
 }
 
 .description-card {
   text-align: center;
-  margin-top: -1rem; 
+  margin-top: -0.8rem;
 }
 
 .description-card h2 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 400;
-  font-size: 0.75rem;
-  color: #8A8A8A;
+  font-size: 0.7rem;
+  color: #8a8a8a;
   text-transform: uppercase;
 }
 
 .description-card h3 {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
   font-weight: 500;
-  font-size: 1rem;
+  font-size: 0.9rem;
   color: #292829;
   text-transform: uppercase;
 }
 
-.menu-fixed-bottom {
-  background-color: white;
-  border-top: 1px solid #E8E8E8;
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  padding: 0.5rem 0;
+@media (min-width: 600px) {
+  .cards-function {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .card-wrapper {
+    flex: 1 1 calc(45% - 1rem);
+    max-width: calc(45% - 1rem);
+  }
 }
 
-.content-menu-border {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  padding: 10px 0;
+@media (min-width: 900px) {
+  .card-wrapper {
+    flex: 1 1 calc(30% - 1rem);
+    max-width: calc(30% - 1rem);
+  }
 }
 
-.go-init, .go-fila, .go-config, .go-exit {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
+@media (max-height: 700px), (max-width: 350px) {
+  .card-inner {
+    padding: 2rem 0.5rem 0.5rem;
+    margin: 1.5rem 0.5rem 0.5rem;
+  }
 
-ion-icon {
-  font-size: 24px;
-  color: #007bff;
-}
+  .circle-icon {
+    width: 55px;
+    height: 55px;
+  }
 
-ion-label a {
-  text-decoration: none;
-  color: #007bff;
-  font-size: 12px;
-}
+  .circle-icon ion-icon {
+    font-size: 32px;
+  }
 
-ion-toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  --min-height: 56px;
-  padding: 0 8px;
-  box-sizing: border-box;
-}
+  .card-title {
+    font-size: 1.1rem;
+    margin-top: 1rem;
+  }
 
-ion-title {
-  flex: 1;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
+  .description-card h2 {
+    font-size: 0.6rem;
+  }
 
-.card-inner {
-  text-align: center;
-}
+  .description-card h3 {
+    font-size: 0.8rem;
+  }
 
-.add-icon {
-  background-color: #d6f5e3;
-  color: #2dd36f;
-}
-
-.box {
-  cursor: pointer;
-  transition: transform 0.2s ease-in-out;
-
-  &:hover {
-    transform: scale(1.02);
+  .cards-function {
+    gap: 0.5rem;
+    padding: 0.5rem;
   }
 }
 
 ion-content::part(scroll) {
-  scrollbar-width: none; 
-  -ms-overflow-style: none; 
+  scrollbar-width: none;
+  -ms-overflow-style: none;
 }

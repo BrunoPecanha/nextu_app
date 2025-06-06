@@ -85,9 +85,19 @@ const routes: Routes = [
   {
     path: 'new-queue',
     loadChildren: () => import('../pages/queue-admin/new-queue/new-queue.module').then( m => m.NewQueuePageModule)
+  },
+  {
+    path: 'queue-chat/:id',
+    loadChildren: () => import('../pages/queue-chat/queue-chat.module').then( m => m.QueueChatPageModule)
+  },
+  {
+    path: 'waiting-rooms-queue',
+    loadChildren: () => import('../pages/waiting-rooms-queue/waiting-rooms-queue.module').then( m => m.WaitingRoomsQueuePageModule)
+  },
+  {
+    path: 'client-history',
+    loadChildren: () => import('../pages/client-history/client-history.module').then( m => m.ClientHistoryPageModule)
   }
-
-
 ];
 
 @NgModule({
