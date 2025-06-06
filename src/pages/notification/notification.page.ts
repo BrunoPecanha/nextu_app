@@ -1,4 +1,5 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
+import { ActionSheetButton } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 
 @Component({
@@ -7,40 +8,98 @@ import { NavController } from '@ionic/angular';
   styleUrls: ['./notification.page.scss'],
 })
 export class NotificationPage {
-
-  constructor(private cdr: ChangeDetectorRef, private navCtrl: NavController) { }
-
-  //Título precisa ter no máximo 18 caracteres
-  notificacoes = [
-    { id: '1', titulo: 'É a sua vez', mensagem: 'Obrigado por se cadastrar no app.', lida: false },
-    { id: '2', titulo: 'Promoção Venha!', mensagem: 'Hoje temos 10% de desconto para novos clientes.', lida: false },
-    { id: '3', titulo: 'Agend. Confirmado', mensagem: 'Seu horário foi confirmado para 15h.', lida: false }
+  activeFilter: 'all' | 'unread' = 'all';
+  actionSheetOpen = false;
+  
+  notifications = [
+    { 
+      id: '1', 
+      titulo: 'É a sua vez', 
+      mensagem: 'Obrigado por se cadastrar no app.', 
+      lida: false,
+      tipo: 'system',
+      data: new Date('2023-06-15T10:30:00')
+    },
+    { 
+      id: '2', 
+      titulo: 'Promoção especial', 
+      mensagem: 'Hoje temos 10% de desconto para novos clientes.', 
+      lida: false,
+      tipo: 'promo',
+      data: new Date('2023-06-14T15:45:00')
+    },
+    { 
+      id: '3', 
+      titulo: 'Agendamento confirmado', 
+      mensagem: 'Seu horário foi confirmado para amanhã às 15h.', 
+      lida: true,
+      tipo: 'appointment',
+      data: new Date('2023-06-13T09:20:00')
+    }
   ];
 
-  aoAbrirNotificacao(event: CustomEvent) {
-    const notificacaoId = event.detail.value;
-
-    if (notificacaoId) {
-      const notificacao = this.notificacoes.find(noti => noti.id === notificacaoId);
-      if (notificacao && !notificacao.lida) {
-        notificacao.lida = true;
-        this.cdr.detectChanges();
-      }
+  actionSheetButtons: ActionSheetButton[] = [
+    {
+      text: 'Marcar todas como lidas',
+      icon: 'checkmark-done-outline',
+      handler: () => this.markAllAsRead()
+    },
+    {
+      text: 'Limpar notificações',
+      icon: 'trash-outline',
+      role: 'destructive',
+      handler: () => this.clearNotifications()
+    },
+    {
+      text: 'Cancelar',
+      icon: 'close-outline',
+      role: 'cancel'
     }
+  ];
+
+  constructor(private navCtrl: NavController) {}
+
+  get filteredNotifications() {
+    return this.notifications
+      .filter(noti => this.activeFilter === 'all' || !noti.lida)
+      .sort((a, b) => b.data.getTime() - a.data.getTime());
   }
 
-  marcarComoLida(id: string) {
-    const notificacao = this.notificacoes.find(n => n.id === id);
-    if (notificacao && !notificacao.lida) {
-      notificacao.lida = true;
-    }
+  getNotificationIcon(type: string): string {
+    const icons: Record<string, string> = {
+      'system': 'notifications-outline',
+      'promo': 'pricetag-outline',
+      'appointment': 'calendar-outline',
+      'default': 'notifications-outline'
+    };
+    return icons[type] || icons['default'];
   }
 
-  removerNotificacao(index: number) {
-    this.notificacoes.splice(index, 1);
+  toggleNotification(notification: any) {
+    notification.lida = !notification.lida;
   }
 
-  voltar() {
-    this.navCtrl.back(); 
+  removeNotification(id: string) {
+    this.notifications = this.notifications.filter(noti => noti.id !== id);
+  }
+
+  markAllAsRead() {
+    this.notifications.forEach(noti => noti.lida = true);
+  }
+
+  clearNotifications() {
+    this.notifications = [];
+  }
+
+  filterChanged(event: any) {
+    this.activeFilter = event.detail.value;
+  }
+
+  openNotificationMenu() {
+    this.actionSheetOpen = true;
+  }
+
+  back() {
+    this.navCtrl.back();
   }
 }

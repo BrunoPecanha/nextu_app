@@ -50,7 +50,7 @@ export class AssociatedProfessionalPage implements OnInit {
   }
 
   loadStoreInvites() {
-    this.employeeStoreService.loadPendingAndAcceptedInvitesByStore(this.user.id).subscribe({
+    this.employeeStoreService.loadPendingAndAcceptedInvitesByStore(this.store.id).subscribe({
       next: (response) => {
         if (response.valid) {
           this.processStoreInvites(response.data.employeeStoreAssociations);

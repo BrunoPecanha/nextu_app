@@ -1,0 +1,61 @@
+<app-custom-header
+  [title]="'MINHAS FILAS'"
+  [showStartButton]="true"
+  [startIconName]="'arrow-back-outline'"
+  [showEndButton]="false"
+  [subtitle]="(queueInfo?.businessName + ' -  Sua posição: ' + queueInfo?.position)"
+></app-custom-header>
+
+<ion-content #chatContainer>
+  <div class="chat-messages">
+    <div
+      *ngFor="let message of messages"
+      class="message"
+      [class.current-user]="message.isCurrentUser"
+    >
+      <div class="message-header">
+        <span class="user">{{ message.user }}</span>
+        <span class="time">{{ formatTime(message.time) }}</span>
+      </div>
+      <div class="message-content">{{ message.text }}</div>
+    </div>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-item lines="none" class="message-input-container">
+      <ion-textarea
+        [(ngModel)]="newMessage"
+        placeholder="Digite sua mensagem..."
+        (keyup.enter)="sendMessage()"
+        auto-grow="true"
+        rows="1"
+        class="message-input"
+      ></ion-textarea>
+
+      <div class="input-buttons">
+        <ion-button
+          fill="clear"
+          (click)="clearMessage()"
+          [disabled]="!newMessage"
+          class="action-button"
+          aria-label="Apagar mensagem"
+        >
+          <ion-icon name="close-outline"></ion-icon>
+        </ion-button>
+
+        <ion-button
+          fill="clear"
+          (click)="sendMessage()"
+          [disabled]="!newMessage"
+          class="action-button"
+          aria-label="Enviar mensagem"
+        >
+          <ion-icon name="send"></ion-icon>
+        </ion-button>
+      </div>
+    </ion-item>
+  </ion-toolbar>
+</ion-footer>
+

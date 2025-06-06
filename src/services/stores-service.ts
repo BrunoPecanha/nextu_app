@@ -28,18 +28,18 @@ export class StoresService {
   }
 
   loadEmployeeStores(id: number, profileId: number): Observable<StoreListResponse> {
-  const params = new HttpParams()
-    .set('id', id.toString())
-    .set('profile', profileId.toString());
+    const params = new HttpParams()
+      .set('id', id.toString())
+      .set('profile', profileId.toString());
 
-  return this.http.get<StoreListResponse>(`${this.apiUrl}/store/employee`, { params });
-}
+    return this.http.get<StoreListResponse>(`${this.apiUrl}/store/employee`, { params });
+  }
 
   loadStoreAndProfessionals(id: number): Observable<StoreProfessionalsResponse> {
     return this.http.get<StoreProfessionalsResponse>(`${this.apiUrl}/store/${id}/queue/professionals`);
   }
 
-   loadAllStoresUserIsInByUserId(id: number): Observable<StoreListResponse> {
+  loadAllStoresUserIsInByUserId(id: number): Observable<StoreListResponse> {
     return this.http.get<StoreListResponse>(`${this.apiUrl}/store/${id}/customer/stores`);
   }
 
@@ -48,7 +48,7 @@ export class StoresService {
     return this.http.get<ProfessionalResponse>(`${this.apiUrl}/store/${storeId}/professionals`);
   }
 
-  updateStore(id: number, data: any): Observable<any> {
+  updateStore(id: number, data: FormData): Observable<any> {
     return this.http.put<any>(`${this.apiUrl}/store/${id}`, data);
   }
 
@@ -56,7 +56,7 @@ export class StoresService {
     return this.http.delete<any>(`${this.apiUrl}/store/${id}`);
   }
 
-  createStore(storeData: StoreRequest): Observable<StoreListResponse> {
+  createStore(storeData: any): Observable<StoreListResponse> {
     return this.http.post<StoreListResponse>(`${this.apiUrl}/store`, storeData).pipe(
       catchError(error => {
         console.error('Erro ao criar loja:', error);
@@ -65,36 +65,47 @@ export class StoresService {
     );
   }
 
-  prepareStoreData(cadastroForm: FormGroup): StoreRequest {
-    const formValue = cadastroForm.value;    
-  
-    return {
-      ownerId: formValue.ownerId,
-      cnpj: formValue.cnpj,
-      name: formValue.name,
-      address: formValue.address,
-      number: formValue.number || '',
-      city: formValue.city,
-      state: formValue.state,
-      openAutomatic: formValue.openAutomatic || false,
-      storeSubtitle: formValue.storeSubtitle || '',
-      acceptOtherQueues: formValue.acceptOtherQueues || false,
-      answerOutOfOrder: formValue.answerOutOfOrder || false,
-      answerScheduledTime: formValue.answerScheduledTime || false,
-      timeRemoval: formValue.timeRemoval || null,
-      whatsAppNotice: formValue.whatsAppNotice || false,
-      logoPath: formValue.logoPath || '',
-      wallPaperPath: formValue.wallPaperPath || '',
-      categoryId: formValue.categoryId,
-      openingHours: this.getOpeningHoursRequest(cadastroForm),
-      highLights: this.getHighLightsRequest(cadastroForm),
-      attendSimultaneously: formValue.attendSimultaneously || false,
-      phoneNumber: formValue.phoneNumber || '',
-      instagram: formValue.instagram || '',
-      facebook: formValue.facebook || '',
-      youtube: formValue.youtube || '',
-      website: formValue.website || ''
-    };
+  prepareStoreData(cadastroForm: FormGroup): FormData {
+    debugger
+    const formValue = cadastroForm.value;
+    const formData = new FormData();
+
+    formData.append('Name', formValue.name || '');
+    formData.append('Address', formValue.address || '');
+    formData.append('Number', formValue.number || '');
+    formData.append('City', formValue.city || '');
+    formData.append('State', formValue.state || '');
+    formData.append('OpenAutomatic', String(formValue.openAutomatic || false));
+    formData.append('AttendSimultaneously', String(formValue.attendSimultaneously || false));
+    formData.append('PhoneNumber', formValue.phoneNumber || '');
+    formData.append('StoreSubtitle', formValue.storeSubtitle || '');
+    formData.append('AcceptOtherQueues', String(formValue.acceptOtherQueues || false));
+    formData.append('AnswerOutOfOrder', String(formValue.answerOutOfOrder || false));
+    formData.append('AnswerScheduledTime', String(formValue.answerScheduledTime || false));
+    formData.append('TimeRemoval', String(formValue.timeRemoval || ''));
+    formData.append('WhatsAppNotice', String(formValue.whatsAppNotice || false));
+    formData.append('CategoryId', String(formValue.categoryId || ''));
+    formData.append('Instagram', formValue.instagram || '');
+    formData.append('Facebook', formValue.facebook || '');
+    formData.append('Youtube', formValue.youtube || '');
+    formData.append('WebSite', formValue.website || '');
+
+    // Tratamento especial para as imagens
+    const logoControl = cadastroForm.get('logo');
+    if (logoControl?.value instanceof File) {
+      formData.append('Logo', logoControl.value, logoControl.value.name);
+    }
+
+    const wallPaperControl = cadastroForm.get('wallPaper');
+    if (wallPaperControl?.value instanceof File) {
+      formData.append('WallPaper', wallPaperControl.value, wallPaperControl.value.name);
+    }
+
+    // Adiciona arrays complexos como JSON
+    formData.append('OpeningHours', JSON.stringify(this.getOpeningHoursRequest(cadastroForm)));
+    formData.append('HighLights', JSON.stringify(this.getHighLightsRequest(cadastroForm)));
+
+    return formData;
   }
 
   private getOpeningHoursRequest(cadastroForm: FormGroup): OpeningHoursRequest[] {

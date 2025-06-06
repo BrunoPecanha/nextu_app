@@ -1,4 +1,3 @@
-/* Variáveis de tema premium */
 :root {
   --ion-color-primary: #3880ff;
   --ion-color-primary-rgb: 56, 128, 255;
@@ -484,6 +483,56 @@ ion-content::part(scroll) {
   gap: 8px;
   padding: 8px 16px;
   overflow-x: auto;
+}
+
+.quick-filters ion-chip {
+  min-width: 120px;
+  justify-content: center;
+}
+
+.quick-filters {
+  display: flex;
+  gap: 8px;
+  padding: 8px 16px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* suaviza rolagem no iOS */
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+.quick-filters::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+.quick-filters ion-chip {
+  min-width: 100px;
+  justify-content: center;
+  flex-shrink: 0; /* impede que os chips se reduzam demais */
+}
+
+.quick-filters-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.quick-filters-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+.quick-filters {
+  display: inline-flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  white-space: nowrap;
+}
+
+ion-chip {
+  min-width: 100px;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 ion-chip {

@@ -22,8 +22,8 @@ export class CompanyConfigurationsPage {
   @ViewChild('wallpaperInput') wallpaperInput!: ElementRef<HTMLInputElement>;
 
   cadastroForm!: FormGroup;
-  imagemPreview: string | ArrayBuffer | null = null;
-  wallpaperPreview: string | ArrayBuffer | null = null;
+  logoOreview: any;
+  wallpaperPreview: any;
   sending = false;
   sent = false;
   category: number | null = null;
@@ -58,7 +58,7 @@ export class CompanyConfigurationsPage {
     this.loadCategories();
   }
 
-  ngOnInit() {    
+  ngOnInit() {
   }
 
   ionViewWillEnter() {
@@ -66,11 +66,11 @@ export class CompanyConfigurationsPage {
 
     if (this.user?.profile === 2) {
       this.store = this.sessionService.getStore();
-   
+
       if (this.store) {
         this.loadStoreData(this.store.id);
       }
-    }   
+    }
   };
 
   ngOnDestroy() {
@@ -80,7 +80,7 @@ export class CompanyConfigurationsPage {
   initializeForm() {
     this.cadastroForm = this.fb.group({
       ownerId: 0,
-      logoPath: [''],
+      logo: [null], // Alterado para null inicialmente
       cnpj: [''],
       name: [''],
       address: [''],
@@ -102,7 +102,7 @@ export class CompanyConfigurationsPage {
       answerScheduledTime: [false],
       whatsAppNotice: [false],
       timeRemoval: [null],
-      wallPaperPath: [''],
+      wallPaper: [null], // Corrigido o nome do campo (de wallPape para wallPaper)
       storeSubtitle: [''],
       highLights: this.fb.array([])
     });
@@ -139,7 +139,7 @@ export class CompanyConfigurationsPage {
       highlightsArray.removeAt(0);
     }
 
-    this.imagemPreview = null;
+    this.logoOreview = null;
     this.wallpaperPreview = null;
 
     if (this.fileInput?.nativeElement) {
@@ -198,7 +198,6 @@ export class CompanyConfigurationsPage {
   private populateFormForEdition(storeData: StoreModel): void {
     this.cadastroForm.patchValue({
       ownerId: storeData.ownerId,
-      logoPath: storeData.logoPath,
       cnpj: storeData.cnpj,
       name: storeData.name,
       address: storeData.address,
@@ -218,12 +217,11 @@ export class CompanyConfigurationsPage {
       answerScheduledTime: storeData.answerScheduledTime,
       whatsAppNotice: storeData.whatsAppNotice,
       timeRemoval: storeData.timeRemoval,
-      wallPaperPath: storeData.wallPaperPath,
       storeSubtitle: storeData.storeSubtitle
     });
 
     if (storeData.logoPath) {
-      this.imagemPreview = storeData.logoPath;
+      this.logoOreview = storeData.logoPath;
     }
     if (storeData.wallPaperPath) {
       this.wallpaperPreview = storeData.wallPaperPath;
@@ -318,9 +316,13 @@ export class CompanyConfigurationsPage {
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {
-        this.imagemPreview = reader.result;
+        this.logoOreview = reader.result;
       };
       reader.readAsDataURL(file);
+
+      this.cadastroForm.patchValue({
+        logo: file
+      });
     }
   }
 
@@ -336,6 +338,11 @@ export class CompanyConfigurationsPage {
         this.wallpaperPreview = reader.result;
       };
       reader.readAsDataURL(file);
+
+      // Atualiza o FormGroup com o arquivo selecionado
+      this.cadastroForm.patchValue({
+        wallPaper: file // Corrige o nome do campo (de wallPape para wallPaper)
+      });
     }
   }
 
@@ -360,7 +367,7 @@ export class CompanyConfigurationsPage {
     this.successMessage = null;
     this.errorMessage = null;
     this.saved = false;
-    
+
     const cnpjControl = this.cadastroForm.get('cnpj');
     if (cnpjControl && cnpjControl.value) {
       const cnpjLimpo = cnpjControl.value.replace(/[\.\/\-]/g, '');

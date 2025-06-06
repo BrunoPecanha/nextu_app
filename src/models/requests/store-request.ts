@@ -16,8 +16,8 @@ export interface StoreRequest {
   answerScheduledTime: boolean;
   timeRemoval?: number | null;
   whatsAppNotice: boolean;
-  logoPath: string;
-  wallPaperPath: string;
+  logo: string;
+  wallPaper: string;
   categoryId: number;
   openingHours: OpeningHoursRequest[];
   highLights: HighLightRequest[];

@@ -1,0 +1,66 @@
+<ion-header>
+  <ion-toolbar class="toolbar">
+    <ion-buttons slot="start">
+      <ion-button 
+        *ngIf="showStartButton"
+        fill="clear"
+        (click)="handleStartButtonClick()"
+        [class]="startButtonClass"
+        [disabled]="startDisabled || startLoading"
+      >
+        <ng-container *ngIf="!startLoading; else startSpinner">
+          <ion-icon 
+            [name]="startIconName"
+            slot="icon-only"
+            [class.disabled-icon]="startDisabled"
+          ></ion-icon>
+        </ng-container>
+        <ng-template #startSpinner>
+          <ion-spinner name="dots" slot="icon-only"></ion-spinner>
+        </ng-template>
+      </ion-button>
+
+      <ng-content select="[left-buttons]"></ng-content>
+    </ion-buttons>
+
+    <ion-title class="title-container">
+      <div class="title">{{ title }}</div>
+      <div *ngIf="subtitle" class="subtitle">{{ subtitle }}</div>
+    </ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button
+        *ngIf="showPausePlayButton"
+        fill="clear"
+        (click)="onPausePlayClick.emit()"
+        [class]="isPaused ? 'play-button' : 'pause-button'"
+      >
+        <ion-icon 
+          [name]="isPaused ? 'play' : 'pause'"
+          slot="icon-only"
+        ></ion-icon>
+      </ion-button>
+
+      <ion-button
+        *ngIf="showEndButton"
+        fill="clear"
+        (click)="!endDisabled && !endLoading && onEndClick.emit()"
+        [class]="endButtonClass"
+        [disabled]="endDisabled || endLoading"
+      >
+        <ng-container *ngIf="!endLoading; else endSpinner">
+          <ion-icon 
+            [name]="endIconName"
+            slot="icon-only"
+            [class.disabled-icon]="endDisabled"
+          ></ion-icon>
+        </ng-container>
+        <ng-template #endSpinner>
+          <ion-spinner name="dots" slot="icon-only"></ion-spinner>
+        </ng-template>
+      </ion-button>
+
+      <ng-content select="[right-buttons]"></ng-content>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>

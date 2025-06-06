@@ -6,7 +6,7 @@ import { IonicModule } from '@ionic/angular';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { UnicodeToCharPipe } from 'src/pipes/unicode-to-char.pipe';
-import { CustomHeaderComponent } from './components/custom-header/custom-component.component';
+import { CustomHeaderComponent } from './components/custom-header/custom-header.component';
 
 
 @NgModule({

@@ -1,7 +1,7 @@
 <div class="menu-content">
   <div class="user-info">
   <ion-avatar>
-  @if (userFromSession.imageUrl) {
+  @if (userFromSession && userFromSession.imageUrl) {
     <img [src]="userFromSession.imageUrl" alt="Avatar do usuário" />
   } @else {
     <ion-icon name="person-circle-outline"></ion-icon>
@@ -9,7 +9,7 @@
 </ion-avatar>
     <div style="margin-left: 20px">    
       <div class="user-name">{{ userName }}</div>
-      <!-- Badge de perfil -->
+      
       <div
         class="profile-badge"
         [ngClass]="{
@@ -68,12 +68,12 @@
           <ion-label>Configurações</ion-label>
         </ion-item>
 
-        <ion-item (click)="navigateTo('/select-company')" detail="false">
+        <ion-item (click)="navigateTo('/client-history')" detail="false">
           <ion-icon name="time-outline" slot="start"></ion-icon>
           <ion-label>Histórico</ion-label>
         </ion-item>
 
-        <ion-item (click)="navigateTo('/select-company')" detail="false">
+        <ion-item (click)="navigateTo('/waiting-rooms-queue')" detail="false">
           <ion-icon name="chatbubble-outline" slot="start"></ion-icon>
           <ion-label>Mensagens</ion-label>
         </ion-item>

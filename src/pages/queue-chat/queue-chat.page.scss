@@ -1,0 +1,185 @@
+ion-content {
+  --background: #f5f5f5;
+  --padding-top: 8px;
+}
+
+.chat-messages {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-bottom: 80px;
+}
+
+.message {
+  max-width: 85%;
+  padding: 12px 16px;
+  border-radius: 18px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  margin-bottom: 16px;
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  &.current-user {
+    align-self: flex-end;
+    background: var(--ion-color-primary);
+    color: white;
+    margin-right: 8px;
+
+    .message-header {
+      color: rgba(255, 255, 255, 0.8);
+    }
+  }
+
+  &:not(.current-user) {
+    align-self: flex-start;
+    margin-left: 8px;
+  }
+
+  &:first-child {
+    margin-top: 8px;
+  }
+}
+
+.message-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+  font-size: 12px;
+  color: #666;
+
+  .user {
+    font-weight: bold;
+  }
+}
+
+.message-content {
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+ion-footer {
+  ion-toolbar {
+    --background: transparent;
+    --border-width: 0;
+    padding: 8px;
+  }
+
+  ion-item {
+    --background: #ffffff;
+    --border-radius: 24px;
+    --padding-start: 16px;
+    --padding-end: 8px;
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.message {
+  max-width: 85%;
+  min-width: 120px;
+  padding: 12px 16px;
+  border-radius: 16px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+
+  .message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 8px;
+    font-size: 12px;
+
+    .user {
+      font-weight: bold;
+      color: inherit;
+      max-width: 70%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .time {
+      opacity: 0.8;
+      margin-left: 8px;
+      white-space: nowrap;
+    }
+  }
+
+  .message-content {
+    padding-top: 4px;
+    font-size: 14px;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  &.current-user {
+    background: var(--ion-color-primary);
+    color: white;
+
+    .message-header {
+      color: rgba(255, 255, 255, 0.9);
+    }
+  }
+}
+
+ion-footer ion-item {
+  --padding-start: 12px;
+  --padding-end: 4px;
+  --background: #fff;
+  --border-radius: 24px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+ion-textarea {
+  resize: none;
+  overflow-y: auto;
+  min-height: 40px;
+  max-height: 120px;
+  font-size: 16px;
+}
+
+.message-input-container {
+  --padding-start: 12px;
+  --padding-end: 12px;
+  --inner-padding-end: 0;
+  display: flex;
+  align-items: center;
+  --background: #ffffff;
+  --border-radius: 24px;
+  box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.message-input {
+  flex: 1;
+  margin-right: 8px;
+  resize: none;
+  overflow-y: auto;
+  min-height: 40px;
+  max-height: 120px;
+  font-size: 16px;
+}
+
+.input-buttons {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.action-button {
+  margin: 0;
+  --padding-start: 4px;
+  --padding-end: 4px;
+}
+.action-button:hover ion-icon {
+  transform: scale(1.1);
+  transition: transform 0.2s ease;
+}
+
+.input-buttons ion-button:not(:last-child) {
+  margin-right: 2px;
+}
