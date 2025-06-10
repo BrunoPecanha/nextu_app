@@ -67,9 +67,14 @@
 </div>
 
 <ion-content class="modern-content">
-  <div *ngIf="!companies?.length" class="loading-container">
+  <div *ngIf="isLoading" class="loading-container">
     <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
     <p class="loading-text">Carregando estabelecimentos...</p>
+  </div>
+
+  <div *ngIf="!isLoading && isEmptyResult" class="empty-state">
+    <ion-icon name="storefront-outline" size="large" color="medium"></ion-icon>
+    <p class="empty-text">Nenhum estabelecimento encontrado.</p>
   </div>
 
   <div class="companies-grid">
@@ -125,7 +130,10 @@
         <div class="company-stats">
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
-            <span>Fila menor: {{ card.minorQueue }}</span>
+            <span>
+              {{ card.minorQueue === -1 ? 'Sem fila aberta' : 'Fila menor:
+              ' + card.minorQueue + ' pessoas' }}
+            </span>
           </div>
 
           <div class="rating-badge">

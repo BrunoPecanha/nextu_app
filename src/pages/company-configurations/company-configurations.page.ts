@@ -80,7 +80,7 @@ export class CompanyConfigurationsPage {
   initializeForm() {
     this.cadastroForm = this.fb.group({
       ownerId: 0,
-      logo: [null], // Alterado para null inicialmente
+      logo: [null],
       cnpj: [''],
       name: [''],
       address: [''],
@@ -102,7 +102,7 @@ export class CompanyConfigurationsPage {
       answerScheduledTime: [false],
       whatsAppNotice: [false],
       timeRemoval: [null],
-      wallPaper: [null], // Corrigido o nome do campo (de wallPape para wallPaper)
+      wallPaper: [null], 
       storeSubtitle: [''],
       highLights: this.fb.array([])
     });
@@ -339,9 +339,8 @@ export class CompanyConfigurationsPage {
       };
       reader.readAsDataURL(file);
 
-      // Atualiza o FormGroup com o arquivo selecionado
       this.cadastroForm.patchValue({
-        wallPaper: file // Corrige o nome do campo (de wallPape para wallPaper)
+        wallPaper: file 
       });
     }
   }
@@ -353,7 +352,7 @@ export class CompanyConfigurationsPage {
     }
   }
 
-  formatarCNPJ(event: any) {
+  formatCNPJ(event: any) {
     let valor = event.detail.value;
     valor = valor.replace(/\D/g, '');
     valor = valor.replace(/^(\d{2})(\d)/, '$1.$2');

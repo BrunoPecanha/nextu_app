@@ -17,6 +17,7 @@ export class SignalRService {
       return this.connectionPromise;
     }
 
+
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl(environment.queueHub)
       .withAutomaticReconnect({
@@ -32,18 +33,18 @@ export class SignalRService {
 
     this.setupConnectionEvents();
 
-    this.connectionPromise = this.hubConnection.start()
-      .then(() => {
-        console.log('SignalR conectado. ConnectionId:', this.hubConnection?.connectionId);
-        this.rejoinGroups();
-      })
-      .catch(err => {
-        console.error('Erro ao conectar SignalR', err);
-        this.connectionPromise = null;
-        throw err;
-      });
+    // this.connectionPromise = this.hubConnection.start()
+    //   .then(() => {
+    //     console.log('SignalR conectado. ConnectionId:', this.hubConnection?.connectionId);
+    //     this.rejoinGroups();
+    //   })
+    //   .catch(err => {
+    //     console.error('Erro ao conectar SignalR', err);
+    //     this.connectionPromise = null;
+    //     throw err;
+    //   });
 
-    return this.connectionPromise;
+    return; //this.connectionPromise;
   }
 
   private setupConnectionEvents(): void {

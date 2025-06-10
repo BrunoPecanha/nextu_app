@@ -37,6 +37,10 @@ export class QueueService {
     );
   }
 
+  updateCustomerName(customerId: number, newName: string) {
+    return this.http.patch(`${this.apiUrl}/queue/${customerId}/name`, { name: newName });
+  }
+ 
   createQueue(command: QueueCreateRequest): Observable<QueueResponse> {
     return this.http.post<QueueResponse>(`${this.apiUrl}/queue`, command).pipe(
       catchError(error => {

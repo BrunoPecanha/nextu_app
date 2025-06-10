@@ -116,3 +116,10 @@
     }
   }
 }
+
+::ng-deep app-ad-banner.tall-ad-notifications .ad-container {
+  width: 98%;
+  height: 8%;
+  padding-left: 5px;
+  margin-top: 0%;
+}

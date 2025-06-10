@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AlertController, NavController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
@@ -24,6 +25,14 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   store: StoreModel = {} as StoreModel;
   employee: StoreModel | null = null;
 
+  editingNameMap: { [clientId: number]: boolean } = {};
+  editedNames: { [clientId: number]: string } = {};
+
+  isServiceConfigModalOpen = false;
+  servicePrice: number | null = null;
+  serviceTime: number | null = null;
+  currentClient: any = null; // Para armazenar o cliente que está sendo configurado
+
   private storeId: number;
   private employeeId: number;
   private signalRGroup: string;
@@ -34,7 +43,8 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     private sessionService: SessionService,
     private alertController: AlertController,
     private toast: ToastService,
-    private signalRService: SignalRService
+    private signalRService: SignalRService,
+    private router: Router
   ) {
     this.store = this.sessionService.getStore();
     this.storeId = this.store.id;
@@ -88,16 +98,101 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     }
   }
 
+  // Método para abrir o modal
+  openServiceConfig(client: any) {
+    this.currentClient = client;
+    this.servicePrice = null; // Resetar valores
+    this.serviceTime = null;
+    this.isServiceConfigModalOpen = true;
+  }
+
+  // Método para fechar o modal
+  closeServiceConfigModal() {
+    this.isServiceConfigModalOpen = false;
+    this.currentClient = null;
+  }
+
+  // Método para salvar a configuração
+  async saveServiceConfig() {
+    if (!this.currentClient || this.servicePrice === null || this.serviceTime === null) {
+      // Aqui você pode adicionar uma validação ou mensagem de erro
+      return;
+    }
+
+    try {
+      // Aqui você faria a chamada para o backend
+      // Exemplo:
+      // const result = await this.yourService.updateServiceConfig(
+      //   this.currentClient.id,
+      //   this.servicePrice,
+      //   this.serviceTime
+      // );
+
+      // Simulando uma requisição bem-sucedida
+      console.log('Configuração salva:', {
+        clientId: this.currentClient.id,
+        price: this.servicePrice,
+        time: this.serviceTime
+      });
+
+      // Fechar o modal após salvar
+      this.closeServiceConfigModal();
+
+      // Opcional: Mostrar mensagem de sucesso
+      // this.showSuccessMessage('Configuração salva com sucesso!');
+
+    } catch (error) {
+      console.error('Erro ao salvar configuração:', error);
+      // Mostrar mensagem de erro
+    }
+  }
+
   private loadInitialData() {
     this.loadQueueData();
     this.getQueueForEmployee();
-
   }
+
+  enableEditName(client: CustomerInQueueForEmployeeModel) {
+    this.editingNameMap[client.id] = true;
+    this.editedNames[client.id] = client.name;
+  }
+
+  cancelEditName(clientId: number) {
+    this.editingNameMap[clientId] = false;
+  }
+
+  addCustomerToQueue() {
+    this.router.navigate(['/select-services'], {
+      queryParams: { looseCustomer: true, queueId: this.queue?.id, storeId: this.store.id }
+    });
+  }
+
+  saveEditedName(client: CustomerInQueueForEmployeeModel) {
+    const newName = this.editedNames[client.id]?.trim();
+    if (!newName || newName === client.name) {
+      this.cancelEditName(client.id);
+      return;
+    }
+
+    this.queueService.updateCustomerName(client.id, newName).subscribe({
+      next: () => {
+        client.name = newName;
+        this.toast.show('Nome atualizado com sucesso', 'success');
+        this.cancelEditName(client.id);
+      },
+      error: (err) => {
+        console.error('Erro ao atualizar nome:', err);
+        this.toast.show('Erro ao atualizar nome', 'danger');
+      }
+    });
+  }
+
 
   private loadQueueData() {
     this.store = this.sessionService.getStore();
 
-    if (!this.storeId || !this.employeeId) return;
+    if (!this.storeId || !this.employeeId)
+      return;
 
     this.isLoading = true;
     this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.storeId, this.employeeId)
@@ -117,7 +212,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
         }
       });
   }
-
 
   startQRCodeScan(customer: CustomerInQueueForEmployeeModel) {
     if (customer.inService) {
@@ -244,9 +338,9 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     }
   }
 
-  calcularTempoEspera(horaEntrada: string): string {
+  calculateWaitingTime(arrivalTime: string): string {
     const agora = new Date();
-    const [h, m] = horaEntrada.split(':').map(Number);
+    const [h, m] = arrivalTime.split(':').map(Number);
     const entrada = new Date();
     entrada.setHours(h, m, 0, 0);
 
@@ -287,7 +381,8 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   }
 
   toggleQueuePause() {
-    if (!this.queue) return;
+    if (!this.queue)
+      return;
 
     const request: QueuePauseRequest = {
       id: this.queue.id,
@@ -341,6 +436,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   }
 
+  
   openWhatsapp(customer: CustomerInQueueForEmployeeModel) {
     const phone = customer;
     if (!phone) {

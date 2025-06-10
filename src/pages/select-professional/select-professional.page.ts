@@ -52,8 +52,6 @@ export class SelectProfessionalPage implements OnInit {
     this.route.queryParams.subscribe(params => {
       this.storeId = params['storeId'];
     });
-
-
   }
 
   getStatusClass(status: StatusQueueEnum): string {

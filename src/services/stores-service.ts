@@ -5,7 +5,6 @@ import { Observable } from "rxjs";
 import { catchError } from "rxjs/operators";
 import { environment } from "src/environments/environment";
 import { OpeningHoursRequest } from "src/models/requests/opening-hours-request";
-import { StoreRequest } from "src/models/requests/store-request";
 import { StoreDetailResponse } from "src/models/responses/store-detail-response";
 import { StoreProfessionalsResponse } from "src/models/responses/store-professionals-response";
 import { StoreListResponse } from "src/models/responses/store-list-response";
@@ -65,8 +64,7 @@ export class StoresService {
     );
   }
 
-  prepareStoreData(cadastroForm: FormGroup): FormData {
-    debugger
+  prepareStoreData(cadastroForm: FormGroup): FormData {    
     const formValue = cadastroForm.value;
     const formData = new FormData();
 
@@ -90,7 +88,7 @@ export class StoresService {
     formData.append('Youtube', formValue.youtube || '');
     formData.append('WebSite', formValue.website || '');
 
-    // Tratamento especial para as imagens
+
     const logoControl = cadastroForm.get('logo');
     if (logoControl?.value instanceof File) {
       formData.append('Logo', logoControl.value, logoControl.value.name);
@@ -101,14 +99,13 @@ export class StoresService {
       formData.append('WallPaper', wallPaperControl.value, wallPaperControl.value.name);
     }
 
-    // Adiciona arrays complexos como JSON
     formData.append('OpeningHours', JSON.stringify(this.getOpeningHoursRequest(cadastroForm)));
     formData.append('HighLights', JSON.stringify(this.getHighLightsRequest(cadastroForm)));
 
     return formData;
   }
 
-  private getOpeningHoursRequest(cadastroForm: FormGroup): OpeningHoursRequest[] {
+  private getOpeningHoursRequest(cadastroForm: FormGroup): OpeningHoursRequest[] {    
     const openingHoursArray = cadastroForm.get('openingHours') as FormArray;
 
     return openingHoursArray.controls

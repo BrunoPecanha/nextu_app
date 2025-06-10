@@ -97,7 +97,12 @@ const routes: Routes = [
   {
     path: 'client-history',
     loadChildren: () => import('../pages/client-history/client-history.module').then( m => m.ClientHistoryPageModule)
+  },
+  {
+    path: 'promotions',
+    loadChildren: () => import('../pages/promotions/promotions.module').then(m => m.PromotionsPageModule)
   }
+
 ];
 
 @NgModule({

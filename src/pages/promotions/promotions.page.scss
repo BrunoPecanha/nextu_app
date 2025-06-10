@@ -1,0 +1,39 @@
+.promotions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.empty-state {
+  text-align: center;
+  margin-top: 40px;
+  color: var(--ion-color-medium);
+
+  .empty-icon {
+    font-size: 64px;
+    opacity: 0.4;
+    margin-bottom: 16px;
+  }
+
+  h3 {
+    margin: 12px 0 6px;
+    font-weight: bold;
+  }
+
+  p {
+    margin-bottom: 16px;
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

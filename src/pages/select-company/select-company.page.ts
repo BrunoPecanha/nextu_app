@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { CategoryModel } from 'src/models/category-model';
 import { StoreModel } from 'src/models/store-model';
+import { FavoriteService } from 'src/services/favorite-service';
 import { SelectCompanyService } from 'src/services/select-company-service';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-select-company',
@@ -11,8 +13,16 @@ import { SelectCompanyService } from 'src/services/select-company-service';
   styleUrls: ['./select-company.page.scss'],
 })
 export class SelectCompanyPage implements OnInit {
-  constructor(private router: Router, private service: SelectCompanyService, private navCtrl: NavController) { }
+  constructor(
+    private router: Router,
+    private service: SelectCompanyService,
+    private navCtrl: NavController,
+    private session: SessionService,
+    private favoriteService: FavoriteService
+  ) { }
 
+  isLoading = false;
+  isEmptyResult = false;
   searching = false;
   categories: CategoryModel[] = [];
   companies: StoreModel[] = [];
@@ -50,16 +60,32 @@ export class SelectCompanyPage implements OnInit {
   }
 
   loadStores() {
-    this.service.loadStores().subscribe({
+    this.loadFilteredStores();
+  }
+
+  private loadFilteredStores(categoryId?: number, quickFilter?: string) {
+    this.isLoading = true;
+    this.isEmptyResult = false;
+
+    const user = this.session.getUser();
+    const userId = user?.id;
+
+    this.service.loadFilteredStores(categoryId, quickFilter, userId).subscribe({
       next: (response) => {
         this.companies = response.data.map(store => ({
           ...store,
-          isNew: store.createdAt ? this.checkIfNew(store.createdAt) : false,
-          liked: store.liked || false
+          isNew: this.checkIfNew(store.createdAt),
+          liked: store.liked || false,
+          minorQueue: store.minorQueue || false
         } as StoreModel));
+
+        this.isEmptyResult = this.companies.length === 0;
+        this.isLoading = false;
       },
       error: (err) => {
         console.error('Erro ao carregar lojas:', err);
+        this.isLoading = false;
+        this.isEmptyResult = true;
       }
     });
   }
@@ -78,7 +104,6 @@ export class SelectCompanyPage implements OnInit {
   }
 
   get filteredCards() {
-
     const query = this.searchQuery.toLowerCase();
     return this.companies.filter(card =>
       card.name.toLowerCase().includes(query)
@@ -90,16 +115,51 @@ export class SelectCompanyPage implements OnInit {
     if (!this.searching) this.searchQuery = '';
   }
 
-  toggleLike(card: any, event: MouseEvent): void {
+  toggleLike(card: StoreModel, event: MouseEvent): void {
     event.stopPropagation();
-    card.liked = !card.liked;
+
+    const user = this.session.getUser();
+    if (!user || !user.id) {
+      this.showLoginAlert();
+      return;
+    }    
 
     const heart = event.target as HTMLElement;
     heart.classList.add('heart-animation');
-    setTimeout(() => heart.classList.remove('heart-animation'), 500);
 
-    // Chamar rotina de like do back passando id do usuario e empresa // Regra: Empresas com like virão na frente por ordem alfabética
-    console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`);
+    const previousLikeState = card.liked;
+
+    card.liked = !card.liked;
+
+    const likeOperation = card.liked
+      ? this.favoriteService.likeStore(card.id, user.id)
+      : this.favoriteService.dislikeStore(card.id, user.id);
+
+    likeOperation.subscribe({
+      next: (response) => {
+        if (!response.valid) {
+          card.liked = previousLikeState;
+          this.showErrorToast('Ocorreu um erro ao processar sua ação');
+        }
+        console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`, response);
+      },
+      error: (err) => {
+        card.liked = previousLikeState;
+        console.error('Erro ao atualizar like:', err);
+        this.showErrorToast('Falha na conexão. Tente novamente.');
+      },
+      complete: () => {
+        setTimeout(() => heart.classList.remove('heart-animation'), 500);
+      }
+    });
+  }
+
+  private showLoginAlert(): void {
+    console.warn('Usuário não logado. Redirecionar para login.'); 
+  }
+
+  private showErrorToast(message: string): void {
+    console.error(message);
   }
 
   selectCard(card: any): void {
@@ -115,29 +175,15 @@ export class SelectCompanyPage implements OnInit {
   selectCategory(idCategory: number): void {
     if (this.selectedCategoryId === idCategory) {
       this.selectedCategoryId = null;
-      this.loadStores();
+      this.loadFilteredStores();
       return;
     }
 
     this.selectedCategoryId = idCategory;
-    this.service.loadStoresByCategoryId(idCategory).subscribe({
-      next: (response) => {
-        this.companies = response.data.map(store => ({
-          ...store,
-          isNew: this.checkIfNew(store.createdAt),
-          liked: store.liked || false,
-          minorQueue: store.minorQueue || false
-        } as StoreModel));
-      },
-      error: (err) => {
-        console.error('Erro ao filtrar:', err);
-      }
-    });
+    this.loadFilteredStores(idCategory);
   }
 
- 
-
-  getBack() {    
+  getBack() {
     this.navCtrl.back();
   }
 
@@ -158,31 +204,25 @@ export class SelectCompanyPage implements OnInit {
   applyFilter(filter: 'minorQueue' | 'favorites' | 'recent') {
     if (this.selectedFilter === filter) {
       this.selectedFilter = null;
-      this.loadStores();
+      this.loadFilteredStores();
       return;
     }
 
     this.selectedFilter = filter;
+    let quickFilter: string;
 
     switch (filter) {
       case 'minorQueue':
-        // this.service.loadStoresByMinorQueue().subscribe({
-        //   next: (res) => (this.companies = res.data),
-        //   error: (err) => console.error(err),
-        // });
+        quickFilter = 'minorQueue';
         break;
       case 'favorites':
-        // this.service.loadFavoriteStores().subscribe({
-        //   next: (res) => (this.companies = res.data),
-        //   error: (err) => console.error(err),
-        // });
+        quickFilter = 'favorites';
         break;
       case 'recent':
-        // this.service.loadRecentStores().subscribe({
-        //   next: (res) => (this.companies = res.data),
-        //   error: (err) => console.error(err),
-        // });
+        quickFilter = 'recent';
         break;
     }
+    const categoryId = this.selectedCategoryId !== null ? this.selectedCategoryId : undefined;
+    this.loadFilteredStores(categoryId, quickFilter);
   }
 }

@@ -1,0 +1,33 @@
+<app-custom-header
+  [title]="'PROMOÇÕES'"
+  [showStartButton]="true"
+  [startIconName]="'arrow-back-outline'"
+  [showEndButton]="true"
+  [endIconName]="'refresh-outline'"
+  (onEndClick)="refresh()"
+>
+</app-custom-header>
+
+<ion-content class="ion-padding">
+  <app-ad-banner [ad]="activeAd"></app-ad-banner>
+
+  <div class="promotions-list">
+    <app-promotion-card
+      *ngFor="let promo of promotions"
+      [promotion]="promo"
+      (click)="openPromoDetails(promo)"
+    >
+    </app-promotion-card>
+  </div>
+
+  
+  <div class="empty-state" *ngIf="promotions.length === 0">
+    <ion-icon name="pricetags-outline" class="empty-icon"></ion-icon>
+    <h3>Sem promoções no momento</h3>
+    <p>Volte em breve ou confira nossas lojas parceiras!</p>
+    <ion-button fill="outline" routerLink="/select-company">
+      Ver estabelecimentos
+    </ion-button>
+  </div>
+</ion-content>
+<app-footer-menu></app-footer-menu>

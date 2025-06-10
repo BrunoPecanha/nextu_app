@@ -64,6 +64,10 @@ export class FooterMenuComponent implements OnInit {
     this.navController.navigateForward('/notification');
   }
 
+   goToPromotions() {
+    this.navController.navigateForward('/promotions');
+  }
+
   marcarAsRead(id: number, usuarioId: number): Observable<any> {
     return of(null);
   }
@@ -71,5 +75,6 @@ export class FooterMenuComponent implements OnInit {
   openMenu() {
     const menu = document.querySelector('ion-menu');
     menu?.open();
+     window.dispatchEvent(new CustomEvent('menuOpened'));
   }
 }
