@@ -1,10 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { AlertController, MenuController } from '@ionic/angular';
 import { SessionService } from 'src/services/session.service';
 import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/services/user-service';
+import { MOCK_ADS } from 'src/services/promotion.mock-service';
 
 @Component({
   selector: 'app-side-menu',
@@ -13,6 +14,8 @@ import { UserService } from 'src/services/user-service';
 })
 export class SideMenuComponent implements OnInit, OnDestroy {
   private routerSubscription: Subscription | null = null;
+  private menuOpenedListener: (() => void) | undefined;
+  activeAd = MOCK_ADS[0];
 
   constructor(
     private alertController: AlertController,
@@ -34,6 +37,9 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
+  this.menuOpenedListener = () => this.loadUserQueInfo(); 
+    window.addEventListener('menuOpened', this.menuOpenedListener);
+
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe(() => {
@@ -44,11 +50,16 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     this.userService.profileUpdated$.subscribe(() => {
       this.loadUserInformations();
     });
+
+    this.loadUserQueInfo();
   }
 
   ngOnDestroy() {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
+    }
+     if (this.menuOpenedListener) {
+      window.removeEventListener('menuOpened', this.menuOpenedListener); 
     }
   }
 
@@ -92,5 +103,34 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   async navigateTo(route: string) {
     await this.menuCtrl.close();
     this.router.navigate([route]);
+  }
+
+  loadUserQueInfo() {
+    this.userFromSession = this.sessionService.getUser();
+
+    if (this.userFromSession) {
+      this.userName = `${this.userFromSession.name} ${this.userFromSession.lastName}`;
+      const userId = this.userFromSession.id;
+      this.profile = this.sessionService.getProfile();
+
+      this.userService.getUserInfoById(userId, this.profile).subscribe({
+        next: (value) => {
+          switch (this.profile) {
+            case 0:
+              this.queues = value.data;
+              break;
+            case 1:
+              this.customersWaiting = value.data;
+              break;
+            case 2:
+              this.queues = value.data;
+              break;
+          }
+        },
+        error: (error) => {
+          console.error('Erro ao buscar info do usuário:', error);
+        }
+      });
+    }
   }
 }

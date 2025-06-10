@@ -1,0 +1,30 @@
+<ion-card class="promo-card">
+  <div class="premium-badge" *ngIf="promotion.isPremium">PREMIUM</div>
+  <img [src]="promotion.image" [alt]="promotion.title" class="promo-image" />
+
+<ion-card-header>
+  <ion-card-title>{{promotion.title}}</ion-card-title>
+  <ion-card-subtitle>{{promotion.businessName}}</ion-card-subtitle>
+</ion-card-header>
+
+<ion-card-content>
+  <div class="promo-badges">
+    <ion-badge *ngIf="isNew(promotion)" color="success">Novo</ion-badge>
+    <ion-badge *ngIf="getDaysRemaining(promotion.endDate) === 0" color="danger">Último dia!</ion-badge>
+    <ion-badge color="warning">
+      <ion-icon name="time-outline"></ion-icon>
+      {{getDaysRemaining(promotion.endDate)}} dias restantes
+    </ion-badge>
+  </div>
+
+  <div class="promo-description">{{promotion.description}}</div>
+
+  <div class="promo-footer">
+    <ion-button fill="clear" size="small">
+      <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+      Detalhes
+    </ion-button>
+  </div>
+</ion-card-content>
+
+</ion-card>

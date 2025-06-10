@@ -16,7 +16,7 @@ import { SharedModule } from 'src/shared/shared.module';
     FormsModule,
     IonicModule,
     SharedModule,
-    NotificationPagePageRoutingModule
+    NotificationPagePageRoutingModule 
   ],
   declarations: [NotificationPage]
 })

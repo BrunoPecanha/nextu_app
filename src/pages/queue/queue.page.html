@@ -10,7 +10,6 @@
 >
 </app-custom-header>
 
-
 <ion-content class="fila-content">
   <ng-container *ngIf="customerCards !== null; else loading">
     <ng-container *ngIf="customerCards?.length; else noQueues">
@@ -34,11 +33,11 @@
                 <h6 class="titulo-principal">
                   {{ card.position === 0 ? 'Sua vez!' : 'Você é o ' +
                   card.position + 'º na fila' }}
-                  <ion-icon 
-                  [name]="card.isPaused ? 'pause-circle-outline' : 'play-circle-outline'" 
-                  [color]="card.isPaused ? 'danger' : 'success'"
-                  class="status-icon"
-                ></ion-icon>
+                  <ion-icon
+                    [name]="card.isPaused ? 'pause-circle-outline' : 'play-circle-outline'"
+                    [color]="card.isPaused ? 'danger' : 'success'"
+                    class="status-icon"
+                  ></ion-icon>
                 </h6>
               </div>
               <div class="info-secundaria">
@@ -177,9 +176,26 @@
                     >(x{{ servico.quantity }})</span
                   >
                 </ion-label>
-                <ion-note slot="end" class="preco-servico">
+                <ion-note
+                  *ngIf="!servico.variablePrice"
+                  slot="end"
+                  class="valor-total"
+                >
                   {{ servico.price | currency:'BRL' }}
                 </ion-note>
+                <ion-note
+                  *ngIf="servico.variablePrice && servico.finalPrice !== 0"
+                  slot="end"
+                  class="valor-total"
+                >
+                  {{ servico.finalPrice | currency:'BRL' }}
+                </ion-note>
+                <small
+                  *ngIf="servico.variablePrice && servico.finalPrice === 0"
+                  class="valor-total"
+                >
+                  A combinar
+                </small>
               </ion-item>
 
               <ion-item class="item-total">
@@ -190,7 +206,15 @@
                 ></ion-icon>
                 <ion-label class="label-total">Total</ion-label>
                 <ion-note slot="end" class="valor-total">
-                  {{ detalhes.total | currency:'BRL' }}
+                  <ng-container
+                    *ngIf="hasVariablePrice(card.queueId); else precoNormal"
+                  >
+                    {{ detalhes.total | currency:'BRL' }}
+                    <small>+ a combinar</small>
+                  </ng-container>
+                  <ng-template #precoNormal>
+                    {{ detalhes.total | currency:'BRL' }}
+                  </ng-template>
                 </ion-note>
               </ion-item>
             </ion-list>
@@ -290,7 +314,7 @@
   (click)="presentInfoPopup()"
 >
   <ion-fab-button color="primary">
-    <ion-icon name="help-circle-outline"></ion-icon>
+    <ion-icon name="help-outline" class="questionmark"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 

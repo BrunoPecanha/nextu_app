@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActionSheetButton } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
+import { MOCK_ADS } from 'src/services/promotion.mock-service';
 
 @Component({
   selector: 'app-notification',
@@ -10,6 +11,7 @@ import { NavController } from '@ionic/angular';
 export class NotificationPage {
   activeFilter: 'all' | 'unread' = 'all';
   actionSheetOpen = false;
+  activeAd = MOCK_ADS[0];
   
   notifications = [
     { 

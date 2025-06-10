@@ -31,6 +31,12 @@ export class SelectServicesPage {
   serviceOptions: ServiceModel[] = [];
   user: UserModel = {} as UserModel;
   customerId: number | null = null;
+  looseCustomer: boolean = false;
+
+  hasVariableTime: boolean = false;
+  hasVariablePrice: boolean = false;
+  fixedTimeTotal: number = 0;
+  fixedPriceTotal: number = 0;
 
   constructor(
     private router: Router,
@@ -49,7 +55,7 @@ export class SelectServicesPage {
   ngOnInit() {
     this.getProfessionalAndStore();
     this.loadAvailablesServices();
-   
+
   }
 
   getProfessionalAndStore() {
@@ -57,6 +63,7 @@ export class SelectServicesPage {
       this.queueId = params['queueId'];
       this.storeId = params['storeId'];
       this.customerId = params['customerId'] ? Number(params['customerId']) : null;
+      this.looseCustomer = params['looseCustomer'] ? Boolean(params['looseCustomer']) : false;
 
       if (this.customerId) {
         this.loadSelectedServicesByCustomer(this.customerId);
@@ -146,7 +153,14 @@ export class SelectServicesPage {
   }
 
   updateTotals() {
-    this.totalTime = this.selectedServices.reduce((acc, service) => {
+    this.hasVariableTime = this.selectedServices.some(
+      service => service.variableTime
+    );
+
+    this.fixedTimeTotal = this.selectedServices.reduce((acc, service) => {
+      if (service.variableTime)
+        return acc;
+
       const durationInMinutes = typeof service.duration === 'string'
         ? this.convertTimeStringToMinutes(service.duration)
         : Number(service.duration) || 0;
@@ -155,7 +169,14 @@ export class SelectServicesPage {
       return acc + (durationInMinutes * quantity);
     }, 0);
 
-    this.totalPrice = this.selectedServices.reduce((acc, service) => {
+    this.hasVariablePrice = this.selectedServices.some(
+      service => service.variablePrice
+    );
+
+    this.fixedPriceTotal = this.selectedServices.reduce((acc, service) => {
+      if (service.variablePrice)
+        return acc;
+
       const price = Number(service.price) || 0;
       const quantity = Number(service.quantity) || 0;
       return acc + (price * quantity);
@@ -176,19 +197,27 @@ export class SelectServicesPage {
   }
 
   formatOutput() {
-    const hours = Math.floor(this.totalTime / 60);
-    const minutes = Math.round(this.totalTime % 60);
+    const hours = Math.floor(this.fixedTimeTotal / 60);
+    const minutes = Math.round(this.fixedTimeTotal % 60);
 
-    this.totalTimeString =
-      hours > 0
-        ? `${hours}h ${minutes.toString().padStart(2, '0')}min`
-        : `${minutes}min`;
+    let timeString = '';
+    if (hours > 0) {
+      timeString = `${hours}h ${minutes.toString().padStart(2, '0')}min`;
+    } else {
+      timeString = `${minutes}min`;
+    }
 
-    const formattedPrice = isNaN(this.totalPrice)
+    this.totalTimeString = this.hasVariableTime
+      ? `${timeString} + a definir`
+      : timeString;
+
+    const formattedPrice = isNaN(this.fixedPriceTotal)
       ? '0,00'
-      : this.totalPrice.toFixed(2).replace('.', ',');
+      : this.fixedPriceTotal.toFixed(2).replace('.', ',');
 
-    this.totalPriceString = `R$ ${formattedPrice}`;
+    this.totalPriceString = this.hasVariablePrice
+      ? `R$ ${formattedPrice} + a combinar`
+      : `R$ ${formattedPrice}`;
   }
 
   async confirmSelection() {
@@ -228,7 +257,8 @@ export class SelectServicesPage {
       notes: this.notes,
       paymentMethod: this.paymentMethod,
       queueId: this.queueId,
-      userId: this.user.id
+      userId: this.user.id,
+      looseCustomer: this.looseCustomer
     };
 
     this.queueService.addCustomerToQueue(command).subscribe({
@@ -244,9 +274,9 @@ export class SelectServicesPage {
   private async initSignalRConnection() {
     try {
       await this.signalRService.startConnection();
-            
+
       const store = this.sessionService.getStore();
-      
+
       if (!store) throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
@@ -288,8 +318,6 @@ export class SelectServicesPage {
     });
   }
 
-  
-
   proceedToQueue() {
     if (this.customerId) {
       this.updateCustomerToQueue();
@@ -300,11 +328,19 @@ export class SelectServicesPage {
       this.initSignalRConnection();
     }
 
-    this.router.navigate(['/queue'], {
-      queryParams: {
-        userId: this.user.id,
-      }
-    });
+    if (this.looseCustomer) {
+      this.router.navigate(['/customer-list-in-queue'], {
+        queryParams: {
+          userId: this.user.id,
+        }
+      });
+    } else {
+      this.router.navigate(['/queue'], {
+        queryParams: {
+          userId: this.user.id,
+        }
+      });
+    }
   }
 
   async presentAlert(header: string, message: string) {

@@ -9,7 +9,7 @@
 </app-custom-header>
 
 <ion-content class="ion-padding">
- 
+ <app-ad-banner [ad]="activeAd" class="tall-ad-notifications"></app-ad-banner>
   <div class="filters-section">
     <ion-segment value="all" (ionChange)="filterChanged($event)">
       <ion-segment-button value="all">

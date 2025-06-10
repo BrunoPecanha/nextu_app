@@ -6,4 +6,5 @@ export interface AddCustomerToQueueRequest {
   paymentMethod: string;
   queueId: number;
   userId: number;
+  looseCustomer: boolean;
 }

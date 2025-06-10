@@ -6,58 +6,90 @@
   [endDisabled]="selectedServices.length === 0"
   startIconName="close-outline"
   [showEndButton]="true"
-  endIconName="checkmark"  
+  endIconName="checkmark"
   (onEndClick)="confirmSelection()"
 ></app-custom-header>
 
 <ion-content class="services-content">
-
   <div class="services-section">
     <h2 class="section-title">SERVIÇOS DISPONÍVEIS</h2>
     <div class="services-list">
-      <div class="service-option" *ngFor="let service of serviceOptions" (click)="addService(service)">
+      <div
+        class="service-option"
+        *ngFor="let service of serviceOptions"
+        (click)="addService(service)"
+      >
         <div class="service-image-wrapper">
-          <img *ngIf="service.category.imgPath" [src]="service.category.imgPath" class="service-image" alt="">
-          <ion-icon *ngIf="!service.category.imgPath" name="cut-outline" class="service-icon"></ion-icon>
+          <img
+            *ngIf="service.category.imgPath"
+            [src]="service.category.imgPath"
+            class="service-image"
+            alt=""
+          />
+          <ion-icon
+            *ngIf="!service.category.imgPath"
+            name="cut-outline"
+            class="service-icon"
+          ></ion-icon>
         </div>
-        
+
         <div class="service-details">
           <h3 class="service-name">{{ service.name }}</h3>
           <div class="service-meta">
             <span class="meta-item">
               <ion-icon name="time-outline"></ion-icon>
-              {{ service.duration }} min
+              <span *ngIf="!service.variableTime; else undefinedDuration">
+                {{ service.duration }} min
+              </span>
+              <ng-template #undefinedDuration>A definir</ng-template>
             </span>
+
             <span class="meta-item price">
               <ion-icon name="cash-outline"></ion-icon>
-              R$ {{ service.price | number:'1.2-2' }}
+              <span *ngIf="!service.variablePrice; else undefinedPrice">
+                R$ {{ service.price | number:'1.2-2' }}
+              </span>
+              <ng-template #undefinedPrice>A combinar</ng-template>
             </span>
           </div>
         </div>
-        
-        <ion-icon name="add-circle-outline" color="primary" class="add-icon"></ion-icon>
+
+        <ion-icon
+          name="add-circle-outline"
+          color="primary"
+          class="add-icon"
+        ></ion-icon>
       </div>
     </div>
   </div>
 
   <div class="selected-section" *ngIf="selectedServices.length > 0">
     <h2 class="section-title">SEUS SERVIÇOS</h2>
-    
+
     <div class="selected-list">
-      <div class="selected-item" *ngFor="let selected of selectedServices; let i = index">
+      <div
+        class="selected-item"
+        *ngFor="let selected of selectedServices; let i = index"
+      >
         <div class="selected-item-content">
           <div class="item-image" *ngIf="selected.imgPath">
-            <img [src]="selected.imgPath" alt="">
+            <img [src]="selected.imgPath" alt="" />
           </div>
-          <ion-icon *ngIf="!selected.imgPath" name="cut-outline" class="item-icon"></ion-icon>
-          
+          <ion-icon
+            *ngIf="!selected.imgPath"
+            name="cut-outline"
+            class="item-icon"
+          ></ion-icon>
+
           <div class="item-info">
             <span class="item-name">{{ selected.name }}</span>
             <div class="item-actions">
               <ion-button fill="clear" (click)="removeService(i)">
                 <ion-icon name="remove-circle" color="danger"></ion-icon>
               </ion-button>
-              <span class="item-quantity" *ngIf="selected.quantity > 1">{{ selected.quantity }}x</span>
+              <span class="item-quantity" *ngIf="selected.quantity > 1"
+                >{{ selected.quantity }}x</span
+              >
             </div>
           </div>
         </div>
@@ -80,17 +112,29 @@
   <div class="payment-section">
     <h2 class="section-title">FORMA DE PAGAMENTO</h2>
     <div class="payment-options">
-      <ion-button fill="outline" [color]="paymentMethod === '1' ? 'primary' : 'medium'" (click)="paymentMethod = '1'">
+      <ion-button
+        fill="outline"
+        [color]="paymentMethod === '1' ? 'primary' : 'medium'"
+        (click)="paymentMethod = '1'"
+      >
         <ion-icon name="cash-outline" slot="start"></ion-icon>
         Dinheiro
       </ion-button>
-      
-      <ion-button fill="outline" [color]="paymentMethod === '3' ? 'primary' : 'medium'" (click)="paymentMethod = '3'">
+
+      <ion-button
+        fill="outline"
+        [color]="paymentMethod === '3' ? 'primary' : 'medium'"
+        (click)="paymentMethod = '3'"
+      >
         <ion-icon name="qr-code-outline" slot="start"></ion-icon>
         Pix
       </ion-button>
-      
-      <ion-button fill="outline" [color]="paymentMethod === '2' ? 'primary' : 'medium'" (click)="paymentMethod = '2'">
+
+      <ion-button
+        fill="outline"
+        [color]="paymentMethod === '2' ? 'primary' : 'medium'"
+        (click)="paymentMethod = '2'"
+      >
         <ion-icon name="card-outline" slot="start"></ion-icon>
         Cartão
       </ion-button>

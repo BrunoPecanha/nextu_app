@@ -32,6 +32,10 @@ export class UserService {
     this.profileUpdated.next();
   }
 
+  getUserInfoById(id: number, profile: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/user/info/${id}/${profile}`);
+  }
+
   updateUser(data: any): Observable<UserResponse> {
     let options = {};
 

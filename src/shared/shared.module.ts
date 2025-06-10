@@ -7,6 +7,7 @@ import { FooterMenuComponent } from './components/footer-menu/footer-menu.compon
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { UnicodeToCharPipe } from 'src/pipes/unicode-to-char.pipe';
 import { CustomHeaderComponent } from './components/custom-header/custom-header.component';
+import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { CustomHeaderComponent } from './components/custom-header/custom-header.
     FooterMenuComponent,
     SideMenuComponent,
     UnicodeToCharPipe,
-    CustomHeaderComponent
+    CustomHeaderComponent,
+    AdBannerComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { CustomHeaderComponent } from './components/custom-header/custom-header.
     FooterMenuComponent,
     SideMenuComponent,
     UnicodeToCharPipe,
-    CustomHeaderComponent
+    CustomHeaderComponent,
+    AdBannerComponent  
   ]
 })
 export class SharedModule {}

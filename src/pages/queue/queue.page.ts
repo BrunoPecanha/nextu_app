@@ -48,7 +48,8 @@ export class QueuePage implements OnInit {
       await this.signalRService.startConnection();
       const user = this.sessionService.getUser();
 
-      if (!user?.id) throw new Error('Usuário inválido');
+      if (!user?.id)
+        throw new Error('Usuário inválido');
 
       const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
       const stores = response?.data || [];
@@ -84,8 +85,6 @@ export class QueuePage implements OnInit {
 
     await this.signalRService.joinMultipleGroups(groupNames);
   }
-
-
 
   ionViewDidEnter() {
     this.forceReload();
@@ -130,6 +129,11 @@ export class QueuePage implements OnInit {
     }
   }
 
+  hasVariablePrice(queueId: number): boolean {
+    const detalhes = this.cardDetailsMap.get(queueId);
+    return detalhes?.services?.some(s => s.variablePrice && s.finalPrice === 0) ?? false;
+  }
+
   public isCardExpanded(card: CustomerInQueueCardModel): boolean {
     return this.currentlyExpandedCardId === card.queueId;
   }
@@ -150,7 +154,8 @@ export class QueuePage implements OnInit {
   }
 
   public getTimeColor(timeToWait: number | string | undefined): string {
-    if (!timeToWait) return '';
+    if (!timeToWait)
+      return '';
 
     let minutes: number;
     if (typeof timeToWait === 'string') {
@@ -159,8 +164,10 @@ export class QueuePage implements OnInit {
       minutes = timeToWait;
     }
 
-    if (minutes > 45) return 'vermelho';
-    if (minutes > 15) return 'amarelo';
+    if (minutes > 45)
+      return 'vermelho';
+    if (minutes > 15)
+      return 'amarelo';
     return 'verde';
   }
 
@@ -235,7 +242,8 @@ export class QueuePage implements OnInit {
   }
 
   private loadCustomerInQueueCardDetails(id: number, queueId: number): void {
-    if (this.currentlyExpandedCardId !== queueId) return;
+    if (this.currentlyExpandedCardId !== queueId)
+      return;
 
     this.queueService.getCustomerInQueueCardDetails(id, queueId).subscribe({
       next: (response) => {
@@ -321,7 +329,8 @@ export class QueuePage implements OnInit {
 
   public editarServicos(card: CustomerInQueueCardModel): void {
     const details = this.getCardDetails(card);
-    if (!details) return;
+    if (!details)
+      return;
 
     this.router.navigate(['/select-services'], {
       queryParams: {
