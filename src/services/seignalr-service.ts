@@ -117,8 +117,7 @@ export class SignalRService {
   public async leaveAllGroups(): Promise<void> {
     if (!this.isConnected() || this.joinedGroups.size === 0) return;
 
-    try {
-      // Pode ser otimizado se o servidor suportar saída de múltiplos grupos de uma vez
+    try {  
       await Promise.all(
         Array.from(this.joinedGroups).map(group => this.leaveGroup(group))
       );

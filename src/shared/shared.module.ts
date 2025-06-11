@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 import { FooterMenuComponent } from './components/footer-menu/footer-menu.component';
@@ -17,18 +17,22 @@ import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
     UnicodeToCharPipe,
     CustomHeaderComponent,
     AdBannerComponent
+    
   ],
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule
+    IonicModule,    
+    ReactiveFormsModule
   ],
   exports: [
     FooterMenuComponent,
     SideMenuComponent,
     UnicodeToCharPipe,
     CustomHeaderComponent,
-    AdBannerComponent  
+    AdBannerComponent,
+    ReactiveFormsModule,
+    FormsModule    
   ]
 })
-export class SharedModule {}
+export class SharedModule { }
