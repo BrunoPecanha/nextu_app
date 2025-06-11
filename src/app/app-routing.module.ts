@@ -101,8 +101,11 @@ const routes: Routes = [
   {
     path: 'promotions',
     loadChildren: () => import('../pages/promotions/promotions.module').then(m => m.PromotionsPageModule)
+  },
+  {
+    path: 'queue-list-for-owner',
+    loadChildren: () => import('../pages/queue-list-for-owner/queue-list-for-owner.module').then( m => m.QueueListForOwnerPageModule)
   }
-
 ];
 
 @NgModule({

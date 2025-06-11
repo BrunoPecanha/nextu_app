@@ -1,0 +1,70 @@
+<app-custom-header
+  title="FILAS ABERTAS"
+  [subtitle]="(currentDate | date:'dd/MM/yyyy') || ''"
+  [showStartButton]="false"
+  startIconName="arrow-back"
+  routerLink="/queue-list-for-owner"
+  [showEndButton]="false"
+></app-custom-header>
+
+<ion-content class="ion-padding">
+  <div class="queues-container">
+    <ion-card
+      *ngFor="let queue of queues"
+      (click)="viewQueueDetails(queue.id)"
+      class="queue-card"
+    >
+      <ion-card-header>
+        <ion-card-title>
+          {{ queue.name }}
+          <ion-badge
+            [color]="getStatusColor(queue.status)"
+            class="status-badge"
+          >
+            {{ getStatusDescription(queue.status) }}
+          </ion-badge>
+        </ion-card-title>
+        <ion-card-subtitle>
+          <ion-icon name="person-outline"></ion-icon>
+          {{ queue.responsibleName }}
+        </ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="queue-info">
+          <div class="info-item">
+            <ion-icon name="calendar-outline"></ion-icon>
+            <span>{{ formatDate(queue.date) }}</span>
+          </div>
+
+          <div class="info-item">
+            <ion-icon name="people-outline"></ion-icon>
+            <span
+              >{{ queue.totalCount - queue.currentCount }} / {{ queue.totalCount
+              }} pessoas</span
+            >
+          </div>
+
+          <div class="info-item" *ngIf="queue.queueDescription">
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>{{ queue.queueDescription }}</span>
+          </div>
+        </div>
+
+        <ion-progress-bar
+          [value]="queue.currentCount / queue.totalCount"
+          [color]="getStatusColor(queue.status)"
+          class="progress-bar"
+        ></ion-progress-bar>
+      </ion-card-content>
+    </ion-card>
+
+    <div *ngIf="queues.length === 0" class="empty-state">
+      <ion-icon name="list-outline"></ion-icon>
+      <h3>Nenhuma fila encontrada</h3>
+      <p>Nenhum colaborador com fila aberta no momento</p>
+    </div>
+  </div>
+</ion-content>
+
+<app-footer-menu></app-footer-menu>

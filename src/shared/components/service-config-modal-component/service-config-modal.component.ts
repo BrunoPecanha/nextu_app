@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./service-config-modal.component.scss']
 })
 export class ServiceConfigModalComponent implements OnInit {
-  @Input() services: { id: number; name: string }[] = [];
+  @Input() services: { id: number; name: string, finalPrice: number, finalDuration: number }[] = [];
   @Input() customerId: number = 0;
 
   form: FormGroup;
@@ -28,8 +28,8 @@ export class ServiceConfigModalComponent implements OnInit {
         this.fb.group({
           id: [service.id],
           name: [service.name],
-          price: ['', [Validators.required, Validators.min(0.01)]],
-          duration: ['', [Validators.required, Validators.min(1), Validators.max(600)]]
+          price: [service.finalPrice, [Validators.required, Validators.min(0.01)]],
+          duration: [service.finalDuration, [Validators.required, Validators.min(1), Validators.max(600)]]
         })
       );
     });

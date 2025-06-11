@@ -17,31 +17,12 @@ export class FooterMenuComponent implements OnInit {
   constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService) {
     this.profile = this.sesseionService.getProfile();
   }
-  
+
   ngOnInit() {
     this.notificationService.atualizarContadorNaoLidas();
   }
 
-  async goToHome() {    
-    try {
-      if (this.profile === 0) {
-        this.router.navigate(['/select-company'], {
-          replaceUrl: true,
-          state: { redirectedFromBack: true }
-        });
-      }
-      else
-        this.router.navigate(['/customer-list-in-queue'], {
-          replaceUrl: true,
-          state: { redirectedFromBack: true }
-        });
-    } catch (error) {
-      console.error('Navigation error:', error);
-      this.router.navigate(['/role-registration'], { replaceUrl: true });
-    }
-  }
-
-  async goToQueue() {    
+  async goToHome() {
     try {
       if (this.profile === 0) {
         this.router.navigate(['/queue'], {
@@ -49,22 +30,29 @@ export class FooterMenuComponent implements OnInit {
           state: { redirectedFromBack: true }
         });
       }
-      else
+      else if (this.profile === 1)
         this.router.navigate(['/customer-list-in-queue'], {
           replaceUrl: true,
           state: { redirectedFromBack: true }
         });
+      else (this.profile === 2)
+      this.router.navigate(['/queue-list-for-owner'], {
+        replaceUrl: true,
+        state: { redirectedFromBack: true }
+      });
     } catch (error) {
       console.error('Navigation error:', error);
       this.router.navigate(['/role-registration'], { replaceUrl: true });
     }
   }
 
+ 
+
   goToNotifications() {
     this.navController.navigateForward('/notification');
   }
 
-   goToPromotions() {
+  goToPromotions() {
     this.navController.navigateForward('/promotions');
   }
 
@@ -75,6 +63,6 @@ export class FooterMenuComponent implements OnInit {
   openMenu() {
     const menu = document.querySelector('ion-menu');
     menu?.open();
-     window.dispatchEvent(new CustomEvent('menuOpened'));
+    window.dispatchEvent(new CustomEvent('menuOpened'));
   }
 }
