@@ -72,10 +72,12 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   async openServiceConfig(client: any) {
     const servicesMapped = client.services
-      .filter((s: any) => s.finalPrice === 0)
+      .filter((s: any) => s.variablePrice || s.variableTime)
       .map((s: any) => ({
         id: s.serviceId,
-        name: s.name
+        name: s.name,
+        finalPrice: s.finalPrice,
+        finalDuration: s.finalDuration
       }));
 
     const modal = await this.modalCtrl.create({
@@ -101,6 +103,11 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
         next: () => console.log('Valores atualizados com sucesso'),
         error: err => console.error('Erro ao atualizar:', err)
       });
+  }
+
+  canEditCustomerPriceAndTime(client: any): boolean {
+    return Array.isArray(client.services) &&
+      client.services.some((s: { variablePrice: any; variableTime: any; }) => s.variablePrice || s.variableTime);
   }
 
   private async initSignalRConnection() {
@@ -174,7 +181,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
       }
     });
   }
-
 
   private loadQueueData() {
     this.store = this.sessionService.getStore();

@@ -32,7 +32,7 @@
 
     <div class="card-top-actions">
       <ion-button
-        *ngIf="client.pricePending"
+        *ngIf="canEditCustomerPriceAndTime(client)"
         fill="clear"
         size="small"
         (click)="openServiceConfig(client)"

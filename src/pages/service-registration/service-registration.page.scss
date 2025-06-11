@@ -65,7 +65,8 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   overflow: hidden;
   transition: all 0.3s ease;
-  
+  margin: 0;
+
   &.new-service {
     border-left: 4px solid var(--ion-color-primary);
     background: rgba(var(--ion-color-primary-rgb), 0.05);

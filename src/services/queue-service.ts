@@ -123,8 +123,8 @@ export class QueueService {
     return this.http.get<CustomerInQueueForEmployeeResponse>(`${this.apiUrl}/queue/${storeId}/${employeeId}/customers-in-queue`);
   }
 
-  getAvailableQueues(storeId: string): Observable<any> {
-    return this.http.get(`${this.apiUrl}/queue/available/${storeId}`);
+  loadAllQueuesOfStoreForOwner(storeId: number): Observable<any> {    
+    return this.http.get(`${this.apiUrl}/queue/store/owners-queue/${storeId}`);
   }
 
   loadAllTodayQueue(storeId: number, filter: QueueFilterRequest): Observable<QueueListResponse> {

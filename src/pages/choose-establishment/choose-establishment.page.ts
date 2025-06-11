@@ -16,6 +16,7 @@ export class ChooseEstablishmentPage implements OnInit {
   selectedHeaderImage: any = '';
   selectedLogo: any = '';
   user: UserModel | any;
+  profileSelected: number = 1;
   establishments: StoreListResponse | any;
 
   constructor(private router: Router, private storeService: StoresService,
@@ -29,10 +30,10 @@ export class ChooseEstablishmentPage implements OnInit {
 
   loadEstablishments() {
     this.user = this.session.getUser();
-    const profileSelected = this.session.getProfile();
+    this.profileSelected = this.session.getProfile();
 
-    if (this.user && profileSelected) {
-      this.storeService.loadEmployeeStores(this.user.id, profileSelected).subscribe({
+    if (this.user && this.profileSelected) {
+      this.storeService.loadEmployeeStores(this.user.id, this.profileSelected).subscribe({
         next: (response) => {
           this.establishments = response.data;
         },
@@ -45,7 +46,6 @@ export class ChooseEstablishmentPage implements OnInit {
     }
   }
 
-
   selecionarEmpresa(est: StoreModel) {
     this.selectedHeaderImage = est.logoPath ?? '';
     this.selectedLogo = est.logoPath ?? '';
@@ -57,7 +57,9 @@ export class ChooseEstablishmentPage implements OnInit {
     this.session.setStore(selectedStore);
 
     this.queueService.hasOpenQueueForEmployeeToday(this.user?.id).subscribe((isQueueOpenToday: boolean) => {
-      if (isQueueOpenToday) {
+      if (this.profileSelected === 2)
+        this.router.navigate(['/queue-list-for-owner']);
+      else if (isQueueOpenToday) {
         this.router.navigate(['/customer-list-in-queue']);
       } else {
         this.router.navigate(['/queue-admin']);

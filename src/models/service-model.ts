@@ -14,5 +14,6 @@ export interface ServiceModel {
     variablePrice: boolean,
     icon: string,
     finalPrice: number;
+    finalDuration: number;
     quantity: number
 }
