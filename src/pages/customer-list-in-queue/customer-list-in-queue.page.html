@@ -130,7 +130,7 @@
         </ion-button>
 
         <ion-button
-          [disabled]="client.pricePending"
+          [disabled]="client.pricePending || (isAnyClientInService && !client.inService)"
           *ngIf="!isPaused"
           class="start-service-button"
           fill="solid"

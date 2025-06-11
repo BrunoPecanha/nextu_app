@@ -244,6 +244,10 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     });
   }
 
+  get isAnyClientInService(): boolean {
+    return this.clients?.some(client => client.inService) && !this.store.attendSimultaneously;
+  }
+
   private getQueueForEmployee() {
     if (!this.storeId)
       return;
