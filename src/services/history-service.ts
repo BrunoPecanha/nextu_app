@@ -39,6 +39,6 @@ export class HistoryService {
 
   getClientHistoryByDate(date: string): Observable<ClientHistoryRecordModel[]> {
     const filtered = this.mockHistory.filter(item => item.date === date);
-    return of(filtered).pipe(delay(500)); // Simula requisição HTTP
+    return of(filtered).pipe(delay(500)); 
   }
 }

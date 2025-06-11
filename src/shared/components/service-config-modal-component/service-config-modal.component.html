@@ -1,0 +1,73 @@
+<app-custom-header
+  title="VALORES VARIÁVEIS"
+  startIconName="close-outline"
+  [showStartButton]="true"
+  [endDisabled]="!form.valid"
+  startIconName="close-outline"
+  (onStartClick)="closeModal()"
+  [showEndButton]="true"
+  endIconName="checkmark"
+  (onEndClick)="save()"
+></app-custom-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="form" class="form-container">
+    <div formArrayName="services">
+      <ion-card
+        *ngFor="let group of servicesArray.controls; let i = index"
+        [formGroupName]="i"
+        class="service-card"
+      >
+        <ion-card-header class="card-header">
+          <ion-card-title class="card-title">
+            <ion-icon
+              name="construct-outline"
+              slot="start"
+              color="primary"
+              class="service-icon"
+            ></ion-icon>
+            {{ group.get("name")?.value }}
+          </ion-card-title>
+        </ion-card-header>
+
+        <ion-card-content class="card-content">
+          <ion-item fill="solid" class="form-item">
+            <ion-label position="stacked" class="input-label">Preço (R$)</ion-label>
+            <ion-icon
+              slot="start"
+              name="cash-outline"
+              color="medium"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              formControlName="price"
+              type="number"
+              inputmode="decimal"
+              placeholder="0,00"
+              class="custom-input"
+              (ionChange)="formatCurrency(i)"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item fill="solid" class="form-item">
+            <ion-label position="stacked" class="input-label">Duração (minutos)</ion-label>
+            <ion-icon
+              slot="start"
+              name="time-outline"
+              color="medium"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              formControlName="duration"
+              type="number"
+              inputmode="numeric"
+              placeholder="0"
+              min="1"
+              class="custom-input"
+            ></ion-input>
+          </ion-item>
+        </ion-card-content>
+      </ion-card>
+    </div>
+  </form>
+</ion-content>

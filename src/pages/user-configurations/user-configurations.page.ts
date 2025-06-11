@@ -214,7 +214,7 @@ export class UserConfigurationsPage {
       this.showErrorToast('Erro ao enviar dados. Tente novamente.');
     } finally {
       this.enviando = false;
-       this.userService.notifyProfileUpdate(); // Notifica todos os ouvintes
+       this.userService.notifyProfileUpdate();
       
     }
   }

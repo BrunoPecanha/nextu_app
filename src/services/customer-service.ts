@@ -15,4 +15,11 @@ export class CustomerService {
   loadCustomerInfo(id: number): Observable<CustomerResponse> {
     return this.http.get<CustomerResponse>(`${this.apiUrl}/customer/${id}`);
   }
+
+  updatePriceAndTimeForVariableServiceAsync(customerServicesUpdate: any): Observable<any> {
+    return this.http.patch<any>(
+      `${this.apiUrl}/customer`,
+      customerServicesUpdate
+    );
+  }
 }

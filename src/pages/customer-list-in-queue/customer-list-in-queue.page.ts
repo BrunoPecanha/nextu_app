@@ -1,15 +1,17 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, NavController } from '@ionic/angular';
+import { AlertController, ModalController, NavController } from '@ionic/angular';
 import { CustomerInQueueForEmployeeModel } from 'src/models/customer-in-queue-for-employee-model';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { QueueModel } from 'src/models/queue-model';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 import { StoreModel } from 'src/models/store-model';
+import { CustomerService } from 'src/services/customer-service';
 import { QueueService } from 'src/services/queue-service';
 import { SignalRService } from 'src/services/seignalr-service';
 import { SessionService } from 'src/services/session.service';
 import { ToastService } from 'src/services/toast.service';
+import { ServiceConfigModalComponent } from 'src/shared/components/service-config-modal-component/service-config-modal.component';
 
 @Component({
   selector: 'app-customer-list-in-queue',
@@ -31,7 +33,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   isServiceConfigModalOpen = false;
   servicePrice: number | null = null;
   serviceTime: number | null = null;
-  currentClient: any = null; // Para armazenar o cliente que está sendo configurado
+  currentClient: any = null;
 
   private storeId: number;
   private employeeId: number;
@@ -39,10 +41,12 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   constructor(
     private navCtrl: NavController,
+    private customerService: CustomerService,
     private queueService: QueueService,
     private sessionService: SessionService,
     private alertController: AlertController,
     private toast: ToastService,
+    private modalCtrl: ModalController,
     private signalRService: SignalRService,
     private router: Router
   ) {
@@ -64,6 +68,39 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.cleanupSignalR();
+  }
+
+  async openServiceConfig(client: any) {
+    const servicesMapped = client.services
+      .filter((s: any) => s.finalPrice === 0)
+      .map((s: any) => ({
+        id: s.serviceId,
+        name: s.name
+      }));
+
+    const modal = await this.modalCtrl.create({
+      component: ServiceConfigModalComponent,
+      componentProps: {
+        customerId: client.id,
+        services: servicesMapped
+      }
+    });
+
+    modal.present();
+
+    const { data } = await modal.onDidDismiss();
+
+    if (data) {
+      this.saveClientServices(data);
+    }
+  }
+
+  saveClientServices(customerServicesUpdate: any) {
+    this.customerService.updatePriceAndTimeForVariableServiceAsync(customerServicesUpdate)
+      .subscribe({
+        next: () => console.log('Valores atualizados com sucesso'),
+        error: err => console.error('Erro ao atualizar:', err)
+      });
   }
 
   private async initSignalRConnection() {
@@ -95,55 +132,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     this.signalRService.offUpdateQueue();
     if (this.signalRGroup) {
       this.signalRService.leaveGroup(this.signalRGroup);
-    }
-  }
-
-  // Método para abrir o modal
-  openServiceConfig(client: any) {
-    this.currentClient = client;
-    this.servicePrice = null; // Resetar valores
-    this.serviceTime = null;
-    this.isServiceConfigModalOpen = true;
-  }
-
-  // Método para fechar o modal
-  closeServiceConfigModal() {
-    this.isServiceConfigModalOpen = false;
-    this.currentClient = null;
-  }
-
-  // Método para salvar a configuração
-  async saveServiceConfig() {
-    if (!this.currentClient || this.servicePrice === null || this.serviceTime === null) {
-      // Aqui você pode adicionar uma validação ou mensagem de erro
-      return;
-    }
-
-    try {
-      // Aqui você faria a chamada para o backend
-      // Exemplo:
-      // const result = await this.yourService.updateServiceConfig(
-      //   this.currentClient.id,
-      //   this.servicePrice,
-      //   this.serviceTime
-      // );
-
-      // Simulando uma requisição bem-sucedida
-      console.log('Configuração salva:', {
-        clientId: this.currentClient.id,
-        price: this.servicePrice,
-        time: this.serviceTime
-      });
-
-      // Fechar o modal após salvar
-      this.closeServiceConfigModal();
-
-      // Opcional: Mostrar mensagem de sucesso
-      // this.showSuccessMessage('Configuração salva com sucesso!');
-
-    } catch (error) {
-      console.error('Erro ao salvar configuração:', error);
-      // Mostrar mensagem de erro
     }
   }
 
@@ -257,7 +245,8 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   }
 
   private getQueueForEmployee() {
-    if (!this.storeId) return;
+    if (!this.storeId)
+      return;
 
     this.queueService.getOpenedQueueListByEmployeeId(this.storeId)
       .subscribe({
@@ -336,6 +325,10 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     } else {
       console.error('Loja ou funcionário não localizado.');
     }
+  }
+
+  getServiceDescriptions(customer: CustomerInQueueForEmployeeModel): string {
+    return customer.services?.map(s => s.name).join(', ');
   }
 
   calculateWaitingTime(arrivalTime: string): string {
@@ -436,7 +429,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     return `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}`;
   }
 
-  
+
   openWhatsapp(customer: CustomerInQueueForEmployeeModel) {
     const phone = customer;
     if (!phone) {
