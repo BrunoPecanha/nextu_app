@@ -22,31 +22,32 @@ export class FooterMenuComponent implements OnInit {
     this.notificationService.atualizarContadorNaoLidas();
   }
 
-  async goToHome() {
-    try {
+  async goToHome() {    try {
+      
       if (this.profile === 0) {
         this.router.navigate(['/queue'], {
           replaceUrl: true,
           state: { redirectedFromBack: true }
         });
       }
-      else if (this.profile === 1)
+      else if (this.profile === 1) {
         this.router.navigate(['/customer-list-in-queue'], {
           replaceUrl: true,
           state: { redirectedFromBack: true }
         });
-      else (this.profile === 2)
-      this.router.navigate(['/queue-list-for-owner'], {
-        replaceUrl: true,
-        state: { redirectedFromBack: true }
-      });
+      }
+      else if (this.profile === 2)
+      {
+        this.router.navigate(['/queue-list-for-owner'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+      }
     } catch (error) {
       console.error('Navigation error:', error);
       this.router.navigate(['/role-registration'], { replaceUrl: true });
     }
   }
-
- 
 
   goToNotifications() {
     this.navController.navigateForward('/notification');

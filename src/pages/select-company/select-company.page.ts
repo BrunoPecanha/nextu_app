@@ -72,7 +72,7 @@ export class SelectCompanyPage implements OnInit {
 
     this.service.loadFilteredStores(categoryId, quickFilter, userId).subscribe({
       next: (response) => {
-        this.companies = response.data.map(store => ({
+        this.companies = response.data.map(store => ({          
           ...store,
           isNew: this.checkIfNew(store.createdAt),
           liked: store.liked || false,

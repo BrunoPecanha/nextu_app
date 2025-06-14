@@ -131,8 +131,8 @@
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
             <span>
-              {{ card.minorQueue === -1 ? 'Sem fila aberta' : 'Fila menor:
-              ' + card.minorQueue + ' pessoas' }}
+              {{ card.minorQueue === -1 ? 'Sem fila aberta' :  card.minorQueue == 0 ?  'Ninguém na fila' :  
+              'Fila com ' + card.minorQueue + ' pessoas' }}
             </span>
           </div>
 

@@ -2,35 +2,38 @@
   title="HISTÓRICO"
   [showStartButton]="true"
   startIconName="arrow-back"
-  [showEndButton]="false"
+  [showEndButton]="true"
+  [endIconName]="'calendar-outline'"
+  (onEndClick)="openDateModal()"
+  [subtitle]="(startDate | date:'dd/MM/yyyy') + ' até ' + (endDate | date:'dd/MM/yyyy')"
 ></app-custom-header>
 
 <ion-content>
-  <div class="history-wrapper">    
-    <div class="history-header fixed-header">
-      <h2>ATENDIMENTOS EM: {{ selectedDate | date: 'dd/MM/yyyy' }}</h2>
-
-      <div class="calendar-container">
-        <ion-label>Filtrar por data:</ion-label>
-        <ion-datetime
-          presentation="date"
-          [value]="selectedDate"
-          (ionChange)="onDateChange($event)"
-          color="primary"
-        ></ion-datetime>
-      </div>
-    </div>
-    
+  <div class="history-wrapper">
     <div class="history-list scroll-area">
       <ion-list *ngIf="history.length > 0; else noResults">
         <ion-item *ngFor="let record of history">
           <ion-icon name="storefront-outline" slot="start"></ion-icon>
+
           <ion-label>
-            <h3>{{ record.establishmentName }}</h3>
-            <p><strong>Data:</strong> {{ record.date | date: 'dd/MM/yyyy' }}</p>
-            <p><strong>Início:</strong> {{ record.startTime | date: 'HH:mm' }}</p>
-            <p><strong>Fim:</strong> {{ record.endTime | date: 'HH:mm' }}</p>
+            <div class="header-row">
+              <h3>{{ record.establishmentName }}</h3>
+              <ion-badge [color]="getStatusColor(record.status)">
+                {{ record.status | uppercase }}
+              </ion-badge>
+              <ion-icon 
+                *ngIf="record.status === 'Removed'" 
+                name="information-circle-outline" 
+                class="info-icon"
+                (click)="showStatusReason(record.statusReason)">
+              </ion-icon>
+            </div>
+
+            <p><strong>Data:</strong> {{ record.date }}</p>
+            <p><strong>Início:</strong> {{ record.startTime }}</p>
+            <p><strong>Fim:</strong> {{ record.endTime }}</p>
             <p><strong>Pagamento:</strong> {{ record.paymentMethod }}</p>
+            <p><strong>Serviços:</strong> {{ record.services }}</p>
             <p><strong>Valor:</strong> R$ {{ record.amount.toFixed(2) }}</p>
           </ion-label>
         </ion-item>
@@ -39,7 +42,7 @@
       <ng-template #noResults>
         <div class="empty-state">
           <ion-icon name="calendar-clear-outline"></ion-icon>
-          <p>Nenhum atendimento encontrado para esta data.</p>
+          <p>Nenhum atendimento encontrado para este período.</p>
         </div>
       </ng-template>
     </div>

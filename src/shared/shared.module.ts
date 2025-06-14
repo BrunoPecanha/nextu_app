@@ -8,6 +8,8 @@ import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { UnicodeToCharPipe } from 'src/pipes/unicode-to-char.pipe';
 import { CustomHeaderComponent } from './components/custom-header/custom-header.component';
 import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
+import { DatePickerModalComponent } from './components/date-picker-modal/date-picker-modal.component';
+import { PeriodPickerModalComponent } from './components/period-picker-modal/period-picker-modal.component';
 
 
 @NgModule({
@@ -16,13 +18,15 @@ import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
     SideMenuComponent,
     UnicodeToCharPipe,
     CustomHeaderComponent,
-    AdBannerComponent
-    
+    AdBannerComponent,
+    DatePickerModalComponent,
+    PeriodPickerModalComponent
+
   ],
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,    
+    IonicModule,
     ReactiveFormsModule
   ],
   exports: [
@@ -32,7 +36,9 @@ import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
     CustomHeaderComponent,
     AdBannerComponent,
     ReactiveFormsModule,
-    FormsModule    
+    FormsModule,
+    DatePickerModalComponent,
+    PeriodPickerModalComponent
   ]
 })
 export class SharedModule { }
