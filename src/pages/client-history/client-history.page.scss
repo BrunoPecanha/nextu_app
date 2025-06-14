@@ -1,54 +1,10 @@
 ion-content {
   --background: #f4f4f4;
-  display: flex;
-  flex-direction: column;
 
   .history-wrapper {
     display: flex;
     flex-direction: column;
     height: 100%;
-  }
-
-  .fixed-header {
-    flex-shrink: 0;
-    background: #f4f4f4;
-    padding: 20px;
-    border-bottom: 1px solid #ddd;
-    text-align: center;
-    z-index: 10;
-
-    h2 {
-      font-size: 18px;
-      font-weight: bold;
-      color: #222;
-      margin-bottom: 12px;
-    }
-
-    .calendar-container {
-      padding: 16px;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-      ion-label {
-        font-size: 14px;
-        font-weight: 600;
-        color: #333;
-        margin-bottom: 8px;
-        display: block;
-      }
-
-      ion-datetime {
-        width: 100%;
-        --min-width: 100%;
-        --max-width: 100%;
-        border: 1px solid #ddd;
-        border-radius: 10px;
-        padding: 12px;
-        font-size: 16px;
-        background: #f9f9f9;
-      }
-    }
   }
 
   .scroll-area {
@@ -57,27 +13,76 @@ ion-content {
     padding: 16px;
   }
 
-  ion-list {
-    padding: 0;
-  }
-
-  ion-item {
+  .history-card {
+    background: #fff;
     border-radius: 12px;
-    margin-bottom: 12px;
-    --background: #fff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-  }
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 
-  ion-label h3 {
-    font-size: 16px;
-    font-weight: 600;
-    color: #222;
-  }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
 
-  ion-label p {
-    font-size: 14px;
-    color: #666;
-    margin: 2px 0;
+      ion-icon {
+        font-size: 24px;
+        color: #3a3a3a;
+      }
+
+      h3 {
+        margin: 0;
+        font-size: 16px;
+        color: #222;
+        font-weight: 600;
+      }
+
+      .date {
+        font-size: 13px;
+        color: #888;
+      }
+    }
+
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+
+      .time-info,
+      .services,
+      .payment {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 14px;
+        color: #555;
+
+        ion-icon {
+          font-size: 18px;
+          color: #666;
+        }
+
+        span {
+          flex: 1;
+        }
+      }
+    }
+
+    .card-footer {
+      border-top: 1px solid #eee;
+      padding-top: 8px;
+      display: flex;
+      justify-content: flex-end;
+
+      .amount {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007f5f;
+      }
+    }
   }
 
   .empty-state {
@@ -94,4 +99,41 @@ ion-content {
       font-size: 16px;
     }
   }
+}
+
+ion-content::part(scroll) {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+ion-item {
+  border-radius: 12px;
+  margin-bottom: 12px;
+  --background: #fff;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+ion-label .header-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+ion-label .header-row h3 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+  flex: 1;
+}
+
+ion-label p {
+  font-size: 14px;
+  color: #666;
+  margin: 2px 0;
+}
+
+ion-icon.info-icon {
+  color: #f44336;
+  font-size: 18px;
+  cursor: pointer;
 }

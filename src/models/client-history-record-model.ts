@@ -5,4 +5,7 @@ export interface ClientHistoryRecordModel {
   endTime: string;
   amount: number;
   paymentMethod: string;
+  services: string;
+  status: string
+  statusReason?: string;
 }
