@@ -1,5 +1,5 @@
 <app-custom-header
-  title="MANUT. SERVIÇOS"
+  title="SERVIÇOS/PRODUTOS"
   [showStartButton]="true"
   startIconName="arrow-back-outline"
   (onStartClick)="getBack()"
@@ -53,7 +53,7 @@
             <p>{{ service.description || 'Sem descrição' }}</p>
             <div class="service-meta">
               <ion-badge color="success"
-                >{{ service.price | currency:'BRL' }}</ion-badge
+                >{{ service.price | priceFormat }}</ion-badge
               >
               <ion-badge>{{ service.duration }} min</ion-badge>
               <ion-badge *ngIf="service.variablePrice" color="warning"

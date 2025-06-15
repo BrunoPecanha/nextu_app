@@ -5,51 +5,61 @@
   [showEndButton]="false"
 ></app-custom-header>
 
-<ion-content>
+<ion-content class="ion-padding">
   <div class="details-header">
     <h2>RESUMO DO DIA - {{ selectedDate | date:'dd/MM/yyyy' }}</h2>
-  
+
     <div class="resumo-valores">
       <div class="resumo-item">
         <ion-icon name="people-outline"></ion-icon>
-        <span>TOTAL ATENDIDOS: <strong>{{ totalAttendedClients }}</strong></span>
+        <span>Total Atendidos: <strong>{{ totalAttendedClients }}</strong></span>
       </div>
-  
+
       <div class="resumo-item">
         <ion-icon name="cash-outline"></ion-icon>
-        <span>DINHEIRO: <strong>R$ {{ totalCash }}</strong></span>
+        <span>Dinheiro: <strong>R$ {{ totalCash }}</strong></span>
       </div>
-  
+
       <div class="resumo-item">
         <ion-icon name="card-outline"></ion-icon>
-        <span>CARTÃO: <strong>R$ {{ totalCard }}</strong></span>
+        <span>Cartão: <strong>R$ {{ totalCard }}</strong></span>
       </div>
-  
+
       <div class="resumo-item">
         <ion-icon name="qr-code-outline"></ion-icon>
         <span>PIX: <strong>R$ {{ totalPix }}</strong></span>
       </div>
-  
+
       <div class="resumo-item total-final">
         <ion-icon name="stats-chart-outline"></ion-icon>
-        <span>TOTAL DO DIA: <strong>R$ {{ total }}</strong></span>
+        <span>Total do Dia: <strong>R$ {{ total }}</strong></span>
       </div>
     </div>
   </div>
 
-  <ion-list>
-    <ion-item *ngFor="let client of this.report?.data">
-      <ion-icon name="person-circle-outline" slot="start"></ion-icon>
-      <ion-label>
-        <h3>{{ client.name }}</h3>
-        <p><strong>Início:</strong> {{ client.startTime | date:'HH:mm' }}</p>
-        <p><strong>Fim:</strong> {{ client.endTime | date:'HH:mm' }}</p>
-        <p><strong>Pagamento:</strong> {{ client.paymentMethod }}</p>
-        <p><strong>Valor:</strong> {{ client.amount }}</p>
-        <p><strong>Tempo Total:</strong> {{ client.totalTime }} min</p>
-      </ion-label>
-    </ion-item>
-  </ion-list>
+  <div class="clients-list">
+    <h3>CLIENTES ATENDIDOS</h3>
+
+   <ion-list lines="none">
+  <ion-item *ngFor="let client of report?.data">
+    <ion-avatar slot="start">
+      <ion-icon name="person-circle-outline"></ion-icon>
+    </ion-avatar>
+
+    <ion-label>
+      <h4>{{ client.name }}</h4>
+      <div class="client-info">
+        <p><ion-icon name="time-outline"></ion-icon> {{ client.startTime | date:'HH:mm' }} - {{ client.endTime | date:'HH:mm' }}</p>
+        <p><ion-icon name="hourglass-outline"></ion-icon> Tempo Total: {{ client.totalTime }} min</p>
+        <p><ion-icon name="stopwatch-outline"></ion-icon> Atendimento: {{ client.atendimentoDuration }} min</p>
+        <p><ion-icon name="card-outline"></ion-icon> {{ client.paymentMethod }}</p>
+        <p><ion-icon name="cash-outline"></ion-icon> R$ {{ client.amount }}</p>
+      </div>
+    </ion-label>
+  </ion-item>
+</ion-list>
+
+  </div>
 </ion-content>
 
 <app-footer-menu></app-footer-menu>

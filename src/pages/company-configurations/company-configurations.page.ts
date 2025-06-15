@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { Subscription } from 'rxjs';
+import { share, Subscription } from 'rxjs';
 import { CategoryModel } from 'src/models/category-model';
 import { CategoryResponse } from 'src/models/responses/category-response';
 import { StoreModel } from 'src/models/store-model';
@@ -26,6 +26,7 @@ export class CompanyConfigurationsPage {
   wallpaperPreview: any;
   sending = false;
   sent = false;
+  releaseOrdersBeforeGoToQueue = false;
   category: number | null = null;
   cnpj: string | null = null;
   name: string | null = null;
@@ -102,6 +103,10 @@ export class CompanyConfigurationsPage {
       answerScheduledTime: [false],
       whatsAppNotice: [false],
       timeRemoval: [null],
+      releaseOrdersBeforeGoToQueue: [false],
+      endServiceWithQRCode: [false],
+      startServiceWithQRCode: [false],
+      shareQueue: [false],
       wallPaper: [null], 
       storeSubtitle: [''],
       highLights: this.fb.array([])
@@ -217,7 +222,11 @@ export class CompanyConfigurationsPage {
       answerScheduledTime: storeData.answerScheduledTime,
       whatsAppNotice: storeData.whatsAppNotice,
       timeRemoval: storeData.timeRemoval,
-      storeSubtitle: storeData.storeSubtitle
+      storeSubtitle: storeData.storeSubtitle,
+      releaseOrdersBeforeGoToQueue: storeData.releaseOrdersBeforeGoToQueue,
+      endServiceWithQRCode: storeData.endServiceWithQRCode,
+      startServiceWithQRCode: storeData.startServiceWithQRCode,
+      shareQueue: storeData.shareQueue
     });
 
     if (storeData.logoPath) {

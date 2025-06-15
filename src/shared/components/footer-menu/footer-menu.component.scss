@@ -109,3 +109,30 @@
 .placeholder {
   height: 1px;
 }
+
+.promotion-wrapper {
+  position: relative;
+  
+  .coming-soon-badge {
+    position: absolute;
+    top: -2px;
+    right: 8px;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    font-size: 8px;
+    padding: 2px 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    line-height: 1;
+    z-index: 5;
+    white-space: nowrap;
+    transform: scale(0.9);
+  }
+}
+
+.footer-item ion-label {
+  margin-top: 2px;
+}

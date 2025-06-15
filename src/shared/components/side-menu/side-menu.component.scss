@@ -218,3 +218,36 @@ app-ad-banner.tall-ad {
   padding-left: 5px;
   margin-top: 0%;
 }
+
+.disabled-item {
+  --background: transparent;
+  opacity: 0.6;
+  pointer-events: none;
+  
+  ion-icon, ion-label {
+    color: #999 !important;
+  }
+  
+  .menu-badge {
+    background-color: #999 !important;
+  }
+}
+
+.menu-item-with-badge {
+  position: relative;
+  
+  .menu-badge {
+    position: absolute;
+    right: 16px;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    font-size: 9px;
+    padding: 2px 6px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transform: scale(0.9);
+  }
+}
