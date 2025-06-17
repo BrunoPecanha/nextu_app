@@ -6,6 +6,7 @@
   [showEndButton]="true"
   endIconName="add-outline"
   (onEndClick)="startNewService()"
+  [endLoading]="isSaving"
 ></app-custom-header>
 
 <ion-content class="services-management-content">
@@ -92,14 +93,17 @@
     </ion-card>
   </div>
 
-  <!-- Formulário flutuante para novo ou edição -->
   <ion-modal [isOpen]="showForm">
     <ng-template>
       <app-custom-header
         [title]="editingService ? 'EDITAR' : 'NOVO'"
-        endIconName="close"
-        (onEndClick)="closeForm()"
+        startIconName="close"
+        (onStartClick)="closeForm()"
+        [showStartButton]="true"
+        endIconName="checkmark-outline"
+        (onEndClick)="saveService()"
         [showEndButton]="true"
+        [endDisabled]="serviceForm.invalid || isSaving"
       ></app-custom-header>
 
       <ion-content>
@@ -194,7 +198,7 @@
               </ion-button>
             </div>
           </div>
-
+<!-- 
           <div class="form-actions">
             <ion-button
               expand="block"
@@ -205,7 +209,7 @@
               <ion-spinner *ngIf="isSaving" name="crescent"></ion-spinner>
               <span *ngIf="!isSaving">SALVAR</span>
             </ion-button>
-          </div>
+          </div> -->
         </form>
       </ion-content>
     </ng-template>

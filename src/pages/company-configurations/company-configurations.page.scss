@@ -313,3 +313,14 @@
   --box-shadow: var(--box-shadow);
   font-size: 0.85rem;
 }
+
+.badge-label {
+  background: red;
+  color: white;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 4px;
+  margin-left: 8px;
+  display: inline-block;
+  vertical-align: middle;
+}

@@ -59,8 +59,7 @@
               <ion-card-subtitle>
                 <span *ngIf="order.processedAt" class="processed-info">
                   <ion-icon name="calendar"></ion-icon>
-                  • Processado às : {{ order.processedAt | date:'HH:mm'
-                  }}
+                  Processado às : {{ order.processedAt | date:'HH:mm' }}
                 </span>
               </ion-card-subtitle>
             </ion-card-header>
@@ -80,12 +79,12 @@
                         {{ item.name }}
                         <p>
                           {{ item.quantity }} × R$ {{
-                          item.price.toFixed(2).replace('.', ',') }}
+                          item.total.toFixed(2).replace('.', ',') }}
                         </p>
                       </ion-label>
                       <ion-note slot="end">
                         R$ {{ (item.quantity *
-                        item.price).toFixed(2).replace('.', ',') }}
+                        item.total).toFixed(2).replace('.', ',') }}
                       </ion-note>
                     </ion-item>
                   </ion-list>

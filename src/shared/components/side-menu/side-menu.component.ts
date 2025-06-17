@@ -6,6 +6,7 @@ import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/services/user-service';
 import { MOCK_ADS } from 'src/services/promotion.mock-service';
+import { CustomerService } from 'src/services/customer-service';
 
 @Component({
   selector: 'app-side-menu',
@@ -22,7 +23,8 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     private router: Router,
     private menuCtrl: MenuController,
     private sessionService: SessionService,
-    private userService: UserService
+    private userService: UserService,
+    private customerService: CustomerService
   ) {
     this.loadUserInformations();
   }
@@ -32,12 +34,16 @@ export class SideMenuComponent implements OnInit, OnDestroy {
   profile: number = 0;
   queues: number = 0;
   customersWaiting: number = 0;
+  companyFromSession: any;
   companyName: string = '';
   companyLogoPath: string = '';
+  releaseOrdersBeforeGetsQueued: boolean = false;
+  pendingOrdersCount: number = 0;
+  interval: any;
+
 
   ngOnInit(): void {
-
-  this.menuOpenedListener = () => this.loadUserQueInfo(); 
+    this.menuOpenedListener = () => this.loadUserQueInfo();
     window.addEventListener('menuOpened', this.menuOpenedListener);
 
     this.routerSubscription = this.router.events.pipe(
@@ -52,14 +58,36 @@ export class SideMenuComponent implements OnInit, OnDestroy {
     });
 
     this.loadUserQueInfo();
+    
+    if (this.companyFromSession.releaseOrdersBeforeGetsQueued) {
+      this.loadPendingOrdersCount();
+
+      this.interval = setInterval(() => {
+        this.loadPendingOrdersCount();
+      }, 30000);
+    }
+  }
+
+  loadPendingOrdersCount() {
+    this.customerService.getPendingOrdersCount(this.companyFromSession.id).subscribe({
+      next: (count) => {
+        this.pendingOrdersCount = count.data;
+      },
+      error: (err) => {
+        console.error('Erro ao carregar pedidos pendentes', err);
+      }
+    });
   }
 
   ngOnDestroy() {
     if (this.routerSubscription) {
       this.routerSubscription.unsubscribe();
     }
-     if (this.menuOpenedListener) {
-      window.removeEventListener('menuOpened', this.menuOpenedListener); 
+    if (this.menuOpenedListener) {
+      window.removeEventListener('menuOpened', this.menuOpenedListener);
+    }
+    if (this.interval) {
+      clearInterval(this.interval);
     }
   }
 
@@ -86,15 +114,16 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
   loadUserInformations() {
     this.userFromSession = this.sessionService.getUser();
-    const companyFromSession = this.sessionService.getStore();
+    this.companyFromSession = this.sessionService.getStore();
 
     if (this.userFromSession) {
       this.userName = `${this.userFromSession.name} ${this.userFromSession.lastName}`;
 
     }
-    if (companyFromSession) {
-      this.companyName = companyFromSession?.name || 'Empresa não identificada';
-      this.companyLogoPath = companyFromSession?.logoPath || '';
+    if (this.companyFromSession) {
+      this.companyName = this.companyFromSession?.name || 'Empresa não identificada';
+      this.companyLogoPath = this.companyFromSession?.logoPath || '';
+      this.releaseOrdersBeforeGetsQueued = this.companyFromSession?.releaseOrdersBeforeGetsQueued || false;
     }
 
     this.profile = this.sessionService.getProfile();

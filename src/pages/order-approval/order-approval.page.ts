@@ -1,19 +1,15 @@
 import { Component } from '@angular/core';
 import { ToastService } from 'src/services/toast.service';
 import { AlertController } from '@ionic/angular';
+import { CustomerServiceModel } from 'src/models/customer-service-model';
 
-interface OrderItem {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-}
+
 
 interface Order {
   id: number;
   orderNumber: number;
   customerName: string;
-  items: OrderItem[];
+  items: CustomerServiceModel[];
   amount: number;
   date: string;
   status: 'pending' | 'approved' | 'rejected';
@@ -21,17 +17,6 @@ interface Order {
   processedAt?: Date;
   processedBy?: string;
   rejectionReason?: string;
-}
-
-interface Order {
-  id: number;
-  orderNumber: number;
-  customerName: string;
-  items: OrderItem[];
-  amount: number;
-  date: string;
-  status: 'pending' | 'approved' | 'rejected';
-  priority: 'normal' | 'high';
 }
 
 @Component({
@@ -48,9 +33,9 @@ export class OrderApprovalPage {
       orderNumber: 1001,
       customerName: 'João Silva',
       items: [
-        { id: 101, name: 'Corte de Cabelo', quantity: 1, price: 50.00 },
-        { id: 102, name: 'Barba', quantity: 1, price: 30.00 },
-        { id: 103, name: 'Hidratação', quantity: 1, price: 40.00 }
+        { id: 101, name: 'Corte de Cabelo', quantity: 1, total: 50.00, icon: 'cut' },
+        { id: 102, name: 'Barba', quantity: 1, total: 30.00, icon: 'barbell' },
+        { id: 103, name: 'Hidratação', quantity: 1, total: 40.00,  icon: 'water' }
       ],
       amount: 120.00,
       date: '2023-10-01',
@@ -62,8 +47,9 @@ export class OrderApprovalPage {
       orderNumber: 1002,
       customerName: 'Maria Oliveira',
       items: [
-        { id: 201, name: 'Manicure', quantity: 1, price: 35.00 },
-        { id: 202, name: 'Pedicure', quantity: 1, price: 40.00 }
+        { id: 201, name: 'Manicure', quantity: 1, total: 35.00, icon: 'hand-left' },
+        { id: 202, name: 'Pedicure', quantity: 1, total: 40.00,   icon: 'foot' },
+        { id: 203, name: 'Sobrancelha', quantity: 1, total: 20.00, icon: 'eye' }
       ],
       amount: 75.00,
       date: '2023-10-02',
@@ -78,8 +64,8 @@ export class OrderApprovalPage {
       orderNumber: 1003,
       customerName: 'Carlos Souza',
       items: [
-        { id: 301, name: 'Corte Social', quantity: 1, price: 45.00 },
-        { id: 302, name: 'Sobrancelha', quantity: 1, price: 20.00 }
+        { id: 301, name: 'Corte Social', quantity: 1, total: 45.00, icon: 'cut' },
+        { id: 302, name: 'Sobrancelha', quantity: 1, total: 20.00, icon: 'eye' }
       ],
       amount: 65.00,
       date: '2023-10-03',
@@ -93,7 +79,7 @@ export class OrderApprovalPage {
       orderNumber: 1004,
       customerName: 'Ana Santos',
       items: [
-        { id: 401, name: 'Coloração', quantity: 1, price: 80.00 }
+        { id: 401, name: 'Coloração', quantity: 1, total: 80.00,  icon: 'color-fill' },
       ],
       amount: 80.00,
       date: '2023-10-04',

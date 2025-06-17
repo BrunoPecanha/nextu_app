@@ -236,7 +236,7 @@ app-ad-banner.tall-ad {
 .menu-item-with-badge {
   position: relative;
   
-  .menu-badge {
+  .menu-badge-soon {
     position: absolute;
     right: 16px;
     background-color: red;
@@ -249,5 +249,41 @@ app-ad-banner.tall-ad {
     text-transform: uppercase;
     letter-spacing: 0.5px;
     transform: scale(0.9);
+  }
+}
+
+.menu-item-with-badge {
+  position: relative;
+  
+  .menu-badge {
+    position: absolute;
+    right: 16px;
+    background-color: #f32121; 
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    line-height: 1;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(243, 33, 33, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 5px rgba(243, 33, 33, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(243, 33, 33, 0);
   }
 }

@@ -278,19 +278,28 @@
           <ion-list class="compact-settings-list">
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="git-network-outline" slot="start"></ion-icon>
-              <ion-label>Aceitar outras filas</ion-label>
+              <ion-label
+                >Aceitar cliente em outras filas
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="acceptOtherQueues"></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="swap-vertical-outline" slot="start"></ion-icon>
-              <ion-label>Atender fora de ordem</ion-label>
+              <ion-label
+                >Atender fora de ordem
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="answerOutOfOrder"></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="time-outline" slot="start"></ion-icon>
-              <ion-label>Hora marcada</ion-label>
+              <ion-label>
+                Hora marcada
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="answerScheduledTime"></ion-toggle>
             </ion-item>
 
@@ -304,19 +313,25 @@
               <ion-icon name="exit-outline" slot="start"></ion-icon>
               <ion-label>Liberar pedidos</ion-label>
               <ion-toggle
-                formControlName="releaseOrdersBeforeGoToQueue"
+                formControlName="releaseOrdersBeforeGetsQueued"
               ></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="play-forward-outline" slot="start"></ion-icon>
-              <ion-label>Abrir fila auto.</ion-label>
+              <ion-label
+                >Abrir fila/fechar automaticamente
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="openAutomatic"></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="people-circle-outline" slot="start"></ion-icon>
-              <ion-label>Atender simult.</ion-label>
+              <ion-label
+                >Atender simultaneamente
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="attendSimultaneously"></ion-toggle>
             </ion-item>
 
@@ -334,13 +349,19 @@
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="share-social-outline" slot="start"></ion-icon>
-              <ion-label>Compartilhar Fila</ion-label>
+              <ion-label
+                >Compartilhar Fila
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-toggle formControlName="shareQueue"></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="hourglass-outline" slot="start"></ion-icon>
-              <ion-label>Remover após (min)</ion-label>
+              <ion-label
+                >Remover após (min)
+                <span class="badge-label">EM BREVE</span>
+              </ion-label>
               <ion-input
                 type="number"
                 formControlName="timeRemoval"

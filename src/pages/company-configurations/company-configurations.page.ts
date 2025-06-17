@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { NavController } from '@ionic/angular';
-import { share, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { CategoryModel } from 'src/models/category-model';
 import { CategoryResponse } from 'src/models/responses/category-response';
 import { StoreModel } from 'src/models/store-model';
@@ -96,20 +96,39 @@ export class CompanyConfigurationsPage {
       openingHours: this.fb.array(
         this.weekDays.map(day => this.createHorarioForm(day))
       ),
-      openAutomatic: [false],
-      attendSimultaneously: [false],
-      acceptOtherQueues: [false],
-      answerOutOfOrder: [false],
-      answerScheduledTime: [false],
+      openAutomatic: [{ value: false, disabled: true }],
+      attendSimultaneously: [{ value: false, disabled: true }],
+      acceptOtherQueues: [{ value: false, disabled: true }],
+      answerOutOfOrder: [{ value: false, disabled: true }],
+      answerScheduledTime: [{ value: false, disabled: true }],
       whatsAppNotice: [false],
-      timeRemoval: [null],
-      releaseOrdersBeforeGoToQueue: [false],
+      timeRemoval: [{ value: '', disabled: true }],
+      releaseOrdersBeforeGetsQueued: [false],
       endServiceWithQRCode: [false],
       startServiceWithQRCode: [false],
-      shareQueue: [false],
-      wallPaper: [null], 
+      shareQueue:[{ value: false, disabled: true }],
+      wallPaper: [null],
       storeSubtitle: [''],
       highLights: this.fb.array([])
+    });
+
+    this.setupQRCodeToggleListeners();
+  }
+
+  private setupQRCodeToggleListeners() {
+    const startQRControl = this.cadastroForm.get('startServiceWithQRCode');
+    const endQRControl = this.cadastroForm.get('endServiceWithQRCode');
+
+    startQRControl?.valueChanges.subscribe(value => {
+      if (value && endQRControl?.value) {
+        endQRControl.setValue(false, { emitEvent: false });
+      }
+    });
+
+    endQRControl?.valueChanges.subscribe(value => {
+      if (value && startQRControl?.value) {
+        startQRControl.setValue(false, { emitEvent: false });
+      }
     });
   }
 
@@ -223,11 +242,13 @@ export class CompanyConfigurationsPage {
       whatsAppNotice: storeData.whatsAppNotice,
       timeRemoval: storeData.timeRemoval,
       storeSubtitle: storeData.storeSubtitle,
-      releaseOrdersBeforeGoToQueue: storeData.releaseOrdersBeforeGoToQueue,
+      releaseOrdersBeforeGetsQueued: storeData.releaseOrdersBeforeGetsQueued,
       endServiceWithQRCode: storeData.endServiceWithQRCode,
       startServiceWithQRCode: storeData.startServiceWithQRCode,
       shareQueue: storeData.shareQueue
     });
+
+    this.setupQRCodeToggleListeners();
 
     if (storeData.logoPath) {
       this.logoOreview = storeData.logoPath;
@@ -349,7 +370,7 @@ export class CompanyConfigurationsPage {
       reader.readAsDataURL(file);
 
       this.cadastroForm.patchValue({
-        wallPaper: file 
+        wallPaper: file
       });
     }
   }
