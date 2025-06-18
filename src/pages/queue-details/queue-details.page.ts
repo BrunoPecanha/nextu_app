@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { PaymentMethodEnum } from 'src/models/enums/payment-method';
 import { QueueReportResponse } from 'src/models/responses/queue-report-response';
 import { QueueService } from 'src/services/queue-service';
+
 @Component({
   selector: 'app-queue-details',
   templateUrl: './queue-details.page.html',
@@ -35,6 +36,13 @@ export class QueueDetailsPage implements OnInit {
 
     this.queueService.getQueueReport(this.queueId).subscribe({
       next: (response) => {
+        response.data = response.data.map(client => {
+          const start = new Date(client.startTime);
+          const end = new Date(client.endTime);
+          const atendimentoDuration = Math.round((end.getTime() - start.getTime()) / 60000); 
+          return { ...client, atendimentoDuration };
+        });
+
         this.report = response;
         this.selectedDate = new Date(this.report.data[0].queueDate).toISOString().split("T")[0];
         this.getTotalAttendedClients();

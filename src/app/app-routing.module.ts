@@ -105,7 +105,12 @@ const routes: Routes = [
   {
     path: 'queue-list-for-owner',
     loadChildren: () => import('../pages/queue-list-for-owner/queue-list-for-owner.module').then( m => m.QueueListForOwnerPageModule)
+  },
+  {
+    path: 'order-approval',
+    loadChildren: () => import('../pages/order-approval/order-approval.module').then( m => m.OrderApprovalPageModule)
   }
+
 ];
 
 @NgModule({

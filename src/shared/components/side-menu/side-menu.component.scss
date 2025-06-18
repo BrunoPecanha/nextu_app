@@ -218,3 +218,72 @@ app-ad-banner.tall-ad {
   padding-left: 5px;
   margin-top: 0%;
 }
+
+.disabled-item {
+  --background: transparent;
+  opacity: 0.6;
+  pointer-events: none;
+  
+  ion-icon, ion-label {
+    color: #999 !important;
+  }
+  
+  .menu-badge {
+    background-color: #999 !important;
+  }
+}
+
+.menu-item-with-badge {
+  position: relative;
+  
+  .menu-badge-soon {
+    position: absolute;
+    right: 16px;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    font-size: 9px;
+    padding: 2px 6px;
+    font-weight: bold;
+    line-height: 1.2;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transform: scale(0.9);
+  }
+}
+
+.menu-item-with-badge {
+  position: relative;
+  
+  .menu-badge {
+    position: absolute;
+    right: 16px;
+    background-color: #f32121; 
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    line-height: 1;
+    animation: pulse 1.5s infinite;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(243, 33, 33, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 5px rgba(243, 33, 33, 0);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(243, 33, 33, 0);
+  }
+}

@@ -8,4 +8,5 @@ export interface QueueReportItemModel {
     paymentMethod: PaymentMethodEnum;
     amount: number;
     totalTime: number;
+    atendimentoDuration?: number;
 }

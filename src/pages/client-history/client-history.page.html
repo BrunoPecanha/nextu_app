@@ -19,7 +19,7 @@
             <div class="header-row">
               <h3>{{ record.establishmentName }}</h3>
               <ion-badge [color]="getStatusColor(record.status)">
-                {{ record.status | uppercase }}
+                {{ (record.status == 'Done' ? 'Concluído' : record.status == 'Canceled' ? 'Cancelado' : 'Removido') | uppercase }}
               </ion-badge>
               <ion-icon 
                 *ngIf="record.status === 'Removed'" 

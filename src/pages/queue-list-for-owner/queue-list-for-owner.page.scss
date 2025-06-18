@@ -1,9 +1,9 @@
-/* Estilos gerais */
+
 ion-content {
   --background: #f8f9fa;
 }
 
-/* Filtros */
+
 .filters {
   margin-bottom: 16px;
 
@@ -20,7 +20,6 @@ ion-content {
   }
 }
 
-/* Cards de fila */
 .queues-container {
   display: flex;
   flex-direction: column;
@@ -100,7 +99,7 @@ ion-content::part(scroll) {
   margin: 0; 
 }
 
-/* Estado vazio */
+
 .empty-state {
   text-align: center;
   padding: 40px 20px;

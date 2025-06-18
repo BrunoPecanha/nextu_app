@@ -10,6 +10,7 @@ import { CustomHeaderComponent } from './components/custom-header/custom-header.
 import { AdBannerComponent } from './components/ad-banner/ad-banner.component';
 import { DatePickerModalComponent } from './components/date-picker-modal/date-picker-modal.component';
 import { PeriodPickerModalComponent } from './components/period-picker-modal/period-picker-modal.component';
+import { PriceFormatPipe } from 'src/pipes/price-format.pipe';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { PeriodPickerModalComponent } from './components/period-picker-modal/per
     CustomHeaderComponent,
     AdBannerComponent,
     DatePickerModalComponent,
-    PeriodPickerModalComponent
+    PeriodPickerModalComponent,
+    PriceFormatPipe
 
   ],
   imports: [
@@ -38,7 +40,8 @@ import { PeriodPickerModalComponent } from './components/period-picker-modal/per
     ReactiveFormsModule,
     FormsModule,
     DatePickerModalComponent,
-    PeriodPickerModalComponent
+    PeriodPickerModalComponent,
+    PriceFormatPipe
   ]
 })
 export class SharedModule { }

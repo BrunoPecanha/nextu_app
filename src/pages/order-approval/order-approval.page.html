@@ -1,0 +1,165 @@
+<app-custom-header
+  title="APROVAÇÃO DE PEDIDOS"
+  [subtitle]="(currentDate | date:'dd/MM/yyyy') || ''"
+  [showEndButton]="false"
+></app-custom-header>
+
+<ion-content>
+  <div class="approval-wrapper">
+    <ion-toolbar>
+      <ion-segment [(ngModel)]="filter" value="all">
+        <ion-segment-button value="all">
+          <ion-label>Todos</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="pending">
+          <ion-label>Pendentes</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="highPriority">
+          <ion-label>Urgentes</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="history">
+          <ion-label>Histórico</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-toolbar>
+
+    <div class="approval-list scroll-area">
+      <ng-container *ngIf="isLoading; else content">
+        <ion-card *ngFor="let i of [1,2,3]" class="skeleton-card">
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 90%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 70%"></ion-skeleton-text>
+        </ion-card>
+      </ng-container>
+
+      <ng-template #content>
+        <ion-list *ngIf="filteredOrders.length > 0; else noResults">
+          <ion-card
+            *ngFor="let order of filteredOrders"
+            class="order-card"
+            [class.high-priority]="order.priority === 'high'"
+            [class.processed-card]="filter === 'history'"
+          >
+            <ion-card-header>
+              <ion-card-title>
+                <ion-icon name="person-circle" slot="start"></ion-icon>
+                {{ order.customerName }}
+                <span class="order-number">#{{ order.orderNumber }}</span>
+
+                <ion-badge
+                  [color]="order.status === 'pending' ? 'warning' : 
+                          (order.status === 'approved' ? 'success' : 'danger')"
+                  class="status-badge"
+                >
+                  {{ order.status === 'pending' ? 'Pendente' : (order.status ===
+                  'approved' ? 'Aprovado' : 'Rejeitado') }}
+                </ion-badge>
+              </ion-card-title>
+
+              <ion-card-subtitle>
+                <span *ngIf="order.processedAt" class="processed-info">
+                  <ion-icon name="calendar"></ion-icon>
+                  Processado às : {{ order.processedAt | date:'HH:mm' }}
+                </span>
+              </ion-card-subtitle>
+            </ion-card-header>
+
+            <ion-card-content>
+              <div class="card-content">
+                <div class="order-items">
+                  <ion-list lines="none">
+                    <ion-item *ngFor="let item of order.items" class="item-row">
+                      <ion-icon
+                        [name]="getServiceIcon(item.name)"
+                        slot="start"
+                        [color]="getServiceColor(item.name)"
+                      >
+                      </ion-icon>
+                      <ion-label>
+                        {{ item.name }}
+                        <p>
+                          {{ item.quantity }} × R$ {{
+                          item.total.toFixed(2).replace('.', ',') }}
+                        </p>
+                      </ion-label>
+                      <ion-note slot="end">
+                        R$ {{ (item.quantity *
+                        item.total).toFixed(2).replace('.', ',') }}
+                      </ion-note>
+                    </ion-item>
+                  </ion-list>
+                </div>
+
+                <div class="order-total">
+                  <ion-item lines="none">
+                    <ion-label>Total</ion-label>
+                    <ion-note slot="end" color="primary">
+                      <strong
+                        >R$ {{ order.amount.toFixed(2).replace('.', ',')
+                        }}</strong
+                      >
+                    </ion-note>
+                  </ion-item>
+                </div>
+
+                <div
+                  *ngIf="order.status === 'rejected' && order.rejectionReason"
+                  class="rejection-reason"
+                >
+                  <ion-item lines="none">
+                    <ion-icon
+                      name="alert-circle"
+                      slot="start"
+                      color="danger"
+                    ></ion-icon>
+                    <ion-label>
+                      <p>
+                        <strong>Motivo da rejeição:</strong> {{
+                        order.rejectionReason }}
+                      </p>
+                    </ion-label>
+                  </ion-item>
+                </div>
+
+                <div class="actions" *ngIf="order.status === 'pending'">
+                  <ion-button
+                    color="success"
+                    fill="solid"
+                    (click)="approveOrder(order)"
+                    [disabled]="isLoading"
+                  >
+                    <ion-icon name="checkmark-circle" slot="start"></ion-icon>
+                    Aprovar
+                  </ion-button>
+
+                  <ion-button
+                    color="danger"
+                    fill="outline"
+                    (click)="rejectOrder(order)"
+                    [disabled]="isLoading"
+                  >
+                    <ion-icon name="close-circle" slot="start"></ion-icon>
+                    Rejeitar
+                  </ion-button>
+                </div>
+              </div>
+            </ion-card-content>
+          </ion-card>
+        </ion-list>
+
+        <ng-template #noResults>
+          <div class="empty-state">
+            <ion-icon
+              name="checkmark-done-outline"
+              class="empty-icon"
+            ></ion-icon>
+            <h3>Nenhum pedido encontrado</h3>
+            <p>Não há pedidos com os filtros selecionados</p>
+          </div>
+        </ng-template>
+      </ng-template>
+    </div>
+  </div>
+</ion-content>
+
+<app-footer-menu></app-footer-menu>

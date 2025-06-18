@@ -42,5 +42,9 @@ export interface StoreModel extends To {
   webSite: string;
   whatsapp: string;
   attendSimultaneously: boolean;
+  releaseOrdersBeforeGetsQueued: boolean;
+  endServiceWithQRCode: boolean;
+  startServiceWithQRCode: boolean;
+  shareQueue: boolean;
   isVerified: boolean;
 }

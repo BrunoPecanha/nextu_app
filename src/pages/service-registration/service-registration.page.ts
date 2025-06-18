@@ -90,7 +90,7 @@ export class ServiceRegistrationPage implements OnInit {
     this.openForm({
       name: '',
       description: '',
-      price: null,
+      price: '',
       duration: '00:30:00',
       imgPath: null,
       activated: true,
@@ -102,20 +102,20 @@ export class ServiceRegistrationPage implements OnInit {
 
   editService(service: ServiceModel) {
     this.editingService = service;
-
     const totalMinutes = typeof service.duration === 'string'
       ? this.timeSpanToMinutes(service.duration)
       : service.duration;
-
     const hours = Math.floor(totalMinutes / 60);
     const minutes = totalMinutes % 60;
 
+    const priceFormatted = service.price?.toFixed(2).replace('.', ',') || '';
     this.previewUrl = service.imgPath;
+
     this.openForm({
       id: service.id,
       name: service.name,
       description: service.description,
-      price: service.price,
+      price: priceFormatted,
       durationHours: hours,
       durationMinutes: minutes,
       imgPath: service.imgPath,
@@ -127,16 +127,12 @@ export class ServiceRegistrationPage implements OnInit {
   }
 
   openForm(initialData: any) {
-    const formattedPrice = initialData.price
-      ? (parseFloat(initialData.price).toFixed(2)).replace('.', ',')
-      : '';
-
     this.serviceForm = this.fb.group({
       id: [initialData.id || null],
       name: [initialData.name, Validators.required],
       description: [initialData.description],
       category: [initialData.category, Validators.required],
-      price: [formattedPrice, [Validators.required]],
+      price: [initialData.price, Validators.required],
       durationHours: [initialData.durationHours || 0, [Validators.min(0)]],
       durationMinutes: [initialData.durationMinutes || 30, [Validators.min(0), Validators.max(59)]],
       image: [initialData.imgPath || null],
@@ -148,40 +144,23 @@ export class ServiceRegistrationPage implements OnInit {
     this.showForm = true;
   }
 
-
-  formatNumberToFloat(value: string | number): number {
-    if (typeof value === 'number') return value;
-    return parseFloat(value.replace(',', '.'));
-  }
-
   formatPrice(event: any) {
-    let value = event.target.value;
-
+    let value = event.target.value || '';
     value = value.replace(/[^0-9,]/g, '');
 
     const parts = value.split(',');
     if (parts.length > 2) {
       value = parts[0] + ',' + parts[1];
     }
-
     if (parts.length === 2) {
       parts[1] = parts[1].substring(0, 2);
       value = parts.join(',');
     }
 
-    this.serviceForm.patchValue({
-      price: value
-    }, { emitEvent: false });
+    this.serviceForm.patchValue({ price: value }, { emitEvent: false });
   }
 
-  closeForm() {
-    this.showForm = false;
-    this.serviceForm.reset();
-    this.previewUrl = null;
-    this.editingService = null;
-  }
-
-  async saveService() {    
+  async saveService() {
     if (this.serviceForm.invalid) {
       this.markFormGroupTouched(this.serviceForm);
       return;
@@ -189,17 +168,16 @@ export class ServiceRegistrationPage implements OnInit {
 
     this.isSaving = true;
     const form = this.serviceForm.value;
+
     const duration = `${form.durationHours.toString().padStart(2, '0')}:${form.durationMinutes.toString().padStart(2, '0')}:00`;
-
-    const priceStr = form.price.replace(',', '.');
-
+    const priceNumber = this.parsePriceInput(form.price);
 
     const payload = {
       id: form.id,
       name: form.name,
       description: form.description,
       categoryId: form.category.id,
-      price: priceStr,
+      price: priceNumber,
       duration: duration,
       activated: form.activated,
       variablePrice: form.variablePrice,
@@ -213,7 +191,6 @@ export class ServiceRegistrationPage implements OnInit {
       } else {
         await this.createService(payload, form.image);
       }
-
       await this.loadServices();
       this.closeForm();
     } catch (error) {
@@ -222,6 +199,35 @@ export class ServiceRegistrationPage implements OnInit {
     } finally {
       this.isSaving = false;
     }
+  }
+
+  parsePriceInput(value: string): number {
+    if (!value) return 0;
+    const normalized = value.replace(/\./g, '').replace(',', '.');
+    const parsed = parseFloat(normalized);
+    return isNaN(parsed) ? 0 : parsed;
+  }
+
+  buildFormData(serviceData: any, imageFile: File | null): FormData {
+    const formData = new FormData();
+
+    Object.entries(serviceData).forEach(([key, value]) => {
+      if (value === null || value === undefined) return;
+      if (key === 'price') {
+        value = (
+          typeof value === 'number'
+            ? value
+            : this.parsePriceInput(value as string)
+        ).toFixed(2).replace('.', ',');
+      }
+      formData.append(key, value != null ? String(value) : '');
+    });
+
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
+
+    return formData;
   }
 
   async createService(serviceData: any, imageFile: File | null) {
@@ -236,30 +242,15 @@ export class ServiceRegistrationPage implements OnInit {
     this.presentAlert('Serviço atualizado com sucesso!');
   }
 
-  buildFormData(serviceData: any, imageFile: File | null): FormData {
-    const formData = new FormData();
-    Object.keys(serviceData).forEach(key => formData.append(key, serviceData[key]));
-
-    if (imageFile) {
-      formData.append('imageFile', imageFile);
-    }
-    return formData;
-  }
-
   async confirmDelete(service: ServiceModel) {
     const alert = await this.alertController.create({
       header: 'Confirmar Exclusão',
       message: `Deseja excluir o serviço "${service.name}"?`,
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
-        {
-          text: 'Excluir',
-          role: 'destructive',
-          handler: () => this.deleteService(service.id),
-        },
+        { text: 'Excluir', role: 'destructive', handler: () => this.deleteService(service.id) },
       ],
     });
-
     await alert.present();
   }
 
@@ -272,6 +263,13 @@ export class ServiceRegistrationPage implements OnInit {
       console.error('Erro ao excluir serviço:', error);
       this.presentAlert('Erro ao excluir serviço', 'Por favor, tente novamente.');
     }
+  }
+
+  closeForm() {
+    this.showForm = false;
+    this.serviceForm.reset();
+    this.previewUrl = null;
+    this.editingService = null;
   }
 
   toggleActive(service: ServiceModel) {
@@ -294,21 +292,18 @@ export class ServiceRegistrationPage implements OnInit {
   }
 
   onImageSelected(event: Event) {
-    
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const file = input.files[0];
       this.serviceForm.patchValue({ image: file });
 
       const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result;
-      };
+      reader.onload = () => this.previewUrl = reader.result;
       reader.readAsDataURL(file);
     }
   }
 
-  removeImage() {    
+  removeImage() {
     this.serviceForm.patchValue({ image: null });
     this.previewUrl = null;
   }
@@ -330,17 +325,12 @@ export class ServiceRegistrationPage implements OnInit {
 
   private timeSpanToMinutes(time: string | number): number {
     if (typeof time === 'number') return time;
-
     const [hours, minutes] = time.split(':').map(Number);
     return (hours * 60) + minutes;
   }
 
   async presentAlert(message: string, header: string = 'Sucesso') {
-    const alert = await this.alertController.create({
-      header,
-      message,
-      buttons: ['OK'],
-    });
+    const alert = await this.alertController.create({ header, message, buttons: ['OK'] });
     await alert.present();
   }
 
