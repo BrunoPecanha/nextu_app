@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { QueueReducedModel } from 'src/models/queue-reduced-model';
 import { StoreModel } from 'src/models/store-model';
-import { QueueService } from 'src/services/queue-service';
+import { QueueService } from 'src/services/queue.service';
 import { SessionService } from 'src/services/session.service';
 
 @Component({

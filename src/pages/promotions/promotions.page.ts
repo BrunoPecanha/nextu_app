@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MOCK_PROMOTIONS, MOCK_ADS } from 'src/services/promotion.mock-service';
+import { MOCK_PROMOTIONS, MOCK_ADS } from 'src/services/promotion.mock.service';
 
 @Component({
   selector: 'app-promotions',

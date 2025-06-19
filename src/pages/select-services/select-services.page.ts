@@ -6,11 +6,11 @@ import { AddQueueServiceRequest } from 'src/models/requests/add-queue-service-re
 import { UpdateCustomerToQueueRequest } from 'src/models/requests/update-customer-to-queue-request';
 import { ServiceModel } from 'src/models/service-model';
 import { UserModel } from 'src/models/user-model';
-import { CustomerService } from 'src/services/customer-service';
-import { QueueService } from 'src/services/queue-service';
-import { ServiceService } from 'src/services/services-service';
+import { CustomerService } from 'src/services/customer.service';
+import { QueueService } from 'src/services/queue.service';
+import { ServiceService } from 'src/services/services.service';
 import { SessionService } from 'src/services/session.service';
-import { SignalRService } from 'src/services/seignalr-service';
+import { SignalRService } from 'src/services/seignalr.service';
 
 @Component({
   selector: 'app-select-services',

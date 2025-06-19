@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ActionSheetButton } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-import { MOCK_ADS } from 'src/services/promotion.mock-service';
+import { MOCK_ADS } from 'src/services/promotion.mock.service';
 
 @Component({
   selector: 'app-notification',

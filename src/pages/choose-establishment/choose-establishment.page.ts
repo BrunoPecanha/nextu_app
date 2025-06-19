@@ -3,9 +3,9 @@ import { Router } from '@angular/router';
 import { StoreListResponse } from 'src/models/responses/store-list-response';
 import { StoreModel } from 'src/models/store-model';
 import { UserModel } from 'src/models/user-model';
-import { QueueService } from 'src/services/queue-service';
+import { QueueService } from 'src/services/queue.service';
 import { SessionService } from 'src/services/session.service';
-import { StoresService } from 'src/services/stores-service';
+import { StoresService } from 'src/services/stores.service';
 
 @Component({
   selector: 'app-choose-establishment',

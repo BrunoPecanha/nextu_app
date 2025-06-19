@@ -3,8 +3,8 @@ import {  ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { ServiceModel } from 'src/models/service-model';
 import { StoreModel } from 'src/models/store-model';
-import { ServiceService } from 'src/services/services-service';
-import { StoresService } from 'src/services/stores-service';
+import { ServiceService } from 'src/services/services.service';
+import { StoresService } from 'src/services/stores.service';
 
 @Component({
   selector: 'app-store-details',

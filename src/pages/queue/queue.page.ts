@@ -5,10 +5,10 @@ import { CustomerInQueueCardDetailModel } from 'src/models/customer-in-queue-car
 import { CustomerInQueueCardModel } from 'src/models/customer-in-queue-card-model';
 import { CustomerStatusEnum } from 'src/models/enums/customer-status.enum';
 import { StoreModel } from 'src/models/store-model';
-import { QueueService } from 'src/services/queue-service';
-import { SignalRService } from 'src/services/seignalr-service';
+import { QueueService } from 'src/services/queue.service';
+import { SignalRService } from 'src/services/seignalr.service';
 import { SessionService } from 'src/services/session.service';
-import { StoresService } from 'src/services/stores-service';
+import { StoresService } from 'src/services/stores.service';
 
 @Component({
   selector: 'app-queue',

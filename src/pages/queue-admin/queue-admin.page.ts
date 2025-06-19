@@ -1,17 +1,17 @@
 import { Component, OnInit, Signal } from '@angular/core';
 import { AlertController } from '@ionic/angular';
 import { Router } from '@angular/router';
-import { QueueService } from 'src/services/queue-service';
+import { QueueService } from 'src/services/queue.service';
 import { StoreModel } from 'src/models/store-model';
 import { SessionService } from 'src/services/session.service';
 import { QueueModel } from 'src/models/queue-model';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
-import { StoresService } from 'src/services/stores-service';
+import { StoresService } from 'src/services/stores.service';
 import { ProfessionalResponse } from 'src/models/responses/professional-response';
 import { QueueFilterRequest } from 'src/models/requests/queue-filter-request';
 import { ToastService } from 'src/services/toast.service';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
-import { SignalRService } from 'src/services/seignalr-service';
+import { SignalRService } from 'src/services/seignalr.service';
 import { QueueCloseRequest } from 'src/models/requests/queue-close-request';
 
 @Component({

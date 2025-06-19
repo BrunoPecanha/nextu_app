@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ToastService } from 'src/services/toast.service';
 import { AlertController } from '@ionic/angular';
 import { OrderModel } from 'src/models/order-model';
-import { OrderService } from 'src/services/order-service';
+import { OrderService } from 'src/services/order.service';
 import { SessionService } from 'src/services/session.service';
 import { OrderRequest } from 'src/models/requests/order-request';
 import { StoreModel } from 'src/models/store-model';

@@ -5,8 +5,8 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 import { UserService } from 'src/services/user-service';
-import { MOCK_ADS } from 'src/services/promotion.mock-service';
-import { CustomerService } from 'src/services/customer-service';
+import { MOCK_ADS } from 'src/services/promotion.mock.service';
+import { CustomerService } from 'src/services/customer.service';
 
 @Component({
   selector: 'app-side-menu',
