@@ -1,3 +1,4 @@
+import { CustomerStatusEnum } from "./enums/customer-status.enum";
 import { PaymentModel } from "./payment-model";
 import { ServiceModel } from "./service-model";
 
@@ -13,5 +14,6 @@ export interface CustomerInQueueCardDetailModel {
   attendantsName: string;
   token: string;
   timeCalledInQueue: string;
-  estimatedWaitingTime: string;
+  estimatedWaitingTime: string;  
+  status: number;
 }

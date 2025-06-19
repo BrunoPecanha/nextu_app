@@ -7,8 +7,7 @@
   [routeLink]="fallbackRoute"
   [endIconName]="'refresh-outline'"
   (onEndClick)="refreshQueues()"
->
-</app-custom-header>
+></app-custom-header>
 
 <ion-content class="fila-content">
   <ng-container *ngIf="customerCards !== null; else loading">
@@ -29,8 +28,11 @@
               ></ion-img>
             </div>
             <div class="info-principal">
-              <div class="posicao-fila">
-                <h6 class="titulo-principal">
+              <div
+                class="posicao-fila"
+                style="display: flex; align-items: center; gap: 8px"
+              >
+                <h6 class="titulo-principal" style="margin: 0; flex-grow: 1">
                   {{ card.position === 0 ? 'Sua vez!' : 'Você é o ' +
                   card.position + 'º na fila' }}
                   <ion-icon
@@ -40,6 +42,7 @@
                   ></ion-icon>
                 </h6>
               </div>
+
               <div class="info-secundaria">
                 <span class="info-item">
                   <ion-icon name="cut-outline" class="icon-small"></ion-icon>
@@ -55,14 +58,25 @@
                 </span>
               </div>
               <div
-                *ngIf="!isCardExpanded(card)"
+                *ngIf="!isCardExpanded(card) && !(card.status === 6)"
                 class="tempo-estimado-recolhido"
                 [ngClass]="getTimeColor(card.timeToWait)"
               >
-                <span
-                  >Tempo estimado: {{ formatEstimatedTime(card.timeToWait)
-                  }}</span
-                >
+                <span>
+                  Tempo estimado: {{ formatEstimatedTime(card.timeToWait) }}
+                </span>
+              </div>
+              <div
+                *ngIf="card.status === 6"
+                class="tempo-estimado-recolhido"
+              >
+                <span>
+                  <ion-badge
+                    color="warning"
+                    style="font-weight: 600; font-size: 9px; padding: 4px 8px"
+                    >Aguardando aprovação
+                  </ion-badge>
+                </span>
               </div>
             </div>
           </div>
@@ -86,6 +100,24 @@
           class="card-conteudo"
           *ngIf="currentlyExpandedCardId === card.queueId && getCardDetails(card) as detalhes"
         >
+          <div *ngIf="card.status === 6" class="approve-advice">
+            <ion-icon
+              name="alert-circle-outline"
+              color="warning"
+              style="font-size: 24px; vertical-align: middle"
+            ></ion-icon>
+            <span
+              style="
+                margin-left: 8px;
+                font-weight: 600;
+                color: #ff9800;
+                font-size: 15px;
+              "
+            >
+              Seu pedido está aguardando aprovação. Por favor, aguarde.
+            </span>
+          </div>
+
           <div *ngIf="card.position > 1" class="fila-info">
             <h6 class="saudacao">E aí, tudo bem?</h6>
             <p class="info-profissional">
@@ -155,6 +187,7 @@
             >
           </div>
 
+          <!-- resto do conteúdo igual... -->
           <div class="servicos-section">
             <ion-item-divider class="divider">
               <ion-label class="subtitulo">Serviços Selecionados</ion-label>

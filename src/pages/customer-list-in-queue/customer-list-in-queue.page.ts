@@ -77,7 +77,10 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
         id: s.serviceId,
         name: s.name,
         finalPrice: s.finalPrice,
-        finalDuration: s.finalDuration
+        finalDuration: s.finalDuration,
+        variablePrice: s.variablePrice,
+        variableTime: s.variableTime,
+        quantity: s.quantity || 1
       }));
 
     const modal = await this.modalCtrl.create({
@@ -338,7 +341,9 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   }
 
   getServiceDescriptions(customer: CustomerInQueueForEmployeeModel): string {
-    return customer.services?.map(s => s.name).join(', ');
+    return customer.services
+      ?.map(s => s.quantity > 1 ? `${s.name} (${s.quantity}x)` : s.name)
+      .join(', ') || '';
   }
 
   calculateWaitingTime(arrivalTime: string): string {

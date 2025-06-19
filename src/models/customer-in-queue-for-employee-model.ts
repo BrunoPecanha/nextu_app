@@ -12,5 +12,5 @@ export interface CustomerInQueueForEmployeeModel {
   timeCalledInQueue: Date;
   isPaused: boolean;
   canEditName: boolean;
-  pricePending: boolean;
+  pricePending: boolean;  
 }

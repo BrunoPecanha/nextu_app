@@ -59,7 +59,7 @@ export class SideMenuComponent implements OnInit, OnDestroy {
 
     this.loadUserQueInfo();
     
-    if (this.companyFromSession.releaseOrdersBeforeGetsQueued) {
+    if (this.companyFromSession?.releaseOrdersBeforeGetsQueued) {
       this.loadPendingOrdersCount();
 
       this.interval = setInterval(() => {

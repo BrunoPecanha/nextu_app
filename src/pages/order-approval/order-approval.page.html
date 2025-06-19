@@ -17,9 +17,9 @@
         <ion-segment-button value="highPriority">
           <ion-label>Urgentes</ion-label>
         </ion-segment-button>
-        <ion-segment-button value="history">
+        <!-- <ion-segment-button value="history">
           <ion-label>Histórico</ion-label>
-        </ion-segment-button>
+        </ion-segment-button> -->
       </ion-segment>
     </ion-toolbar>
 
@@ -37,22 +37,22 @@
           <ion-card
             *ngFor="let order of filteredOrders"
             class="order-card"
-            [class.high-priority]="order.priority === 'high'"
+            [class.high-priority]="order.priority === 0"
             [class.processed-card]="filter === 'history'"
           >
             <ion-card-header>
               <ion-card-title>
                 <ion-icon name="person-circle" slot="start"></ion-icon>
-                {{ order.customerName }}
+                {{ order.name }}
                 <span class="order-number">#{{ order.orderNumber }}</span>
 
                 <ion-badge
-                  [color]="order.status === 'pending' ? 'warning' : 
-                          (order.status === 'approved' ? 'success' : 'danger')"
+                  [color]="order.status === 6 ? 'warning' : 
+                          (order.status === 0 ? 'success' : 'danger')"
                   class="status-badge"
                 >
-                  {{ order.status === 'pending' ? 'Pendente' : (order.status ===
-                  'approved' ? 'Aprovado' : 'Rejeitado') }}
+                  {{ order.status === 6 ? 'Pendente' : (order.status ===
+                  0 ? 'Aprovado' : 'Rejeitado') }}
                 </ion-badge>
               </ion-card-title>
 
@@ -79,12 +79,12 @@
                         {{ item.name }}
                         <p>
                           {{ item.quantity }} × R$ {{
-                          item.total.toFixed(2).replace('.', ',') }}
+                          item.price.toFixed(2).replace('.', ',') }}
                         </p>
                       </ion-label>
                       <ion-note slot="end">
                         R$ {{ (item.quantity *
-                        item.total).toFixed(2).replace('.', ',') }}
+                        item.price).toFixed(2).replace('.', ',') }}
                       </ion-note>
                     </ion-item>
                   </ion-list>
@@ -95,7 +95,7 @@
                     <ion-label>Total</ion-label>
                     <ion-note slot="end" color="primary">
                       <strong
-                        >R$ {{ order.amount.toFixed(2).replace('.', ',')
+                        >R$ {{ order.total.toFixed(2).replace('.', ',')
                         }}</strong
                       >
                     </ion-note>
@@ -103,7 +103,7 @@
                 </div>
 
                 <div
-                  *ngIf="order.status === 'rejected' && order.rejectionReason"
+                  *ngIf="order.status === 8 && order.rejectionReason"
                   class="rejection-reason"
                 >
                   <ion-item lines="none">
@@ -121,7 +121,7 @@
                   </ion-item>
                 </div>
 
-                <div class="actions" *ngIf="order.status === 'pending'">
+                <div class="actions" *ngIf="order.status === 6">
                   <ion-button
                     color="success"
                     fill="solid"

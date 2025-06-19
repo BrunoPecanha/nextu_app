@@ -22,12 +22,11 @@
     ></ion-icon>
     <p>Não há clientes na fila</p>
   </div>
+
   <div *ngFor="let client of clients" class="card-cliente">
     <div class="badge-container">
       <ion-badge *ngIf="client.canEditName" color="warning">Avulso</ion-badge>
-      <ion-badge *ngIf="client.pricePending" color="danger"
-        >Preço Pendente</ion-badge
-      >
+      <ion-badge *ngIf="client.pricePending" color="danger">Preço Pendente</ion-badge>     
     </div>
 
     <div class="card-top-actions">
@@ -53,6 +52,14 @@
     </div>
 
     <div class="card-content">
+
+      <!-- <ion-item *ngIf="client.status === 6" class="approval-alert" lines="none">
+        <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
+        <ion-label>
+          <strong>Pedido aguardando aprovação</strong>
+        </ion-label>
+      </ion-item> -->
+
       <div class="client-header">
         <div class="name-wrapper">
           <ng-container *ngIf="editingNameMap[client.id]; else showName">
@@ -65,18 +72,10 @@
             ></ion-input>
 
             <div class="edit-actions">
-              <ion-button
-                fill="clear"
-                size="small"
-                (click)="saveEditedName(client);"
-              >
+              <ion-button fill="clear" size="small" (click)="saveEditedName(client)">
                 <ion-icon name="checkmark-outline"></ion-icon>
               </ion-button>
-              <ion-button
-                fill="clear"
-                size="small"
-                (click)="cancelEditName(client.id)"
-              >
+              <ion-button fill="clear" size="small" (click)="cancelEditName(client.id)">
                 <ion-icon name="close-outline"></ion-icon>
               </ion-button>
             </div>

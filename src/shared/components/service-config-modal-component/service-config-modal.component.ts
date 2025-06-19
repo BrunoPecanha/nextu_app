@@ -8,7 +8,7 @@ import { ModalController } from '@ionic/angular';
   styleUrls: ['./service-config-modal.component.scss']
 })
 export class ServiceConfigModalComponent implements OnInit {
-  @Input() services: { id: number; name: string, finalPrice: number, finalDuration: number }[] = [];
+  @Input() services: { id: number; name: string, finalPrice: number, quantity: number, finalDuration: number, variablePrice: boolean, variableTime: boolean }[] = [];
   @Input() customerId: number = 0;
 
   form: FormGroup;
@@ -24,14 +24,21 @@ export class ServiceConfigModalComponent implements OnInit {
 
   ngOnInit() {
     this.services.forEach(service => {
-      this.servicesArray.push(
-        this.fb.group({
-          id: [service.id],
-          name: [service.name],
-          price: [service.finalPrice, [Validators.required, Validators.min(0.01)]],
-          duration: [service.finalDuration, [Validators.required, Validators.min(1), Validators.max(600)]]
-        })
-      );
+      const group = this.fb.group({
+        id: [service.id],
+        name: [service.name],
+        quantity: service.quantity,
+        price: [{
+          value: service.finalPrice,
+          disabled: !service.variablePrice
+        }, service.variablePrice ? [Validators.required, Validators.min(0.01)] : []],
+        duration: [{
+          value: service.finalDuration,
+          disabled: !service.variableTime
+        }, service.variableTime ? [Validators.required, Validators.min(1), Validators.max(600)] : []]
+      });
+
+      this.servicesArray.push(group);
     });
   }
 
@@ -53,17 +60,19 @@ export class ServiceConfigModalComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
-      const customerServices = this.servicesArray.value.map((item: any) => ({
+      const customerServices = this.servicesArray.getRawValue().map((item: any) => ({
         serviceId: item.id,
-        price: parseFloat(item.price),
-        duration: parseInt(item.duration, 10)
+        price: parseFloat(item.price) || 0,
+        duration: parseInt(item.duration, 10) || 0
       }));
 
       const result = {
         customerId: this.customerId,
         customerServices: customerServices
       };
+
       this.modalCtrl.dismiss(result);
     }
   }
+
 }

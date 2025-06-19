@@ -1,3 +1,5 @@
+import { CustomerStatusEnum } from "./enums/customer-status.enum";
+
 export interface CustomerInQueueCardModel {
   id: number;
   position: number;
@@ -11,4 +13,5 @@ export interface CustomerInQueueCardModel {
   storeId: number;
   estimatedWaitingTime: string;
   isPaused: boolean;
+  status: number;
 }
