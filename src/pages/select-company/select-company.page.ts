@@ -72,7 +72,7 @@ export class SelectCompanyPage implements OnInit {
 
     this.service.loadFilteredStores(categoryId, quickFilter, userId).subscribe({
       next: (response) => {
-        this.companies = response.data.map(store => ({          
+        this.companies = response.data.map(store => ({
           ...store,
           isNew: this.checkIfNew(store.createdAt),
           liked: store.liked || false,
@@ -88,6 +88,14 @@ export class SelectCompanyPage implements OnInit {
         this.isEmptyResult = true;
       }
     });
+  }
+
+  async handleRefresh(event: any) {
+    try {
+      await this.loadFilteredStores();
+    } finally {
+      event.target.complete();
+    }
   }
 
   private checkIfNew(createdAt: string): boolean {
@@ -122,7 +130,7 @@ export class SelectCompanyPage implements OnInit {
     if (!user || !user.id) {
       this.showLoginAlert();
       return;
-    }    
+    }
 
     const heart = event.target as HTMLElement;
     heart.classList.add('heart-animation');
@@ -155,7 +163,7 @@ export class SelectCompanyPage implements OnInit {
   }
 
   private showLoginAlert(): void {
-    console.warn('Usuário não logado. Redirecionar para login.'); 
+    console.warn('Usuário não logado. Redirecionar para login.');
   }
 
   private showErrorToast(message: string): void {

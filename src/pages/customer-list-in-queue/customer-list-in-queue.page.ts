@@ -287,6 +287,15 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     return !!this.store && !!this.store.startServiceWithQRCode;
   }
 
+  
+  async handleRefresh(event: any) {
+    try {
+      await this.loadAllCustomersInQueueByEmployeeAndStoreId();
+    } finally {
+      event.target.complete();
+    }
+  }
+
   pauseQueue() {
     const request: QueuePauseRequest = {
       id: this.queue?.id,

@@ -67,6 +67,16 @@
 </div>
 
 <ion-content class="modern-content">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div *ngIf="isLoading" class="loading-container">
     <ion-spinner name="crescent" class="loading-spinner"></ion-spinner>
     <p class="loading-text">Carregando estabelecimentos...</p>
@@ -131,8 +141,9 @@
           <div class="stat-item">
             <ion-icon name="people-outline" class="stat-icon"></ion-icon>
             <span>
-              {{ card.minorQueue === -1 ? 'Sem fila aberta' :  card.minorQueue == 0 ?  'Ninguém na fila' :  
-              'Fila com ' + card.minorQueue + ' pessoas' }}
+              {{ card.minorQueue === -1 ? 'Sem fila aberta' : card.minorQueue ==
+              0 ? 'Ninguém na fila' : 'Fila com ' + card.minorQueue + ' pessoas'
+              }}
             </span>
           </div>
 

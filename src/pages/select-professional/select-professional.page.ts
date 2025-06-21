@@ -27,18 +27,18 @@ export class SelectProfessionalPage implements OnInit {
 
   ngOnInit() {
     this.getSelectedStoreId();
-    this.resetImageStates();    
-    this.loadStoreAndProfessionals(this.storeId); 
+    this.resetImageStates();
+    this.loadStoreAndProfessionals(this.storeId);
   }
 
-  
+
   ionViewWillEnter() {
     this.initSignalRConnection();
   }
 
   loadStoreAndProfessionals(storeId: number) {
     this.service.loadStoreAndProfessionals(storeId).subscribe({
-      next: (response) => {        
+      next: (response) => {
         this.store = response.data;
         this.sessionService.setStore(this.store);
       },
@@ -76,7 +76,7 @@ export class SelectProfessionalPage implements OnInit {
     try {
       await this.signalRService.startConnection();
 
-      this.signalRGroup = this.storeId.toString();      
+      this.signalRGroup = this.storeId.toString();
 
       await this.signalRService.joinGroup(this.signalRGroup);
 
@@ -89,6 +89,15 @@ export class SelectProfessionalPage implements OnInit {
     } catch (error) {
       console.error('Erro SignalR (loja):', error);
       setTimeout(() => this.initSignalRConnection(), 5000);
+    }
+  }
+
+  async handleRefresh(event: any) {
+    try {
+      this.getSelectedStoreId();
+      this.loadStoreAndProfessionals(this.storeId);
+    } finally {
+      event.target.complete();
     }
   }
 

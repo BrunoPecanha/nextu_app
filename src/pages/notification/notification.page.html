@@ -9,7 +9,17 @@
 </app-custom-header>
 
 <ion-content class="ion-padding">
- <!-- <app-ad-banner [ad]="activeAd" class="tall-ad-notifications"></app-ad-banner> -->
+  <!-- <app-ad-banner [ad]="activeAd" class="tall-ad-notifications"></app-ad-banner> -->
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+  
   <div class="filters-section">
     <ion-segment value="all" (ionChange)="filterChanged($event)">
       <ion-segment-button value="all">
@@ -24,41 +34,46 @@
   <div class="notifications-list">
     <ion-list lines="none">
       @for (noti of filteredNotifications; track noti.id; let i = $index) {
-        <ion-item 
-          class="notification-item"
-          [class.unread]="!noti.lida"
-          [detail]="false"
-          (click)="toggleNotification(noti)"
-        >
-          <div class="notification-indicator" [class.unread]="!noti.lida"></div>
-          
-          <ion-avatar slot="start" class="notification-avatar">
-            <ion-icon [name]="getNotificationIcon(noti.tipo)"></ion-icon>
-          </ion-avatar>
+      <ion-item
+        class="notification-item"
+        [class.unread]="!noti.lida"
+        [detail]="false"
+        (click)="toggleNotification(noti)"
+      >
+        <div class="notification-indicator" [class.unread]="!noti.lida"></div>
 
-          <ion-label class="notification-content">
-            <h3>{{ noti.titulo }}</h3>
-            <p>{{ noti.mensagem }}</p>
-            <span class="notification-time">{{ noti.data | date:'shortTime' }}</span>
-          </ion-label>
+        <ion-avatar slot="start" class="notification-avatar">
+          <ion-icon [name]="getNotificationIcon(noti.tipo)"></ion-icon>
+        </ion-avatar>
 
-          <ion-button 
-            fill="clear" 
-            color="medium" 
-            (click)="removeNotification(noti.id); $event.stopPropagation()"
+        <ion-label class="notification-content">
+          <h3>{{ noti.titulo }}</h3>
+          <p>{{ noti.mensagem }}</p>
+          <span class="notification-time"
+            >{{ noti.data | date:'shortTime' }}</span
           >
-            <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-item>
+        </ion-label>
+
+        <ion-button
+          fill="clear"
+          color="medium"
+          (click)="removeNotification(noti.id); $event.stopPropagation()"
+        >
+          <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-item>
       }
     </ion-list>
 
     @if (filteredNotifications.length === 0) {
-      <div class="empty-state">
-        <ion-icon name="notifications-off-outline"></ion-icon>
-        <h3>Nenhuma notificação</h3>
-        <p>{{ activeFilter === 'unread' ? 'Nenhuma notificação não lida' : 'Você não tem notificações' }}</p>
-      </div>
+    <div class="empty-state">
+      <ion-icon name="notifications-off-outline"></ion-icon>
+      <h3>Nenhuma notificação</h3>
+      <p>
+        {{ activeFilter === 'unread' ? 'Nenhuma notificação não lida' : 'Você
+        não tem notificações' }}
+      </p>
+    </div>
     }
   </div>
 

@@ -101,6 +101,14 @@ export class NotificationPage {
     this.actionSheetOpen = true;
   }
 
+  async handleRefresh(event: any) {
+    try {
+    //  await this.loadOrders();
+    } finally {
+      event.target.complete();
+    }
+  }
+
   back() {
     this.navCtrl.back();
   }

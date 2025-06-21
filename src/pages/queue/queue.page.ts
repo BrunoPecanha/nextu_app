@@ -112,6 +112,15 @@ export class QueuePage implements OnInit {
     }, 300);
   }
 
+  async handleRefresh(event: any) {
+    try {
+      await this.loadCustomersInQueueCard();
+    } finally {
+      event.target.complete();
+    }
+  }
+
+
   public toggleCardDetails(card: CustomerInQueueCardModel): void {
     if (this.currentlyExpandedCardId === card.queueId) {
       this.currentlyExpandedCardId = null;
