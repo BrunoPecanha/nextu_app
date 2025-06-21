@@ -116,14 +116,10 @@
         >
           <ion-icon name="receipt-outline" slot="start"></ion-icon>
           <ion-label>Liberação de Pedidos</ion-label>
-          <span
-            class="menu-badge"            
-            ionTooltip="Pedidos aguardando liberação"
-            >{{ pendingOrdersCount }}</span
-          >
-          <span
-            class="new-orders-indicator"
-          ></span>
+          <span class="menu-badge" ionTooltip="Pedidos aguardando liberação">{{
+            pendingOrdersCount
+          }}</span>
+          <span class="new-orders-indicator"></span>
         </ion-item>
 
         <ion-item (click)="navigateTo('/queue-admin')" detail="false">
@@ -195,6 +191,16 @@
       >
         <ion-icon name="rocket-outline" slot="start"></ion-icon>
         <ion-label>Crie sua empresa</ion-label>
+      </ion-item>
+
+      <ion-item
+        (click)="navigateTo('/reports')"
+        detail="false"
+        class="menu-item-with-badge disabled-item"
+      >
+        <ion-icon name="bar-chart-outline" slot="start"></ion-icon>
+        <ion-label>Relatórios</ion-label>
+        <span class="menu-badge-soon">EM BREVE</span>
       </ion-item>
 
       <ion-item

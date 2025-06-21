@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, ViewChild, ElementRef, AfterViewChecked, AfterViewInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ChatService } from 'src/services/chat-service';
+import { ChatService } from 'src/services/chat.service';
 import { ModalController } from '@ionic/angular';
 @Component({
   selector: 'app-queue-chat',

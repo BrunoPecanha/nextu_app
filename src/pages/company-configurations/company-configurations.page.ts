@@ -6,10 +6,10 @@ import { CategoryModel } from 'src/models/category-model';
 import { CategoryResponse } from 'src/models/responses/category-response';
 import { StoreModel } from 'src/models/store-model';
 import { UserModel } from 'src/models/user-model';
-import { CategoryService } from 'src/services/category-service';
+import { CategoryService } from 'src/services/category.service';
 import { SessionService } from 'src/services/session.service';
 import { StatesService } from 'src/services/states.service';
-import { StoresService } from 'src/services/stores-service';
+import { StoresService } from 'src/services/stores.service';
 
 
 @Component({
@@ -106,8 +106,9 @@ export class CompanyConfigurationsPage {
       releaseOrdersBeforeGetsQueued: [false],
       endServiceWithQRCode: [false],
       startServiceWithQRCode: [false],
-      shareQueue:[{ value: false, disabled: true }],
+      shareQueue: [false],
       wallPaper: [null],
+      finishWithoutQrCodeInCaseFailure: [false],
       storeSubtitle: [''],
       highLights: this.fb.array([])
     });
@@ -245,7 +246,8 @@ export class CompanyConfigurationsPage {
       releaseOrdersBeforeGetsQueued: storeData.releaseOrdersBeforeGetsQueued,
       endServiceWithQRCode: storeData.endServiceWithQRCode,
       startServiceWithQRCode: storeData.startServiceWithQRCode,
-      shareQueue: storeData.shareQueue
+      shareQueue: storeData.shareQueue,
+      finishWithoutQrCodeInCaseFailure: storeData.inCaseFailureAcceptFinishWithoutQRCode
     });
 
     this.setupQRCodeToggleListeners();

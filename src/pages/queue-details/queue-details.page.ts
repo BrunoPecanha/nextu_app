@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { PaymentMethodEnum } from 'src/models/enums/payment-method';
 import { QueueReportResponse } from 'src/models/responses/queue-report-response';
-import { QueueService } from 'src/services/queue-service';
+import { QueueService } from 'src/services/queue.service';
 
 @Component({
   selector: 'app-queue-details',

@@ -5,7 +5,7 @@ import { ToastController } from '@ionic/angular';
 import { QueueCreateRequest } from 'src/models/requests/queue-create-request';
 import { StoreModel } from 'src/models/store-model';
 import { UserModel } from 'src/models/user-model';
-import { QueueService } from 'src/services/queue-service';
+import { QueueService } from 'src/services/queue.service';
 import { SessionService } from 'src/services/session.service';
 
 

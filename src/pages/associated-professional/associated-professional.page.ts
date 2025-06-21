@@ -3,7 +3,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { EmployeeStoreSendInviteRequest } from 'src/models/requests/employee-store-send-invite-request';
 import { EmployeeStoreRespondInviteRequest } from 'src/models/requests/employee-store-respond-invite-request';
 import { EmployeeStoreItemModel } from 'src/models/employee-store-item-model';
-import { EmployeeStoreService } from 'src/services/employee-store.service';
+import { EmployeeStoreService } from 'src/services/employee.store.service';
 import { SessionService } from 'src/services/session.service';
 import { UserModel } from 'src/models/user-model';
 import { StoreModel } from 'src/models/store-model';

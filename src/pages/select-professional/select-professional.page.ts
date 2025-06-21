@@ -4,9 +4,9 @@ import { AlertController } from '@ionic/angular';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { ProfessionalModel } from 'src/models/professional-model';
 import { StoreProfessionalModel } from 'src/models/store-professional-model';
-import { SignalRService } from 'src/services/seignalr-service';
+import { SignalRService } from 'src/services/seignalr.service';
 import { SessionService } from 'src/services/session.service';
-import { StoresService } from 'src/services/stores-service';
+import { StoresService } from 'src/services/stores.service';
 
 @Component({
   selector: 'app-select-professional',

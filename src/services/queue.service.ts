@@ -94,8 +94,8 @@ export class QueueService {
     );
   }
 
-  startCustomerService(customerId: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/queue/start-service/${customerId}`);
+  startCustomerService(customerId: number, employeeAttendantId: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/queue/start-service/${customerId}/${employeeAttendantId}`);
   }
 
   notifyTimeCustomerWasCalledInTheQueue(customerId: number): Observable<any> {

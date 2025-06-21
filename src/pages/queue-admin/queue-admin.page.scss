@@ -282,3 +282,44 @@ ion-toast.toast-danger {
   --background: var(--ion-color-danger);
   --color: white;
 }
+
+ion-refresher {
+  --background: transparent;
+}
+
+ion-refresher-content {
+  --color: #3880ff;
+  color: #3880ff;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.3px;
+}
+
+ion-refresher-content .refresher-pulling,
+ion-refresher-content .refresher-refreshing {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+ion-refresher-content .refresher-pulling-icon,
+ion-refresher-content .refresher-refreshing-icon {
+  font-size: 22px;
+  color: #3880ff;
+}
+
+ion-refresher-content .refresher-pulling-text,
+ion-refresher-content .refresher-refreshing-text {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6c757d;
+}
+
+ion-refresher-content .refresher-refreshing-spinner circle {
+  stroke: #3880ff;
+}
+
+ion-refresher-content {
+  --spinner-color: #3880ff;
+}

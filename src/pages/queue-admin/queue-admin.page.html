@@ -4,10 +4,21 @@
   startIconName="arrow-back"
   [showEndButton]="true"
   endIconName="add"
+  [endDisabled]="anyQueueOpen"
   (onEndClick)="openAddQueuePage()"
 ></app-custom-header>
 
 <ion-content class="ion-padding">
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div class="filters-section">
     <ion-segment [(ngModel)]="activeFilter" (ionChange)="filterChanged()">
       <ion-segment-button value="today">
@@ -139,30 +150,31 @@
         </ion-item>
 
         <ion-item-options side="end">
-          <ng-container *ngIf="queue.status === _statusQueueEnum.open || queue.status === _statusQueueEnum.paused; else closedActions">
-            
-            <ion-item-option 
+          <ng-container
+            *ngIf="queue.status === _statusQueueEnum.open || queue.status === _statusQueueEnum.paused; else closedActions"
+          >
+            <ion-item-option
               color="warning"
-              (click)="queue.status === _statusQueueEnum.open ? pauseQueue(queue) : unpauseQueue(queue)">
-              <ion-icon 
-                slot="icon-only" 
-                [name]="queue.status === _statusQueueEnum.open ? 'pause' : 'play'">
+              (click)="queue.status === _statusQueueEnum.open ? pauseQueue(queue) : unpauseQueue(queue)"
+            >
+              <ion-icon
+                slot="icon-only"
+                [name]="queue.status === _statusQueueEnum.open ? 'pause' : 'play'"
+              >
               </ion-icon>
             </ion-item-option>
-        
+
             <ion-item-option color="danger" (click)="closeQueue(queue)">
               <ion-icon slot="icon-only" name="close"></ion-icon>
             </ion-item-option>
-        
           </ng-container>
-        
+
           <ng-template #closedActions>
             <ion-item-option color="tertiary" (click)="viewQueueDetails(queue)">
               <ion-icon slot="icon-only" name="eye"></ion-icon>
             </ion-item-option>
           </ng-template>
         </ion-item-options>
-        
       </ion-item-sliding>
     </ion-list>
   </div>

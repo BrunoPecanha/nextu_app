@@ -3,8 +3,8 @@ import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { CategoryModel } from 'src/models/category-model';
 import { StoreModel } from 'src/models/store-model';
-import { FavoriteService } from 'src/services/favorite-service';
-import { SelectCompanyService } from 'src/services/select-company-service';
+import { FavoriteService } from 'src/services/favorite.service';
+import { SelectCompanyService } from 'src/services/select-company.service';
 import { SessionService } from 'src/services/session.service';
 
 @Component({

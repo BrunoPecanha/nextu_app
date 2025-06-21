@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AlertController, NavController } from '@ionic/angular';
 import { ServiceCategoryModel } from 'src/models/service-category-model';
 import { ServiceModel } from 'src/models/service-model';
-import { ServiceCategoryService } from 'src/services/service-category-service';
-import { ServiceService } from 'src/services/services-service';
+import { ServiceCategoryService } from 'src/services/service-category.service';
+import { ServiceService } from 'src/services/services.service';
 import { SessionService } from 'src/services/session.service';
 
 @Component({

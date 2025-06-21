@@ -1,121 +1,107 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ToastService } from 'src/services/toast.service';
 import { AlertController } from '@ionic/angular';
-import { CustomerServiceModel } from 'src/models/customer-service-model';
-
-
-
-interface Order {
-  id: number;
-  orderNumber: number;
-  customerName: string;
-  items: CustomerServiceModel[];
-  amount: number;
-  date: string;
-  status: 'pending' | 'approved' | 'rejected';
-  priority: 'normal' | 'high';
-  processedAt?: Date;
-  processedBy?: string;
-  rejectionReason?: string;
-}
+import { OrderModel } from 'src/models/order-model';
+import { OrderService } from 'src/services/order.service';
+import { SessionService } from 'src/services/session.service';
+import { OrderRequest } from 'src/models/requests/order-request';
+import { StoreModel } from 'src/models/store-model';
+import { UserModel } from 'src/models/user-model';
+import { CustomerStatusEnum } from 'src/models/enums/customer-status.enum';
 
 @Component({
   selector: 'app-order-approval',
   templateUrl: './order-approval.page.html',
   styleUrls: ['./order-approval.page.scss'],
 })
-export class OrderApprovalPage {
+export class OrderApprovalPage implements OnInit {
+
   currentDate = new Date();
-
-  activeOrders: Order[] = [
-    {
-      id: 1,
-      orderNumber: 1001,
-      customerName: 'João Silva',
-      items: [
-        { id: 101, name: 'Corte de Cabelo', quantity: 1, total: 50.00, icon: 'cut' },
-        { id: 102, name: 'Barba', quantity: 1, total: 30.00, icon: 'barbell' },
-        { id: 103, name: 'Hidratação', quantity: 1, total: 40.00,  icon: 'water' }
-      ],
-      amount: 120.00,
-      date: '2023-10-01',
-      status: 'pending',
-      priority: 'high'
-    },
-    {
-      id: 2,
-      orderNumber: 1002,
-      customerName: 'Maria Oliveira',
-      items: [
-        { id: 201, name: 'Manicure', quantity: 1, total: 35.00, icon: 'hand-left' },
-        { id: 202, name: 'Pedicure', quantity: 1, total: 40.00,   icon: 'foot' },
-        { id: 203, name: 'Sobrancelha', quantity: 1, total: 20.00, icon: 'eye' }
-      ],
-      amount: 75.00,
-      date: '2023-10-02',
-      status: 'pending',
-      priority: 'normal'
-    }
-  ];
-
-  processedOrders: Order[] = [
-    {
-      id: 3,
-      orderNumber: 1003,
-      customerName: 'Carlos Souza',
-      items: [
-        { id: 301, name: 'Corte Social', quantity: 1, total: 45.00, icon: 'cut' },
-        { id: 302, name: 'Sobrancelha', quantity: 1, total: 20.00, icon: 'eye' }
-      ],
-      amount: 65.00,
-      date: '2023-10-03',
-      status: 'approved',
-      priority: 'normal',
-      processedAt: new Date('2023-10-03T10:30:00'),
-      processedBy: 'Admin'
-    },
-    {
-      id: 4,
-      orderNumber: 1004,
-      customerName: 'Ana Santos',
-      items: [
-        { id: 401, name: 'Coloração', quantity: 1, total: 80.00,  icon: 'color-fill' },
-      ],
-      amount: 80.00,
-      date: '2023-10-04',
-      status: 'rejected',
-      priority: 'normal',
-      processedAt: new Date('2023-10-04T11:15:00'),
-      processedBy: 'Admin',
-      rejectionReason: 'Produto indisponível'
-    }
-  ];
+  activeOrders: OrderModel[] = [];
+  processedOrders: OrderModel[] = [];
 
   showRejectModal = false;
-  selectedOrder: Order | null = null;
+  selectedOrder: OrderModel | null = null;
   rejectReason: string = '';
   isLoading: boolean = false;
   filter: string = 'all';
+  store!: StoreModel;
+  user!: UserModel;
 
   constructor(
     private toastService: ToastService,
-    private alertController: AlertController
-  ) { }
+    private alertController: AlertController,
+    private orderService: OrderService,
+    private sessionService: SessionService
+  ) {
+    this.store = this.sessionService.getStore();
+    this.user = this.sessionService.getUser();
+  }
+
+  ngOnInit() {
+    this.loadOrders();
+  }
+
+  loadOrders() {
+    this.isLoading = true;
+
+    this.orderService.getOrdersWatingApprovmentByEmployee(this.store.id, this.user.id).subscribe({
+      next: (response) => {
+        if (response.valid && response.data) {
+          this.activeOrders = response.data.map((o: any) => {
+            const order: OrderModel = {
+              orderNumber: o.orderNumber,
+              items: o.items.map((item: any) => ({
+                serviceId: item.serviceId,
+                queueId: item.queueId,
+                name: item.name,
+                icon: item.icon,
+                price: item.price,
+                finalDuration: item.finalDuration,
+                finalPrice: item.finalPrice,
+                quantity: item.quantity,
+                variablePrice: item.variablePrice,
+                variableTime: item.variableTime,
+              })),
+              name: o.name,
+              total: o.total,
+              paymentMethodId: o.paymentMethodId,
+              paymentIcon: o.paymentIcon,
+              paymentMethod: o.paymentMethod,
+              notes: o.notes,
+              priority: o.priority,
+              status: o.status,
+              processedAt: o.processedAt,
+              processedByName: o.processedByName,
+              rejectionReason: o.rejectionReason,
+            };
+            return order;
+          });
+        }
+      },
+      error: () => {
+        this.toastService.show('Erro ao carregar pedidos', 'danger');
+      },
+      complete: () => {
+        this.isLoading = false;
+      }
+    });
+  }
 
   get filteredOrders() {
     if (this.filter === 'pending') {
-      return this.activeOrders.filter(order => order.status === 'pending');
+      return this.activeOrders.filter(order => order.status === 6);
     } else if (this.filter === 'highPriority') {
-      return this.activeOrders.filter(order => order.priority === 'high');
+      return this.activeOrders.filter(order => order.priority === 0);
     } else if (this.filter === 'history') {
       return [...this.processedOrders]
-        .sort((a, b) => (b.processedAt?.getTime() || 0) - (a.processedAt?.getTime() || 0))
+        //   .sort((a, b) => (b.processedAt) - (a.processedAt || 0))
         .slice(0, 5);
     }
     return this.activeOrders;
   }
 
-   getServiceIcon(serviceName: string): string {
+  getServiceIcon(serviceName: string): string {
     const icons: { [key: string]: string } = {
       'Corte de Cabelo': 'cut',
       'Corte Social': 'cut',
@@ -129,11 +115,10 @@ export class OrderApprovalPage {
     return icons[serviceName] || 'pricetag';
   }
 
-
-  async approveOrder(order: Order) {
+  async approveOrder(order: OrderModel) {
     const confirm = await this.alertController.create({
       header: 'Confirmar Aprovação',
-      message: `Deseja aprovar o pedido #${order.orderNumber} de ${order.customerName}?`,
+      message: `Deseja aprovar o pedido #${order.orderNumber} de ${order.name}?`,
       buttons: [
         {
           text: 'Cancelar',
@@ -142,7 +127,7 @@ export class OrderApprovalPage {
         {
           text: 'Aprovar',
           handler: async () => {
-            await this.processApproval(order);
+            await this.processOrder(order, CustomerStatusEnum.Approved, 'Pedido aprovado!');
           }
         }
       ]
@@ -151,44 +136,29 @@ export class OrderApprovalPage {
     await confirm.present();
   }
 
-  private async processApproval(order: Order) {
-    try {
-      this.isLoading = true;
-      await this.simulateRequest();
 
-      const approvedOrder = {
-        ...order,
-        status: 'approved' as const,
-        processedAt: new Date(),
-        processedBy: 'Usuário Atual' 
-      };
-
-      this.processedOrders.unshift(approvedOrder); 
-      this.activeOrders = this.activeOrders.filter(o => o.id !== order.id);
-
-      this.toastService.show(`Pedido #${order.orderNumber} aprovado!`, 'success');
-    } catch (error) {
-      this.toastService.show('Falha ao aprovar pedido.', 'danger');
-    } finally {
-      this.isLoading = false;
-    }
-  }
-
-  async rejectOrder(order: Order) {
+  async rejectOrder(order: OrderModel) {
     const alert = await this.alertController.create({
       header: 'Confirmar Rejeição',
       message: `Deseja rejeitar o pedido #${order.orderNumber}?`,
-      inputs: [{
-        name: 'reason',
-        type: 'text',
-        placeholder: 'Motivo da rejeição'
-      }],
+      inputs: [
+        {
+          name: 'reason',
+          type: 'text',
+          placeholder: 'Motivo da rejeição'
+        }
+      ],
       buttons: [
         { text: 'Cancelar', role: 'cancel' },
         {
           text: 'Rejeitar',
           handler: async (data) => {
-            await this.processRejection(order, data.reason);
+            const reason = data.reason?.trim();
+            if (!reason) {
+              this.toastService.show('Informe o motivo da rejeição.', 'danger');
+              return;
+            }
+            await this.processOrder(order, CustomerStatusEnum.Rejected, 'Pedido rejeitado!', reason);
           }
         }
       ]
@@ -197,31 +167,37 @@ export class OrderApprovalPage {
     await alert.present();
   }
 
-  private async processRejection(order: Order, reason: string) {
+  private async processOrder(
+    order: OrderModel,
+    status: number,
+    successMessage: string,
+    rejectReason: string = ''
+  ) {
     try {
       this.isLoading = true;
-      await this.simulateRequest();
 
-      const rejectedOrder = {
-        ...order,
-        status: 'rejected' as const,
-        processedAt: new Date(),
-        processedBy: 'Usuário Atual', 
-        rejectionReason: reason
+      const request: OrderRequest = {
+        status: status,
+        responsibleEmployee: this.user.id,
+        rejectReason: rejectReason
       };
 
-      this.processedOrders.unshift(rejectedOrder);
-      this.activeOrders = this.activeOrders.filter(o => o.id !== order.id);
+      await this.orderService.processOrder(order.orderNumber, request).toPromise();
 
-      this.toastService.show(`Pedido #${order.orderNumber} rejeitado.`, 'danger');
+      this.activeOrders = this.activeOrders.filter(o => o.orderNumber !== order.orderNumber);
+
+      const color = status === 8 ? 'danger' : 'success';
+      this.toastService.show(`${successMessage} Pedido #${order.orderNumber}.`, color);
     } catch (error) {
-      this.toastService.show('Falha ao rejeitar pedido.', 'danger');
+      this.toastService.show('Falha ao processar pedido.', 'danger');
+      console.error(error);
     } finally {
       this.isLoading = false;
     }
   }
 
- getServiceColor(serviceName: string): string {
+
+  getServiceColor(serviceName: string): string {
     const colors: { [key: string]: string } = {
       'Corte de Cabelo': 'primary',
       'Corte Social': 'primary',
@@ -233,9 +209,5 @@ export class OrderApprovalPage {
       'Coloração': 'danger'
     };
     return colors[serviceName] || 'medium';
-  }
-
-  simulateRequest(): Promise<void> {
-    return new Promise((resolve) => setTimeout(resolve, 1000));
   }
 }

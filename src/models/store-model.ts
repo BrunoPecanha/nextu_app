@@ -47,4 +47,5 @@ export interface StoreModel extends To {
   startServiceWithQRCode: boolean;
   shareQueue: boolean;
   isVerified: boolean;
+  inCaseFailureAcceptFinishWithoutQRCode: boolean;
 }

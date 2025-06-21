@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ClientHistoryRecordModel } from 'src/models/client-history-record-model';
-import { HistoryService } from 'src/services/history-service';
+import { HistoryService } from 'src/services/history.service';
 import { AlertController, ModalController } from '@ionic/angular';
 import { PeriodPickerModalComponent } from 'src/shared/components/period-picker-modal/period-picker-modal.component';
 import { CustomerHistoryFilterRequest } from 'src/models/requests/customer-history-filter-request';

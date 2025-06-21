@@ -9,4 +9,5 @@ export interface CustomerModel {
   paymentMethodId: string;
   paymentMethod: string;
   notes: string;
+  employeeAttedandtId: number;
 }
