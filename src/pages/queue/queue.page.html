@@ -18,7 +18,6 @@
         [class.expandido]="currentlyExpandedCardId === card.queueId"
         [class.minha-vez]="card.position === 0"
       >
-        <!-- TOPO DO CARD -->
         <div class="card-topo" (click)="toggleCardDetails(card)">
           <div class="logo-info">
             <div class="logo-container">
@@ -88,7 +87,6 @@
           </div>
         </div>
 
-        <!-- CONTEÚDO EXPANDIDO -->
         <div
           class="card-conteudo"
           *ngIf="currentlyExpandedCardId === card.queueId && getCardDetails(card) as detalhes"
@@ -100,7 +98,6 @@
             </span>
           </div>
 
-          <!-- FILA VISUAL -->
           <div *ngIf="card.position > 1" class="fila-info">
             <h6 class="saudacao">E aí, tudo bem?</h6>
             <p class="info-profissional">
@@ -131,7 +128,6 @@
             </div>
           </div>
 
-          <!-- TEMPO ESTIMADO -->
           <div
             *ngIf="card.position > 0 && !isTimeZero(detalhes.timeToWait)"
             class="tempo-estimado-recolhido"
@@ -148,7 +144,6 @@
             Vá para a loja, você é o próximo a ser atendido!
           </div>
 
-          <!-- QR CODE ou EM ATENDIMENTO -->
           <div *ngIf="card.status === 2" class="em-atendimento-section">
             <ion-icon
               name="person-circle-outline"
@@ -156,8 +151,10 @@
             ></ion-icon>
             <div class="texto-atendimento">
               <h5>Você está em atendimento!</h5>
-              <p>Dirija-se ao profissional {{ detalhes.attendantsName }}.</p>
-              <p>Em caso de dúvidas, consulte a recepção.</p>
+              <p>
+                {{ detalhes.attendantsName }} vai cuidar do seu atendimento.
+              </p>
+              <p>Em caso de dúvidas, consulte o(a) atendente.</p>
             </div>
           </div>
 
@@ -187,7 +184,6 @@
             >
           </div>
 
-          <!-- SERVIÇOS -->
           <div class="servicos-section">
             <ion-item-divider class="divider">
               <ion-label class="subtitulo">Serviços Selecionados</ion-label>
@@ -252,7 +248,6 @@
             </ion-list>
           </div>
 
-          <!-- PAGAMENTO -->
           <div class="pagamento-section">
             <ion-item-divider class="divider">
               <ion-label class="subtitulo">Forma de Pagamento</ion-label>

@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
 import { CustomerInQueueCardDetailModel } from 'src/models/customer-in-queue-card-detail-model';
 import { CustomerInQueueCardModel } from 'src/models/customer-in-queue-card-model';
-import { CustomerStatusEnum } from 'src/models/enums/customer-status.enum';
 import { StoreModel } from 'src/models/store-model';
 import { QueueService } from 'src/services/queue.service';
 import { SignalRService } from 'src/services/seignalr.service';

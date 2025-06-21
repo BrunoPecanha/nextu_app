@@ -251,8 +251,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     if (this.store.inCaseFailureAcceptFinishWithoutQRCode && this.store.startServiceWithQRCode) {
       buttons.push({
         text: 'Iniciar sem QR Code',
-        handler: async () => {
-          debugger
+        handler: async () => {          
           this.startService(customer.id, employeeId);
         },
       });

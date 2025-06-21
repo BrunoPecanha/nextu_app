@@ -28,7 +28,7 @@ export class LoginPage {
   ) { }
 
   ngOnInit() {
-    this.sessionService.clear();
+    this.sessionService.clearSessionData();
   }
 
   async login() {
@@ -46,14 +46,12 @@ export class LoginPage {
           password: this.password
         }));
 
-        if (response && response.valid && response.data?.token && response.data?.user) {
-          const { token, user } = response.data;
-          
-          this.sessionService.setToken(token);
-          this.sessionService.setUser(user);
+        if (response && response.valid && response?.data.token && response.data?.user) {
 
-          this.skipeProfileSelection(user);
+          this.sessionService.setToken(response?.data.token);
+          this.sessionService.setUser(response?.data.user);
 
+          this.router.navigate(['/role-registration']);
         }
       }
       catch (error) {
@@ -65,16 +63,6 @@ export class LoginPage {
     } else {
       await this.showAlert('Email e senha são obrigatórios.');
     }
-  }
-
-  skipeProfileSelection(user: UserModel) {
-    if (user.profile == 0) {
-      this.sessionService.setProfile(user.profile)
-      this.router.navigate(['/select-company']);
-    }
-     
-    else
-      this.router.navigate(['/role-registration']);
   }
 
   private async showAlert(message: string) {
