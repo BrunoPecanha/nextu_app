@@ -106,8 +106,9 @@ export class CompanyConfigurationsPage {
       releaseOrdersBeforeGetsQueued: [false],
       endServiceWithQRCode: [false],
       startServiceWithQRCode: [false],
-      shareQueue:[{ value: false, disabled: true }],
+      shareQueue: [false],
       wallPaper: [null],
+      finishWithoutQrCodeInCaseFailure: [false],
       storeSubtitle: [''],
       highLights: this.fb.array([])
     });
@@ -245,7 +246,8 @@ export class CompanyConfigurationsPage {
       releaseOrdersBeforeGetsQueued: storeData.releaseOrdersBeforeGetsQueued,
       endServiceWithQRCode: storeData.endServiceWithQRCode,
       startServiceWithQRCode: storeData.startServiceWithQRCode,
-      shareQueue: storeData.shareQueue
+      shareQueue: storeData.shareQueue,
+      finishWithoutQrCodeInCaseFailure: storeData.inCaseFailureAcceptFinishWithoutQRCode
     });
 
     this.setupQRCodeToggleListeners();

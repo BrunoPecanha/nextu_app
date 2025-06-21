@@ -347,11 +347,16 @@
               <ion-toggle formControlName="endServiceWithQRCode"></ion-toggle>
             </ion-item>
 
+              <ion-item class="compact-setting-item" lines="none">
+              <ion-icon name="checkmark" slot="start"></ion-icon>
+              <ion-label>Permite iniciar/finalizar atendimento sem QRCode</ion-label>
+              <ion-toggle formControlName="finishWithoutQrCodeInCaseFailure"></ion-toggle>
+            </ion-item>
+
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="share-social-outline" slot="start"></ion-icon>
               <ion-label
                 >Compartilhar Fila
-                <span class="badge-label">EM BREVE</span>
               </ion-label>
               <ion-toggle formControlName="shareQueue"></ion-toggle>
             </ion-item>

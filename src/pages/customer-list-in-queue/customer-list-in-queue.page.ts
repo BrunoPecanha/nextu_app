@@ -7,6 +7,7 @@ import { QueueModel } from 'src/models/queue-model';
 import { QueuePauseRequest } from 'src/models/requests/queue-pause-request';
 import { StoreModel } from 'src/models/store-model';
 import { CustomerService } from 'src/services/customer.service';
+import { QrScannerService } from 'src/services/qr-scanner.service';
 import { QueueService } from 'src/services/queue.service';
 import { SignalRService } from 'src/services/seignalr.service';
 import { SessionService } from 'src/services/session.service';
@@ -25,7 +26,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   isPaused: boolean = false;
   queue: QueueModel | null = null;
   store: StoreModel = {} as StoreModel;
-  employee: StoreModel | null = null;
+  employee!: StoreModel;
 
   editingNameMap: { [clientId: number]: boolean } = {};
   editedNames: { [clientId: number]: string } = {};
@@ -36,7 +37,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   currentClient: any = null;
 
   private storeId: number;
-  private employeeId: number;
   private signalRGroup: string;
 
   constructor(
@@ -48,11 +48,13 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     private toast: ToastService,
     private modalCtrl: ModalController,
     private signalRService: SignalRService,
-    private router: Router
+    private router: Router,
+    private qrScanner: QrScannerService,
+    private toastService: ToastService
   ) {
     this.store = this.sessionService.getStore();
     this.storeId = this.store.id;
-    this.employeeId = this.sessionService.getUser()?.id;
+    this.employee = this.sessionService.getUser();
     this.signalRGroup = this.storeId.toString();
   }
 
@@ -188,11 +190,11 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   private loadQueueData() {
     this.store = this.sessionService.getStore();
 
-    if (!this.storeId || !this.employeeId)
+    if (!this.storeId || !this.employee.id)
       return;
 
     this.isLoading = true;
-    this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.storeId, this.employeeId)
+    this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.storeId, this.employee.id)
       .subscribe({
         next: (response) => {
           this.clients = response.data || [];
@@ -210,23 +212,80 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
       });
   }
 
-  startQRCodeScan(customer: CustomerInQueueForEmployeeModel) {
+  async confirmStartService(customer: CustomerInQueueForEmployeeModel) {
     if (customer.inService) {
       this.navCtrl.navigateForward(`/customer-service/${customer.id}`);
       return;
     }
 
-    console.log('Simulando leitura de QR Code...');
+    const employeeId = this.sessionService.getUser()?.id;
+    const exigeQrCode = await this.checkQrCodeRiquired();
 
-    this.queueService.startCustomerService(customer.id).subscribe({
-      next: (response) => {
-        console.log('Atendimento iniciado com sucesso', response);
-        this.navCtrl.navigateForward(`/customer-service/${customer.id}`);
+    if (!exigeQrCode) {
+      this.startService(customer.id, employeeId);
+      return;
+    }
+
+    const buttons: any[] = [
+      {
+        text: 'Ler QR Code',
+        handler: async () => {
+          const result = await this.qrScanner.scanQrCode();
+
+          if (!result) {
+            this.toastService.show('Leitura cancelada ou QR Code inválido', 'warning');
+            return;
+          }
+
+          const scannedId = Number(result);
+
+          if (scannedId === customer.id) {
+            this.startService(customer.id, this.employee.id);
+          } else {
+            this.toastService.show('QR Code não confere com este cliente', 'danger');
+          }
+        },
+      }
+    ];
+
+    if (this.store.inCaseFailureAcceptFinishWithoutQRCode && this.store.startServiceWithQRCode) {
+      buttons.push({
+        text: 'Iniciar sem QR Code',
+        handler: async () => {
+          debugger
+          this.startService(customer.id, employeeId);
+        },
+      });
+    }
+
+    buttons.push({
+      text: 'Cancelar',
+      role: 'cancel',
+    });
+
+    const alert = await this.alertController.create({
+      header: 'Confirmação',
+      message: 'Deseja iniciar o atendimento deste cliente?',
+      buttons,
+    });
+
+    await alert.present();
+  }
+
+  private startService(customerId: number, employeeId: number) {
+    this.queueService.startCustomerService(customerId, employeeId).subscribe({
+      next: () => {
+        this.navCtrl.navigateForward(`/customer-service/${customerId}`);
       },
       error: (err) => {
         console.error('Erro ao iniciar atendimento:', err);
+        this.toastService.show('Erro ao iniciar atendimento', 'danger');
       }
     });
+  }
+
+  private async checkQrCodeRiquired(): Promise<boolean> {
+    return !!this.store && !!this.store.startServiceWithQRCode;
   }
 
   pauseQueue() {
@@ -316,7 +375,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   loadAllCustomersInQueueByEmployeeAndStoreId() {
     this.isLoading = true;
     this.store = this.sessionService.getStore();
-    this.employee = this.sessionService.getUser();
 
     if (this.store && this.employee) {
       this.queueService.getAllCustomersInQueueByEmployeeAndStoreId(this.store.id, this.employee.id).subscribe({
@@ -377,7 +435,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
       return;
     }
 
-    this.queueService.startCustomerService(customer.id).subscribe({
+    this.queueService.startCustomerService(customer.id, this.employee?.id || 0).subscribe({
       next: () => {
         this.navCtrl.navigateForward(`/customer-service/${customer.id}`);
       },

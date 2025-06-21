@@ -18,23 +18,22 @@
         [class.expandido]="currentlyExpandedCardId === card.queueId"
         [class.minha-vez]="card.position === 0"
       >
+        <!-- TOPO DO CARD -->
         <div class="card-topo" (click)="toggleCardDetails(card)">
           <div class="logo-info">
             <div class="logo-container">
-              <ion-img
-                [src]="card.logoPath || 'assets/images/default-logo.png'"
-                class="logo"
-                alt="Logo"
-              ></ion-img>
+              <div class="logo">
+                <img
+                  [src]="card.logoPath || 'assets/images/default-logo.png'"
+                  alt="Logo da Empresa"
+                />
+              </div>
             </div>
             <div class="info-principal">
-              <div
-                class="posicao-fila"
-                style="display: flex; align-items: center; gap: 8px"
-              >
-                <h6 class="titulo-principal" style="margin: 0; flex-grow: 1">
-                  {{ card.position === 0 ? 'Sua vez!' : 'Você é o ' +
-                  card.position + 'º na fila' }}
+              <div class="posicao-fila">
+                <h6 class="titulo-principal">
+                  {{ card.status === 2 ? 'Em atendimento' : card.position === 0
+                  ? 'Sua vez!' : 'Você é o ' + card.position + 'º na fila' }}
                   <ion-icon
                     [name]="card.isPaused ? 'pause-circle-outline' : 'play-circle-outline'"
                     [color]="card.isPaused ? 'danger' : 'success'"
@@ -57,8 +56,9 @@
                   {{ card.payment }}
                 </span>
               </div>
+
               <div
-                *ngIf="!isCardExpanded(card) && !(card.status === 6)"
+                *ngIf="!isCardExpanded(card) && !(card.status === 6) && !(card.status === 2) && !(card.status === 4)"
                 class="tempo-estimado-recolhido"
                 [ngClass]="getTimeColor(card.timeToWait)"
               >
@@ -66,17 +66,9 @@
                   Tempo estimado: {{ formatEstimatedTime(card.timeToWait) }}
                 </span>
               </div>
-              <div
-                *ngIf="card.status === 6"
-                class="tempo-estimado-recolhido"
-              >
-                <span>
-                  <ion-badge
-                    color="warning"
-                    style="font-weight: 600; font-size: 9px; padding: 4px 8px"
-                    >Aguardando aprovação
-                  </ion-badge>
-                </span>
+
+              <div *ngIf="card.status === 6" class="tempo-estimado-recolhido">
+                <ion-badge color="warning">Aguardando aprovação</ion-badge>
               </div>
             </div>
           </div>
@@ -96,28 +88,19 @@
           </div>
         </div>
 
+        <!-- CONTEÚDO EXPANDIDO -->
         <div
           class="card-conteudo"
           *ngIf="currentlyExpandedCardId === card.queueId && getCardDetails(card) as detalhes"
         >
           <div *ngIf="card.status === 6" class="approve-advice">
-            <ion-icon
-              name="alert-circle-outline"
-              color="warning"
-              style="font-size: 24px; vertical-align: middle"
-            ></ion-icon>
-            <span
-              style="
-                margin-left: 8px;
-                font-weight: 600;
-                color: #ff9800;
-                font-size: 15px;
-              "
-            >
+            <ion-icon name="alert-circle-outline" color="warning"></ion-icon>
+            <span>
               Seu pedido está aguardando aprovação. Por favor, aguarde.
             </span>
           </div>
 
+          <!-- FILA VISUAL -->
           <div *ngIf="card.position > 1" class="fila-info">
             <h6 class="saudacao">E aí, tudo bem?</h6>
             <p class="info-profissional">
@@ -148,6 +131,7 @@
             </div>
           </div>
 
+          <!-- TEMPO ESTIMADO -->
           <div
             *ngIf="card.position > 0 && !isTimeZero(detalhes.timeToWait)"
             class="tempo-estimado-recolhido"
@@ -164,10 +148,26 @@
             Vá para a loja, você é o próximo a ser atendido!
           </div>
 
-          <div *ngIf="card.position === 0" class="qr-section">
-            <ion-note *ngIf="detalhes.timeCalledInQueue" class="nota-qr"
-              >Chamado às {{ detalhes.timeCalledInQueue }}</ion-note
-            >
+          <!-- QR CODE ou EM ATENDIMENTO -->
+          <div *ngIf="card.status === 2" class="em-atendimento-section">
+            <ion-icon
+              name="person-circle-outline"
+              class="icon-atendimento"
+            ></ion-icon>
+            <div class="texto-atendimento">
+              <h5>Você está em atendimento!</h5>
+              <p>Dirija-se ao profissional {{ detalhes.attendantsName }}.</p>
+              <p>Em caso de dúvidas, consulte a recepção.</p>
+            </div>
+          </div>
+
+          <div
+            *ngIf="card.position === 0 && card.status !== 2"
+            class="qr-section"
+          >
+            <ion-note *ngIf="detalhes.timeCalledInQueue" class="nota-qr">
+              Chamado às {{ detalhes.timeCalledInQueue }}
+            </ion-note>
             <ion-spinner
               *ngIf="!qrCodeBase64"
               name="dots"
@@ -187,7 +187,7 @@
             >
           </div>
 
-          <!-- resto do conteúdo igual... -->
+          <!-- SERVIÇOS -->
           <div class="servicos-section">
             <ion-item-divider class="divider">
               <ion-label class="subtitulo">Serviços Selecionados</ion-label>
@@ -201,11 +201,10 @@
                   [name]="getIonicIcon(servico.icon)"
                   slot="start"
                   class="icon-servico"
-                >
-                </ion-icon>
+                ></ion-icon>
                 <ion-label class="nome-servico">
                   {{ servico.name }}
-                  <span *ngIf="servico.quantity > 1" class="quantidade-servico"
+                  <span *ngIf="servico.quantity > 1"
                     >(x{{ servico.quantity }})</span
                   >
                 </ion-label>
@@ -253,11 +252,11 @@
             </ion-list>
           </div>
 
+          <!-- PAGAMENTO -->
           <div class="pagamento-section">
             <ion-item-divider class="divider">
               <ion-label class="subtitulo">Forma de Pagamento</ion-label>
             </ion-item-divider>
-
             <ion-item class="item-pagamento">
               <ion-icon
                 [name]="detalhes.payment.icon"
@@ -277,32 +276,17 @@
             </ion-item>
           </div>
 
-          <div class="botoes-acao">
-            <ion-button
-              expand="block"
-              color="danger"
-              class="botao-sair-fila"
-              (click)="exitQueue(card)"
-            >
-              <ion-icon
-                name="exit-outline"
-                slot="start"
-                class="icon-botao"
-              ></ion-icon>
+          <div *ngIf="!(card.status === 2)" class="botoes-acao">
+            <ion-button expand="block" color="danger" (click)="exitQueue(card)">
+              <ion-icon name="exit-outline" slot="start"></ion-icon>
               Sair da fila
             </ion-button>
-
             <ion-button
               expand="block"
               fill="outline"
-              class="botao-editar"
               (click)="editarServicos(card)"
             >
-              <ion-icon
-                name="create-outline"
-                slot="start"
-                class="icon-botao"
-              ></ion-icon>
+              <ion-icon name="create-outline" slot="start"></ion-icon>
               Alterar Serviços/Pagamento
             </ion-button>
           </div>
@@ -329,7 +313,6 @@
         <ion-button
           fill="solid"
           color="primary"
-          class="empty-button"
           (click)="router.navigate(['/select-company'])"
         >
           Procurar Serviços
@@ -343,11 +326,10 @@
   vertical="bottom"
   horizontal="end"
   slot="fixed"
-  class="help-fab"
   (click)="presentInfoPopup()"
 >
   <ion-fab-button color="primary">
-    <ion-icon name="help-outline" class="questionmark"></ion-icon>
+    <ion-icon name="help-outline"></ion-icon>
   </ion-fab-button>
 </ion-fab>
 

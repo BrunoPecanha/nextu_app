@@ -1,11 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { AlertController, NavController, ToastController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { CustomerModel } from 'src/models/customer-model';
+import { StoreModel } from 'src/models/store-model';
+import { UserModel } from 'src/models/user-model';
 import { CustomerService } from 'src/services/customer.service';
 import { QrScannerService } from 'src/services/qr-scanner.service';
 import { QueueService } from 'src/services/queue.service';
-
+import { SessionService } from 'src/services/session.service';
+import { ToastService } from 'src/services/toast.service';
 
 @Component({
   selector: 'app-customer-service',
@@ -15,6 +18,9 @@ import { QueueService } from 'src/services/queue.service';
 export class CustomerServicePage implements OnInit {
   customerId: number = 0;
   customer: CustomerModel = {} as CustomerModel;
+  store!: StoreModel;
+  employee!: UserModel;
+  employeeCanEndService: boolean = false;
 
   constructor(
     private alertController: AlertController,
@@ -22,23 +28,28 @@ export class CustomerServicePage implements OnInit {
     private route: ActivatedRoute,
     private clienteService: CustomerService,
     private queueService: QueueService,
-    private toastController: ToastController,
-    private qrScanner: QrScannerService
+    private qrScanner: QrScannerService,
+    private sessionService: SessionService,
+    private toastService: ToastService
   ) {
+    this.store = this.sessionService.getStore();
     this.customerId = Number(this.route.snapshot.paramMap.get('id'));
+    this.employee = this.sessionService.getUser();
   }
 
-  ngOnInit() {
+  ngOnInit() {    
     this.loadCustomerInfo();
   }
 
   private loadCustomerInfo(): void {
     this.clienteService.loadCustomerInfo(this.customerId).subscribe({
       next: (response) => {
-        this.customer = response.data;
+        this.customer = response.data;        
+        this.employeeCanEndService = this.employee.id === this.customer.employeeAttedandtId;
       },
       error: (err) => {
         console.error('Erro ao carregar detalhes:', err);
+        this.toastService.show('Erro ao carregar detalhes do cliente', 'danger');
       }
     });
   }
@@ -47,102 +58,82 @@ export class CustomerServicePage implements OnInit {
     this.navCtrl.back();
   }
 
-  async confirmarFinalizacao() {
+  async confirmEndService() {
+    const exigeQrCode = await this.checkQrCodeRiquired();
+
+    if (!exigeQrCode) {
+      await this.endService();
+      return;
+    }
+
+    const buttons: any[] = [
+      {
+        text: 'Ler QR Code',
+        handler: async () => {
+          await this.readQRCodeAndFinish();
+        },
+      }
+    ];
+
+    if (this.store.inCaseFailureAcceptFinishWithoutQRCode && this.store.endServiceWithQRCode) {
+      buttons.push({
+        text: 'Finalizar sem QR Code',
+        handler: async () => {
+          await this.endService();
+        },
+      });
+    }
+
+    buttons.push({
+      text: 'Cancelar',
+      role: 'cancel'
+    });
+
     const alert = await this.alertController.create({
       header: 'Confirmação',
       message: 'Tem certeza que deseja finalizar este serviço?',
-      buttons: [
-        {
-          text: 'Não',
-          role: 'cancel',
-        },
-        {
-          text: 'Sim',
-          handler: async () => {
-            const exigeQrCode = await this.verificaSeExigeQrCode();
-
-            if (exigeQrCode) {
-              await this.lerQrCodeEFinalizar();
-            } else {
-              await this.finalizarAtendimento();
-            }
-          },
-        },
-      ],
+      buttons,
     });
 
     await alert.present();
   }
 
-  private async verificaSeExigeQrCode(): Promise<boolean> {
-    // Você pode buscar isso de alguma config local, API, storage, ou ambiente.
-    // Aqui é só um exemplo fixo:
-    return true; // ou false dependendo da lógica.
+  private async checkQrCodeRiquired(): Promise<boolean> {
+    return !!this.store && !!this.store.endServiceWithQRCode;
   }
 
-  async lerQrCode() {
-    const resultado = await this.qrScanner.scanQrCode();
+  private async readQRCodeAndFinish() {
+    const result = await this.qrScanner.scanQrCode();
 
-    if (resultado) {
-      console.log('QR Code:', resultado);
+    if (!result) {
+      this.toastService.show('Leitura cancelada ou QR Code inválido', 'warning');
+      return;
+    }
+
+    const scannedId = Number(result);
+
+    if (scannedId === this.customerId) {
+      await this.endService();
     } else {
-      console.log('Leitura cancelada ou não reconhecida');
+      this.toastService.show('Não é o cliente chamado.', 'danger');
     }
   }
 
-  private async lerQrCodeEFinalizar() {
-    const qrCode = null;
-
-    if (!qrCode) {
-      await this.mostrarToast('QR Code não lido. Tente novamente.', 'danger');
-      return;
-    }
-
-    if (qrCode !== this.customerId.toString()) {
-      await this.mostrarToast('QR Code inválido para este cliente.', 'danger');
-      return;
-    }
-    await this.finalizarAtendimento();
-  }
-
-  private async scanQrCode() /*: Promise<string | null>*/ {
-    // try {
-    //   const result = await BarcodeScanner.startScan();
-    //   if (result.hasContent) {
-    //     return result.content;
-    //   }
-    //   return null;
-    // } catch (error) {
-    //   console.error('Erro ao escanear QR Code:', error);
-    //   return null;
-    // }
-  }
-
-  private async finalizarAtendimento() {
+  private async endService() {
     try {
       this.queueService.notifyTimeCustomerServiceWasCompleted(this.customerId).subscribe({
         next: async () => {
-          await this.mostrarToast('Serviço finalizado com sucesso!', 'success');
+          this.toastService.show('Serviço finalizado com sucesso!', 'success');
           this.navCtrl.navigateForward('/customer-list-in-queue');
         },
         error: async () => {
-          await this.mostrarToast('Erro ao finalizar serviço', 'danger');
+          this.toastService.show('Erro ao finalizar serviço', 'danger');
         }
       });
 
     } catch (error) {
       console.error('Erro ao finalizar atendimento:', error);
-      await this.mostrarToast('Erro inesperado ao finalizar serviço', 'danger');
+      this.toastService.show('Erro inesperado ao finalizar serviço', 'danger');
     }
-  }
-
-  private async mostrarToast(mensagem: string, cor: string = 'primary') {
-    const toast = await this.toastController.create({
-      message: mensagem,
-      duration: 3000,
-      color: cor,
-      position: 'top'
-    });
-    await toast.present();
   }
 }
