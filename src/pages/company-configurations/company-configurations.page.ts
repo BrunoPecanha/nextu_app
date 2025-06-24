@@ -31,6 +31,7 @@ export class CompanyConfigurationsPage {
   cnpj: string | null = null;
   name: string | null = null;
   address: string | null = null;
+  number: string | number = 0;
   timeRemoval: number | null = null;
   states: Array<{ id: string, name: string }> = [];
   categories: CategoryModel[] = [];
@@ -80,11 +81,12 @@ export class CompanyConfigurationsPage {
 
   initializeForm() {
     this.cadastroForm = this.fb.group({
-      ownerId: 0,
+      ownerId: this.user?.id,
       logo: [null],
       cnpj: [''],
       name: [''],
       address: [''],
+      number: [''],
       city: [''],
       state: [''],
       categoryId: [''],
@@ -222,7 +224,7 @@ export class CompanyConfigurationsPage {
 
   private populateFormForEdition(storeData: StoreModel): void {
     this.cadastroForm.patchValue({
-      ownerId: storeData.ownerId,
+      ownerId: storeData.ownerId === 0 ? this.user?.id : storeData.ownerId,
       cnpj: storeData.cnpj,
       name: storeData.name,
       address: storeData.address,
@@ -409,7 +411,7 @@ export class CompanyConfigurationsPage {
       this.sending = true;
       this.loading = true;
 
-      const storeData = this.storeService.prepareStoreData(this.cadastroForm);
+      const storeData = this.storeService.prepareStoreData(this.cadastroForm, this.user!.id);
       const storeId = this.store ? this.store.id : null;
 
       const observable = storeId
@@ -429,7 +431,7 @@ export class CompanyConfigurationsPage {
             console.log('Operação realizada com sucesso!', response.data);
 
             if (!storeId) {
-              this.navCtrl.navigateForward(`/company-configurations/${response.data.id}`);
+              this.navCtrl.navigateForward(`/company-configurations`);
             }
           } else {
             this.errorMessage = response.message || 'Falha ao salvar loja. Por favor, tente novamente.';

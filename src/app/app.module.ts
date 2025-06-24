@@ -8,30 +8,29 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { SharedModule } from 'src/shared/shared.module';
-import { AuthInterceptor } from 'src/services/auth.interceptor';
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common';
 import { ServiceConfigModalComponent } from 'src/shared/components/service-config-modal-component/service-config-modal.component';
-
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { HttpClientModule } from '@angular/common/http';
 
 registerLocaleData(localePt);
 
 @NgModule({
   declarations: [AppComponent, ServiceConfigModalComponent],
-  imports: [BrowserModule, IonicModule.forRoot({
-      mode: 'ios' 
-    }), AppRoutingModule, SharedModule],
+  imports: [
+    BrowserModule,
+    IonicModule.forRoot({ mode: 'ios' }),
+    AppRoutingModule,
+    SharedModule,
+    HttpClientModule
+  ],
   providers: [
-    { provide: LOCALE_ID, useValue: 'pt' }, 
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideHttpClient(),
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: LOCALE_ID, useValue: 'pt' },
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class AppModule {}
+export class AppModule { }

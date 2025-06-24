@@ -8,6 +8,7 @@ import { OrderRequest } from 'src/models/requests/order-request';
 import { StoreModel } from 'src/models/store-model';
 import { UserModel } from 'src/models/user-model';
 import { CustomerStatusEnum } from 'src/models/enums/customer-status.enum';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-order-approval',
@@ -42,50 +43,48 @@ export class OrderApprovalPage implements OnInit {
     this.loadOrders();
   }
 
-  loadOrders() {
-    this.isLoading = true;
+  async loadOrders() {
+    try {
+      this.isLoading = true;
 
-    this.orderService.getOrdersWatingApprovmentByEmployee(this.store.id, this.user.id).subscribe({
-      next: (response) => {
-        if (response.valid && response.data) {
-          this.activeOrders = response.data.map((o: any) => {
-            const order: OrderModel = {
-              orderNumber: o.orderNumber,
-              items: o.items.map((item: any) => ({
-                serviceId: item.serviceId,
-                queueId: item.queueId,
-                name: item.name,
-                icon: item.icon,
-                price: item.price,
-                finalDuration: item.finalDuration,
-                finalPrice: item.finalPrice,
-                quantity: item.quantity,
-                variablePrice: item.variablePrice,
-                variableTime: item.variableTime,
-              })),
-              name: o.name,
-              total: o.total,
-              paymentMethodId: o.paymentMethodId,
-              paymentIcon: o.paymentIcon,
-              paymentMethod: o.paymentMethod,
-              notes: o.notes,
-              priority: o.priority,
-              status: o.status,
-              processedAt: o.processedAt,
-              processedByName: o.processedByName,
-              rejectionReason: o.rejectionReason,
-            };
-            return order;
-          });
-        }
-      },
-      error: () => {
-        this.toastService.show('Erro ao carregar pedidos', 'danger');
-      },
-      complete: () => {
-        this.isLoading = false;
+      const response = await firstValueFrom(
+        this.orderService.getOrdersWatingApprovmentByEmployee(this.store.id, this.user.id)
+      );
+
+      if (response.valid && response.data) {
+        this.activeOrders = response.data.map((o: any) => ({
+          orderNumber: o.orderNumber,
+          items: o.items.map((item: any) => ({
+            serviceId: item.serviceId,
+            queueId: item.queueId,
+            name: item.name,
+            icon: item.icon,
+            price: item.price,
+            finalDuration: item.finalDuration,
+            finalPrice: item.finalPrice,
+            quantity: item.quantity,
+            variablePrice: item.variablePrice,
+            variableTime: item.variableTime,
+          })),
+          name: o.name,
+          total: o.total,
+          paymentMethodId: o.paymentMethodId,
+          paymentIcon: o.paymentIcon,
+          paymentMethod: o.paymentMethod,
+          notes: o.notes,
+          priority: o.priority,
+          status: o.status,
+          processedAt: o.processedAt,
+          processedByName: o.processedByName,
+          rejectionReason: o.rejectionReason,
+        }));
       }
-    });
+    } catch (error) {
+      this.toastService.show('Erro ao carregar pedidos', 'danger');
+      console.error('Erro:', error);
+    } finally {
+      this.isLoading = false;
+    }
   }
 
   get filteredOrders() {
@@ -113,6 +112,14 @@ export class OrderApprovalPage implements OnInit {
       'Coloração': 'color-fill'
     };
     return icons[serviceName] || 'pricetag';
+  }
+
+  async handleRefresh(event: any) {
+    try {
+      await this.loadOrders();
+    } finally {
+      event.target.complete();
+    }
   }
 
   async approveOrder(order: OrderModel) {

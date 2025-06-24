@@ -117,7 +117,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   private async initSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
       const store = this.sessionService.getStore();
 
       if (!store)
@@ -126,7 +126,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
       const groupName = store.id.toString();
       this.signalRGroup = groupName;
 
-      await this.signalRService.joinGroup(groupName);
+      await this.signalRService.joinQueueGroup(groupName);
 
       this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue((data) => {
@@ -143,7 +143,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
   private cleanupSignalR() {
     this.signalRService.offUpdateQueue();
     if (this.signalRGroup) {
-      this.signalRService.leaveGroup(this.signalRGroup);
+      this.signalRService.leaveQueueGroup(this.signalRGroup);
     }
   }
 
@@ -251,8 +251,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
     if (this.store.inCaseFailureAcceptFinishWithoutQRCode && this.store.startServiceWithQRCode) {
       buttons.push({
         text: 'Iniciar sem QR Code',
-        handler: async () => {
-          debugger
+        handler: async () => {          
           this.startService(customer.id, employeeId);
         },
       });
@@ -286,6 +285,15 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   private async checkQrCodeRiquired(): Promise<boolean> {
     return !!this.store && !!this.store.startServiceWithQRCode;
+  }
+
+  
+  async handleRefresh(event: any) {
+    try {
+      await this.loadAllCustomersInQueueByEmployeeAndStoreId();
+    } finally {
+      event.target.complete();
+    }
   }
 
   pauseQueue() {

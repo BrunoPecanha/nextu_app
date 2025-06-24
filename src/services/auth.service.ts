@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs";
+import { Observable, tap, throwError } from "rxjs";
 import { environment } from "src/environments/environment";
 import { AuthResponse } from "src/models/responses/auth-responsel";
 
@@ -14,14 +14,48 @@ export class AuthService {
   constructor(private http: HttpClient) { }
 
   login(credentials: { email: string, password: string }): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials);
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, credentials).pipe(
+      tap(response => {
+        this.setSession(response);
+      })
+    );
   }
 
-  logout(): Observable<any> {
-    return this.http.post(`${this.apiUrl}/auth/logout`, {});
+  logout(): void {
+    this.clearSession();
   }
 
-  public getToken(): string {
-    return localStorage.getItem('token') || '';
+  refreshToken(): Observable<AuthResponse> {
+    const refreshToken = this.getRefreshToken();
+    
+    if (!refreshToken) {
+      return throwError(() => new Error('Refresh token não encontrado'));
+    }
+
+    return this.http.post<AuthResponse>(`${this.apiUrl}/auth/refresh-token`, { refreshToken }).pipe(
+      tap(response => {
+        this.setSession(response);
+      })
+    );
+  }
+
+  getToken(): string | null {
+    return sessionStorage.getItem('token') || localStorage.getItem('token');
+  }
+
+  public getRefreshToken(): string | null {
+    return localStorage.getItem('refresh_token');
+  }
+
+  private setSession(authResponse: AuthResponse) {
+    localStorage.setItem('refresh_token', authResponse.data.refreshToken);
+  }
+
+  private clearSession() {
+    localStorage.removeItem('refresh_token');
+  }
+
+  public isLoggedIn(): boolean {
+    return !!this.getToken();
   }
 }

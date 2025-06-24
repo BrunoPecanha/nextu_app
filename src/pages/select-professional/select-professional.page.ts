@@ -27,18 +27,18 @@ export class SelectProfessionalPage implements OnInit {
 
   ngOnInit() {
     this.getSelectedStoreId();
-    this.resetImageStates();    
-    this.loadStoreAndProfessionals(this.storeId); 
+    this.resetImageStates();
+    this.loadStoreAndProfessionals(this.storeId);
   }
 
-  
+
   ionViewWillEnter() {
     this.initSignalRConnection();
   }
 
   loadStoreAndProfessionals(storeId: number) {
     this.service.loadStoreAndProfessionals(storeId).subscribe({
-      next: (response) => {        
+      next: (response) => {
         this.store = response.data;
         this.sessionService.setStore(this.store);
       },
@@ -74,13 +74,12 @@ export class SelectProfessionalPage implements OnInit {
 
   private async initSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
 
-      this.signalRGroup = this.storeId.toString();      
+      this.signalRGroup = this.storeId.toString();
 
-      await this.signalRService.joinGroup(this.signalRGroup);
+      await this.signalRService.joinQueueGroup(this.signalRGroup);
 
-      this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue((data) => {
         console.log('Atualização recebida na loja', data);
         this.loadStoreAndProfessionals(this.storeId);
@@ -92,10 +91,19 @@ export class SelectProfessionalPage implements OnInit {
     }
   }
 
+  async handleRefresh(event: any) {
+    try {
+      this.getSelectedStoreId();
+      this.loadStoreAndProfessionals(this.storeId);
+    } finally {
+      event.target.complete();
+    }
+  }
+
   private cleanupSignalR() {
     this.signalRService.offUpdateQueue();
     if (this.signalRGroup) {
-      this.signalRService.leaveGroup(this.signalRGroup);
+      this.signalRService.leaveQueueGroup(this.signalRGroup);
     }
   }
 

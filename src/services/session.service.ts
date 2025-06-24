@@ -13,6 +13,7 @@ export class SessionService {
   private readonly STORES_KEY = 'store';
   private readonly PROFILE_KEY = 'profile';
   private readonly CUSTOMER_KEY = 'customer';
+  private readonly REFRESH_TOKEN = 'refresh_token';
 
   getToken(): string | null {
     return sessionStorage.getItem(this.TOKEN_KEY);
@@ -61,24 +62,38 @@ export class SessionService {
     sessionStorage.setItem(key, JSON.stringify(item));
   }
 
-  getGenericKey(key : string) {
+  getGenericKey(key: string) {
     const item = sessionStorage.getItem(key);
     return item ? JSON.parse(item) : null;
   }
 
-  removeGenericKey(key : string) {
+  removeGenericKey(key: string) {
     sessionStorage.removeItem(key);
   }
 
-  clear(): void {
+  clearSessionData(): void {
     sessionStorage.removeItem(this.TOKEN_KEY);
     sessionStorage.removeItem(this.USER_KEY);
     sessionStorage.removeItem(this.STORES_KEY);
     sessionStorage.removeItem(this.PROFILE_KEY);
+    sessionStorage.removeItem(this.CUSTOMER_KEY);
   }
 
-  logout(): void {
-    this.clear();
+  clearRefreshToken(): void {
+    localStorage.removeItem(this.REFRESH_TOKEN);
+  }
+
+  setRefreshToken(token: string) {
+    localStorage.setItem(this.REFRESH_TOKEN, token);
+  }
+
+  getRefreshToken(): string | null {
+    return localStorage.getItem(this.REFRESH_TOKEN);
+  }
+
+  logout(): void {    
+    this.clearSessionData();
+    this.clearRefreshToken();
     this.router.navigate(['/splash']);
   }
 }

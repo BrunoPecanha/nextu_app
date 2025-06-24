@@ -5,6 +5,16 @@
 ></app-custom-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div class="approval-wrapper">
     <ion-toolbar>
       <ion-segment [(ngModel)]="filter" value="all">
@@ -51,8 +61,8 @@
                           (order.status === 0 ? 'success' : 'danger')"
                   class="status-badge"
                 >
-                  {{ order.status === 6 ? 'Pendente' : (order.status ===
-                  0 ? 'Aprovado' : 'Rejeitado') }}
+                  {{ order.status === 6 ? 'Pendente' : (order.status === 0 ?
+                  'Aprovado' : 'Rejeitado') }}
                 </ion-badge>
               </ion-card-title>
 

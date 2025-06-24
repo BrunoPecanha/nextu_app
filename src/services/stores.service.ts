@@ -64,11 +64,13 @@ export class StoresService {
     );
   }
 
-  prepareStoreData(cadastroForm: FormGroup): FormData {    
+  prepareStoreData(cadastroForm: FormGroup, ownerId: number): FormData {    
     const formValue = cadastroForm.value;
     const formData = new FormData();
     
+    formData.append('OwnerId', String(ownerId));
     formData.append('Name', formValue.name || '');
+     formData.append('Cnpj', formValue.cnpj || '');
     formData.append('Address', formValue.address || '');
     formData.append('Number', formValue.number || '');
     formData.append('City', formValue.city || '');

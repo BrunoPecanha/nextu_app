@@ -197,10 +197,27 @@
           <div class="compact-form-grid">
             <ion-item class="compact-input" lines="none">
               <ion-label position="stacked">Endereço</ion-label>
-              <ion-input
-                formControlName="address"
-                placeholder="Rua, número, complemento"
-              ></ion-input>
+              <div style="display: flex; align-items: center">
+                <ion-input
+                  formControlName="address"
+                  placeholder="Nome da rua"
+                  style="flex: 1; margin-right: 8px"
+                ></ion-input>
+
+                <div
+                  style="
+                    border-right: 1px solid #ccc;
+                    height: 30px;
+                    margin-right: 8px;
+                  "
+                ></div>
+                <ion-input
+                  formControlName="number"
+                  placeholder="Nº"
+                  type="number"
+                  style="width: 70px"
+                ></ion-input>
+              </div>
             </ion-item>
 
             <ion-item class="compact-input" lines="none">
@@ -347,17 +364,19 @@
               <ion-toggle formControlName="endServiceWithQRCode"></ion-toggle>
             </ion-item>
 
-              <ion-item class="compact-setting-item" lines="none">
+            <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="checkmark" slot="start"></ion-icon>
-              <ion-label>Permite iniciar/finalizar atendimento sem QRCode</ion-label>
-              <ion-toggle formControlName="finishWithoutQrCodeInCaseFailure"></ion-toggle>
+              <ion-label
+                >Permite iniciar/finalizar atendimento sem QRCode</ion-label
+              >
+              <ion-toggle
+                formControlName="finishWithoutQrCodeInCaseFailure"
+              ></ion-toggle>
             </ion-item>
 
             <ion-item class="compact-setting-item" lines="none">
               <ion-icon name="share-social-outline" slot="start"></ion-icon>
-              <ion-label
-                >Compartilhar Fila
-              </ion-label>
+              <ion-label>Compartilhar Fila </ion-label>
               <ion-toggle formControlName="shareQueue"></ion-toggle>
             </ion-item>
 

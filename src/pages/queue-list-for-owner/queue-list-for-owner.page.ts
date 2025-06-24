@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 import { StatusQueueEnum } from 'src/models/enums/status-queue.enum';
 import { QueueReducedModel } from 'src/models/queue-reduced-model';
 import { StoreModel } from 'src/models/store-model';
@@ -13,26 +14,46 @@ import { SessionService } from 'src/services/session.service';
 })
 export class QueueListForOwnerPage implements OnInit {
 
-  constructor(private queueService: QueueService, private sessionService: SessionService, private router: Router,) {
+  constructor(
+    private queueService: QueueService,
+    private sessionService: SessionService,
+    private router: Router,
+  ) {
     this.store = this.sessionService.getStore();
-  }
-
-  ngOnInit(): void {
-
-    this.queueService.loadAllQueuesOfStoreForOwner(this.store.id).subscribe({
-      next: (response) => {
-        this.queues = response.data || [];
-      },
-      error: (err) => {
-        console.error('Erro ao carregar filas:', err);
-        this.queues = [];
-      }
-    });
   }
 
   store: StoreModel = {} as StoreModel;
   currentDate = new Date();
   queues: QueueReducedModel[] = [];
+
+  ngOnInit(): void {
+    this.loadQueues();
+  }
+
+  async fetchQueues(): Promise<QueueReducedModel[]> {
+    try {
+      const response = await firstValueFrom(
+        this.queueService.loadAllQueuesOfStoreForOwner(this.store.id)
+      );
+
+      return response.data || [];
+    } catch (error) {
+      console.error('Erro ao carregar filas:', error);
+      return [];
+    }
+  }
+
+  async loadQueues() {
+    this.queues = await this.fetchQueues();
+  }
+
+  async handleRefresh(event: any) {
+    try {
+      await this.loadQueues();
+    } finally {
+      event.target.complete();
+    }
+  }
 
   formatDate(date: Date): string {
     return new Date(date).toLocaleDateString('pt-BR', {
@@ -42,6 +63,7 @@ export class QueueListForOwnerPage implements OnInit {
     });
   }
 
+  // 🎨 Cor do status
   getStatusColor(status: StatusQueueEnum): string {
     switch (status) {
       case StatusQueueEnum.open:
@@ -55,10 +77,6 @@ export class QueueListForOwnerPage implements OnInit {
     }
   }
 
-  viewQueueDetails(queueId: number) {
-    this.router.navigate(['/queue-details', queueId]);
-  }
-
   getStatusDescription(status: StatusQueueEnum): string {
     switch (status) {
       case StatusQueueEnum.open:
@@ -68,7 +86,11 @@ export class QueueListForOwnerPage implements OnInit {
       case StatusQueueEnum.closed:
         return 'Fechada';
       default:
-        return 'primary';
+        return 'Desconhecido';
     }
+  }
+
+  viewQueueDetails(queueId: number) {
+    this.router.navigate(['/queue-details', queueId]);
   }
 }

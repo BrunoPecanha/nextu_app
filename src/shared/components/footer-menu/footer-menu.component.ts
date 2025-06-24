@@ -20,6 +20,10 @@ export class FooterMenuComponent implements OnInit {
 
   ngOnInit() {
     this.notificationService.atualizarContadorNaoLidas();
+
+    this.notificationService.notificacoesNaoLidas$.subscribe(count => {
+      console.log('Contador de notificações atualizado no footer:', count);
+    });
   }
 
   async goToHome(main: boolean = false) {
@@ -38,7 +42,7 @@ export class FooterMenuComponent implements OnInit {
         }
       }
       else if (this.profile === 1) {
-         if (main) {
+        if (main) {
           this.router.navigate(['/order-approval'], {
             replaceUrl: true,
             state: { redirectedFromBack: true }
@@ -48,7 +52,7 @@ export class FooterMenuComponent implements OnInit {
             replaceUrl: true,
             state: { redirectedFromBack: true }
           });
-        }        
+        }
       }
       else if (this.profile === 2) {
         this.router.navigate(['/queue-list-for-owner'], {

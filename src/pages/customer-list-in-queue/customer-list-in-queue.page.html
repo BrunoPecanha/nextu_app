@@ -3,17 +3,25 @@
   [subtitle]="(currentDate | date:'dd/MM/yyyy') || ''"
   [showStartButton]="true"
   [startIconName]="'arrow-back-outline'"
-  [showEndButton]="true"
-  [endIconName]="'refresh-outline'"
   [endLoading]="isLoading"
   [showPausePlayButton]="true"
   (onPausePlayClick)="pauseQueue()"
   [isPaused]="isPaused"
-  (onEndClick)="loadAllCustomersInQueueByEmployeeAndStoreId()"
+  [showEndButton]="false"
 >
 </app-custom-header>
 
 <ion-content>
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-outline"
+      pullingText="Puxe para atualizar"
+      refreshingSpinner="circles"
+      refreshingText="Atualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
   <div *ngIf="clients?.length === 0" class="empty-queue-message">
     <ion-icon
       name="refresh-outline"
@@ -26,7 +34,9 @@
   <div *ngFor="let client of clients" class="card-cliente">
     <div class="badge-container">
       <ion-badge *ngIf="client.canEditName" color="warning">Avulso</ion-badge>
-      <ion-badge *ngIf="client.pricePending" color="danger">Preço Pendente</ion-badge>     
+      <ion-badge *ngIf="client.pricePending" color="danger"
+        >Preço Pendente</ion-badge
+      >
     </div>
 
     <div class="card-top-actions">
@@ -52,7 +62,6 @@
     </div>
 
     <div class="card-content">
-
       <!-- <ion-item *ngIf="client.status === 6" class="approval-alert" lines="none">
         <ion-icon name="alert-circle-outline" slot="start"></ion-icon>
         <ion-label>
@@ -72,10 +81,18 @@
             ></ion-input>
 
             <div class="edit-actions">
-              <ion-button fill="clear" size="small" (click)="saveEditedName(client)">
+              <ion-button
+                fill="clear"
+                size="small"
+                (click)="saveEditedName(client)"
+              >
                 <ion-icon name="checkmark-outline"></ion-icon>
               </ion-button>
-              <ion-button fill="clear" size="small" (click)="cancelEditName(client.id)">
+              <ion-button
+                fill="clear"
+                size="small"
+                (click)="cancelEditName(client.id)"
+              >
                 <ion-icon name="close-outline"></ion-icon>
               </ion-button>
             </div>
