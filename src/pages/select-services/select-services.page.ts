@@ -273,7 +273,7 @@ export class SelectServicesPage {
 
   private async initSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
 
       const store = this.sessionService.getStore();
 
@@ -281,9 +281,8 @@ export class SelectServicesPage {
 
       const groupName = store.id.toString();
 
-      await this.signalRService.joinGroup(groupName);
+      await this.signalRService.leaveQueueGroup(groupName);
 
-      this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue((data) => {
         console.log('Atualização recebida na loja', data);
       });
@@ -299,7 +298,6 @@ export class SelectServicesPage {
       serviceId: service.id,
       quantity: service.quantity
     }));
-
 
     const command: UpdateCustomerToQueueRequest = {
       selectedServices: servicesToSend,

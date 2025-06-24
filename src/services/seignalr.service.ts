@@ -6,20 +6,26 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class SignalRService {
-  private hubConnection: signalR.HubConnection | null = null;
-  private joinedGroups = new Set<string>();
-  private connectionPromise: Promise<void> | null = null;
+  private hubConnectionQueue: signalR.HubConnection | null = null;
+  private hubConnectionNotification: signalR.HubConnection | null = null;
+
+  private joinedGroupsQueue = new Set<string>();
+  private joinedGroupsNotification = new Set<string>();
+
+  private connectionPromiseQueue: Promise<void> | null = null;
+  private connectionPromiseNotification: Promise<void> | null = null;
 
   constructor() { }
 
-  public async startConnection(): Promise<void> {
-    if (this.connectionPromise) {
-      return this.connectionPromise;
+  public async startQueueConnection(): Promise<void> {
+    if (this.connectionPromiseQueue) {
+      return this.connectionPromiseQueue;
     }
 
-
-    this.hubConnection = new signalR.HubConnectionBuilder()
-      .withUrl(environment.queueHub)
+    this.hubConnectionQueue = new signalR.HubConnectionBuilder()
+      .withUrl(environment.queueHub, {
+        accessTokenFactory: () => sessionStorage.getItem('token') || ''
+      })
       .withAutomaticReconnect({
         nextRetryDelayInMilliseconds: retryContext => {
           if (retryContext.elapsedMilliseconds < 30000) {
@@ -31,151 +37,279 @@ export class SignalRService {
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    this.setupConnectionEvents();
+    this.setupQueueConnectionEvents();
 
-    // this.connectionPromise = this.hubConnection.start()
-    //   .then(() => {
-    //     console.log('SignalR conectado. ConnectionId:', this.hubConnection?.connectionId);
-    //     this.rejoinGroups();
-    //   })
-    //   .catch(err => {
-    //     console.error('Erro ao conectar SignalR', err);
-    //     this.connectionPromise = null;
-    //     throw err;
-    //   });
+    this.connectionPromiseQueue = this.hubConnectionQueue.start()
+      .then(() => {
+        console.log('SignalR QUEUE conectado. ConnectionId:', this.hubConnectionQueue?.connectionId);
+        this.rejoinQueueGroups();
+      })
+      .catch(err => {
+        console.error('Erro ao conectar SignalR QUEUE', err);
+        this.connectionPromiseQueue = null;
+        throw err;
+      });
 
-    return; //this.connectionPromise;
+    return this.connectionPromiseQueue;
   }
 
-  private setupConnectionEvents(): void {
-    if (!this.hubConnection) return;
-
-    this.hubConnection.onreconnecting(error => {
-      console.warn(`SignalR reconectando... (${error?.message || 'Sem erro'})`);
-    });
-
-    this.hubConnection.onreconnected(connectionId => {
-      console.log(`SignalR reconectado. Nova connectionId: ${connectionId}`);
-      this.rejoinGroups();
-    });
-
-    this.hubConnection.onclose(error => {
-      console.error(`Conexão SignalR fechada. ${error ? 'Erro: ' + error.message : 'Conexão encerrada'}`);
-      this.connectionPromise = null;
-    });
-  }
-
-  public async joinGroup(groupName: string): Promise<void> {
-    if (!this.isConnected()) {
-      console.warn('Tentando entrar no grupo sem conexão ativa. Iniciando conexão...');
-      await this.startConnection();
+  public async startNotificationConnection(): Promise<void> {
+    if (this.connectionPromiseNotification) {
+      return this.connectionPromiseNotification;
     }
 
-    if (this.joinedGroups.has(groupName)) {
-      console.log(`Já está no grupo ${groupName}`);
+    this.hubConnectionNotification = new signalR.HubConnectionBuilder()
+      .withUrl(environment.notificationHub, {
+        accessTokenFactory: () => sessionStorage.getItem('token') || ''
+      })
+      .withAutomaticReconnect({
+        nextRetryDelayInMilliseconds: retryContext => {
+          if (retryContext.elapsedMilliseconds < 30000) {
+            return Math.random() * 2000 + 2000;
+          }
+          return Math.random() * 10000 + 10000;
+        }
+      })
+      .configureLogging(signalR.LogLevel.Information)
+      .build();
+
+    this.setupNotificationConnectionEvents();
+
+    this.connectionPromiseNotification = this.hubConnectionNotification.start()
+      .then(() => {
+        console.log('SignalR NOTIFICATION conectado. ConnectionId:', this.hubConnectionNotification?.connectionId);
+        this.rejoinNotificationGroups();
+      })
+      .catch(err => {
+        console.error('Erro ao conectar SignalR NOTIFICATION', err);
+        this.connectionPromiseNotification = null;
+        throw err;
+      });
+
+    return this.connectionPromiseNotification;
+  }
+
+  private setupQueueConnectionEvents(): void {
+    if (!this.hubConnectionQueue) return;
+
+    this.hubConnectionQueue.onreconnecting(error => {
+      console.warn(`SignalR QUEUE reconectando... (${error?.message || 'Sem erro'})`);
+    });
+
+    this.hubConnectionQueue.onreconnected(connectionId => {
+      console.log(`SignalR QUEUE reconectado. Nova connectionId: ${connectionId}`);
+      this.rejoinQueueGroups();
+    });
+
+    this.hubConnectionQueue.onclose(error => {
+      console.error(`Conexão SignalR QUEUE fechada. ${error ? 'Erro: ' + error.message : 'Conexão encerrada'}`);
+      this.connectionPromiseQueue = null;
+    });
+  }
+
+  private setupNotificationConnectionEvents(): void {
+    if (!this.hubConnectionNotification) return;
+
+    this.hubConnectionNotification.onreconnecting(error => {
+      console.warn(`SignalR NOTIFICATION reconectando... (${error?.message || 'Sem erro'})`);
+    });
+
+    this.hubConnectionNotification.onreconnected(connectionId => {
+      console.log(`SignalR NOTIFICATION reconectado. Nova connectionId: ${connectionId}`);
+      this.rejoinNotificationGroups();
+    });
+
+    this.hubConnectionNotification.onclose(error => {
+      console.error(`Conexão SignalR NOTIFICATION fechada. ${error ? 'Erro: ' + error.message : 'Conexão encerrada'}`);
+      this.connectionPromiseNotification = null;
+    });
+  }
+
+  public async joinQueueGroup(groupName: string): Promise<void> {
+    if (!this.isQueueConnected()) {
+      console.warn('Tentando entrar no grupo QUEUE sem conexão ativa. Iniciando conexão...');
+      await this.startQueueConnection();
+    }
+
+    if (this.joinedGroupsQueue.has(groupName)) {
+      console.log(`Já está no grupo QUEUE ${groupName}`);
       return;
     }
 
     try {
-      await this.hubConnection?.invoke('JoinGroup', groupName);
-      this.joinedGroups.add(groupName);
-      console.log(`Entrou no grupo ${groupName}. Grupos ativos:`, Array.from(this.joinedGroups));
+      await this.hubConnectionQueue?.invoke('JoinGroup', groupName);
+      this.joinedGroupsQueue.add(groupName);
+      console.log(`Entrou no grupo QUEUE ${groupName}. Grupos ativos:`, Array.from(this.joinedGroupsQueue));
     } catch (err) {
-      console.error(`Erro ao entrar no grupo ${groupName}:`, err);
+      console.error(`Erro ao entrar no grupo QUEUE ${groupName}:`, err);
       throw err;
     }
   }
 
-  async joinMultipleGroups(groupNames: string[]): Promise<void> {
-    if (this.hubConnection?.state === signalR.HubConnectionState.Connected) {
-      await this.hubConnection?.invoke('JoinGroups', groupNames);
-      console.log('Entrou nos grupos:', groupNames);
-    }
-  }
+  private async rejoinQueueGroups(): Promise<void> {
+    if (this.joinedGroupsQueue.size === 0) return;
 
-  public async leaveGroup(groupName: string): Promise<void> {
-    if (!this.isConnected()) {
-      console.warn('Tentando sair do grupo sem conexão ativa');
-      return;
-    }
-
-    if (!this.joinedGroups.has(groupName)) {
-      console.log(`Não está no grupo ${groupName}`);
-      return;
-    }
-
-    try {
-      await this.hubConnection?.invoke('LeaveGroup', groupName);
-      this.joinedGroups.delete(groupName);
-      console.log(`Saiu do grupo ${groupName}. Grupos restantes:`, Array.from(this.joinedGroups));
-    } catch (err) {
-      console.error(`Erro ao sair do grupo ${groupName}:`, err);
-      throw err;
-    }
-  }
-
-  public async leaveAllGroups(): Promise<void> {
-    if (!this.isConnected() || this.joinedGroups.size === 0) return;
-
-    try {  
-      await Promise.all(
-        Array.from(this.joinedGroups).map(group => this.leaveGroup(group))
-      );
-    } catch (err) {
-      console.error('Erro ao sair de todos os grupos:', err);
-      throw err;
-    }
-  }
-
-  private rejoinGroups(): void {
-    if (this.joinedGroups.size === 0) return;
-
-    console.log('Reconectando a grupos:', Array.from(this.joinedGroups));
-    this.joinMultipleGroups(Array.from(this.joinedGroups))
-      .catch(err => console.error('Erro ao reconectar a grupos:', err));
+    console.log('Reconectando a grupos QUEUE:', Array.from(this.joinedGroupsQueue));
+    await Promise.all(
+      Array.from(this.joinedGroupsQueue).map(group => this.hubConnectionQueue?.invoke('JoinGroup', group))
+    );
   }
 
   public onUpdateQueue(callback: (data: any) => void): void {
-    this.hubConnection?.off('UpdateQueue');
-    this.hubConnection?.on('UpdateQueue', callback);
+    this.hubConnectionQueue?.off('UpdateQueue');
+    this.hubConnectionQueue?.on('UpdateQueue', callback);
   }
-
-  public async notifyGroup(groupName: string, data: any): Promise<void> {
-  if (!this.isConnected()) {
-    await this.startConnection();
-  }
-  await this.hubConnection?.invoke('NotifyGroup', groupName, data);
-}
 
   public offUpdateQueue(): void {
-    this.hubConnection?.off('UpdateQueue');
-    console.log('Handler UpdateQueue removido');
+    this.hubConnectionQueue?.off('UpdateQueue');
   }
 
-  public async stopConnection(): Promise<void> {
+  public async notifyQueueGroup(groupName: string, data: any): Promise<void> {
+    if (!this.isQueueConnected()) {
+      await this.startQueueConnection();
+    }
+    await this.hubConnectionQueue?.invoke('NotifyGroup', groupName, data);
+  }
+
+  public isQueueConnected(): boolean {
+    return this.hubConnectionQueue?.state === signalR.HubConnectionState.Connected;
+  }
+
+  public async joinNotificationGroup(groupName: string): Promise<void> {
+    if (!this.isNotificationConnected()) {
+      console.warn('Tentando entrar no grupo NOTIFICATION sem conexão ativa. Iniciando conexão...');
+      await this.startNotificationConnection();
+    }
+
+    if (this.joinedGroupsNotification.has(groupName)) {
+      console.log(`Já está no grupo NOTIFICATION ${groupName}`);
+      return;
+    }
+
     try {
-      await this.leaveAllGroups();
-      await this.hubConnection?.stop();
-      console.log('Conexão SignalR parada');
+      await this.hubConnectionNotification?.invoke('JoinGroup', groupName);
+      this.joinedGroupsNotification.add(groupName);
+      console.log(`Entrou no grupo NOTIFICATION ${groupName}. Grupos ativos:`, Array.from(this.joinedGroupsNotification));
     } catch (err) {
-      console.error('Erro ao parar conexão SignalR:', err);
+      console.error(`Erro ao entrar no grupo NOTIFICATION ${groupName}:`, err);
       throw err;
-    } finally {
-      this.hubConnection = null;
-      this.connectionPromise = null;
-      this.joinedGroups.clear();
     }
   }
 
-  public getConnectionId(): string | null {
-    return this.hubConnection?.connectionId || null;
+  private async rejoinNotificationGroups(): Promise<void> {
+    if (this.joinedGroupsNotification.size === 0) return;
+
+    console.log('Reconectando a grupos NOTIFICATION:', Array.from(this.joinedGroupsNotification));
+    await Promise.all(
+      Array.from(this.joinedGroupsNotification).map(group => this.hubConnectionNotification?.invoke('JoinGroup', group))
+    );
   }
 
-  public isConnected(): boolean {
-    return this.hubConnection?.state === signalR.HubConnectionState.Connected;
+  public onReceiveNotification(callback: (data: any) => void): void {
+    this.hubConnectionNotification?.off('ReceiveNotification');
+    this.hubConnectionNotification?.on('ReceiveNotification', callback);
   }
 
-  public getJoinedGroups(): string[] {
-    return Array.from(this.joinedGroups);
+  public async notifyNotificationGroup(groupName: string, data: any): Promise<void> {
+    if (!this.isNotificationConnected()) {
+      await this.startNotificationConnection();
+    }
+    await this.hubConnectionNotification?.invoke('NotifyGroup', groupName, data);
+  }
+
+  public isNotificationConnected(): boolean {
+    return this.hubConnectionNotification?.state === signalR.HubConnectionState.Connected;
+  }
+
+  public async stopAllConnections(): Promise<void> {
+    try {
+      await Promise.all([
+        this.leaveAllQueueGroups(),
+        this.leaveAllNotificationGroups(),
+        this.hubConnectionQueue?.stop(),
+        this.hubConnectionNotification?.stop()
+      ]);
+      console.log('Todas as conexões SignalR paradas');
+    } catch (err) {
+      console.error('Erro ao parar conexões SignalR:', err);
+      throw err;
+    } finally {
+      this.hubConnectionQueue = null;
+      this.hubConnectionNotification = null;
+      this.connectionPromiseQueue = null;
+      this.connectionPromiseNotification = null;
+      this.joinedGroupsQueue.clear();
+      this.joinedGroupsNotification.clear();
+    }
+  }
+
+  public async leaveAllQueueGroups(): Promise<void> {
+    if (!this.isQueueConnected() || this.joinedGroupsQueue.size === 0) return;
+
+    await Promise.all(
+      Array.from(this.joinedGroupsQueue).map(group => this.leaveQueueGroup(group))
+    );
+  }
+
+  public async leaveQueueGroup(groupName: string): Promise<void> {
+    if (!this.isQueueConnected()) {
+      console.warn('Tentando sair do grupo QUEUE sem conexão ativa');
+      return;
+    }
+
+    if (!this.joinedGroupsQueue.has(groupName)) {
+      console.log(`Não está no grupo QUEUE ${groupName}`);
+      return;
+    }
+
+    try {
+      await this.hubConnectionQueue?.invoke('LeaveGroup', groupName);
+      this.joinedGroupsQueue.delete(groupName);
+      console.log(`Saiu do grupo QUEUE ${groupName}. Grupos restantes:`, Array.from(this.joinedGroupsQueue));
+    } catch (err) {
+      console.error(`Erro ao sair do grupo QUEUE ${groupName}:`, err);
+      throw err;
+    }
+  }
+
+  public async leaveAllNotificationGroups(): Promise<void> {
+    if (!this.isNotificationConnected() || this.joinedGroupsNotification.size === 0) return;
+
+    await Promise.all(
+      Array.from(this.joinedGroupsNotification).map(group => this.leaveNotificationGroup(group))
+    );
+  }
+
+  public async leaveNotificationGroup(groupName: string): Promise<void> {
+    if (!this.isNotificationConnected()) {
+      console.warn('Tentando sair do grupo NOTIFICATION sem conexão ativa');
+      return;
+    }
+
+    if (!this.joinedGroupsNotification.has(groupName)) {
+      console.log(`Não está no grupo NOTIFICATION ${groupName}`);
+      return;
+    }
+
+    try {
+      await this.hubConnectionNotification?.invoke('LeaveGroup', groupName);
+      this.joinedGroupsNotification.delete(groupName);
+      console.log(`Saiu do grupo NOTIFICATION ${groupName}. Grupos restantes:`, Array.from(this.joinedGroupsNotification));
+    } catch (err) {
+      console.error(`Erro ao sair do grupo NOTIFICATION ${groupName}:`, err);
+      throw err;
+    }
+  }
+
+  public getQueueConnectionId(): string | null {
+    return this.hubConnectionQueue?.connectionId || null;
+  }
+
+  public getNotificationConnectionId(): string | null {
+    return this.hubConnectionNotification?.connectionId || null;
+  }
+
+  public isAnyConnected(): boolean {
+    return this.isQueueConnected() || this.isNotificationConnected();
   }
 }

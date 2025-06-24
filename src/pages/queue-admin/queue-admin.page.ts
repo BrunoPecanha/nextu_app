@@ -65,10 +65,10 @@ export class QueueAdminPage implements OnInit {
 
   private async initSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
 
       const groupName = this.store.id.toString();
-      await this.signalRService.joinGroup(groupName);
+      await this.signalRService.joinQueueGroup(groupName);
 
       this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue(() => {

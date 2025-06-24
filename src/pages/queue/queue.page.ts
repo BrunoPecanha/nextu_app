@@ -45,7 +45,7 @@ export class QueuePage implements OnInit {
 
   async startSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
       const user = this.sessionService.getUser();
 
       if (!user?.id)
@@ -59,7 +59,9 @@ export class QueuePage implements OnInit {
         .map(store => store.id.toString());
 
       if (groupNames.length > 0) {
-        await this.signalRService.joinMultipleGroups(groupNames);
+        await Promise.all(
+          groupNames.map(group => this.signalRService.joinQueueGroup(group))
+        );
         console.log('Cliente conectado aos grupos:', groupNames);
       }
 
@@ -74,17 +76,17 @@ export class QueuePage implements OnInit {
     }
   }
 
-  async rejoinGroups(): Promise<void> {
-    const user = this.sessionService.getUser();
-    const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
-    const stores = response?.data || [];
+  // async rejoinGroups(): Promise<void> {
+  //   const user = this.sessionService.getUser();
+  //   const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
+  //   const stores = response?.data || [];
 
-    const groupNames = stores
-      .filter(store => !!store?.id)
-      .map(store => `company-${store.id}`);
+  //   const groupNames = stores
+  //     .filter(store => !!store?.id)
+  //     .map(store => `company-${store.id}`);
 
-    await this.signalRService.joinMultipleGroups(groupNames);
-  }
+  //   await this.signalRService.(groupNames);
+  // }
 
   ionViewDidEnter() {
     this.forceReload();
@@ -258,7 +260,7 @@ export class QueuePage implements OnInit {
       next: (response) => {
         if (this.currentlyExpandedCardId === queueId) {
           this.cardDetailsMap.set(queueId, response.data);
-          
+
           if (response.data.position === 0) {
             this.generateQrCode(response.data.token);
           }

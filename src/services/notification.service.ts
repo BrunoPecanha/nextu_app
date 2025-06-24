@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { SignalRService } from './seignalr.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -12,24 +14,27 @@ export class NotificationService {
   private notificacoesNaoLidasSubject = new BehaviorSubject<number>(0);
   notificacoesNaoLidas$ = this.notificacoesNaoLidasSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private signalRService: SignalRService) {
+    this.iniciarSignalR();
+  }
 
-  listar(): Observable<any[]> {    
+  listar(): Observable<any[]> {
     const notificacoesMockadas = [
       { id: 1, mensagem: 'Você tem 3 novos seguidores!', lida: false },
       { id: 2, mensagem: 'Seu pedido foi enviado!', lida: false },
       { id: 3, mensagem: 'Novo comentário na sua postagem.', lida: false }
     ];
-    
+
     return of(notificacoesMockadas);
   }
 
-  marcarComoLida(id: number, usuarioId: number): Observable<any> {    
+  marcarComoLida(id: number, usuarioId: number): Observable<any> {
     const payload = {
       notificacaoId: id,
       usuarioId: usuarioId,
       dataLeitura: new Date().toISOString()
     };
+
     return this.http.post(`${this.baseUrl}/${id}/lida`, payload).pipe(
       tap(() => {
         const atual = this.notificacoesNaoLidasSubject.value;
@@ -40,11 +45,24 @@ export class NotificationService {
     );
   }
 
-  atualizarContadorNaoLidas(): void {    
+  atualizarContadorNaoLidas(): void {
     this.listar().subscribe(notificacoes => {
       const naoLidas = notificacoes.filter(n => !n.lida).length;
       this.notificacoesNaoLidasSubject.next(naoLidas);
     });
   }
-}
 
+  private iniciarSignalR(): void {
+    this.signalRService.startNotificationConnection()
+      .then(() => {
+        this.signalRService.onReceiveNotification((notification) => {
+          console.log('Nova notificação recebida via SignalR:', notification);
+
+          const atual = this.notificacoesNaoLidasSubject.value;
+          this.notificacoesNaoLidasSubject.next(atual + 1);
+
+        });
+      })
+      .catch(err => console.error('Erro ao conectar SignalR para notificações:', err));
+  }
+}

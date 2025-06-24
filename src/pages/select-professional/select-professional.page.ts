@@ -74,13 +74,12 @@ export class SelectProfessionalPage implements OnInit {
 
   private async initSignalRConnection() {
     try {
-      await this.signalRService.startConnection();
+      await this.signalRService.startQueueConnection();
 
       this.signalRGroup = this.storeId.toString();
 
-      await this.signalRService.joinGroup(this.signalRGroup);
+      await this.signalRService.joinQueueGroup(this.signalRGroup);
 
-      this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue((data) => {
         console.log('Atualização recebida na loja', data);
         this.loadStoreAndProfessionals(this.storeId);
@@ -104,7 +103,7 @@ export class SelectProfessionalPage implements OnInit {
   private cleanupSignalR() {
     this.signalRService.offUpdateQueue();
     if (this.signalRGroup) {
-      this.signalRService.leaveGroup(this.signalRGroup);
+      this.signalRService.leaveQueueGroup(this.signalRGroup);
     }
   }
 
