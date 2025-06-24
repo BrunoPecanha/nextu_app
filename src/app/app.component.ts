@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { register } from 'swiper/element/bundle';
-
-register();
+import { Platform } from '@ionic/angular';
+import { StatusBar } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -9,6 +8,14 @@ register();
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(
-  ) {}
+  constructor(private platform: Platform) {
+    this.initializeApp();
+  }
+
+  initializeApp() {
+    this.platform.ready().then(() => {
+      StatusBar.setOverlaysWebView({ overlay: false }); 
+      StatusBar.setBackgroundColor({ color: '#f5f5f5' });
+    });
+  }
 }
