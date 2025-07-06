@@ -1,44 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActionSheetButton } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
-import { MOCK_ADS } from 'src/services/promotion.mock.service';
+import { Subscription } from 'rxjs';
+import { UserModel } from 'src/models/user-model';
+import { NotificationService } from 'src/services/notification.service';
+import { SessionService } from 'src/services/session.service';
 
 @Component({
   selector: 'app-notification',
   templateUrl: './notification.page.html',
   styleUrls: ['./notification.page.scss'],
 })
-export class NotificationPage {
+export class NotificationPage implements OnInit, OnDestroy {
   activeFilter: 'all' | 'unread' = 'all';
   actionSheetOpen = false;
-  activeAd = MOCK_ADS[0];
-  
-  notifications = [
-    { 
-      id: '1', 
-      titulo: 'É a sua vez', 
-      mensagem: 'Obrigado por se cadastrar no app.', 
-      lida: false,
-      tipo: 'system',
-      data: new Date('2023-06-15T10:30:00')
-    },
-    { 
-      id: '2', 
-      titulo: 'Promoção especial', 
-      mensagem: 'Hoje temos 10% de desconto para novos clientes.', 
-      lida: false,
-      tipo: 'promo',
-      data: new Date('2023-06-14T15:45:00')
-    },
-    { 
-      id: '3', 
-      titulo: 'Agendamento confirmado', 
-      mensagem: 'Seu horário foi confirmado para amanhã às 15h.', 
-      lida: true,
-      tipo: 'appointment',
-      data: new Date('2023-06-13T09:20:00')
-    }
-  ];
+
+  notifications: any[] = [];
+  notificacoesNaoLidas = 0;
+  user!: UserModel;
+
+
+  private subscriptions: Subscription[] = [];
 
   actionSheetButtons: ActionSheetButton[] = [
     {
@@ -59,7 +41,48 @@ export class NotificationPage {
     }
   ];
 
-  constructor(private navCtrl: NavController) {}
+  constructor(
+    private navCtrl: NavController,
+    private notificationService: NotificationService,
+    private sessionService: SessionService
+  ) {
+    this.user = this.sessionService.getUser();
+    if (!this.user) {
+      this.navCtrl.navigateRoot('/login');
+    }
+  }
+
+  ngOnInit() {
+    this.loadNotifications();
+
+    const subCount = this.notificationService.notificacoesNaoLidas$.subscribe(count => {
+      this.notificacoesNaoLidas = count;
+    });
+    this.subscriptions.push(subCount);
+
+    this.notificationService.signalRService.onReceiveNotification((notification: any) => {
+      this.notifications.unshift({
+        ...notification,
+        lida: false,
+        data: new Date(notification.data || Date.now()),
+      });
+      this.notificationService.atualizarContadorNaoLidas();
+    });
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(s => s.unsubscribe());
+  }
+
+  async loadNotifications() {
+    this.notificationService.getUserNotifications(this.user.id).subscribe(notifs => {
+      this.notifications = notifs.map(n => ({
+        ...n,
+        data: new Date(Date.now()),
+      }));
+      this.notificationService.atualizarContadorNaoLidas();
+    });
+  }
 
   get filteredNotifications() {
     return this.notifications
@@ -78,19 +101,31 @@ export class NotificationPage {
   }
 
   toggleNotification(notification: any) {
-    notification.lida = !notification.lida;
+    if (!notification.lida) {
+
+      this.notificationService.markAsRead(+notification.id).subscribe(() => {
+        notification.lida = true;
+        this.notificationService.atualizarContadorNaoLidas();
+      });
+    } else {
+      notification.lida = false;
+      this.notificationService.atualizarContadorNaoLidas();
+    }
   }
 
   removeNotification(id: string) {
     this.notifications = this.notifications.filter(noti => noti.id !== id);
+    this.notificationService.atualizarContadorNaoLidas();
   }
 
   markAllAsRead() {
     this.notifications.forEach(noti => noti.lida = true);
+    this.notificationService.atualizarContadorNaoLidas();
   }
 
   clearNotifications() {
     this.notifications = [];
+    this.notificationService.atualizarContadorNaoLidas();
   }
 
   filterChanged(event: any) {
@@ -103,7 +138,7 @@ export class NotificationPage {
 
   async handleRefresh(event: any) {
     try {
-    //  await this.loadOrders();
+      await this.loadNotifications();
     } finally {
       event.target.complete();
     }
