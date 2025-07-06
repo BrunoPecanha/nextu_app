@@ -435,14 +435,12 @@ export class CompanyConfigurationsPage {
             }
           } else {
             this.errorMessage = response.message || 'Falha ao salvar loja. Por favor, tente novamente.';
-            console.error('Falha na operação:', response.message);
           }
         },
         error: (error) => {
           this.sending = false;
           this.loading = false;
-          this.errorMessage = 'Erro ao conectar com o servidor. Por favor, verifique sua conexão.';
-          console.error('Erro na requisição:', error);
+          this.errorMessage = error;
         }
       });
     } else {

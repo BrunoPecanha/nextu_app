@@ -89,6 +89,12 @@ export class SignalRService {
     return this.connectionPromiseNotification;
   }
 
+
+  public onNotificationReceived(callback: (notification: any) => void): void {
+    this.hubConnectionNotification?.off('ReceiveNotification');
+    this.hubConnectionNotification?.on('ReceiveNotification', callback);
+  }
+
   private setupQueueConnectionEvents(): void {
     if (!this.hubConnectionQueue) return;
 
@@ -205,7 +211,7 @@ export class SignalRService {
     );
   }
 
-  public onReceiveNotification(callback: (data: any) => void): void {
+  public onReceiveNotification(callback: (notification: any) => void): void {
     this.hubConnectionNotification?.off('ReceiveNotification');
     this.hubConnectionNotification?.on('ReceiveNotification', callback);
   }

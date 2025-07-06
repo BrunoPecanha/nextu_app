@@ -1,66 +1,118 @@
-import { Injectable } from '@angular/core';
+import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SignalRService } from './seignalr.service';
+import { environment } from 'src/environments/environment';
 
+export interface NotificationPayload {
+  id?: number | string;
+  userId?: number;
+  type?: string;
+  title?: string;
+  message?: string;
+  metadata?: any;
+  lida?: boolean;
+  [key: string]: any;
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class NotificationService {
-  private baseUrl = '';
+  private baseUrl = `${environment.apiUrl}/notifications`;
+
+  private notificacoesSubject = new BehaviorSubject<NotificationPayload[]>([]);
+  notificacoes$ = this.notificacoesSubject.asObservable();
 
   private notificacoesNaoLidasSubject = new BehaviorSubject<number>(0);
   notificacoesNaoLidas$ = this.notificacoesNaoLidasSubject.asObservable();
 
-  constructor(private http: HttpClient, private signalRService: SignalRService) {
+  constructor(
+    private http: HttpClient,
+    public signalRService: SignalRService,
+    private ngZone: NgZone
+  ) {
     this.iniciarSignalR();
   }
 
-  listar(): Observable<any[]> {
-    const notificacoesMockadas = [
-      { id: 1, mensagem: 'Você tem 3 novos seguidores!', lida: false },
-      { id: 2, mensagem: 'Seu pedido foi enviado!', lida: false },
-      { id: 3, mensagem: 'Novo comentário na sua postagem.', lida: false }
-    ];
-
-    return of(notificacoesMockadas);
+  getUserNotifications(userId: number): Observable<NotificationPayload[]> {
+    return this.http.get<NotificationPayload[]>(`${this.baseUrl}/user/${userId}`).pipe(
+      tap(list => {
+        this.notificacoesSubject.next(list);
+        this.atualizarContadorNaoLidasInterno(list);
+      })
+    );
   }
 
-  marcarComoLida(id: number, usuarioId: number): Observable<any> {
-    const payload = {
-      notificacaoId: id,
-      usuarioId: usuarioId,
-      dataLeitura: new Date().toISOString()
-    };
-
-    return this.http.post(`${this.baseUrl}/${id}/lida`, payload).pipe(
+  markAsRead(id: number): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/${id}/mark-as-read`, null).pipe(
       tap(() => {
-        const atual = this.notificacoesNaoLidasSubject.value;
-        if (atual > 0) {
-          this.notificacoesNaoLidasSubject.next(atual - 1);
+        const atuais = this.notificacoesSubject.value;
+        const index = atuais.findIndex(n => n.id == id);
+        if (index !== -1) {
+          atuais[index].lida = true;
+          this.notificacoesSubject.next([...atuais]);
+          this.atualizarContadorNaoLidasInterno(atuais);
         }
       })
     );
   }
 
+  markAllAsRead(userId: number): Observable<void> {
+    return this.http.put<void>(`${this.baseUrl}/mark-all-as-read/${userId}`, null).pipe(
+      tap(() => {
+        const atualizadas = this.notificacoesSubject.value.map(n => ({ ...n, lida: true }));
+        this.notificacoesSubject.next(atualizadas);
+        this.atualizarContadorNaoLidasInterno(atualizadas);
+      })
+    );
+  }
+
+  deleteNotification(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`).pipe(
+      tap(() => {
+        const novas = this.notificacoesSubject.value.filter(n => n.id != id);
+        this.notificacoesSubject.next(novas);
+        this.atualizarContadorNaoLidasInterno(novas);
+      })
+    );
+  }
+
+  sendNotification(userId: number, type: string, title: string, message: string, metadata?: string): Observable<void> {
+    const params = {
+      userId: userId.toString(),
+      type,
+      title,
+      message,
+      metadata: metadata ?? ''
+    };
+    return this.http.post<void>(`${this.baseUrl}/send`, null, { params });
+  }
+
+  private atualizarContadorNaoLidasInterno(notificacoes: NotificationPayload[]) {
+    const naoLidas = notificacoes.filter(n => !n.lida).length;
+    this.notificacoesNaoLidasSubject.next(naoLidas);
+  }
+
   atualizarContadorNaoLidas(): void {
-    this.listar().subscribe(notificacoes => {
-      const naoLidas = notificacoes.filter(n => !n.lida).length;
-      this.notificacoesNaoLidasSubject.next(naoLidas);
-    });
+    this.atualizarContadorNaoLidasInterno(this.notificacoesSubject.value);
   }
 
   private iniciarSignalR(): void {
     this.signalRService.startNotificationConnection()
       .then(() => {
-        this.signalRService.onReceiveNotification((notification) => {
+        this.signalRService.onReceiveNotification((notification: NotificationPayload) => {
           console.log('Nova notificação recebida via SignalR:', notification);
-
-          const atual = this.notificacoesNaoLidasSubject.value;
-          this.notificacoesNaoLidasSubject.next(atual + 1);
-
+          this.ngZone.run(() => {
+            const atuais = this.notificacoesSubject.value;
+            const exists = atuais.some(n => n.id === notification.id);
+            if (!exists) {
+              notification.lida = false;
+              this.notificacoesSubject.next([notification, ...atuais]);
+              this.atualizarContadorNaoLidasInterno([notification, ...atuais]);
+            }
+          });
         });
       })
       .catch(err => console.error('Erro ao conectar SignalR para notificações:', err));
