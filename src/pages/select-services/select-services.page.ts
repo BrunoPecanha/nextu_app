@@ -270,14 +270,14 @@ export class SelectServicesPage {
 
       const store = this.sessionService.getStore();
 
-      if (!store) 
+      if (!store)
         throw new Error('Loja não encontrada');
 
-      // const groupName = store.id.toString();
-      // await this.signalRService.leaveQueueGroup(groupName);
+      const groupName = store.id.toString();
+      await this.signalRService.leaveQueueGroup(groupName);
 
-      // this.signalRService.onUpdateQueue((data) => {
-      // });
+      this.signalRService.onUpdateQueue((data) => {
+      });
 
     } catch (error) {
       setTimeout(() => this.initSignalRConnection(), 5000);
@@ -300,28 +300,53 @@ export class SelectServicesPage {
     this.queueService.updateCustomerToQueue(command).subscribe();
   }
 
-  proceedToQueue() {    
+  proceedToQueue() {
     if (this.customerId) {
       this.updateCustomerToQueue();
       this.initSignalRConnection();
+
+      this.navigateAfterQueue();
+    } else {
+      this.addCustomerToQueueAndNavigate(); // Aguarda o insert antes de navegar
     }
-    else {
-      this.addCustomerToQueue();
-      this.initSignalRConnection();
-    }
+  }
+
+  addCustomerToQueueAndNavigate() {
+    const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
+      serviceId: service.id,
+      quantity: service.quantity
+    }));
+
+    const command: AddCustomerToQueueRequest = {
+      selectedServices: servicesToSend,
+      notes: this.notes,
+      paymentMethod: this.paymentMethod,
+      queueId: this.queueId,
+      userId: this.user.id,
+      looseCustomer: this.looseCustomer
+    };
+
+    this.queueService.addCustomerToQueue(command).subscribe({
+      next: () => {
+        this.initSignalRConnection(); // Só conecta depois do insert
+        this.navigateAfterQueue();    // Só navega depois do insert
+      },
+      error: (err) => {
+        console.error('Erro ao adicionar cliente na fila:', err);
+        // Aqui você pode exibir um toast ou alert se quiser
+      }
+    });
+  }
+
+  private navigateAfterQueue() {
+    const queryParams = {
+      userId: this.user.id,
+    };
 
     if (this.looseCustomer) {
-      this.router.navigate(['/customer-list-in-queue'], {
-        queryParams: {
-          userId: this.user.id,
-        }
-      });
+      this.router.navigate(['/customer-list-in-queue'], { queryParams });
     } else {
-      this.router.navigate(['/queue'], {
-        queryParams: {
-          userId: this.user.id,
-        }
-      });
+      this.router.navigate(['/queue'], { queryParams });
     }
   }
 

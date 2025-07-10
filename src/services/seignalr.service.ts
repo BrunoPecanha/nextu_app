@@ -268,7 +268,7 @@ export class SignalRService {
     try {
       await this.hubConnectionQueue?.invoke('LeaveGroup', groupName);
       this.joinedGroupsQueue.delete(groupName);
-      debugger
+      
       console.log(`Saiu do grupo QUEUE ${groupName}. Grupos restantes:`, Array.from(this.joinedGroupsQueue));
     } catch (err) {
       console.error(`Erro ao sair do grupo QUEUE ${groupName}:`, err);

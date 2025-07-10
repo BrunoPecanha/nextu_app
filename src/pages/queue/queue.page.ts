@@ -14,7 +14,7 @@ import { StoresService } from 'src/services/stores.service';
   templateUrl: './queue.page.html',
   styleUrls: ['./queue.page.scss'],
 })
-export class QueuePage implements OnInit {
+export class QueuePage {
   customerCards: CustomerInQueueCardModel[] | [] = [];
   fallbackRoute = '/select-company';
   stores: StoreModel[] = [];
@@ -36,10 +36,8 @@ export class QueuePage implements OnInit {
   ) {
   }
 
-  ngOnInit() {
-  }
-
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+    this.forceReload();
     this.startSignalRConnection();
   }
 
@@ -57,7 +55,7 @@ export class QueuePage implements OnInit {
       const groupNames = stores
         .filter(store => !!store?.id)
         .map(store => store.id.toString());
-
+        
       if (groupNames.length > 0) {
         await Promise.all(
           groupNames.map(group => this.signalRService.joinQueueGroup(group))
@@ -74,23 +72,6 @@ export class QueuePage implements OnInit {
       console.error('Erro SignalR (cliente):', error);
       setTimeout(() => this.startSignalRConnection(), 5000);
     }
-  }
-
-  // async rejoinGroups(): Promise<void> {
-  //   const user = this.sessionService.getUser();
-  //   const response = await this.storeService.loadAllStoresUserIsInByUserId(user.id).toPromise();
-  //   const stores = response?.data || [];
-
-  //   const groupNames = stores
-  //     .filter(store => !!store?.id)
-  //     .map(store => `company-${store.id}`);
-
-  //   await this.signalRService.(groupNames);
-  // }
-
-  ionViewDidEnter() {
-    this.forceReload();
-    this.startSignalRConnection();
   }
 
   private forceReload(): void {
