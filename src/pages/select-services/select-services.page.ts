@@ -261,14 +261,7 @@ export class SelectServicesPage {
       looseCustomer: this.looseCustomer
     };
 
-    this.queueService.addCustomerToQueue(command).subscribe({
-      next: (response) => {
-        console.log('Cliente adicionado com sucesso:', response);
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar cliente:', error);
-      }
-    });
+    this.queueService.addCustomerToQueue(command).subscribe();
   }
 
   private async initSignalRConnection() {
@@ -277,18 +270,16 @@ export class SelectServicesPage {
 
       const store = this.sessionService.getStore();
 
-      if (!store) throw new Error('Loja não encontrada');
+      if (!store) 
+        throw new Error('Loja não encontrada');
 
-      const groupName = store.id.toString();
+      // const groupName = store.id.toString();
+      // await this.signalRService.leaveQueueGroup(groupName);
 
-      await this.signalRService.leaveQueueGroup(groupName);
-
-      this.signalRService.onUpdateQueue((data) => {
-        console.log('Atualização recebida na loja', data);
-      });
+      // this.signalRService.onUpdateQueue((data) => {
+      // });
 
     } catch (error) {
-      console.error('Erro SignalR (loja):', error);
       setTimeout(() => this.initSignalRConnection(), 5000);
     }
   }
@@ -306,17 +297,10 @@ export class SelectServicesPage {
       id: this.customerId || 0
     };
 
-    this.queueService.updateCustomerToQueue(command).subscribe({
-      next: (response) => {
-        console.log('Cliente adicionado com sucesso:', response);
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar cliente:', error);
-      }
-    });
+    this.queueService.updateCustomerToQueue(command).subscribe();
   }
 
-  proceedToQueue() {
+  proceedToQueue() {    
     if (this.customerId) {
       this.updateCustomerToQueue();
       this.initSignalRConnection();

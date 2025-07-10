@@ -36,11 +36,11 @@
       @for (noti of filteredNotifications; track noti.id; let i = $index) {
       <ion-item
         class="notification-item"
-        [class.unread]="!noti.lida"
+        [class.unread]="!noti.isRead"
         [detail]="false"
         (click)="toggleNotification(noti)"
       >
-        <div class="notification-indicator" [class.unread]="!noti.lida"></div>
+        <div class="notification-indicator" [class.unread]="!noti.isRead"></div>
 
         <ion-avatar slot="start" class="notification-avatar">
           <ion-icon [name]="getNotificationIcon(noti.tipo)"></ion-icon>

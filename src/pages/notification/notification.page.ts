@@ -55,19 +55,13 @@ export class NotificationPage implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadNotifications();
 
-    const subCount = this.notificationService.notificacoesNaoLidas$.subscribe(count => {
-      this.notificacoesNaoLidas = count;
+    const sub = this.notificationService.notificacoes$.subscribe(nots => {
+      this.notifications = nots.map(n => ({
+        ...n,
+        data: new Date(n.sentAt ?? Date.now())
+      }));
     });
-    this.subscriptions.push(subCount);
-
-    this.notificationService.signalRService.onReceiveNotification((notification: any) => {
-      this.notifications.unshift({
-        ...notification,
-        lida: false,
-        data: new Date(notification.data || Date.now()),
-      });
-      this.notificationService.atualizarContadorNaoLidas();
-    });
+    this.subscriptions.push(sub);
   }
 
   ngOnDestroy() {
@@ -115,6 +109,7 @@ export class NotificationPage implements OnInit, OnDestroy {
 
   removeNotification(id: string) {
     this.notifications = this.notifications.filter(noti => noti.id !== id);
+    this.notificationService.deleteNotification(+id).subscribe();
     this.notificationService.atualizarContadorNaoLidas();
   }
 
@@ -123,7 +118,8 @@ export class NotificationPage implements OnInit, OnDestroy {
     this.notificationService.atualizarContadorNaoLidas();
   }
 
-  clearNotifications() {
+  clearNotifications() {    
+    this.notifications.forEach(noti => this.notificationService.deleteNotification(+noti.id).subscribe());
     this.notifications = [];
     this.notificationService.atualizarContadorNaoLidas();
   }

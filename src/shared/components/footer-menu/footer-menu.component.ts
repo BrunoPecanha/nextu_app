@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { Observable, of } from 'rxjs';
+import { StoreModel } from 'src/models/store-model';
 import { NotificationService } from 'src/services/notification.service';
 import { SessionService } from 'src/services/session.service';
 
@@ -11,19 +12,18 @@ import { SessionService } from 'src/services/session.service';
   styleUrls: ['./footer-menu.component.scss'],
 })
 export class FooterMenuComponent implements OnInit {
-  notificationsCount$ = this.notificationService.notificacoesNaoLidas$;
+  notificationsCount$!: Observable<number>;
   profile = 0;
+  store: StoreModel | null = null;
 
-  constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService) {
+  constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService, private cdr: ChangeDetectorRef) {
     this.profile = this.sesseionService.getProfile();
+    this.store = this.sesseionService.getStore();
   }
 
   ngOnInit() {
+    this.notificationsCount$ = this.notificationService.notificacoesNaoLidas$;
     this.notificationService.atualizarContadorNaoLidas();
-
-    this.notificationService.notificacoesNaoLidas$.subscribe(count => {
-      console.log('Contador de notificações atualizado no footer:', count);
-    });
   }
 
   async goToHome(main: boolean = false) {
@@ -42,7 +42,7 @@ export class FooterMenuComponent implements OnInit {
         }
       }
       else if (this.profile === 1) {
-        if (main) {
+        if (main && this.store?.releaseOrdersBeforeGetsQueued) {
           this.router.navigate(['/order-approval'], {
             replaceUrl: true,
             state: { redirectedFromBack: true }

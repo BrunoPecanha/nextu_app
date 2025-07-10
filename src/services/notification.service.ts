@@ -12,7 +12,8 @@ export interface NotificationPayload {
   title?: string;
   message?: string;
   metadata?: any;
-  lida?: boolean;
+  sentAt: Date;
+  isRead?: boolean;
   [key: string]: any;
 }
 
@@ -51,7 +52,7 @@ export class NotificationService {
         const atuais = this.notificacoesSubject.value;
         const index = atuais.findIndex(n => n.id == id);
         if (index !== -1) {
-          atuais[index].lida = true;
+          atuais[index].isRead = true;
           this.notificacoesSubject.next([...atuais]);
           this.atualizarContadorNaoLidasInterno(atuais);
         }
@@ -62,7 +63,7 @@ export class NotificationService {
   markAllAsRead(userId: number): Observable<void> {
     return this.http.put<void>(`${this.baseUrl}/mark-all-as-read/${userId}`, null).pipe(
       tap(() => {
-        const atualizadas = this.notificacoesSubject.value.map(n => ({ ...n, lida: true }));
+        const atualizadas = this.notificacoesSubject.value.map(n => ({ ...n, isRead: true }));
         this.notificacoesSubject.next(atualizadas);
         this.atualizarContadorNaoLidasInterno(atualizadas);
       })
@@ -91,7 +92,8 @@ export class NotificationService {
   }
 
   private atualizarContadorNaoLidasInterno(notificacoes: NotificationPayload[]) {
-    const naoLidas = notificacoes.filter(n => !n.lida).length;
+    const naoLidas = notificacoes.filter(n => !n.isRead).length;
+    console.log('[📬] Atualizando contador: ', naoLidas, 'não lidas');
     this.notificacoesNaoLidasSubject.next(naoLidas);
   }
 
@@ -102,19 +104,35 @@ export class NotificationService {
   private iniciarSignalR(): void {
     this.signalRService.startNotificationConnection()
       .then(() => {
-        this.signalRService.onReceiveNotification((notification: NotificationPayload) => {
-          console.log('Nova notificação recebida via SignalR:', notification);
-          this.ngZone.run(() => {
-            const atuais = this.notificacoesSubject.value;
-            const exists = atuais.some(n => n.id === notification.id);
-            if (!exists) {
-              notification.lida = false;
-              this.notificacoesSubject.next([notification, ...atuais]);
-              this.atualizarContadorNaoLidasInterno([notification, ...atuais]);
-            }
-          });
-        });
+        console.log('[✅] Conexão SignalR NOTIFICATION iniciada');
+        this.registrarNotificacao();
       })
       .catch(err => console.error('Erro ao conectar SignalR para notificações:', err));
+  }
+
+  private registrarNotificacao() {
+    this.signalRService.onReceiveNotification((notification: NotificationPayload) => {
+      console.log('[📡] Nova notificação recebida via SignalR:', notification);
+
+      this.ngZone.run(() => {
+        const atuais = this.notificacoesSubject.value;
+
+        if (!notification.id) {
+          notification.id = new Date().getTime();
+        }
+
+        notification.isRead = false;
+
+        const exists = atuais.some(n => n.id === notification.id);
+
+        if (!exists) {
+          const atualizadas = [notification, ...atuais];
+          this.notificacoesSubject.next(atualizadas);
+          this.atualizarContadorNaoLidasInterno(atualizadas);
+        } else {
+          this.atualizarContadorNaoLidasInterno(atuais);
+        }
+      });
+    });
   }
 }
