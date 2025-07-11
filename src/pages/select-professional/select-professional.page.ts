@@ -81,7 +81,6 @@ export class SelectProfessionalPage implements OnInit {
       await this.signalRService.joinQueueGroup(this.signalRGroup);
 
       this.signalRService.onUpdateQueue((data) => {
-        console.log('Atualização recebida na loja', data);
         this.loadStoreAndProfessionals(this.storeId);
       });
 
@@ -117,7 +116,6 @@ export class SelectProfessionalPage implements OnInit {
     event.stopPropagation();
     event.preventDefault();
     queue.liked = !queue.liked;
-    console.log(`Fila ${queue.name} - liked: ${queue.liked}`);
   }
 
   openStoreDetails() {

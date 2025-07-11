@@ -149,7 +149,6 @@ export class SelectCompanyPage implements OnInit {
           card.liked = previousLikeState;
           this.showErrorToast('Ocorreu um erro ao processar sua ação');
         }
-        console.log(`${card.name} ${card.liked ? 'curtido' : 'descurtido'}`, response);
       },
       error: (err) => {
         card.liked = previousLikeState;

@@ -261,14 +261,7 @@ export class SelectServicesPage {
       looseCustomer: this.looseCustomer
     };
 
-    this.queueService.addCustomerToQueue(command).subscribe({
-      next: (response) => {
-        console.log('Cliente adicionado com sucesso:', response);
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar cliente:', error);
-      }
-    });
+    this.queueService.addCustomerToQueue(command).subscribe();
   }
 
   private async initSignalRConnection() {
@@ -277,18 +270,16 @@ export class SelectServicesPage {
 
       const store = this.sessionService.getStore();
 
-      if (!store) throw new Error('Loja não encontrada');
+      if (!store)
+        throw new Error('Loja não encontrada');
 
       const groupName = store.id.toString();
-
       await this.signalRService.leaveQueueGroup(groupName);
 
       this.signalRService.onUpdateQueue((data) => {
-        console.log('Atualização recebida na loja', data);
       });
 
     } catch (error) {
-      console.error('Erro SignalR (loja):', error);
       setTimeout(() => this.initSignalRConnection(), 5000);
     }
   }
@@ -306,38 +297,55 @@ export class SelectServicesPage {
       id: this.customerId || 0
     };
 
-    this.queueService.updateCustomerToQueue(command).subscribe({
-      next: (response) => {
-        console.log('Cliente adicionado com sucesso:', response);
-      },
-      error: (error) => {
-        console.error('Erro ao adicionar cliente:', error);
-      }
-    });
+    this.queueService.updateCustomerToQueue(command).subscribe();
   }
 
   proceedToQueue() {
     if (this.customerId) {
       this.updateCustomerToQueue();
       this.initSignalRConnection();
+
+      this.navigateAfterQueue();
+    } else {
+      this.addCustomerToQueueAndNavigate(); // Aguarda o insert antes de navegar
     }
-    else {
-      this.addCustomerToQueue();
-      this.initSignalRConnection();
-    }
+  }
+
+  addCustomerToQueueAndNavigate() {
+    const servicesToSend: AddQueueServiceRequest[] = this.selectedServices.map(service => ({
+      serviceId: service.id,
+      quantity: service.quantity
+    }));
+
+    const command: AddCustomerToQueueRequest = {
+      selectedServices: servicesToSend,
+      notes: this.notes,
+      paymentMethod: this.paymentMethod,
+      queueId: this.queueId,
+      userId: this.user.id,
+      looseCustomer: this.looseCustomer
+    };
+
+    this.queueService.addCustomerToQueue(command).subscribe({
+      next: () => {
+        this.navigateAfterQueue();    // Só navega depois do insert
+      },
+      error: (err) => {
+        console.error('Erro ao adicionar cliente na fila:', err);
+        // Aqui você pode exibir um toast ou alert se quiser
+      }
+    });
+  }
+
+  private navigateAfterQueue() {
+    const queryParams = {
+      userId: this.user.id,
+    };
 
     if (this.looseCustomer) {
-      this.router.navigate(['/customer-list-in-queue'], {
-        queryParams: {
-          userId: this.user.id,
-        }
-      });
+      this.router.navigate(['/customer-list-in-queue'], { queryParams });
     } else {
-      this.router.navigate(['/queue'], {
-        queryParams: {
-          userId: this.user.id,
-        }
-      });
+      this.router.navigate(['/queue'], { queryParams });
     }
   }
 

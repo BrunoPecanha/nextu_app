@@ -81,6 +81,7 @@ export class SessionService {
 
   clearRefreshToken(): void {
     localStorage.removeItem(this.REFRESH_TOKEN);
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   setRefreshToken(token: string) {

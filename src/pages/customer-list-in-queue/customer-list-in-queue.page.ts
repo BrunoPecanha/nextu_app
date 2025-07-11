@@ -104,10 +104,7 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
   saveClientServices(customerServicesUpdate: any) {
     this.customerService.updatePriceAndTimeForVariableServiceAsync(customerServicesUpdate)
-      .subscribe({
-        next: () => console.log('Valores atualizados com sucesso'),
-        error: err => console.error('Erro ao atualizar:', err)
-      });
+      .subscribe();
   }
 
   canEditCustomerPriceAndTime(client: any): boolean {
@@ -130,7 +127,6 @@ export class CustomerListInQueuePage implements OnInit, OnDestroy {
 
       this.signalRService.offUpdateQueue();
       this.signalRService.onUpdateQueue((data) => {
-        console.log('Atualização recebida na loja', data);
         this.loadQueueData();
       });
 

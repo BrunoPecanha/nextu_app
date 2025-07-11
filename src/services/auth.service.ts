@@ -26,7 +26,7 @@ export class AuthService {
   }
 
   refreshToken(): Observable<AuthResponse> {
-    const refreshToken = this.getRefreshToken();
+    const refreshToken = this.getRefreshToken();    
     
     if (!refreshToken) {
       return throwError(() => new Error('Refresh token não encontrado'));
@@ -41,6 +41,10 @@ export class AuthService {
 
   getToken(): string | null {
     return sessionStorage.getItem('token') || localStorage.getItem('token');
+  }
+
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
   }
 
   public getRefreshToken(): string | null {

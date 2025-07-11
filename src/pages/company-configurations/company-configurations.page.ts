@@ -428,7 +428,6 @@ export class CompanyConfigurationsPage {
             this.successMessage = storeId
               ? 'Loja atualizada com sucesso!'
               : 'Loja cadastrada com sucesso!';
-            console.log('Operação realizada com sucesso!', response.data);
 
             if (!storeId) {
               this.navCtrl.navigateForward(`/company-configurations`);

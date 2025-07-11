@@ -9,7 +9,7 @@
       <ion-label>INÍCIO</ion-label>
     </div>
 
-    <div class="footer-item promotion-wrapper" style="pointer-events: none;">
+    <div class="footer-item promotion-wrapper" style="pointer-events: none">
       <ion-icon
         name="pricetags-outline"
         (click)="goToPromotions()"
@@ -30,6 +30,7 @@
       <span
         class="notification-badge"
         *ngIf="notificationsCount$ | async as contador"
+        [hidden]="contador === 0"
       >
         {{ contador }}
       </span>
