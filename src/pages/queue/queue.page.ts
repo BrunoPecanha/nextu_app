@@ -36,9 +36,9 @@ export class QueuePage {
   ) {
   }
 
-  ionViewDidEnter() {    
-    this.startSignalRConnection();
+  ionViewDidEnter() {
     this.forceReload();
+    this.startSignalRConnection();
   }
 
   async startSignalRConnection() {
