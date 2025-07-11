@@ -36,13 +36,14 @@ export class QueuePage {
   ) {
   }
 
-  ionViewDidEnter() {
-    this.forceReload();
+  ionViewDidEnter() {    
     this.startSignalRConnection();
+    this.forceReload();
   }
 
   async startSignalRConnection() {
     try {
+      
       await this.signalRService.startQueueConnection();
       const user = this.sessionService.getUser();
 

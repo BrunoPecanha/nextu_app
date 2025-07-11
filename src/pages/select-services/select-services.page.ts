@@ -328,7 +328,6 @@ export class SelectServicesPage {
 
     this.queueService.addCustomerToQueue(command).subscribe({
       next: () => {
-        this.initSignalRConnection(); // Só conecta depois do insert
         this.navigateAfterQueue();    // Só navega depois do insert
       },
       error: (err) => {

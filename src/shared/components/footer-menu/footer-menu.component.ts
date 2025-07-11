@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NavController } from '@ionic/angular';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { StoreModel } from 'src/models/store-model';
 import { NotificationService } from 'src/services/notification.service';
 import { SessionService } from 'src/services/session.service';
@@ -16,45 +16,42 @@ export class FooterMenuComponent implements OnInit {
   profile = 0;
   store: StoreModel | null = null;
 
-  constructor(private notificationService: NotificationService, private navController: NavController, private router: Router, private sesseionService: SessionService, private cdr: ChangeDetectorRef) {
+  constructor(
+    private notificationService: NotificationService,
+    private navController: NavController,
+    private router: Router,
+    private sesseionService: SessionService,
+    private cdr: ChangeDetectorRef
+  ) {
     this.profile = this.sesseionService.getProfile();
     this.store = this.sesseionService.getStore();
   }
 
   ngOnInit() {
     this.notificationsCount$ = this.notificationService.notificacoesNaoLidas$;
+
+    // 🛠️ Sempre que o contador mudar, força a atualização da view
+    this.notificationsCount$.subscribe(() => {
+      this.cdr.detectChanges();
+    });
+
+    // 🔁 Atualiza contador inicial
     this.notificationService.atualizarContadorNaoLidas();
   }
 
   async goToHome(main: boolean = false) {
     try {
       if (this.profile === 0) {
-        if (main) {
-          this.router.navigate(['/select-company'], {
-            replaceUrl: true,
-            state: { redirectedFromBack: true }
-          });
-        } else {
-          this.router.navigate(['/queue'], {
-            replaceUrl: true,
-            state: { redirectedFromBack: true }
-          });
-        }
-      }
-      else if (this.profile === 1) {
-        if (main && this.store?.releaseOrdersBeforeGetsQueued) {
-          this.router.navigate(['/order-approval'], {
-            replaceUrl: true,
-            state: { redirectedFromBack: true }
-          });
-        } else {
-          this.router.navigate(['/customer-list-in-queue'], {
-            replaceUrl: true,
-            state: { redirectedFromBack: true }
-          });
-        }
-      }
-      else if (this.profile === 2) {
+        this.router.navigate([main ? '/select-company' : '/queue'], {
+          replaceUrl: true,
+          state: { redirectedFromBack: true }
+        });
+      } else if (this.profile === 1) {
+        this.router.navigate(
+          [main && this.store?.releaseOrdersBeforeGetsQueued ? '/order-approval' : '/customer-list-in-queue'],
+          { replaceUrl: true, state: { redirectedFromBack: true } }
+        );
+      } else if (this.profile === 2) {
         this.router.navigate(['/queue-list-for-owner'], {
           replaceUrl: true,
           state: { redirectedFromBack: true }
@@ -72,10 +69,6 @@ export class FooterMenuComponent implements OnInit {
 
   goToPromotions() {
     this.navController.navigateForward('/promotions');
-  }
-
-  marcarAsRead(id: number, usuarioId: number): Observable<any> {
-    return of(null);
   }
 
   openMenu() {
