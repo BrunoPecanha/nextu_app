@@ -61,11 +61,9 @@ export class QueuePage {
         await Promise.all(
           groupNames.map(group => this.signalRService.joinQueueGroup(group))
         );
-        console.log('Cliente conectado aos grupos:', groupNames);
       }
 
       this.signalRService.onUpdateQueue((data) => {
-        console.log('Atualização recebida no cliente', data);
         this.refreshQueues();
       });
 

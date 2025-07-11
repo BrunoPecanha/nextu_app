@@ -91,9 +91,8 @@ export class NotificationService {
     return this.http.post<void>(`${this.baseUrl}/send`, null, { params });
   }
 
-  private atualizarContadorNaoLidasInterno(notificacoes: NotificationPayload[]) {    
+  private atualizarContadorNaoLidasInterno(notificacoes: NotificationPayload[]) {
     const naoLidas = notificacoes.filter(n => !n.isRead).length;
-    console.log('[📬] Atualizando contador: ', naoLidas, 'não lidas');
     this.notificacoesNaoLidasSubject.next(naoLidas);
   }
 
@@ -101,22 +100,19 @@ export class NotificationService {
     this.atualizarContadorNaoLidasInterno(this.notificacoesSubject.value);
   }
   private iniciarSignalR() {
-    console.log('[🔔] Iniciando SignalR no NotificationService');
+    console.log('Iniciando SignalR no NotificationService ...');
 
     this.signalRService.startNotificationConnection()
       .then(() => {
-        console.log('[✅] SignalR Notification conectado');
+        console.log('SignalR Notification conectado');
 
-        // Chama seu método que atualiza os estados internos quando receber notificação
         this.registrarNotificacao();
       })
-      .catch(err => console.error('[❌] Falha SignalR:', err));
+      .catch(err => console.error('Falha SignalR:', err));
   }
 
   private registrarNotificacao() {
     this.signalRService.onReceiveNotification((notification: NotificationPayload) => {
-      console.log('[📡] Chegou notificação SignalR:', notification);
-
       this.ngZone.run(() => {
         const atuais = this.notificacoesSubject.value;
 
@@ -135,8 +131,7 @@ export class NotificationService {
         } else {
           this.atualizarContadorNaoLidasInterno(atuais);
         }
-
-        // ✅ Força recontagem externa, mesmo que o footer esteja "fora do ciclo"
+        
         this.atualizarContadorNaoLidas();
       });
     });

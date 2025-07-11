@@ -18,8 +18,7 @@ export class NotificationPage implements OnInit, OnDestroy {
   notifications: any[] = [];
   notificacoesNaoLidas = 0;
   user!: UserModel;
-
-
+  
   private subscriptions: Subscription[] = [];
 
   actionSheetButtons: ActionSheetButton[] = [
